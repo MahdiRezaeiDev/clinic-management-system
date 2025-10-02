@@ -5,6 +5,26 @@ namespace App\Models {
     /**
      * App\Models\Expense
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $description
+     * @property string $expense_date
+     * @property float $amount
+     * @property mixed $user_id
+     * @property mixed $supplier_id
+     * @property mixed $staff_id
+     * @property mixed $category
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereCategory($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereStaffId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereSupplierId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereUserId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereAmount($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereExpenseDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense query()
@@ -308,6 +328,26 @@ namespace App\Models {
     /**
      * App\Models\Income
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $description
+     * @property mixed $payment_method
+     * @property float $amount
+     * @property mixed $user_id
+     * @property mixed $doctor_id
+     * @property mixed $patient_id
+     * @property mixed $category
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCategory($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePatientId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereDoctorId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUserId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereAmount($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePaymentMethod($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income query()
@@ -611,6 +651,22 @@ namespace App\Models {
     /**
      * App\Models\Overtime
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $date_paid
+     * @property float $total_amount
+     * @property float $rate_per_hour
+     * @property mixed $hours
+     * @property mixed $staff_id
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereStaffId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereHours($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereRatePerHour($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereTotalAmount($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereDatePaid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime query()
@@ -914,6 +970,20 @@ namespace App\Models {
     /**
      * App\Models\Patient
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $birth_date
+     * @property mixed $gender
+     * @property string|null $phone
+     * @property string $full_name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereFullName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient wherePhone($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereGender($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereBirthDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient query()
@@ -1217,6 +1287,30 @@ namespace App\Models {
     /**
      * App\Models\PharmacySale
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $description
+     * @property mixed $payment_method
+     * @property float $total_amount
+     * @property string $sale_date
+     * @property mixed $user_id
+     * @property mixed $pharmacist_id
+     * @property mixed $doctor_id
+     * @property mixed $patient_id
+     * @property mixed $sale_type
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleType($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePatientId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDoctorId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePharmacistId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereUserId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereTotalAmount($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePaymentMethod($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale query()
@@ -1520,6 +1614,22 @@ namespace App\Models {
     /**
      * App\Models\PharmacySaleItem
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property float $subtotal
+     * @property float $unit_price
+     * @property mixed $quantity
+     * @property string $drug_name
+     * @property mixed $sale_id
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereSaleId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereDrugName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereQuantity($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereUnitPrice($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereSubtotal($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem query()
@@ -1823,6 +1933,20 @@ namespace App\Models {
     /**
      * App\Models\Salary
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $status
+     * @property float $amount_paid
+     * @property string $salary_month
+     * @property mixed $staff_id
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereStaffId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereSalaryMonth($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereAmountPaid($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereStatus($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary query()
@@ -2126,6 +2250,20 @@ namespace App\Models {
     /**
      * App\Models\Staff
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property float $base_salary
+     * @property string|null $phone
+     * @property mixed $role
+     * @property string $full_name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereFullName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereRole($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff wherePhone($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereBaseSalary($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff query()
@@ -2429,6 +2567,20 @@ namespace App\Models {
     /**
      * App\Models\Supplier
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $address
+     * @property string|null $phone
+     * @property string|null $contact_person
+     * @property string $company_name
+     * @property int $id
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereCompanyName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereContactPerson($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier wherePhone($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereAddress($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier query()
@@ -2736,7 +2888,6 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $remember_token
      * @property string|null $profile
-     * @property mixed $salary
      * @property mixed $role
      * @property string $password
      * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -2751,7 +2902,6 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereEmailVerifiedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User wherePassword($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRole($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereSalary($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereProfile($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereRememberToken($value)
      * @method static \Illuminate\Database\Eloquent\Builder<User>|User whereCreatedAt($value)
