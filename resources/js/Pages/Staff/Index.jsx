@@ -4,13 +4,23 @@ import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function Index({ staffs }) {
     const [confirmingStaffDeletion, setConfirmingStaffDeletion] =
         useState(false);
     const [staffId, setStaffId] = useState(null);
+    const { flash } = usePage().props;
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        if (flash.success) {
+            setShow(true);
+            const timeout = setTimeout(() => setShow(false), 3000); // auto hide after 3s
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
 
     const {
         delete: destroy,
@@ -67,7 +77,7 @@ export default function Index({ staffs }) {
             </td>
             <td className="whitespace-nowrap p-4 px-6 text-xs">
                 {roleNames[staff.role] || staff.role}
-            </td>{' '}
+            </td>
             <td className="whitespace-nowrap p-4 px-6 text-xs">
                 {staff.base_salary.toLocaleString()}
             </td>
@@ -184,16 +194,18 @@ export default function Index({ staffs }) {
             </Modal>
 
             <Transition
-                show={recentlySuccessful}
-                enter="transition ease-in-out"
-                enterFrom="opacity-0"
-                leave="transition ease-in-out"
-                leaveTo="opacity-0"
-                className="absolute bottom-4 left-4"
+                show={show}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
             >
-                <p className="bg-green-600 px-10 py-3 text-center text-sm font-semibold text-white">
-                    عملیات حذف موفقانه انجام شد.
-                </p>
+                <div className="rounded bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-lg">
+                    {flash.success}
+                </div>
             </Transition>
         </AuthenticatedLayout>
     );

@@ -29,7 +29,7 @@ class StaffController extends Controller
         ]);
 
         Staff::create($request->all());
-        return redirect()->route('staffs.index')->with('success', 'Staff added successfully.');
+        return redirect()->route('staffs.index')->with('success', 'پرسنل با موفقیت ایجاد شد.');
     }
 
     public function edit(Staff $staff)
@@ -48,12 +48,12 @@ class StaffController extends Controller
 
         $staff->update($request->all());
 
-        return redirect()->route('staffs.index')->with('success', 'Staff updated successfully.');
+        return redirect()->route('staffs.index')->with('success', 'پرسنل با موفقیت به‌روزرسانی شد.');
     }
 
     public function destroy(Staff $staff)
     {
         $staff->delete();
-        return redirect()->route('staff.index')->with('success', 'Staff deleted successfully.');
+        return redirect()->route('staffs.index')->with('success', 'پرسنل با موفقیت حذف شد.');
     }
 }
