@@ -8,11 +8,32 @@ use Inertia\Inertia;
 
 class StaffController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $staff = Staff::all();
-        return Inertia::render('Staff/Index', ['staffs' => $staff]);
+        $query = Staff::query();
+
+        // Search by name or phone
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by role
+        if ($request->filled('role')) {
+            $query->where('role', $request->input('role'));
+        }
+
+        $staffs = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
+
+        return inertia('Staff/Index', [
+            'staffs' => $staffs,
+            'filters' => $request->only(['search', 'role']),
+        ]);
     }
+
 
     public function create()
     {

@@ -1,3 +1,5 @@
+import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
@@ -25,8 +27,6 @@ export default function Edit({ staff }) {
         e.preventDefault();
         put(route('staffs.update', staff.id));
     };
-
-    console.log(errors);
 
     return (
         <AuthenticatedLayout title="ویرایش کارمند">
@@ -126,14 +126,15 @@ export default function Edit({ staff }) {
                         </div>
 
                         {/* Submit */}
-                        <div className="flex justify-end">
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="rounded-md bg-blue-600 px-6 py-2 font-semibold text-white shadow hover:bg-blue-700 focus:ring focus:ring-blue-300 disabled:opacity-50"
+                        <div className="flex items-center gap-3">
+                            <PrimaryButton type="submit" disabled={processing}>
+                                ذخیره
+                            </PrimaryButton>
+                            <SecondaryButton
+                                onClick={() => window.history.back()}
                             >
-                                ذخیره تغییرات
-                            </button>
+                                بازگشت
+                            </SecondaryButton>
                         </div>
                     </form>
                 </div>

@@ -4,10 +4,10 @@ import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
-export default function Index({ staffs }) {
+export default function Index({ staffs, filters }) {
     const [confirmingStaffDeletion, setConfirmingStaffDeletion] =
         useState(false);
     const [staffId, setStaffId] = useState(null);
@@ -17,7 +17,7 @@ export default function Index({ staffs }) {
     useEffect(() => {
         if (flash.success) {
             setShow(true);
-            const timeout = setTimeout(() => setShow(false), 3000); // auto hide after 3s
+            const timeout = setTimeout(() => setShow(false), 3000);
             return () => clearTimeout(timeout);
         }
     }, [flash.success]);
@@ -28,20 +28,19 @@ export default function Index({ staffs }) {
         reset,
         errors,
         clearErrors,
-        recentlySuccessful,
     } = useForm();
 
-    // Define a mapping of roles to Persian names
+    // Role labels
     const roleNames = {
         doctor: 'پزشک',
-        nurse: 'نرس',
-        pharmacist: 'فارمسیست',
+        nurse: 'پرستار',
+        pharmacist: 'دواساز',
         lab: 'لابراتوار',
-        dentist: 'دندانپزشک',
-        emergency: 'عاجل',
-        gynecology: 'نسایی',
-        inpatient: 'بستری',
-        service: 'خدمات / سایر',
+        dentist: 'دندان‌پزشک',
+        emergency: 'ایمرجنسی',
+        gynecology: 'نسایی ولادی',
+        inpatient: 'بخش بستری',
+        service: 'خدمات',
     };
 
     const confirmStaffDeletion = (id) => {
@@ -66,71 +65,27 @@ export default function Index({ staffs }) {
         reset();
     };
 
-    const AllStaff = staffs.map((staff) => (
-        <tr key={staff.id}>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">{staff.id}</td>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">
-                {staff.full_name}
-            </td>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">
-                {staff.phone || '-'}
-            </td>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">
-                {roleNames[staff.role] || staff.role}
-            </td>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">
-                {staff.base_salary.toLocaleString()}
-            </td>
-            <td className="whitespace-nowrap p-4 px-6 text-xs">
-                <Dropdown>
-                    <Dropdown.Trigger>
-                        <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
-                            عملیات
-                        </button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Content>
-                        <Link
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            href={route('staffs.edit', staff.id)}
-                        >
-                            ویرایش
-                        </Link>
-                        <button
-                            className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                            onClick={() => confirmStaffDeletion(staff.id)}
-                        >
-                            حذف
-                        </button>
-                        <Link
-                            className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-100"
-                            href={route('staffs.salary.index', staff.id)}
-                        >
-                            حقوق
-                        </Link>
-                        <Link
-                            className="block px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100"
-                            href={route('staffs.overtime.index', staff.id)}
-                        >
-                            اضافه کاری
-                        </Link>
-                        <Link
-                            className="block px-4 py-2 text-sm text-purple-600 hover:bg-gray-100"
-                            href={route('staffs.salary.report', staff.id)}
-                        >
-                            گزارش حقوق
-                        </Link>
-                    </Dropdown.Content>
-                </Dropdown>
-            </td>
-        </tr>
-    ));
+    // Handle search/filter
+    const [search, setSearch] = useState(filters.search || '');
+    const [role, setRole] = useState(filters.role || '');
+
+    const submitFilter = (e) => {
+        e.preventDefault();
+        router.get(
+            route('staffs.index'),
+            { search, role },
+            { preserveState: true },
+        );
+    };
 
     return (
         <AuthenticatedLayout title="پرسنل سیستم">
             <Head title="پرسنل سیستم" />
+
             <div className="flex flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
                     <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
+                        {/* Header */}
                         <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
                             <h3 className="text-blueGray-700 text-lg font-semibold">
                                 لیست پرسنل ثبت شده
@@ -142,6 +97,42 @@ export default function Index({ staffs }) {
                                 افزودن پرسنل
                             </Link>
                         </div>
+
+                        {/* Filter Form */}
+                        <form
+                            onSubmit={submitFilter}
+                            className="flex flex-wrap items-center gap-3 border-b px-4 py-3"
+                        >
+                            <input
+                                type="text"
+                                placeholder="جستجو نام یا شماره تماس..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="rounded border px-3 py-2 text-sm"
+                            />
+                            <select
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
+                                className="rounded border px-3 py-2 text-sm"
+                            >
+                                <option value="">همه نقش‌ها</option>
+                                {Object.entries(roleNames).map(
+                                    ([key, label]) => (
+                                        <option key={key} value={key}>
+                                            {label}
+                                        </option>
+                                    ),
+                                )}
+                            </select>
+                            <button
+                                type="submit"
+                                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+                            >
+                                اعمال فیلتر
+                            </button>
+                        </form>
+
+                        {/* Table */}
                         <div className="block w-full">
                             <table className="w-full border-collapse bg-transparent">
                                 <thead>
@@ -166,13 +157,123 @@ export default function Index({ staffs }) {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>{AllStaff}</tbody>
+                                <tbody>
+                                    {staffs.data.length ? (
+                                        staffs.data.map((staff) => (
+                                            <tr key={staff.id}>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {staff.id}
+                                                </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {staff.full_name}
+                                                </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {staff.phone || '-'}
+                                                </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {roleNames[staff.role] ||
+                                                        staff.role}
+                                                </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {staff.base_salary?.toLocaleString() ||
+                                                        '-'}
+                                                </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    <Dropdown>
+                                                        <Dropdown.Trigger>
+                                                            <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
+                                                                عملیات
+                                                            </button>
+                                                        </Dropdown.Trigger>
+                                                        <Dropdown.Content>
+                                                            <Link
+                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                href={route(
+                                                                    'staffs.edit',
+                                                                    staff.id,
+                                                                )}
+                                                            >
+                                                                ویرایش
+                                                            </Link>
+                                                            <button
+                                                                className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
+                                                                onClick={() =>
+                                                                    confirmStaffDeletion(
+                                                                        staff.id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                حذف
+                                                            </button>
+                                                            <Link
+                                                                className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-100"
+                                                                href={route(
+                                                                    'staffs.salary.index',
+                                                                    staff.id,
+                                                                )}
+                                                            >
+                                                                حقوق
+                                                            </Link>
+                                                            <Link
+                                                                className="block px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100"
+                                                                href={route(
+                                                                    'staffs.overtime.index',
+                                                                    staff.id,
+                                                                )}
+                                                            >
+                                                                اضافه کاری
+                                                            </Link>
+                                                            <Link
+                                                                className="block px-4 py-2 text-sm text-purple-600 hover:bg-gray-100"
+                                                                href={route(
+                                                                    'staffs.salary.report',
+                                                                    staff.id,
+                                                                )}
+                                                            >
+                                                                گزارش حقوق
+                                                            </Link>
+                                                        </Dropdown.Content>
+                                                    </Dropdown>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="6"
+                                                className="p-4 text-center text-sm"
+                                            >
+                                                هیچ پرسنلی یافت نشد.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
                             </table>
+                        </div>
+
+                        {/* Pagination */}
+                        <div className="flex justify-center p-4">
+                            {staffs.links.map((link, index) => (
+                                <Link
+                                    key={index}
+                                    href={link.url || '#'}
+                                    preserveScroll
+                                    className={`mx-1 rounded px-3 py-1 text-sm ${
+                                        link.active
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* Delete Modal */}
             <Modal show={confirmingStaffDeletion} onClose={closeModal}>
                 <form onSubmit={deleteStaff} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
@@ -193,6 +294,7 @@ export default function Index({ staffs }) {
                 </form>
             </Modal>
 
+            {/* Success Toast */}
             <Transition
                 show={show}
                 enter="transition ease-in-out duration-300"
