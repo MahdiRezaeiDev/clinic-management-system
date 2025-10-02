@@ -2257,6 +2257,8 @@ namespace App\Models {
      * @property mixed $role
      * @property string $full_name
      * @property int $id
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
+     * @property-read int|null $salaries_count
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereFullName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereRole($value)

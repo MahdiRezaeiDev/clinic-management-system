@@ -2,63 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Staff;
+use App\Models\Salary;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class StaffSalaryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Staff $staff)
     {
-        //
+        $salaries = $staff->salaries()->orderBy('salary_month', 'desc')->get();
+
+        return Inertia::render('Staff/Salary/Index', [
+            'staff' => $staff,
+            'salaries' => $salaries,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Staff $staff)
     {
-        //
+        return Inertia::render('Staff/Salary/Create', [
+            'staff' => $staff,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $request, Staff $staff)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:255',
+        ], [
+            'date.required' => 'وارد کردن تاریخ الزامی است.',
+            'amount.required' => 'وارد کردن مبلغ الزامی است.',
+            'amount.numeric' => 'مبلغ باید عدد باشد.',
+        ]);
+
+        $staff->salaries()->create($request->all());
+
+        return redirect()->route('staffs.salary.index', $staff->id)
+            ->with('success', 'حقوق با موفقیت ثبت شد.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Staff $staff, Salary $salary)
     {
-        //
+        return Inertia::render('Staff/Salary/Edit', [
+            'staff' => $staff,
+            'salary' => $salary,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Staff $staff, Salary $salary)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:255',
+        ], [
+            'date.required' => 'وارد کردن تاریخ الزامی است.',
+            'amount.required' => 'وارد کردن مبلغ الزامی است.',
+            'amount.numeric' => 'مبلغ باید عدد باشد.',
+        ]);
+
+        $salary->update($request->all());
+
+        return redirect()->route('staffs.salary.index', $staff->id)
+            ->with('success', 'حقوق با موفقیت بروزرسانی شد.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Staff $staff, Salary $salary)
     {
-        //
-    }
+        $salary->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('staffs.salary.index', $staff->id)
+            ->with('success', 'حقوق با موفقیت حذف شد.');
     }
 }

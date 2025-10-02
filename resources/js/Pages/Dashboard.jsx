@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 
 export default function Dashboard() {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
 
             <div className="bg-blueGray-600 relative py-12 md:pt-32">
