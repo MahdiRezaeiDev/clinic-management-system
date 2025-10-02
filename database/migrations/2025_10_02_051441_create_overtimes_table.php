@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staff', function (Blueprint $table) {
+        Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->enum('role', ['doctor', 'nurse', 'pharmacist', 'admin', 'lab', 'dentist', 'emergency', 'gynecology', 'inpatient', 'service']);
-            $table->string('phone')->nullable();
-            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
+            $table->integer('hours');
+            $table->decimal('rate_per_hour', 12, 2);
+            $table->decimal('total_amount', 12, 2);
+            $table->date('date_paid')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staff');
+        Schema::dropIfExists('overtimes');
     }
 };

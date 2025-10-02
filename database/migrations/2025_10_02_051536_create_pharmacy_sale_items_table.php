@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staff', function (Blueprint $table) {
+        Schema::create('pharmacy_sale_items', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->enum('role', ['doctor', 'nurse', 'pharmacist', 'admin', 'lab', 'dentist', 'emergency', 'gynecology', 'inpatient', 'service']);
-            $table->string('phone')->nullable();
-            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->foreignId('sale_id')->constrained('pharmacy_sales')->cascadeOnDelete();
+            $table->string('drug_name');
+            $table->integer('quantity');
+            $table->decimal('unit_price', 12, 2);
+            $table->decimal('subtotal', 12, 2);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staff');
+        Schema::dropIfExists('pharmacy_sale_items');
     }
 };

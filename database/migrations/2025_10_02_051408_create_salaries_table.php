@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staff', function (Blueprint $table) {
+        Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->enum('role', ['doctor', 'nurse', 'pharmacist', 'admin', 'lab', 'dentist', 'emergency', 'gynecology', 'inpatient', 'service']);
-            $table->string('phone')->nullable();
-            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
+            $table->date('salary_month');
+            $table->decimal('amount_paid', 12, 2);
+            $table->enum('status', ['paid', 'partial', 'pending'])->default('pending');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staff');
+        Schema::dropIfExists('salaries');
     }
 };
