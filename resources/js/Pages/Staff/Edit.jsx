@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Edit({ auth, staff }) {
+export default function Edit({ staff }) {
     const roles = [
         { key: 'doctor', label: 'داکتر' },
         { key: 'nurse', label: 'پرستار' },
@@ -15,10 +15,10 @@ export default function Edit({ auth, staff }) {
     ];
 
     const { data, setData, put, processing, errors } = useForm({
-        name: staff.name || '',
+        name: staff.full_name || '',
         phone: staff.phone || '',
         role: staff.role || '',
-        salary: staff.salary || '',
+        salary: staff.base_salary || '',
     });
 
     const submit = (e) => {
@@ -27,100 +27,114 @@ export default function Edit({ auth, staff }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout title="ویرایش کارمند">
             <Head title="ویرایش کارمند" />
 
-            <div className="mx-auto max-w-2xl rounded bg-white p-6 shadow">
-                <h2 className="mb-4 text-xl font-semibold">ویرایش کارمند</h2>
+            <div className="mx-auto p-6">
+                <div className="rounded-lg bg-white p-6 shadow">
+                    <h2 className="mb-6 text-xl font-bold text-gray-800">
+                        ✏️ ویرایش اطلاعات کارمند
+                    </h2>
 
-                <form onSubmit={submit} className="space-y-4">
-                    {/* Name */}
-                    <div>
-                        <label className="block text-sm font-medium">نام</label>
-                        <input
-                            type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            className="mt-1 w-full rounded border px-3 py-2"
-                        />
-                        {errors.name && (
-                            <p className="text-sm text-red-500">
-                                {errors.name}
-                            </p>
-                        )}
-                    </div>
+                    <form onSubmit={submit} className="space-y-5">
+                        {/* Name */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                نام
+                            </label>
+                            <input
+                                type="text"
+                                value={data.name}
+                                onChange={(e) =>
+                                    setData('name', e.target.value)
+                                }
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                            />
+                            {errors.name && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.name}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Phone */}
-                    <div>
-                        <label className="block text-sm font-medium">
-                            شماره تماس
-                        </label>
-                        <input
-                            type="text"
-                            value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
-                            className="mt-1 w-full rounded border px-3 py-2"
-                        />
-                        {errors.phone && (
-                            <p className="text-sm text-red-500">
-                                {errors.phone}
-                            </p>
-                        )}
-                    </div>
+                        {/* Phone */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                شماره تماس
+                            </label>
+                            <input
+                                type="text"
+                                value={data.phone}
+                                onChange={(e) =>
+                                    setData('phone', e.target.value)
+                                }
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                            />
+                            {errors.phone && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.phone}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Role */}
-                    <div>
-                        <label className="block text-sm font-medium">
-                            وظیفه
-                        </label>
-                        <select
-                            value={data.role}
-                            onChange={(e) => setData('role', e.target.value)}
-                            className="mt-1 w-full rounded border px-3 py-2"
-                        >
-                            <option value="">انتخاب کنید</option>
-                            {roles.map((r) => (
-                                <option key={r.key} value={r.key}>
-                                    {r.label}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.role && (
-                            <p className="text-sm text-red-500">
-                                {errors.role}
-                            </p>
-                        )}
-                    </div>
+                        {/* Role */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                وظیفه
+                            </label>
+                            <select
+                                value={data.role}
+                                onChange={(e) =>
+                                    setData('role', e.target.value)
+                                }
+                                className="mt-1 w-full rounded-md border border-gray-300 px-7 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                            >
+                                <option value="">انتخاب کنید</option>
+                                {roles.map((r) => (
+                                    <option key={r.key} value={r.key}>
+                                        {r.label}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.role && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.role}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Salary */}
-                    <div>
-                        <label className="block text-sm font-medium">
-                            معاش
-                        </label>
-                        <input
-                            type="number"
-                            value={data.salary}
-                            onChange={(e) => setData('salary', e.target.value)}
-                            className="mt-1 w-full rounded border px-3 py-2"
-                        />
-                        {errors.salary && (
-                            <p className="text-sm text-red-500">
-                                {errors.salary}
-                            </p>
-                        )}
-                    </div>
+                        {/* Salary */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">
+                                معاش (افغانی)
+                            </label>
+                            <input
+                                type="number"
+                                value={data.salary}
+                                onChange={(e) =>
+                                    setData('salary', e.target.value)
+                                }
+                                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
+                            />
+                            {errors.salary && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.salary}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Submit */}
-                    <div className="flex justify-end">
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-                        >
-                            ذخیره تغییرات
-                        </button>
-                    </div>
-                </form>
+                        {/* Submit */}
+                        <div className="flex justify-end">
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="rounded-md bg-blue-600 px-6 py-2 font-semibold text-white shadow hover:bg-blue-700 focus:ring focus:ring-blue-300 disabled:opacity-50"
+                            >
+                                ذخیره تغییرات
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </AuthenticatedLayout>
     );

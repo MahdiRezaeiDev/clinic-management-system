@@ -118,48 +118,46 @@ export default function Index({ staffs }) {
     return (
         <AuthenticatedLayout title="پرسنل سیستم">
             <Head title="پرسنل سیستم" />
-            <div className="mx-auto w-full md:px-10 md:py-16">
-                <div className="flex flex-wrap pt-8">
-                    <div className="mb-12 w-full px-4">
-                        <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
-                            <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
-                                <h3 className="text-blueGray-700 text-lg font-semibold">
-                                    لیست پرسنل ثبت شده
-                                </h3>
-                                <Link
-                                    href={route('staffs.create')}
-                                    className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
-                                >
-                                    افزودن پرسنل
-                                </Link>
-                            </div>
-                            <div className="block w-full">
-                                <table className="w-full border-collapse bg-transparent">
-                                    <thead>
-                                        <tr className="bg-blueGray-600 text-white">
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                #
-                                            </th>
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                نام و نام خانوادگی
-                                            </th>
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                شماره تماس
-                                            </th>
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                نقش
-                                            </th>
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                حقوق پایه
-                                            </th>
-                                            <th className="px-6 py-3 text-right text-sm">
-                                                عملیات
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>{AllStaff}</tbody>
-                                </table>
-                            </div>
+            <div className="flex flex-wrap pt-8">
+                <div className="mb-12 w-full px-4">
+                    <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
+                        <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
+                            <h3 className="text-blueGray-700 text-lg font-semibold">
+                                لیست پرسنل ثبت شده
+                            </h3>
+                            <Link
+                                href={route('staffs.create')}
+                                className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                            >
+                                افزودن پرسنل
+                            </Link>
+                        </div>
+                        <div className="block w-full">
+                            <table className="w-full border-collapse bg-transparent">
+                                <thead>
+                                    <tr className="bg-blueGray-600 text-white">
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            #
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            نام و نام خانوادگی
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            شماره تماس
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            نقش
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            حقوق پایه
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
+                                            عملیات
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>{AllStaff}</tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

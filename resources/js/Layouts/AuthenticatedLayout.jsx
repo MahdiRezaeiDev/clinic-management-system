@@ -7,7 +7,7 @@ export default function AuthenticatedLayout({ title, children }) {
             <Sidebar />
             <main className="relative md:mr-64">
                 <Nav title={title} />
-                {children}
+                <div className="md:py-16">{children}</div>
             </main>
         </div>
     );
