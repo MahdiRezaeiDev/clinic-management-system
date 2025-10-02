@@ -22,11 +22,23 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'full_name' => 'required|string|max:255',
-            'role' => 'required|string',
-            'phone' => 'nullable|string',
+            'full_name'   => 'required|string|max:255',
+            'role'        => 'required|string',
+            'phone'       => 'nullable|string',
             'base_salary' => 'nullable|numeric',
+        ], [
+            'full_name.required'   => 'لطفاً نام مکمل پرسنل را وارد کنید.',
+            'full_name.string'     => 'نام باید به صورت متن باشد.',
+            'full_name.max'        => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+
+            'role.required'        => 'لطفاً نقش پرسنل را انتخاب کنید.',
+            'role.string'          => 'نقش باید به صورت متن معتبر باشد.',
+
+            'phone.string'         => 'شماره تماس باید به صورت متن باشد.',
+
+            'base_salary.numeric'  => 'معاش باید به صورت عدد وارد شود.',
         ]);
+
 
         Staff::create($request->all());
         return redirect()->route('staffs.index')->with('success', 'پرسنل با موفقیت ایجاد شد.');
@@ -40,11 +52,23 @@ class StaffController extends Controller
     public function update(Request $request, Staff $staff)
     {
         $request->validate([
-            'full_name' => 'required|string|max:255',
-            'role' => 'required|string',
-            'phone' => 'nullable|string',
+            'full_name'   => 'required|string|max:255',
+            'role'        => 'required|string',
+            'phone'       => 'nullable|string',
             'base_salary' => 'nullable|numeric',
+        ], [
+            'full_name.required'   => 'لطفاً نام مکمل پرسنل را وارد کنید.',
+            'full_name.string'     => 'نام باید به صورت متن باشد.',
+            'full_name.max'        => 'نام نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+
+            'role.required'        => 'لطفاً نقش پرسنل را انتخاب کنید.',
+            'role.string'          => 'نقش باید به صورت متن معتبر باشد.',
+
+            'phone.string'         => 'شماره تماس باید به صورت متن باشد.',
+
+            'base_salary.numeric'  => 'معاش باید به صورت عدد وارد شود.',
         ]);
+
 
         $staff->update($request->all());
 
