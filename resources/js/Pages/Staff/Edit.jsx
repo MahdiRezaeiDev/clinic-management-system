@@ -15,16 +15,18 @@ export default function Edit({ staff }) {
     ];
 
     const { data, setData, put, processing, errors } = useForm({
-        name: staff.full_name || '',
+        full_name: staff.full_name || '',
         phone: staff.phone || '',
         role: staff.role || '',
-        salary: staff.base_salary || '',
+        base_salary: staff.base_salary || '',
     });
 
     const submit = (e) => {
         e.preventDefault();
         put(route('staffs.update', staff.id));
     };
+
+    console.log(errors);
 
     return (
         <AuthenticatedLayout title="ویرایش کارمند">
@@ -44,9 +46,9 @@ export default function Edit({ staff }) {
                             </label>
                             <input
                                 type="text"
-                                value={data.name}
+                                value={data.full_name}
                                 onChange={(e) =>
-                                    setData('name', e.target.value)
+                                    setData('full_name', e.target.value)
                                 }
                                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                             />

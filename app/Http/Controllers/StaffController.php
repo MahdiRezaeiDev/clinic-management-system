@@ -34,8 +34,7 @@ class StaffController extends Controller
 
     public function edit(Staff $staff)
     {
-        $roles = ['doctor', 'nurse', 'pharmacist', 'admin', 'lab', 'dentist', 'emergency', 'gynecology', 'inpatient', 'service'];
-        return Inertia::render('Staff/Edit', ['staff' => $staff, 'roles' => $roles]);
+        return Inertia::render('Staff/Edit', ['staff' => $staff]);
     }
 
     public function update(Request $request, Staff $staff)
@@ -48,7 +47,8 @@ class StaffController extends Controller
         ]);
 
         $staff->update($request->all());
-        return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
+
+        return redirect()->route('staffs.index')->with('success', 'Staff updated successfully.');
     }
 
     public function destroy(Staff $staff)
