@@ -26,7 +26,7 @@ class StaffController extends Controller
             $query->where('role', $request->input('role'));
         }
 
-        $staffs = $query->orderBy('id', 'desc')->paginate(10)->withQueryString();
+        $staffs = $query->orderBy('id', 'desc')->paginate(25)->withQueryString();
 
         return inertia('Staff/Index', [
             'staffs' => $staffs,

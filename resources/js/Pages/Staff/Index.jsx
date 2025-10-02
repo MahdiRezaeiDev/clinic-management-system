@@ -1,6 +1,7 @@
 import DangerButton from '@/Components/DangerButton';
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
+import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
@@ -113,7 +114,7 @@ export default function Index({ staffs, filters }) {
                             <select
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="rounded border px-3 py-2 text-sm"
+                                className="rounded border px-7 py-2 text-sm"
                             >
                                 <option value="">همه نقش‌ها</option>
                                 {Object.entries(roleNames).map(
@@ -124,12 +125,12 @@ export default function Index({ staffs, filters }) {
                                     ),
                                 )}
                             </select>
-                            <button
+                            <PrimaryButton
                                 type="submit"
                                 className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
                             >
                                 اعمال فیلتر
-                            </button>
+                            </PrimaryButton>
                         </form>
 
                         {/* Table */}
@@ -159,10 +160,10 @@ export default function Index({ staffs, filters }) {
                                 </thead>
                                 <tbody>
                                     {staffs.data.length ? (
-                                        staffs.data.map((staff) => (
+                                        staffs.data.map((staff, index) => (
                                             <tr key={staff.id}>
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
-                                                    {staff.id}
+                                                    {++index}
                                                 </td>
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     {staff.full_name}
