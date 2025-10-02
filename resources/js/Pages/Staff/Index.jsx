@@ -118,7 +118,7 @@ export default function Index({ staffs }) {
     return (
         <AuthenticatedLayout title="پرسنل سیستم">
             <Head title="پرسنل سیستم" />
-            <div className="mx-auto h-screen w-full md:px-10 md:py-16">
+            <div className="mx-auto w-full md:px-10 md:py-16">
                 <div className="flex flex-wrap pt-8">
                     <div className="mb-12 w-full px-4">
                         <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
@@ -133,7 +133,7 @@ export default function Index({ staffs }) {
                                     افزودن پرسنل
                                 </Link>
                             </div>
-                            <div className="block w-full overflow-x-auto">
+                            <div className="block w-full">
                                 <table className="w-full border-collapse bg-transparent">
                                     <thead>
                                         <tr className="bg-blueGray-600 text-white">

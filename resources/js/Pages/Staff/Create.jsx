@@ -23,8 +23,8 @@ export default function Create() {
         <AuthenticatedLayout title="افزودن پرسنل">
             <Head title="افزودن پرسنل" />
 
-            <div className="mx-auto max-w-3xl px-6 py-10">
-                <h2 className="mb-6 text-xl font-semibold">
+            <div className="mx-auto max-w-3xl md:px-10 md:py-16">
+                <h2 className="mb-6 pt-10 text-xl font-semibold">
                     فرم افزودن پرسنل جدید
                 </h2>
 
