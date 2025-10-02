@@ -1,4 +1,5 @@
 import DangerButton from '@/Components/DangerButton';
+import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -7,8 +8,10 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Index({ staffs }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const [user, setUser] = useState(null);
+    const [confirmingStaffDeletion, setConfirmingStaffDeletion] =
+        useState(false);
+    const [staffId, setStaffId] = useState(null);
+
     const {
         delete: destroy,
         processing,
@@ -18,15 +21,27 @@ export default function Index({ staffs }) {
         recentlySuccessful,
     } = useForm();
 
-    const confirmUserDeletion = (id) => {
-        setConfirmingUserDeletion(true);
-        setUser(id);
+    // Define a mapping of roles to Persian names
+    const roleNames = {
+        doctor: 'پزشک',
+        nurse: 'نرس',
+        pharmacist: 'فارمسیست',
+        lab: 'لابراتوار',
+        dentist: 'دندانپزشک',
+        emergency: 'عاجل',
+        gynecology: 'نسایی',
+        inpatient: 'بستری',
+        service: 'خدمات / سایر',
     };
 
-    const deleteUser = (e) => {
-        e.preventDefault();
+    const confirmStaffDeletion = (id) => {
+        setConfirmingStaffDeletion(true);
+        setStaffId(id);
+    };
 
-        destroy(route('user.destroy', user), {
+    const deleteStaff = (e) => {
+        e.preventDefault();
+        destroy(route('staffs.destroy', staffId), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => console.log(errors),
@@ -35,120 +50,141 @@ export default function Index({ staffs }) {
     };
 
     const closeModal = () => {
-        setConfirmingUserDeletion(false);
-
+        setConfirmingStaffDeletion(false);
+        setStaffId(null);
         clearErrors();
         reset();
     };
 
-    const AllUsers = staffs.map((staff) => (
+    const AllStaff = staffs.map((staff) => (
         <tr key={staff.id}>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                <span className="text-blueGray-600 font-bold">{staff.id}</span>
+            <td className="whitespace-nowrap p-4 px-6 text-xs">{staff.id}</td>
+            <td className="whitespace-nowrap p-4 px-6 text-xs">
+                {staff.full_name}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right text-xs">
-                <span className="text-blueGray-600 ml-3 font-bold">
-                    {staff.name}
-                </span>
+            <td className="whitespace-nowrap p-4 px-6 text-xs">
+                {staff.phone || '-'}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                {staff.email}
+            <td className="whitespace-nowrap p-4 px-6 text-xs">
+                {roleNames[staff.role] || staff.role}
+            </td>{' '}
+            <td className="whitespace-nowrap p-4 px-6 text-xs">
+                {staff.base_salary.toLocaleString()}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                <i className="fas fa-circle mr-2 text-green-600"></i>
-                {staff.role}
-            </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
-                <div className="flex gap-2">
-                    <Link
-                        className="rounded-sm bg-sky-400 px-2 py-1 text-white"
-                        href={route('staffs.edit', staff.id)}
-                    >
-                        ویرایش
-                    </Link>
-                    <p
-                        className="cursor-pointer rounded-sm bg-rose-400 px-2 py-1 text-white"
-                        onClick={() => confirmUserDeletion(staff.id)}
-                    >
-                        حذف
-                    </p>
-                </div>
+            <td className="whitespace-nowrap p-4 px-6 text-xs">
+                <Dropdown>
+                    <Dropdown.Trigger>
+                        <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
+                            عملیات
+                        </button>
+                    </Dropdown.Trigger>
+                    <Dropdown.Content>
+                        <Link
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            href={route('staffs.edit', staff.id)}
+                        >
+                            ویرایش
+                        </Link>
+                        <button
+                            className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
+                            onClick={() => confirmStaffDeletion(staff.id)}
+                        >
+                            حذف
+                        </button>
+                        <Link
+                            className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-100"
+                            href={route('staffs.salary.index', staff.id)}
+                        >
+                            حقوق
+                        </Link>
+                        <Link
+                            className="block px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100"
+                            href={route('staffs.overtime.index', staff.id)}
+                        >
+                            اضافه کاری
+                        </Link>
+                        <Link
+                            className="block px-4 py-2 text-sm text-purple-600 hover:bg-gray-100"
+                            href={route('staffs.salary.report', staff.id)}
+                        >
+                            گزارش حقوق
+                        </Link>
+                    </Dropdown.Content>
+                </Dropdown>
             </td>
         </tr>
     ));
 
     return (
-        <AuthenticatedLayout title="کاربران سیستم">
-            <Head title="کاربران سیستم" />
+        <AuthenticatedLayout title="پرسنل سیستم">
+            <Head title="پرسنل سیستم" />
             <div className="mx-auto h-screen w-full md:px-10 md:py-16">
                 <div className="flex flex-wrap pt-8">
                     <div className="mb-12 w-full px-4">
                         <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
-                            <div className="mb-0 rounded-t border-0 px-4 py-3">
-                                <div className="flex flex-wrap items-center">
-                                    <div className="relative w-full max-w-full flex-1 flex-grow px-4">
-                                        <h3 className="text-blueGray-700 text-lg font-semibold">
-                                            لیست کاربران ثبت شده
-                                        </h3>
-                                    </div>
-                                    <a
-                                        href={route('user.create')}
-                                        className="bg-blueGray-600 active:bg-blueGray-700 mr-1 rounded px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none"
-                                        type="button"
-                                    >
-                                        ایجاد حساب کاربری
-                                    </a>
-                                </div>
+                            <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
+                                <h3 className="text-blueGray-700 text-lg font-semibold">
+                                    لیست پرسنل ثبت شده
+                                </h3>
+                                <Link
+                                    href={route('staffs.create')}
+                                    className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                                >
+                                    افزودن پرسنل
+                                </Link>
                             </div>
                             <div className="block w-full overflow-x-auto">
-                                <table className="w-full border-collapse items-center bg-transparent">
+                                <table className="w-full border-collapse bg-transparent">
                                     <thead>
-                                        <tr className="bg-blueGray-600 border-blueGray-100 border-b text-white">
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                        <tr className="bg-blueGray-600 text-white">
+                                            <th className="px-6 py-3 text-right text-sm">
                                                 #
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
-                                                نام نام خانوادگی
+                                            <th className="px-6 py-3 text-right text-sm">
+                                                نام و نام خانوادگی
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
-                                                ایمیل آدرس
+                                            <th className="px-6 py-3 text-right text-sm">
+                                                شماره تماس
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
-                                                نوعیت حساب
+                                            <th className="px-6 py-3 text-right text-sm">
+                                                نقش
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right text-sm">
+                                                حقوق پایه
+                                            </th>
+                                            <th className="px-6 py-3 text-right text-sm">
                                                 عملیات
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>{AllUsers}</tbody>
+                                    <tbody>{AllStaff}</tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        آیا مطمئن هستید که میخواهید حساب خود را حذف کنید؟
-                    </h2>
 
+            <Modal show={confirmingStaffDeletion} onClose={closeModal}>
+                <form onSubmit={deleteStaff} className="p-6">
+                    <h2 className="text-lg font-medium text-gray-900">
+                        آیا مطمئن هستید که می‌خواهید این پرسنل را حذف کنید؟
+                    </h2>
                     <p className="mt-1 text-sm text-gray-600">
-                        بعد از حذف حساب کاربری، هیچگونه اطلاعات این حساب و
-                        اطلاعات ثبت شده توسط این حساب در دسترس نخواهد بود.
+                        بعد از حذف پرسنل، اطلاعات مرتبط با آن دیگر در دسترس
+                        نخواهد بود.
                     </p>
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
                             انصراف
                         </SecondaryButton>
-
                         <DangerButton className="ms-3" disabled={processing}>
-                            حذف حساب
+                            حذف
                         </DangerButton>
                     </div>
                 </form>
             </Modal>
+
             <Transition
                 show={recentlySuccessful}
                 enter="transition ease-in-out"
@@ -158,7 +194,7 @@ export default function Index({ staffs }) {
                 className="absolute bottom-4 left-4"
             >
                 <p className="bg-green-600 px-10 py-3 text-center text-sm font-semibold text-white">
-                    عملیات حذف موفقانه صورت گرفت.
+                    عملیات حذف موفقانه انجام شد.
                 </p>
             </Transition>
         </AuthenticatedLayout>

@@ -6,7 +6,7 @@ export default function Dashboard() {
         <AuthenticatedLayout>
             <Head title="داشبورد" />
 
-            <div className="bg-blueGray-600 relative pt-12 md:pt-32">
+            <div className="bg-blueGray-600 relative py-12 md:pt-32">
                 <div className="mx-auto w-full px-4 md:px-6">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
                         <div className="rounded bg-white p-4 shadow">

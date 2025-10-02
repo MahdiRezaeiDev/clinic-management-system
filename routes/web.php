@@ -3,9 +3,22 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaffSalaryController;
+use App\Http\Controllers\StaffOvertimeController;
+use App\Http\Controllers\StaffPaymentController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PharmacyController;
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -21,12 +34,46 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
+    // ----------------------
+    // Profile
+    // ----------------------
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // ----------------------
+    // Users
+    // ----------------------
     Route::resource('user', UserController::class)->except('show');
-    Route::resource('staff', StaffController::class);
-});
 
+    // ----------------------
+    // Staff
+    // ----------------------
+    Route::resource('staffs', StaffController::class);
+
+    // Nested Staff Routes: Salary, Overtime, Payments
+    Route::prefix('staffs/{staff}')->name('staffs.')->group(function () {
+        Route::resource('salary', StaffSalaryController::class);
+        Route::get('salary/report', [StaffSalaryController::class, 'report'])->name('salary.report'); // <-- add this
+        Route::resource('overtime', StaffOvertimeController::class);
+        Route::resource('payments', StaffPaymentController::class);
+    });
+
+    // ----------------------
+    // Patients
+    // ----------------------
+    Route::resource('patients', PatientController::class);
+
+    // ----------------------
+    // Pharmacy
+    // ----------------------
+    Route::resource('pharmacy', PharmacyController::class);
+
+    // ----------------------
+    // Finance: Incomes & Expenses
+    // ----------------------
+    Route::resource('incomes', IncomeController::class);
+    Route::resource('expenses', ExpenseController::class);
+});
 require __DIR__ . '/auth.php';

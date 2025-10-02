@@ -3,7 +3,7 @@ import Sidebar from '@/Components/Sidebar';
 
 export default function AuthenticatedLayout({ title, children }) {
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen">
             <Sidebar />
             <main className="relative md:mr-64">
                 <Nav title={title} />
