@@ -8,11 +8,12 @@ export default function Create() {
         full_name: '',
         phone: '',
         role: '',
-        base_salary: '',
+        base_salary: 0,
     });
 
     const submit = (e) => {
         e.preventDefault();
+
         post(route('staffs.store'), {
             onSuccess: () => reset(),
         });
@@ -76,6 +77,7 @@ export default function Create() {
                         </label>
                         <select
                             value={data.role}
+                            name="role"
                             onChange={(e) => setData('role', e.target.value)}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         >
