@@ -7,7 +7,7 @@ export default function Edit({ staff }) {
     const roles = [
         { key: 'doctor', label: 'داکتر' },
         { key: 'nurse', label: 'پرستار' },
-        { key: 'pharmacist', label: 'دواساز' },
+        { key: 'pharmacist', label: 'فارمسیست' },
         { key: 'lab', label: 'لابراتوار' },
         { key: 'dentist', label: 'دندان‌پزشک' },
         { key: 'emergency', label: 'ایمرجنسی' },
@@ -112,15 +112,15 @@ export default function Edit({ staff }) {
                             </label>
                             <input
                                 type="number"
-                                value={data.salary}
+                                value={data.base_salary}
                                 onChange={(e) =>
-                                    setData('salary', e.target.value)
+                                    setData('base_salary', e.target.value)
                                 }
                                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                             />
-                            {errors.salary && (
+                            {errors.base_salary && (
                                 <p className="mt-1 text-sm text-red-500">
-                                    {errors.salary}
+                                    {errors.base_salary}
                                 </p>
                             )}
                         </div>

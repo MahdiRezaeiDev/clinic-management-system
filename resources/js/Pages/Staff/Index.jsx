@@ -33,9 +33,9 @@ export default function Index({ staffs, filters }) {
 
     // Role labels
     const roleNames = {
-        doctor: 'پزشک',
-        nurse: 'پرستار',
-        pharmacist: 'دواساز',
+        doctor: 'داکتر',
+        nurse: 'نرس',
+        pharmacist: 'فارمسیست',
         lab: 'لابراتوار',
         dentist: 'دندان‌پزشک',
         emergency: 'ایمرجنسی',
