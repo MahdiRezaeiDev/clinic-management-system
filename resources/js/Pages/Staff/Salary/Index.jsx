@@ -4,6 +4,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function Index({ staff, salaries }) {
@@ -86,7 +87,9 @@ export default function Index({ staff, salaries }) {
                                         {index + 1}
                                     </td>
                                     <td className="px-6 py-2 text-right">
-                                        {salary.salary_month}
+                                        {moment(salary.salary_month).format(
+                                            'jYYYY/jMM/jDD',
+                                        )}{' '}
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {parseFloat(

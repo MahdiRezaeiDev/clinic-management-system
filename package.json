@@ -38,6 +38,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "lucide-react": "^0.544.0",
+        "moment-jalaali": "^0.10.4",
         "react-day-picker": "^9.11.0",
         "react-multi-date-picker": "^4.5.2",
         "tailwind-merge": "^3.3.1",
