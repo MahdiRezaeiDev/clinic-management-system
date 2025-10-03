@@ -18,8 +18,6 @@ export default function Create({ staff }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(data);
-
         post(route('staffs.salary.store', staff.id), {
             onSuccess: () => {
                 setData({ amount_paid: '', salary_month: '', description: '' });
