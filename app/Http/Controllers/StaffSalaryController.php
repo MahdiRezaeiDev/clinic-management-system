@@ -28,7 +28,7 @@ class StaffSalaryController extends Controller
 
     public function store(Request $request, Staff $staff)
     {
-        
+
         $request->validate([
             'salary_month' => 'required|date',
             'amount_paid' => 'required|numeric|min:0',
@@ -56,13 +56,13 @@ class StaffSalaryController extends Controller
     public function update(Request $request, Staff $staff, Salary $salary)
     {
         $request->validate([
-            'date' => 'required|date',
-            'amount' => 'required|numeric|min:0',
+            'salary_month' => 'required|date',
+            'amount_paid' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:255',
         ], [
-            'date.required' => 'وارد کردن تاریخ الزامی است.',
-            'amount.required' => 'وارد کردن مبلغ الزامی است.',
-            'amount.numeric' => 'مبلغ باید عدد باشد.',
+            'salary_month.required' => 'وارد کردن تاریخ الزامی است.',
+            'amount_paid.required' => 'وارد کردن مبلغ الزامی است.',
+            'amount_paid.numeric' => 'مبلغ باید عدد باشد.',
         ]);
 
         $salary->update($request->all());
