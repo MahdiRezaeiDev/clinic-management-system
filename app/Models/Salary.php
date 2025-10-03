@@ -12,6 +12,7 @@ class Salary extends Model
         "staff_id",
         "salary_month",
         "amount_paid",
-        "status"
+        "status",
+        "description",
     ];
 }

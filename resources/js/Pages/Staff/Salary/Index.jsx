@@ -42,7 +42,7 @@ export default function Index({ staff, salaries }) {
     };
 
     const totalPaid = salaries.reduce(
-        (sum, s) => sum + parseFloat(s.amount),
+        (sum, s) => sum + parseFloat(s.amount_paid),
         0,
     );
 
@@ -86,11 +86,11 @@ export default function Index({ staff, salaries }) {
                                         {index + 1}
                                     </td>
                                     <td className="px-6 py-2 text-right">
-                                        {salary.date}
+                                        {salary.salary_month}
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {parseFloat(
-                                            salary.amount,
+                                            salary.amount_paid,
                                         ).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-2 text-right">
