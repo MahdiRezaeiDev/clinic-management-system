@@ -1,12 +1,10 @@
+import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import persian from 'react-date-object/calendars/persian';
-import persian_fa from 'react-date-object/locales/persian_fa';
-import DatePicker from 'react-multi-date-picker';
 
 export default function Create({ staff }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -68,24 +66,21 @@ export default function Create({ staff }) {
                                     htmlFor="date"
                                     value="تاریخ پرداخت"
                                 />
-                                <DatePicker
+                                <AfghanDatePicker
                                     id="date"
-                                    onChange={(val) => {
+                                    value={data.salary_month || null}
+                                    onChange={(val) =>
                                         setData(
                                             'salary_month',
                                             val
                                                 .toDate()
                                                 .toISOString()
                                                 .split('T')[0],
-                                        );
-                                    }}
-                                    calendar={persian}
-                                    locale={persian_fa}
-                                    format="YYYY/MM/DD"
-                                    containerClassName="w-full" // wrapper full width
-                                    inputClass="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" // input full width
-                                    placeholder="تاریخ را انتخاب کنید"
+                                        )
+                                    }
+                                    placeholder="تاریخ پرداخت"
                                 />
+
                                 <InputError message={errors.salary_month} />
                             </div>
 
