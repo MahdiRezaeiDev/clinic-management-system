@@ -1,3 +1,5 @@
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import persian from 'react-date-object/calendars/persian';
@@ -29,10 +31,7 @@ export default function Create({ auth, staff }) {
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            title={`افزودن حقوق ${staff.full_name}`}
-        >
+        <AuthenticatedLayout title={`افزودن حقوق ${staff.full_name}`}>
             <Head title="افزودن حقوق پرسنل" />
 
             <div className="mx-auto w-full md:px-10 md:py-16">
@@ -48,10 +47,11 @@ export default function Create({ auth, staff }) {
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 {/* Amount */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">
-                                        مبلغ حقوق
-                                    </label>
-                                    <input
+                                    <InputLabel
+                                        value="مبلغ حقوق"
+                                        className="block text-sm font-medium text-gray-700"
+                                    />
+                                    <TextInput
                                         type="number"
                                         value={data.amount}
                                         onChange={(e) =>
@@ -60,6 +60,8 @@ export default function Create({ auth, staff }) {
                                         className="mt-1 w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         placeholder="مبلغ را وارد کنید"
                                     />
+
+                                    Error
                                     {errors.amount && (
                                         <p className="mt-1 text-sm text-red-500">
                                             {errors.amount}
@@ -69,15 +71,17 @@ export default function Create({ auth, staff }) {
 
                                 {/* Date */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">
-                                        تاریخ پرداخت
-                                    </label>
+                                    <InputLabel
+                                        value=" تاریخ پرداخت"
+                                        className="block text-sm font-medium text-gray-700"
+                                    />
                                     <DatePicker
                                         value={data.date}
                                         onChange={(val) => setData('date', val)}
                                         calendar={persian}
                                         locale={persian_fa}
                                         format="YYYY/MM/DD"
+                                        className="mt-1 w-full"
                                         render={(value, openCalendar) => (
                                             <input
                                                 onFocus={openCalendar}
@@ -97,9 +101,10 @@ export default function Create({ auth, staff }) {
 
                                 {/* Description */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">
-                                        توضیحات
-                                    </label>
+                                    <InputLabel
+                                        value="توضیحات"
+                                        className="block text-sm font-medium text-gray-700"
+                                    />
                                     <textarea
                                         value={data.description}
                                         onChange={(e) =>
