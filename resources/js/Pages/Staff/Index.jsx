@@ -154,6 +154,9 @@ export default function Index({ staffs, filters }) {
                                             حقوق پایه
                                         </th>
                                         <th className="px-6 py-3 text-right text-sm">
+                                            مدیریت حقوق
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
                                             عملیات
                                         </th>
                                     </tr>
@@ -179,6 +182,36 @@ export default function Index({ staffs, filters }) {
                                                     {staff.base_salary?.toLocaleString() ||
                                                         '-'}
                                                 </td>
+                                                <td className="flex gap-2 whitespace-nowrap p-4 px-6 text-xs">
+                                                    <Link
+                                                        className="rounded-md bg-green-50 px-3 py-1 font-medium text-green-600 transition hover:bg-green-100"
+                                                        href={route(
+                                                            'staffs.salary.index',
+                                                            staff.id,
+                                                        )}
+                                                    >
+                                                        حقوق
+                                                    </Link>
+                                                    <Link
+                                                        className="rounded-md bg-yellow-50 px-3 py-1 font-medium text-yellow-600 transition hover:bg-yellow-100"
+                                                        href={route(
+                                                            'staffs.overtime.index',
+                                                            staff.id,
+                                                        )}
+                                                    >
+                                                        اضافه کاری
+                                                    </Link>
+                                                    <Link
+                                                        className="rounded-md bg-purple-50 px-3 py-1 font-medium text-purple-600 transition hover:bg-purple-100"
+                                                        href={route(
+                                                            'staffs.salary.report',
+                                                            staff.id,
+                                                        )}
+                                                    >
+                                                        گزارش حقوق
+                                                    </Link>
+                                                </td>
+
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     <Dropdown>
                                                         <Dropdown.Trigger>
@@ -206,33 +239,6 @@ export default function Index({ staffs, filters }) {
                                                             >
                                                                 حذف
                                                             </button>
-                                                            <Link
-                                                                className="block px-4 py-2 text-sm text-green-600 hover:bg-gray-100"
-                                                                href={route(
-                                                                    'staffs.salary.index',
-                                                                    staff.id,
-                                                                )}
-                                                            >
-                                                                حقوق
-                                                            </Link>
-                                                            <Link
-                                                                className="block px-4 py-2 text-sm text-yellow-600 hover:bg-gray-100"
-                                                                href={route(
-                                                                    'staffs.overtime.index',
-                                                                    staff.id,
-                                                                )}
-                                                            >
-                                                                اضافه کاری
-                                                            </Link>
-                                                            <Link
-                                                                className="block px-4 py-2 text-sm text-purple-600 hover:bg-gray-100"
-                                                                href={route(
-                                                                    'staffs.salary.report',
-                                                                    staff.id,
-                                                                )}
-                                                            >
-                                                                گزارش حقوق
-                                                            </Link>
                                                         </Dropdown.Content>
                                                     </Dropdown>
                                                 </td>
