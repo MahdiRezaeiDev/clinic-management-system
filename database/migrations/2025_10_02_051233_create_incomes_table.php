@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['visit', 'lab', 'dental', 'emergency', 'gynecology', 'inpatient', 'pharmacy']);
+            $table->enum('category', ['lab', 'dental', 'emergency', 'gynecology', 'inpatient', 'other']);
             $table->foreignId('patient_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('doctor_id')->nullable()->constrained('staff')->nullOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
