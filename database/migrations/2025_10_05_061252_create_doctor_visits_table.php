@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('doctor_visits', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['building', 'kitchen', 'repair', 'furniture', 'other']);
-            $table->decimal('amount', 12, 2);
-            $table->enum('payment_method', ['cash', 'card'])->default('cash');
+            $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
+            $table->foreignId('doctor_id')->constrained('staff')->cascadeOnDelete();
+            $table->dateTime('visit_date');
+            $table->decimal('fee', 12, 2);
             $table->text('description')->nullable();
-            $table->date('expense_date');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('doctor_visits');
     }
 };

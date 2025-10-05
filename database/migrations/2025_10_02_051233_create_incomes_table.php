@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['lab', 'dental', 'emergency', 'gynecology', 'inpatient', 'other']);
-            $table->foreignId('patient_id')->nullable()->constrained()->nullOnDelete();
+            $table->enum('category', ['visit', 'lab', 'dental', 'emergency', 'gynecology', 'inpatient', 'pharmacy']);
+            $table->foreignId('patient_id')->nullable()->constrained('patients')->nullOnDelete();
             $table->foreignId('doctor_id')->nullable()->constrained('staff')->nullOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->decimal('amount', 12, 2);

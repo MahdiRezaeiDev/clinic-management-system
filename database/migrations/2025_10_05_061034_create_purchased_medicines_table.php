@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('purchased_medicines', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['building', 'kitchen', 'repair', 'furniture', 'other']);
-            $table->decimal('amount', 12, 2);
-            $table->enum('payment_method', ['cash', 'card'])->default('cash');
+            $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete();
+            $table->decimal('total_amount', 12, 2);
+            $table->decimal('paid_amount', 12, 2)->default(0);
+            $table->decimal('remaining_amount', 12, 2)->default(0);
+            $table->date('purchase_date');
             $table->text('description')->nullable();
-            $table->date('expense_date');
+            $table->enum('status', ['paid', 'partial', 'unpaid'])->default('unpaid');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('purchased_medicines');
     }
 };

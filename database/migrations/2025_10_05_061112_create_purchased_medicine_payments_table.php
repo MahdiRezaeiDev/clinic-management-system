@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pharmacy_sales', function (Blueprint $table) {
+        Schema::create('purchased_medicine_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->nullable()->constrained('patients')->nullOnDelete();
-            $table->enum('sale_type', ['with_prescription', 'without_prescription']);
-            $table->decimal('total_amount', 12, 2);
+            $table->foreignId('purchased_medicine_id')->constrained('purchased_medicines')->cascadeOnDelete();
+            $table->date('payment_date');
+            $table->decimal('amount', 12, 2);
             $table->enum('payment_method', ['cash', 'card'])->default('cash');
-            $table->date('sale_date');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('description')->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pharmacy_sales');
+        Schema::dropIfExists('purchased_medicine_payments');
     }
 };

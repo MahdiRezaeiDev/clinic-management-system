@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
-            $table->date('salary_month');
-            $table->decimal('amount_paid', 12, 2);
-            $table->enum('status', ['paid', 'partial', 'pending'])->default('pending');
+            $table->string('month'); // e.g., 1404-07
+            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->decimal('overtime_amount', 12, 2)->default(0);
+            $table->decimal('deductions', 12, 2)->default(0);
+            $table->decimal('total_paid', 12, 2)->default(0);
+            $table->date('payment_date')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
