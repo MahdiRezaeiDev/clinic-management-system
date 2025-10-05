@@ -3,8 +3,9 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import {
     Accessibility,
-    BanknoteArrowDown,
     BanknoteArrowUp,
+    Box,
+    ChevronDown,
     IdCardLanyard,
     LayoutDashboard,
     MenuIcon,
@@ -18,6 +19,11 @@ export default function Sidebar() {
     const user = auth.user;
 
     const [showSidebar, setShowSidebar] = useState(true);
+    const [openSubmenu, setOpenSubmenu] = useState(null);
+
+    const toggleSubmenu = (name) => {
+        setOpenSubmenu(openSubmenu === name ? null : name);
+    };
 
     return (
         <nav className="relative z-10 flex flex-wrap items-center justify-between bg-white px-6 py-4 shadow-xl md:fixed md:bottom-0 md:right-0 md:top-0 md:block md:w-64 md:flex-row md:flex-nowrap md:overflow-hidden md:overflow-y-auto print:hidden">
@@ -39,7 +45,7 @@ export default function Sidebar() {
                     Clinic Name
                 </a>
 
-                {/* Mobile dropdown */}
+                {/* Mobile user dropdown */}
                 <div className="flex list-none flex-wrap items-center md:hidden">
                     <Dropdown>
                         <Dropdown.Trigger>
@@ -49,18 +55,7 @@ export default function Sidebar() {
                                     className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none"
                                 >
                                     {user.name}
-                                    <svg
-                                        className="-me-0.5 ms-2 h-4 w-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
+                                    <ChevronDown className="ml-1 h-4 w-4" />
                                 </button>
                             </span>
                         </Dropdown.Trigger>
@@ -96,6 +91,7 @@ export default function Sidebar() {
                         id="sidebar"
                     >
                         <ul className="flex list-none flex-col md:min-w-full md:flex-col">
+                            {/* Dashboard */}
                             <li>
                                 <NavLink
                                     href={route('dashboard')}
@@ -103,69 +99,229 @@ export default function Sidebar() {
                                 >
                                     <div className="flex items-end gap-2">
                                         <LayoutDashboard className="h-5 w-5" />
-                                        <span> داشبورد</span>
+                                        <span>داشبورد</span>
                                     </div>
                                 </NavLink>
                             </li>
 
+                            {/* Staff Menu */}
                             <li>
-                                <NavLink
-                                    href={route('staffs.index')}
-                                    active={route().current('staffs.*')}
+                                <button
+                                    onClick={() => toggleSubmenu('staff')}
+                                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:bg-gray-100"
                                 >
-                                    <div className="flex items-end gap-2">
+                                    <div className="flex items-center gap-2">
                                         <IdCardLanyard className="h-5 w-5" />
-                                        <span> مدیریت پرسنل</span>
+                                        <span>پرسنل</span>
                                     </div>
-                                </NavLink>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform duration-200 ${
+                                            openSubmenu === 'staff'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                {openSubmenu === 'staff' && (
+                                    <ul className="ml-6 flex flex-col gap-1">
+                                        <NavLink
+                                            href={route('staffs.index')}
+                                            active={route().current('staffs.*')}
+                                        >
+                                            لیست پرسنل
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('overtimes.index')}
+                                            active={route().current(
+                                                'overtimes.*',
+                                            )}
+                                        >
+                                            اضافه‌کاری
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('salaries.index')}
+                                            active={route().current(
+                                                'salaries.*',
+                                            )}
+                                        >
+                                            حقوق
+                                        </NavLink>
+                                    </ul>
+                                )}
                             </li>
 
+                            {/* Patients Menu */}
                             <li>
-                                <NavLink
-                                    href={route('patients.index')}
-                                    active={route().current('patients.*')}
+                                <button
+                                    onClick={() => toggleSubmenu('patients')}
+                                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:bg-gray-100"
                                 >
-                                    <div className="flex items-end gap-2">
+                                    <div className="flex items-center gap-2">
                                         <Accessibility className="h-5 w-5" />
-                                        <span> مدیریت بیماران</span>
+                                        <span>بیماران</span>
                                     </div>
-                                </NavLink>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform duration-200 ${
+                                            openSubmenu === 'patients'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                {openSubmenu === 'patients' && (
+                                    <ul className="ml-6 flex flex-col gap-1">
+                                        <NavLink
+                                            href={route('patients.index')}
+                                            active={route().current(
+                                                'patients.*',
+                                            )}
+                                        >
+                                            لیست بیماران
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('doctorvisits.index')}
+                                            active={route().current(
+                                                'doctorvisits.*',
+                                            )}
+                                        >
+                                            ویزیت‌ها
+                                        </NavLink>
+                                    </ul>
+                                )}
                             </li>
 
+                            {/* Pharmacy Menu */}
                             <li>
-                                <NavLink
-                                    href={route('pharmacy.index')}
-                                    active={route().current('pharmacy.*')}
+                                <button
+                                    onClick={() => toggleSubmenu('pharmacy')}
+                                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:bg-gray-100"
                                 >
-                                    <div className="flex items-end gap-2">
+                                    <div className="flex items-center gap-2">
                                         <Pill className="h-5 w-5" />
                                         <span>داروخانه</span>
                                     </div>
-                                </NavLink>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform duration-200 ${
+                                            openSubmenu === 'pharmacy'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                {openSubmenu === 'pharmacy' && (
+                                    <ul className="ml-6 flex flex-col gap-1">
+                                        <NavLink
+                                            href={route('pharmacy.sales')}
+                                            active={route().current(
+                                                'pharmacy.sales',
+                                            )}
+                                        >
+                                            فروش
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('pharmacy.purchases')}
+                                            active={route().current(
+                                                'pharmacy.purchases',
+                                            )}
+                                        >
+                                            خرید
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('pharmacy.inventory')}
+                                            active={route().current(
+                                                'pharmacy.inventory',
+                                            )}
+                                        >
+                                            موجودی
+                                        </NavLink>
+                                    </ul>
+                                )}
                             </li>
 
+                            {/* Finance Menu */}
                             <li>
-                                <NavLink
-                                    href={route('incomes.index')}
-                                    active={route().current('incomes.*')}
+                                <button
+                                    onClick={() => toggleSubmenu('finance')}
+                                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:bg-gray-100"
                                 >
-                                    <div className="flex items-end gap-2">
+                                    <div className="flex items-center gap-2">
                                         <BanknoteArrowUp className="h-5 w-5" />
-                                        <span>درآمدها</span>
+                                        <span>مالی</span>
                                     </div>
-                                </NavLink>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform duration-200 ${
+                                            openSubmenu === 'finance'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                {openSubmenu === 'finance' && (
+                                    <ul className="ml-6 flex flex-col gap-1">
+                                        <NavLink
+                                            href={route('incomes.index')}
+                                            active={route().current(
+                                                'incomes.*',
+                                            )}
+                                        >
+                                            درآمدها
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('expenses.index')}
+                                            active={route().current(
+                                                'expenses.*',
+                                            )}
+                                        >
+                                            مصارف
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('reports.index')}
+                                            active={route().current(
+                                                'reports.*',
+                                            )}
+                                        >
+                                            گزارش‌ها
+                                        </NavLink>
+                                    </ul>
+                                )}
                             </li>
 
+                            {/* Assets Menu */}
                             <li>
-                                <NavLink
-                                    href={route('expenses.index')}
-                                    active={route().current('expenses.*')}
+                                <button
+                                    onClick={() => toggleSubmenu('assets')}
+                                    className="flex w-full items-center justify-between px-4 py-2 text-left hover:bg-gray-100"
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <BanknoteArrowDown className="h-5 w-5" />
-                                        <span>مصارف</span>
+                                    <div className="flex items-center gap-2">
+                                        <Box className="h-5 w-5" />
+                                        <span>تجهیزات</span>
                                     </div>
-                                </NavLink>
+                                    <ChevronDown
+                                        className={`h-4 w-4 transition-transform duration-200 ${
+                                            openSubmenu === 'assets'
+                                                ? 'rotate-180'
+                                                : ''
+                                        }`}
+                                    />
+                                </button>
+                                {openSubmenu === 'assets' && (
+                                    <ul className="ml-6 flex flex-col gap-1">
+                                        <NavLink
+                                            href={route('assets.index')}
+                                            active={route().current('assets.*')}
+                                        >
+                                            لیست دارایی‌ها
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('assets.maintenance')}
+                                            active={route().current(
+                                                'assets.maintenance',
+                                            )}
+                                        >
+                                            تعمیرات
+                                        </NavLink>
+                                    </ul>
+                                )}
                             </li>
                         </ul>
                     </aside>
