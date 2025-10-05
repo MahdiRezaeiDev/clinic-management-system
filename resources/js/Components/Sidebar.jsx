@@ -1,6 +1,15 @@
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
+import {
+    Accessibility,
+    BanknoteArrowDown,
+    BanknoteArrowUp,
+    IdCardLanyard,
+    LayoutDashboard,
+    MenuIcon,
+    Pill,
+} from 'lucide-react';
 import { useState } from 'react';
 import NavLink from './NavLink';
 
@@ -19,7 +28,7 @@ export default function Sidebar() {
                     type="button"
                     onClick={() => setShowSidebar((prev) => !prev)}
                 >
-                    <i className="fas fa-bars"></i>
+                    <MenuIcon className="h-6 w-6" />
                 </button>
 
                 {/* Company name */}
@@ -92,8 +101,10 @@ export default function Sidebar() {
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    <i className="fas fa-tachometer-alt mr-2 text-sm"></i>{' '}
-                                    داشبورد
+                                    <div className="flex items-end gap-2">
+                                        <LayoutDashboard className="h-5 w-5" />
+                                        <span> داشبورد</span>
+                                    </div>
                                 </NavLink>
                             </li>
 
@@ -102,8 +113,10 @@ export default function Sidebar() {
                                     href={route('staffs.index')}
                                     active={route().current('staffs.*')}
                                 >
-                                    <i className="fa-solid fa-users-gear mr-2 text-sm"></i>{' '}
-                                    مدیریت پرسنل
+                                    <div className="flex items-end gap-2">
+                                        <IdCardLanyard className="h-5 w-5" />
+                                        <span> مدیریت پرسنل</span>
+                                    </div>
                                 </NavLink>
                             </li>
 
@@ -112,8 +125,10 @@ export default function Sidebar() {
                                     href={route('patients.index')}
                                     active={route().current('patients.*')}
                                 >
-                                    <i className="fa-solid fa-hospital-user mr-2 text-sm"></i>{' '}
-                                    مدیریت بیماران
+                                    <div className="flex items-end gap-2">
+                                        <Accessibility className="h-5 w-5" />
+                                        <span> مدیریت بیماران</span>
+                                    </div>
                                 </NavLink>
                             </li>
 
@@ -122,8 +137,10 @@ export default function Sidebar() {
                                     href={route('pharmacy.index')}
                                     active={route().current('pharmacy.*')}
                                 >
-                                    <i className="fa-solid fa-pills mr-2 text-sm"></i>{' '}
-                                    داروخانه
+                                    <div className="flex items-end gap-2">
+                                        <Pill className="h-5 w-5" />
+                                        <span>داروخانه</span>
+                                    </div>
                                 </NavLink>
                             </li>
 
@@ -132,8 +149,10 @@ export default function Sidebar() {
                                     href={route('incomes.index')}
                                     active={route().current('incomes.*')}
                                 >
-                                    <i className="fa-solid fa-coins mr-2 text-sm"></i>{' '}
-                                    درآمدها
+                                    <div className="flex items-end gap-2">
+                                        <BanknoteArrowUp className="h-5 w-5" />
+                                        <span>درآمدها</span>
+                                    </div>
                                 </NavLink>
                             </li>
 
@@ -142,8 +161,10 @@ export default function Sidebar() {
                                     href={route('expenses.index')}
                                     active={route().current('expenses.*')}
                                 >
-                                    <i className="fa-solid fa-money-bill-transfer mr-2 text-sm"></i>{' '}
-                                    مصارف
+                                    <div className="flex items-end gap-2">
+                                        <BanknoteArrowDown className="h-5 w-5" />
+                                        <span>مصارف</span>
+                                    </div>
                                 </NavLink>
                             </li>
                         </ul>
