@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
             PatientsSeeder::class,
             SuppliersSeeder::class,
             IncomesSeeder::class,
-            ExpensesSeeder::class,
+            // ExpensesSeeder::class,
             PharmacySalesSeeder::class,
             SalariesSeeder::class,
             // OvertimesSeeder::class

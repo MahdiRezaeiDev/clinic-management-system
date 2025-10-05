@@ -28,7 +28,6 @@ class StaffSalaryController extends Controller
 
     public function store(Request $request, Staff $staff)
     {
-
         $request->validate([
             'salary_month' => 'required|date',
             'amount_paid' => 'required|numeric|min:0',
