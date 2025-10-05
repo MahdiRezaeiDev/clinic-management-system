@@ -37,7 +37,7 @@ export default function Sidebar() {
     };
 
     return (
-        <nav className="relative z-10 flex flex-wrap items-center justify-between bg-white px-6 py-4 shadow-xl md:fixed md:bottom-0 md:right-0 md:top-0 md:block md:w-64 md:flex-row md:flex-nowrap md:overflow-hidden md:overflow-y-auto print:hidden">
+        <nav className="relative z-10 flex flex-wrap items-center justify-between bg-white p-4 shadow-xl md:fixed md:bottom-0 md:right-0 md:top-0 md:block md:w-64 md:flex-row md:flex-nowrap md:overflow-hidden md:overflow-y-auto print:hidden">
             <div className="mx-auto flex w-full flex-wrap items-center justify-between px-0 md:min-h-full md:flex-col md:flex-nowrap md:items-stretch">
                 {/* Mobile toggle button */}
                 <button
@@ -142,7 +142,7 @@ export default function Sidebar() {
                                 onClick={() => toggleSubmenu('staff')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 px-2">
                                     <IdCardLanyard className="h-5 w-5" />
                                     <span>پرسنل</span>
                                 </div>
@@ -192,7 +192,7 @@ export default function Sidebar() {
                                 onClick={() => toggleSubmenu('patients')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 px-2">
                                     <Accessibility className="h-5 w-5" />
                                     <span>بیماران</span>
                                 </div>
@@ -226,7 +226,7 @@ export default function Sidebar() {
                                 onClick={() => toggleSubmenu('pharmacy')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 px-2">
                                     <Pill className="h-5 w-5" />
                                     <span>داروخانه</span>
                                 </div>
@@ -270,7 +270,7 @@ export default function Sidebar() {
                                 onClick={() => toggleSubmenu('finance')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 px-2">
                                     <BanknoteArrowUp className="h-5 w-5" />
                                     <span>مالی</span>
                                 </div>
@@ -308,7 +308,7 @@ export default function Sidebar() {
                                 onClick={() => toggleSubmenu('assets')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 px-2">
                                     <Box className="h-5 w-5" />
                                     <span>تجهیزات</span>
                                 </div>
