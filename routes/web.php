@@ -2,30 +2,26 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\StaffSalaryController;
 use App\Http\Controllers\StaffOvertimeController;
 use App\Http\Controllers\StaffPaymentController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\DoctorVisitController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetMaintenanceController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => false,
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -45,18 +41,16 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // Users
     // ----------------------
-    Route::resource('user', UserController::class)->except('show');
+    Route::resource('users', UserController::class)->except('show');
 
     // ----------------------
     // Staff
     // ----------------------
     Route::resource('staffs', StaffController::class);
 
-    // Nested Staff Routes: Salary, Overtime, Payments
-    Route::prefix('staffs/{staff}')->name('staffs.')->group(function () {
-        Route::resource('salary', StaffSalaryController::class);
-        Route::get('salary/report', [StaffSalaryController::class, 'report'])->name('salary.report'); // <-- add this
+    Route::prefix('staffs')->name('staffs.')->group(function () {
         Route::resource('overtime', StaffOvertimeController::class);
+        Route::resource('salary', StaffSalaryController::class);
         Route::resource('payments', StaffPaymentController::class);
     });
 
@@ -64,16 +58,29 @@ Route::middleware('auth')->group(function () {
     // Patients
     // ----------------------
     Route::resource('patients', PatientController::class);
+    Route::resource('doctorvisits', DoctorVisitController::class);
 
     // ----------------------
     // Pharmacy
     // ----------------------
-    Route::resource('pharmacy', PharmacyController::class);
+    Route::prefix('pharmacy')->name('pharmacy.')->group(function () {
+        Route::get('sales', [PharmacyController::class, 'sales'])->name('sales');
+        Route::get('purchases', [PharmacyController::class, 'purchases'])->name('purchases');
+        Route::get('inventory', [PharmacyController::class, 'inventory'])->name('inventory');
+    });
 
     // ----------------------
     // Finance: Incomes & Expenses
     // ----------------------
     Route::resource('incomes', IncomeController::class);
     Route::resource('expenses', ExpenseController::class);
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
+    // ----------------------
+    // Assets & Maintenance
+    // ----------------------
+    Route::resource('assets', AssetController::class);
+    Route::resource('assets.maintenance', AssetMaintenanceController::class);
 });
+
 require __DIR__ . '/auth.php';
