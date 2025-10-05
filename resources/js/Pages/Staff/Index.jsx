@@ -85,7 +85,7 @@ export default function Index({ staffs, filters }) {
 
             <div className="flex flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
-                    <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
+                    <div className="relative flex w-full min-w-0 flex-col overflow-auto break-words rounded pb-8 shadow-lg">
                         {/* Header */}
                         <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
                             <h3 className="text-blueGray-700 text-lg font-semibold">
