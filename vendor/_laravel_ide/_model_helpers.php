@@ -1939,12 +1939,12 @@ namespace App\Models {
      * @property float $deductions
      * @property float $overtime_amount
      * @property float $base_salary
-     * @property string $month
+     * @property string $salary_month
      * @property mixed $staff_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereStaffId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereMonth($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereSalaryMonth($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereBaseSalary($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereOvertimeAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereDeductions($value)
@@ -2580,10 +2580,10 @@ namespace App\Models {
      * @property string|null $contact_person
      * @property string|null $address
      * @property string|null $phone
-     * @property string $name
+     * @property string $company_name
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereName($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereCompanyName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier wherePhone($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereAddress($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Supplier>|Supplier whereContactPerson($value)

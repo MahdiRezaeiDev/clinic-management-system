@@ -10,7 +10,6 @@ import {
     LayoutDashboard,
     MenuIcon,
     Pill,
-    X,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import NavLink from './NavLink';
@@ -19,21 +18,20 @@ export default function Sidebar() {
     const { auth } = usePage().props;
     const user = auth.user;
 
-    const [openSubmenu, setOpenSubmenu] = useState(null);
-
-    const toggleSubmenu = (name) => {
-        setOpenSubmenu(openSubmenu === name ? null : name);
-    };
-
     const sidebarRef = useRef();
+    const [openMenus, setOpenMenus] = useState({}); // Track which submenu is open
+
     const toggleSidebar = () => {
         const el = sidebarRef.current;
         if (!el) return;
-
         el.classList.toggle('hidden');
         el.classList.toggle('bg-white');
         el.classList.toggle('py-3');
         el.classList.toggle('px-6');
+    };
+
+    const toggleMenu = (menu) => {
+        setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
     };
 
     return (
@@ -101,27 +99,6 @@ export default function Sidebar() {
                     id="sidebar"
                     ref={sidebarRef}
                 >
-                    <div className="border-blueGray-200 mb-4 block border-b border-solid pb-4 md:hidden md:min-w-full">
-                        <div className="flex flex-wrap">
-                            <div className="w-6/12">
-                                <a
-                                    className="text-blueGray-600 mr-0 inline-block px-0 text-left text-sm font-bold uppercase md:block md:pb-2"
-                                    href="{{ route('dashboard') }}"
-                                >
-                                    <img
-                                        src="{{ asset('img/logo.jpg') }}"
-                                        alt="company logo"
-                                    />
-                                </a>
-                            </div>
-                            <div className="flex w-6/12 justify-end">
-                                <X
-                                    onClick={toggleSidebar}
-                                    className="h-5 w-5"
-                                />
-                            </div>
-                        </div>
-                    </div>
                     <ul className="flex list-none flex-col md:min-w-full md:flex-col">
                         {/* Dashboard */}
                         <li>
@@ -139,7 +116,7 @@ export default function Sidebar() {
                         {/* Staff Menu */}
                         <li>
                             <button
-                                onClick={() => toggleSubmenu('staff')}
+                                onClick={() => toggleMenu('staff')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2 px-2">
@@ -147,40 +124,18 @@ export default function Sidebar() {
                                     <span>پرسنل</span>
                                 </div>
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${openSubmenu === 'staff' ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 transition-transform ${
+                                        openMenus.staff ? 'rotate-180' : ''
+                                    }`}
                                 />
                             </button>
-                            {openSubmenu === 'staff' && (
+                            {openMenus.staff && (
                                 <ul className="mr-6 flex flex-col gap-1">
                                     <NavLink
                                         href={route('staffs.index')}
                                         active={route().current('staffs.*')}
                                     >
                                         لیست پرسنل
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('staffs.overtime.index')}
-                                        active={route().current(
-                                            'staffs.overtime.*',
-                                        )}
-                                    >
-                                        اضافه‌کاری
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('staffs.salary.index')}
-                                        active={route().current(
-                                            'staffs.salary.*',
-                                        )}
-                                    >
-                                        حقوق
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('staffs.payments.index')}
-                                        active={route().current(
-                                            'staffs.payments.*',
-                                        )}
-                                    >
-                                        پرداخت‌ها
                                     </NavLink>
                                 </ul>
                             )}
@@ -189,7 +144,7 @@ export default function Sidebar() {
                         {/* Patients Menu */}
                         <li>
                             <button
-                                onClick={() => toggleSubmenu('patients')}
+                                onClick={() => toggleMenu('patients')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2 px-2">
@@ -197,10 +152,12 @@ export default function Sidebar() {
                                     <span>بیماران</span>
                                 </div>
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${openSubmenu === 'patients' ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 transition-transform ${
+                                        openMenus.patients ? 'rotate-180' : ''
+                                    }`}
                                 />
                             </button>
-                            {openSubmenu === 'patients' && (
+                            {openMenus.patients && (
                                 <ul className="mr-6 flex flex-col gap-1">
                                     <NavLink
                                         href={route('patients.index')}
@@ -209,10 +166,8 @@ export default function Sidebar() {
                                         لیست بیماران
                                     </NavLink>
                                     <NavLink
-                                        href={route('doctorvisits.index')}
-                                        active={route().current(
-                                            'doctorvisits.*',
-                                        )}
+                                        href={route('visits.index')}
+                                        active={route().current('visits.*')}
                                     >
                                         ویزیت‌ها
                                     </NavLink>
@@ -223,7 +178,7 @@ export default function Sidebar() {
                         {/* Pharmacy Menu */}
                         <li>
                             <button
-                                onClick={() => toggleSubmenu('pharmacy')}
+                                onClick={() => toggleMenu('pharmacy')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2 px-2">
@@ -231,34 +186,28 @@ export default function Sidebar() {
                                     <span>داروخانه</span>
                                 </div>
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${openSubmenu === 'pharmacy' ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 transition-transform ${
+                                        openMenus.pharmacy ? 'rotate-180' : ''
+                                    }`}
                                 />
                             </button>
-                            {openSubmenu === 'pharmacy' && (
+                            {openMenus.pharmacy && (
                                 <ul className="mr-6 flex flex-col gap-1">
                                     <NavLink
-                                        href={route('pharmacy.sales')}
+                                        href={route('pharmacy.index')}
                                         active={route().current(
-                                            'pharmacy.sales',
+                                            'pharmacy.index',
                                         )}
                                     >
                                         فروش
                                     </NavLink>
                                     <NavLink
-                                        href={route('pharmacy.purchases')}
+                                        href={route('pharmacy.create')}
                                         active={route().current(
-                                            'pharmacy.purchases',
+                                            'pharmacy.create',
                                         )}
                                     >
                                         خرید
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('pharmacy.inventory')}
-                                        active={route().current(
-                                            'pharmacy.inventory',
-                                        )}
-                                    >
-                                        موجودی
                                     </NavLink>
                                 </ul>
                             )}
@@ -267,7 +216,7 @@ export default function Sidebar() {
                         {/* Finance Menu */}
                         <li>
                             <button
-                                onClick={() => toggleSubmenu('finance')}
+                                onClick={() => toggleMenu('finance')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2 px-2">
@@ -275,10 +224,12 @@ export default function Sidebar() {
                                     <span>مالی</span>
                                 </div>
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${openSubmenu === 'finance' ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 transition-transform ${
+                                        openMenus.finance ? 'rotate-180' : ''
+                                    }`}
                                 />
                             </button>
-                            {openSubmenu === 'finance' && (
+                            {openMenus.finance && (
                                 <ul className="mr-6 flex flex-col gap-1">
                                     <NavLink
                                         href={route('incomes.index')}
@@ -292,12 +243,6 @@ export default function Sidebar() {
                                     >
                                         مصارف
                                     </NavLink>
-                                    <NavLink
-                                        href={route('reports.index')}
-                                        active={route().current('reports.*')}
-                                    >
-                                        گزارش‌ها
-                                    </NavLink>
                                 </ul>
                             )}
                         </li>
@@ -305,7 +250,7 @@ export default function Sidebar() {
                         {/* Assets Menu */}
                         <li>
                             <button
-                                onClick={() => toggleSubmenu('assets')}
+                                onClick={() => toggleMenu('assets')}
                                 className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2 px-2">
@@ -313,27 +258,11 @@ export default function Sidebar() {
                                     <span>تجهیزات</span>
                                 </div>
                                 <ChevronDown
-                                    className={`h-4 w-4 transition-transform duration-200 ${openSubmenu === 'assets' ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 transition-transform ${
+                                        openMenus.assets ? 'rotate-180' : ''
+                                    }`}
                                 />
                             </button>
-                            {openSubmenu === 'assets' && (
-                                <ul className="mr-6 flex flex-col gap-1">
-                                    <NavLink
-                                        href={route('assets.index')}
-                                        active={route().current('assets.*')}
-                                    >
-                                        لیست دارایی‌ها
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('assets.maintenance.index')}
-                                        active={route().current(
-                                            'assets.maintenance.*',
-                                        )}
-                                    >
-                                        تعمیرات
-                                    </NavLink>
-                                </ul>
-                            )}
                         </li>
                     </ul>
                 </aside>

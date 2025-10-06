@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DoctorVisitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
@@ -75,5 +76,10 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     Route::resource('incomes', IncomeController::class);
     Route::resource('expenses', ExpenseController::class);
+
+    // ----------------------
+    // doctor visits
+    // ----------------------
+    Route::resource('visits', DoctorVisitController::class);
 });
 require __DIR__ . '/auth.php';
