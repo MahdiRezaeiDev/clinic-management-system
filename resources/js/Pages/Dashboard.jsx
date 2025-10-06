@@ -1,18 +1,32 @@
+import Pharmacy from '@/Components/Cards/Pharmacy';
+import Visit from '@/Components/Cards/Visit';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
+import { Head, usePage } from '@inertiajs/react';
 import {
     BaggageClaim,
     CalendarSync,
     CircleDollarSign,
     ShieldUser,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export default function Dashboard() {
+export default function Dashboard({ doctors }) {
+    const { flash } = usePage().props;
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        if (flash.success) {
+            setShow(true);
+            const timeout = setTimeout(() => setShow(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
     return (
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
 
-            <div className="bg-blueGray-600 relative py-12 md:pt-32">
+            <div className="bg-blueGray-600 relative py-12">
                 <div className="mx-auto w-full px-4 md:px-6">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
                         <div className="rounded bg-white p-4 shadow">
@@ -93,6 +107,34 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+            <div className="mt-6 px-4 md:px-6">
+                {/* <div className="mx-auto grid grid-cols-1 items-start gap-6 lg:grid-cols-2"> */}
+                {/* Visit Card */}
+                <div className="w-full">
+                    <Visit doctors={doctors} />
+                </div>
+
+                {/* Pharmacy Card */}
+                <div className="w-full">
+                    <Pharmacy />
+                </div>
+                {/* </div> */}
+            </div>
+            {/* Success Toast */}
+            <Transition
+                show={show}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
+            >
+                <div className="rounded bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-lg">
+                    {flash.success}
+                </div>
+            </Transition>
         </AuthenticatedLayout>
     );
 }

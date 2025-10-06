@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Vistie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorVisitController extends Controller
 {
@@ -27,7 +29,32 @@ class DoctorVisitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'doctor_id' => 'required|exists:staff,id',
+            'date' => 'required|date',
+            'fee' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+        ], [
+            'doctor_id.required' => 'لطفاً یک داکتر را انتخاب کنید.',
+            'doctor_id.exists' => 'داکتر انتخاب شده معتبر نیست.',
+            'date.required' => 'لطفاً تاریخ ویزیت را وارد کنید.',
+            'date.date' => 'فرمت تاریخ وارد شده معتبر نیست.',
+            'fee.required' => 'لطفاً هزینه ویزیت را وارد کنید.',
+            'fee.numeric' => 'هزینه ویزیت باید یک عدد باشد.',
+            'fee.min' => 'هزینه ویزیت نمی‌تواند منفی باشد.',
+            'description.string' => 'توضیحات باید به صورت متن باشد.',
+        ]);
+
+        // Store the visit in the database (implementation depends on your models)
+        // For example:
+        $visit = new Visite();
+        $visit->doctor_id = $request->doctor_id;
+        $visit->visit_date = $request->date;
+        $visit->fee = $request->fee;
+        $visit->description = $request->description;
+        $visit->user_id = Auth::id();
+        $visit->save();
+        return redirect()->back()->with('success', 'ویزیت با موفقیت ثبت شد.');
     }
 
     /**

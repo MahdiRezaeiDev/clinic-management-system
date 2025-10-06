@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 export default function Create({ staff }) {
     const { data, setData, post, processing, errors } = useForm({
         amount_paid: 0,
-        salary_month: Date.now(),
+        salary_month: '',
         description: '',
     });
 
@@ -68,7 +68,6 @@ export default function Create({ staff }) {
                                 />
                                 <AfghanDatePicker
                                     id="date"
-                                    value={data.salary_month || null}
                                     onChange={(val) =>
                                         setData(
                                             'salary_month',
