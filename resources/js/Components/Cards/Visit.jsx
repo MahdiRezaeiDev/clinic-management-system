@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import AfghanDatePicker from '../AfghanDatePicker';
 
 export default function RegisterVisitCard({ doctors }) {
@@ -8,18 +9,25 @@ export default function RegisterVisitCard({ doctors }) {
         patient_phone: '',
         patient_address: '',
         patient_gender: '',
-        patient_birthdate: '',
+        patient_birthdate: '', // keep as number (age)
 
         // Visit info
         doctor_id: '',
-        visit_date: '',
+        visit_date: moment(), // Jalali moment
         fee: '',
         description: '',
     });
+    console.log(errors);
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('visits.store'), { onSuccess: () => reset() });
+        post(route('visits.store'), {
+            data: {
+                ...data,
+                visit_date: data.visit_date.format('jYYYY-jMM-jDD'), // submit as Jalali string
+            },
+            onSuccess: () => reset(),
+        });
     };
 
     const inputClass =
@@ -123,7 +131,7 @@ export default function RegisterVisitCard({ doctors }) {
                     </label>
                 </div>
 
-                {/* Birthdate */}
+                {/* Birthdate (age) */}
                 <div className="relative">
                     <input
                         type="number"
@@ -170,13 +178,7 @@ export default function RegisterVisitCard({ doctors }) {
                 <div className="relative">
                     <AfghanDatePicker
                         value={data.visit_date}
-                        id="visit_date"
-                        onChange={(value) =>
-                            setData(
-                                'visit_date',
-                                value.toDate().toISOString().split('T')[0],
-                            )
-                        }
+                        onChange={(value) => setData('visit_date', value)}
                         className={inputClass}
                     />
                     <label
