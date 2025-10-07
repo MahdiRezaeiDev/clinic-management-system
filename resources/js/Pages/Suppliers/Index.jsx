@@ -1,5 +1,6 @@
 import DangerButton from '@/Components/DangerButton';
 import Dropdown from '@/Components/Dropdown';
+import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -116,11 +117,11 @@ export default function Index({ suppliers }) {
                                         </h3>
                                     </div>
                                     <a
-                                        href={route('user.create')}
+                                        href={route('suppliers.create')}
                                         className="bg-blueGray-600 active:bg-blueGray-700 mr-1 rounded px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none"
                                         type="button"
                                     >
-                                        ایجاد حساب کاربری
+                                        ثبت شرکت همکار
                                     </a>
                                 </div>
                             </div>
@@ -167,6 +168,8 @@ export default function Index({ suppliers }) {
                         تراکنش‌های انجام‌شده با این شرکت از سیستم حذف می‌شود و
                         دیگر قابل بازیابی نخواهد بود.
                     </p>
+
+                    <InputError message={errors.id} />
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
