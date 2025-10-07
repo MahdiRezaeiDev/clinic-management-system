@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function PurchasesIndex({ purchases }) {
@@ -14,27 +14,35 @@ export default function PurchasesIndex({ purchases }) {
             <div className="mx-auto max-w-6xl space-y-6 px-4 pt-8 md:px-10">
                 {/* Tabs */}
                 <div className="rounded-2xl bg-white p-6 shadow-lg">
-                    <div className="flex border-b border-gray-200">
-                        <button
-                            onClick={() => setActiveTab('remaining')}
-                            className={`-mb-px border-b-2 px-4 py-2 font-semibold ${
-                                activeTab === 'remaining'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                            }`}
+                    <div className="flex justify-between border-b border-gray-200">
+                        <div>
+                            <button
+                                onClick={() => setActiveTab('remaining')}
+                                className={`-mb-px border-b-2 px-4 py-2 font-semibold ${
+                                    activeTab === 'remaining'
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                            >
+                                باقی مانده
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('fullyPaid')}
+                                className={`-mb-px border-b-2 px-4 py-2 font-semibold ${
+                                    activeTab === 'fullyPaid'
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                            >
+                                تسویه شده
+                            </button>
+                        </div>
+                        <Link
+                            href={route('medicine.create')}
+                            className="bg-blueGray-600 flex items-center rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                         >
-                            باقی مانده
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('fullyPaid')}
-                            className={`-mb-px border-b-2 px-4 py-2 font-semibold ${
-                                activeTab === 'fullyPaid'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                            }`}
-                        >
-                            تسویه شده
-                        </button>
+                            ثبت خرید
+                        </Link>
                     </div>
 
                     {/* Tab Content */}

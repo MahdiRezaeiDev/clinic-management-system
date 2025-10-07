@@ -1,6 +1,9 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
 
 export default function Purchase({ suppliers }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -8,7 +11,10 @@ export default function Purchase({ suppliers }) {
         total_amount: '',
         paid_amount: '',
         remaining_amount: '',
-        purchase_date: new Date().toISOString().split('T')[0], // default today
+        purchase_date: new DateObject({
+            calendar: persian,
+            locale: persian_en,
+        }).format('YYYY/MM/DD'), // default today
         description: '',
         status: 'unpaid',
         user_id: 1,
@@ -33,16 +39,25 @@ export default function Purchase({ suppliers }) {
     };
 
     const inputClass =
-        'peer block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+        'peer block w-full rounded-md border border-gray-300 bg-white px-9 py-2.5 text-sm text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition';
 
     return (
         <AuthenticatedLayout title="ثبت خرید جدید">
             <Head title="ثبت خرید جدید" />
-            <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-md">
-                <h2 className="mb-6 text-xl font-bold">ثبت خرید جدید</h2>
-                <form onSubmit={submit} className="space-y-4">
+            <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-sm md:p-8">
+                <h2 className="mb-8 text-xl font-semibold text-gray-700">
+                    ثبت خرید جدید
+                </h2>
+
+                <form
+                    onSubmit={submit}
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2"
+                >
                     {/* Supplier */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            شرکت همکار
+                        </label>
                         <select
                             value={data.supplier_id}
                             onChange={(e) =>
@@ -60,9 +75,6 @@ export default function Purchase({ suppliers }) {
                                 </option>
                             ))}
                         </select>
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500">
-                            شرکت همکار
-                        </label>
                         {errors.supplier_id && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.supplier_id}
@@ -72,6 +84,9 @@ export default function Purchase({ suppliers }) {
 
                     {/* Total Amount */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            کل مبلغ
+                        </label>
                         <input
                             type="number"
                             value={data.total_amount}
@@ -85,9 +100,6 @@ export default function Purchase({ suppliers }) {
                             placeholder="کل مبلغ"
                             required
                         />
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500">
-                            کل مبلغ
-                        </label>
                         {errors.total_amount && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.total_amount}
@@ -97,6 +109,9 @@ export default function Purchase({ suppliers }) {
 
                     {/* Paid Amount */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            پرداخت شده
+                        </label>
                         <input
                             type="number"
                             value={data.paid_amount}
@@ -107,11 +122,8 @@ export default function Purchase({ suppliers }) {
                                 )
                             }
                             className={inputClass}
-                            placeholder="پرداخت شده"
+                            placeholder="مبلغ پرداختی"
                         />
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500">
-                            پرداخت شده
-                        </label>
                         {errors.paid_amount && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.paid_amount}
@@ -121,19 +133,22 @@ export default function Purchase({ suppliers }) {
 
                     {/* Remaining Amount */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            باقی مانده
+                        </label>
                         <input
                             type="number"
                             value={data.remaining_amount}
-                            className={inputClass + ' bg-gray-100'}
+                            className={`${inputClass} bg-gray-100`}
                             disabled
                         />
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500">
-                            باقی مانده
-                        </label>
                     </div>
 
                     {/* Purchase Date */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            تاریخ خرید
+                        </label>
                         <AfghanDatePicker
                             value={data.purchase_date}
                             onChange={(value) =>
@@ -142,11 +157,7 @@ export default function Purchase({ suppliers }) {
                                     value.format('YYYY-MM-DD'),
                                 )
                             }
-                            className={inputClass}
                         />
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500">
-                            تاریخ خرید
-                        </label>
                         {errors.purchase_date && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.purchase_date}
@@ -156,6 +167,9 @@ export default function Purchase({ suppliers }) {
 
                     {/* Status */}
                     <div className="relative">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            وضعیت پرداخت
+                        </label>
                         <select
                             value={data.status}
                             onChange={(e) => setData('status', e.target.value)}
@@ -164,9 +178,6 @@ export default function Purchase({ suppliers }) {
                             <option value="unpaid">پرداخت نشده</option>
                             <option value="paid">تسویه شده</option>
                         </select>
-                        <label className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500">
-                            وضعیت
-                        </label>
                         {errors.status && (
                             <p className="mt-1 text-xs text-red-500">
                                 {errors.status}
@@ -175,7 +186,10 @@ export default function Purchase({ suppliers }) {
                     </div>
 
                     {/* Description */}
-                    <div className="relative">
+                    <div className="col-span-1 md:col-span-2">
+                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                            توضیحات (اختیاری)
+                        </label>
                         <textarea
                             value={data.description}
                             onChange={(e) =>
@@ -183,7 +197,7 @@ export default function Purchase({ suppliers }) {
                             }
                             rows={3}
                             className={inputClass}
-                            placeholder="توضیحات (اختیاری)"
+                            placeholder="توضیحات"
                         ></textarea>
                         {errors.description && (
                             <p className="mt-1 text-xs text-red-500">
@@ -193,13 +207,13 @@ export default function Purchase({ suppliers }) {
                     </div>
 
                     {/* Submit */}
-                    <div className="flex justify-end">
+                    <div className="col-span-1 flex justify-end pt-2 md:col-span-2">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="rounded-lg bg-green-500 px-6 py-2 font-bold text-white transition hover:bg-green-600"
+                            className="rounded-lg bg-green-500 px-8 py-2.5 font-semibold text-white transition hover:bg-green-600 disabled:opacity-50"
                         >
-                            ثبت خرید
+                            {processing ? 'در حال ثبت...' : 'ثبت خرید'}
                         </button>
                     </div>
                 </form>
