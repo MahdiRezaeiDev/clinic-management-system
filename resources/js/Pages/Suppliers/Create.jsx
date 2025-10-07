@@ -15,8 +15,6 @@ export default function Create() {
         address: '',
         description: '',
     });
-    console.log(errors);
-
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
 

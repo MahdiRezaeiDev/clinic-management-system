@@ -12,22 +12,41 @@ class PurchasedMedicine extends Model
 
     protected $table = 'purchased_medicines';
 
+    protected $fillable = [
+        "supplier_id",
+        "total_amount",
+        "paid_amount",
+        "remaining_amount",
+        "purchase_date",
+        "description",
+        "status",
+        "user_id"
+    ];
+
     // One purchase has many items
     public function items()
     {
-        return $this->hasMany(PurchasedMedicineItem::class, 'purchase_id');
+        return $this->hasMany(PurchasedMedicineItem::class, 'purchased_medicine_id');
+    }
+
+    /**
+     * Get the supplier (partner company) for this purchase.
+     */
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 
     // One purchase has many payments
     public function payments()
     {
-        return $this->hasMany(PurchasedMedicinePayment::class, 'purchase_id');
+        return $this->hasMany(PurchasedMedicinePayment::class, 'purchased_medicine_id');
     }
 
     // Total amount for this purchase
     public function getTotalAmountAttribute()
     {
-        return $this->items()->sum('total_price'); // assuming each item has total_price
+        return $this->items()->sum('subtotal'); // assuming each item has total_price
     }
 
     // Total paid for this purchase

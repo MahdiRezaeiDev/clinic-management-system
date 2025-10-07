@@ -13,6 +13,6 @@ class PurchasedMedicinePayment extends Model
 
     public function purchase()
     {
-        return $this->belongsTo(PurchasedMedicine::class, 'purchase_id');
+        return $this->belongsTo(PurchasedMedicine::class, 'purchased_medicine_id');
     }
 }

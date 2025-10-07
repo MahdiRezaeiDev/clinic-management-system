@@ -1946,6 +1946,7 @@ namespace App\Models {
      * @property-read mixed $remaining
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchasedMedicineItem> $items
      * @property-read int|null $items_count
+     * @property-read \App\Models\Supplier $supplier
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchasedMedicinePayment> $payments
      * @property-read int|null $payments_count
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine whereId($value)

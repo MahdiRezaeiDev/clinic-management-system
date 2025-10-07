@@ -1,4 +1,7 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
+import InputError from '@/Components/InputError';
+import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import DateObject from 'react-date-object';
@@ -20,9 +23,11 @@ export default function Purchase({ suppliers }) {
         user_id: 1,
     });
 
+    console.log(errors);
+
     const submit = (e) => {
         e.preventDefault();
-        post(route('purchases.store'), {
+        post(route('medicine.store'), {
             onSuccess: () => reset(),
         });
     };
@@ -55,11 +60,15 @@ export default function Purchase({ suppliers }) {
                 >
                     {/* Supplier */}
                     <div className="relative">
-                        <label className="mb-1 block text-sm font-medium text-gray-600">
+                        <label
+                            htmlFor="supplier_id"
+                            className="mb-1 block text-sm font-medium text-gray-600"
+                        >
                             شرکت همکار
                         </label>
                         <select
                             value={data.supplier_id}
+                            id="supplier_id"
                             onChange={(e) =>
                                 setData('supplier_id', e.target.value)
                             }
@@ -75,11 +84,7 @@ export default function Purchase({ suppliers }) {
                                 </option>
                             ))}
                         </select>
-                        {errors.supplier_id && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.supplier_id}
-                            </p>
-                        )}
+                        <InputError message={errors.supplier_id} />
                     </div>
 
                     {/* Total Amount */}
@@ -100,11 +105,7 @@ export default function Purchase({ suppliers }) {
                             placeholder="کل مبلغ"
                             required
                         />
-                        {errors.total_amount && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.total_amount}
-                            </p>
-                        )}
+                        <InputError message={errors.total_amount} />
                     </div>
 
                     {/* Paid Amount */}
@@ -124,11 +125,7 @@ export default function Purchase({ suppliers }) {
                             className={inputClass}
                             placeholder="مبلغ پرداختی"
                         />
-                        {errors.paid_amount && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.paid_amount}
-                            </p>
-                        )}
+                        <InputError message={errors.paid_amount} />
                     </div>
 
                     {/* Remaining Amount */}
@@ -158,11 +155,7 @@ export default function Purchase({ suppliers }) {
                                 )
                             }
                         />
-                        {errors.purchase_date && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.purchase_date}
-                            </p>
-                        )}
+                        <InputError message={errors.purchase_date} />
                     </div>
 
                     {/* Status */}
@@ -178,11 +171,7 @@ export default function Purchase({ suppliers }) {
                             <option value="unpaid">پرداخت نشده</option>
                             <option value="paid">تسویه شده</option>
                         </select>
-                        {errors.status && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.status}
-                            </p>
-                        )}
+                        <InputError message={errors.status} />
                     </div>
 
                     {/* Description */}
@@ -199,22 +188,17 @@ export default function Purchase({ suppliers }) {
                             className={inputClass}
                             placeholder="توضیحات"
                         ></textarea>
-                        {errors.description && (
-                            <p className="mt-1 text-xs text-red-500">
-                                {errors.description}
-                            </p>
-                        )}
+                        <InputError message={errors.description} />
                     </div>
 
                     {/* Submit */}
-                    <div className="col-span-1 flex justify-end pt-2 md:col-span-2">
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="rounded-lg bg-green-500 px-8 py-2.5 font-semibold text-white transition hover:bg-green-600 disabled:opacity-50"
-                        >
-                            {processing ? 'در حال ثبت...' : 'ثبت خرید'}
-                        </button>
+                    <div className="flex items-center gap-3">
+                        <PrimaryButton type="submit" disabled={processing}>
+                            ذخیره
+                        </PrimaryButton>
+                        <SecondaryButton onClick={() => window.history.back()}>
+                            بازگشت
+                        </SecondaryButton>
                     </div>
                 </form>
             </div>

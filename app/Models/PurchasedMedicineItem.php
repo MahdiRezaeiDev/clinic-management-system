@@ -13,7 +13,7 @@ class PurchasedMedicineItem extends Model
 
     public function purchase()
     {
-        return $this->belongsTo(PurchasedMedicine::class, 'purchase_id');
+        return $this->belongsTo(PurchasedMedicine::class, 'purchased_medicine_id');
     }
 
     // optional: you can have a calculated total price if quantity * price
