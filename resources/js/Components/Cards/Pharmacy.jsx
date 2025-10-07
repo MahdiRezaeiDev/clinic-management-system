@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 import { DateObject } from 'react-multi-date-picker';
@@ -6,33 +7,27 @@ import AfghanDatePicker from '../AfghanDatePicker';
 import InputError from '../InputError';
 
 export default function DrugSellCard() {
-    const { data, setData, post, processing, errors, reset, defaults } =
-        useForm({
-            date: new DateObject({
-                calendar: persian,
-                locale: persian_en,
-            }).format('YYYY/MM/DD'),
-            amount: '',
-            description: '',
-        });
+    const { data, setData, post, processing, errors, reset } = useForm({
+        sale_date: new DateObject({
+            calendar: persian,
+            locale: persian_en,
+        }).format('YYYY/MM/DD'),
+        total_amount: '',
+        description: '',
+        sale_type: 'without_prescription',
+    });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('pharmacy.noprescription.store'), {
-            data: {
-                ...data,
-            },
+        const gregorianDate = moment(data.sale_date, 'jYYYY/jMM/jDD').format(
+            'YYYY-MM-DD',
+        );
+
+        data.sale_date_gregorian = gregorianDate;
+
+        post(route('pharmacy.store'), {
             onSuccess: () => {
-                // set new defaults, so reset will go to current values
-                defaults({
-                    date: new DateObject({
-                        calendar: persian,
-                        locale: persian_en,
-                    }).format('YYYY/MM/DD'),
-                    amount: '',
-                    description: '',
-                });
                 reset();
             },
         });
@@ -53,38 +48,40 @@ export default function DrugSellCard() {
                 {/* Date */}
                 <div className="relative mb-4">
                     <AfghanDatePicker
-                        value={data.date}
-                        id="date"
+                        value={data.sale_date}
+                        id="sale_date"
                         onChange={(value) =>
-                            setData('date', value.format('YYYY-MM-DD'))
+                            setData('sale_date', value.format('YYYY-MM-DD'))
                         }
                     />
                     <label
-                        htmlFor="date"
+                        htmlFor="sale_date"
                         className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
                         تاریخ فروش
                     </label>
-                    <InputError message={errors.date} />
+                    <InputError message={errors.sale_date} />
                 </div>
 
-                {/* Amount */}
+                {/* total_amount */}
                 <div className="relative mb-4">
                     <input
                         type="number"
-                        id="amount"
-                        value={data.amount}
-                        onChange={(e) => setData('amount', e.target.value)}
+                        id="total_amount"
+                        value={data.total_amount}
+                        onChange={(e) =>
+                            setData('total_amount', e.target.value)
+                        }
                         className={inputClass}
                         required
                     />
                     <label
-                        htmlFor="amount"
+                        htmlFor="total_amount"
                         className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
                         مبلغ (ریال)
                     </label>
-                    <InputError message={errors.amount} />
+                    <InputError message={errors.total_amount} />
                 </div>
 
                 {/* Description */}
