@@ -2,7 +2,9 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function Create() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,8 +15,18 @@ export default function Create() {
         address: '',
         description: '',
     });
-
     console.log(errors);
+
+    const { flash } = usePage().props;
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        if (flash.success) {
+            setShow(true);
+            const timeout = setTimeout(() => setShow(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -155,6 +167,21 @@ export default function Create() {
                     </form>
                 </div>
             </div>
+            {/* Success Toast */}
+            <Transition
+                show={show}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
+            >
+                <div className="rounded bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-lg">
+                    {flash.success}
+                </div>
+            </Transition>
         </AuthenticatedLayout>
     );
 }

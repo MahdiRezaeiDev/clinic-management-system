@@ -105,7 +105,7 @@ export default function Index({ suppliers }) {
     return (
         <AuthenticatedLayout title="شرکت های همکار">
             <Head title="شرکت های همکار" />
-            <div className="mx-auto h-screen w-full md:px-10">
+            <div className="mx-auto min-h-screen w-full md:px-10">
                 <div className="flex flex-wrap pt-8">
                     <div className="mb-12 w-full px-4">
                         <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
@@ -125,7 +125,7 @@ export default function Index({ suppliers }) {
                                     </a>
                                 </div>
                             </div>
-                            <div className="block w-full overflow-x-auto">
+                            <div className="block w-full">
                                 <table className="w-full border-collapse items-center bg-transparent">
                                     <thead>
                                         <tr className="bg-blueGray-600 border-blueGray-100 border-b text-white">
@@ -189,7 +189,7 @@ export default function Index({ suppliers }) {
                 enterFrom="opacity-0"
                 leave="transition ease-in-out"
                 leaveTo="opacity-0"
-                className="absolute bottom-4 left-4"
+                className="fixed bottom-4 left-4"
             >
                 <p className="bg-green-600 px-10 py-3 text-center text-sm font-semibold text-white">
                     عملیات حذف موفقانه صورت گرفت.
