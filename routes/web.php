@@ -12,6 +12,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -69,6 +70,11 @@ Route::middleware('auth')->group(function () {
     // Pharmacy
     // ----------------------
     Route::resource('pharmacy', PharmacyController::class);
+
+    // ----------------------
+    // Pharmacy
+    // ----------------------
+    Route::resource('suppliers', SupplierController::class);
 
     // ----------------------
     // Finance: Incomes & Expenses

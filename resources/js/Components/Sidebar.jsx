@@ -194,6 +194,14 @@ export default function Sidebar() {
                             {openMenus.pharmacy && (
                                 <ul className="mr-6 flex flex-col gap-1">
                                     <NavLink
+                                        href={route('suppliers.index')}
+                                        active={route().current(
+                                            'suppliers.index',
+                                        )}
+                                    >
+                                        شرکت های همکار
+                                    </NavLink>
+                                    <NavLink
                                         href={route('pharmacy.index')}
                                         active={route().current(
                                             'pharmacy.index',
