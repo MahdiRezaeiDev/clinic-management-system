@@ -210,9 +210,9 @@ export default function Sidebar() {
                                         فروش
                                     </NavLink>
                                     <NavLink
-                                        href={route('pharmacy.create')}
+                                        href={route('medicine.create')}
                                         active={route().current(
-                                            'pharmacy.create',
+                                            'medicine.create',
                                         )}
                                     >
                                         خرید
