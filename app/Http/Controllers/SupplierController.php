@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PurchasedMedicine;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -69,13 +70,35 @@ class SupplierController extends Controller
             ->with('success', 'شرکت همکار مدنظر شما موفقانه ثبت گردید.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+
+    public function show(Supplier $supplier)
     {
-        //
+        // Fetch purchases for this supplier with items and payments
+        $purchases = PurchasedMedicine::with(['items', 'payments'])
+            ->where('supplier_id', $supplier->id)
+            ->get();
+
+        // Separate fully paid and remaining
+        $fullyPaid = $purchases->filter(fn($purchase) => $purchase->remaining <= 0);
+        $remaining = $purchases->filter(fn($purchase) => $purchase->remaining > 0);
+
+        // Totals
+        $totalPurchased = $purchases->sum('total_amount');
+        $totalPaid = $purchases->sum('total_paid');
+        $totalRemaining = $totalPurchased - $totalPaid;
+
+        return Inertia::render('Suppliers/Profile', [
+            'supplier' => $supplier,
+            'purchases' => $purchases,
+            'fullyPaidRecords' => $fullyPaid,
+            'remainingRecords' => $remaining,
+            'TotalPurchased' => $totalPurchased,
+            'TotalPaid' => $totalPaid,
+            'TotalRemaining' => $totalRemaining,
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

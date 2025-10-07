@@ -70,7 +70,7 @@ export default function Index({ suppliers }) {
                 <div className="flex gap-2">
                     <Link
                         className="rounded-sm bg-sky-400 px-2 py-1 text-white"
-                        href={route('suppliers.edit', supplier.id)}
+                        href={route('suppliers.show', supplier.id)}
                     >
                         تاریخچه خرید
                     </Link>
