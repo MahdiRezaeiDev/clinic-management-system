@@ -63,8 +63,10 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+        return redirect()->back()
+            ->with('success', 'حقوق با موفقیت حذف شد.');
     }
 }

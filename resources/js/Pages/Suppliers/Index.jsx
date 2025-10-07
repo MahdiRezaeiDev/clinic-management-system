@@ -8,7 +8,8 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Index({ suppliers }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    const [confirmingCompanyDeletion, setConfirmingUserDeletion] =
+        useState(false);
     const [supplier, setSupplier] = useState(null);
     const {
         delete: destroy,
@@ -24,7 +25,7 @@ export default function Index({ suppliers }) {
         setSupplier(id);
     };
 
-    const deleteUser = (e) => {
+    const deleteCompany = (e) => {
         e.preventDefault();
 
         destroy(route('suppliers.destroy', supplier), {
@@ -155,27 +156,30 @@ export default function Index({ suppliers }) {
                     </div>
                 </div>
             </div>
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
+            <Modal show={confirmingCompanyDeletion} onClose={closeModal}>
+                <form onSubmit={deleteCompany} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        آیا مطمئن هستید که میخواهید حساب خود را حذف کنید؟
+                        آیا مطمئن هستید که می‌خواهید این شرکت همکار را حذف کنید؟
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600">
-                        بعد از حذف حساب کاربری، هیچگونه اطلاعات این حساب و
-                        اطلاعات ثبت شده توسط این حساب در دسترس نخواهد بود.
+                    <p className="mt-1 text-sm leading-relaxed text-gray-600">
+                        با حذف شرکت، تمام اطلاعات مربوط به خریدها، فاکتورها و
+                        تراکنش‌های انجام‌شده با این شرکت از سیستم حذف می‌شود و
+                        دیگر قابل بازیابی نخواهد بود.
                     </p>
+
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
                             انصراف
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            حذف حساب
+                            حذف شرکت
                         </DangerButton>
                     </div>
                 </form>
             </Modal>
+
             <Transition
                 show={recentlySuccessful}
                 enter="transition ease-in-out"
