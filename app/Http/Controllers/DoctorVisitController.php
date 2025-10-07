@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vistie;
+use App\Models\Patient;
 use Illuminate\Http\Request;
+use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
 
 class DoctorVisitController extends Controller
@@ -39,7 +40,7 @@ class DoctorVisitController extends Controller
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
-            'visit_date' => 'required|date_format:Y-m-d',
+            'visit_date_gregorian' => 'required|date_format:Y-m-d',
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ], [
@@ -58,23 +59,47 @@ class DoctorVisitController extends Controller
 
             'patient_birthdate.integer' => 'سن باید عدد باشد.',
             'patient_birthdate.min' => 'سن نمی‌تواند کمتر از ۰ باشد.',
-            'patient_birthdate.max' => 'سن نمی‌تواند بیش از ۱۲۰ باشد.',
+            'patient_birthdate.max' => 'سن نمی‌تواند بیش از ۱۲۰ سال باشد.',
 
             // Visit info messages
             'doctor_id.required' => 'انتخاب پزشک الزامی است.',
-            'doctor_id.exists' => 'پزشک انتخاب شده معتبر نیست.',
+            'doctor_id.exists' => 'پزشک انتخاب‌شده معتبر نیست.',
 
-            'visit_date.required' => 'تاریخ ویزیت الزامی است.',
-            'visit_date.date_format' => 'فرمت تاریخ ویزیت معتبر نیست.',
+            'visit_date_gregorian.required' => 'تاریخ ویزیت الزامی است.',
+            'visit_date_gregorian.date_format' => 'فرمت تاریخ ویزیت معتبر نیست. (YYYY-MM-DD)',
 
-            'fee.required' => 'هزینه الزامی است.',
-            'fee.numeric' => 'هزینه باید عدد باشد.',
-            'fee.min' => 'هزینه نمی‌تواند منفی باشد.',
+            'fee.required' => 'مبلغ ویزیت الزامی است.',
+            'fee.numeric' => 'مبلغ ویزیت باید عدد باشد.',
+            'fee.min' => 'مبلغ ویزیت نمی‌تواند منفی باشد.',
 
             'description.string' => 'توضیحات باید رشته باشد.',
             'description.max' => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
         ]);
+
+        // Create patient record
+        $patient = new Patient();
+        $patient->full_name = $request->patient_name;
+        $patient->phone = $request->patient_phone;
+        $patient->address = $request->patient_address;
+        $patient->gender = $request->patient_gender;
+        $patient->age = $request->patient_birthdate;
+        $patient->save();
+
+        // Create visit record
+        $visit = new Visit();
+        $visit->patient_id = $patient->id;
+        $visit->user_id = Auth::id();
+        $visit->doctor_id = $request->doctor_id;
+        $visit->visit_date = $request->visit_date_gregorian;
+        $visit->fee = $request->fee;
+        $visit->description = $request->description;
+        $visit->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'ویزیت بیمار با موفقیت ثبت شد.');
     }
+
 
     /**
      * Display the specified resource.

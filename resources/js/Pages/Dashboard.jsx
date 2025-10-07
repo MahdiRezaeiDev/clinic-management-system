@@ -108,17 +108,17 @@ export default function Dashboard({ doctors }) {
                 </div>
             </div>
             <div className="mt-6 px-4 md:px-6">
-                {/* <div className="mx-auto grid grid-cols-1 items-start gap-6 lg:grid-cols-2"> */}
-                {/* Visit Card */}
-                <div className="w-full">
-                    <Visit doctors={doctors} />
-                </div>
+                <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 lg:gap-6">
+                    {/* Visit Card */}
+                    <div className="col-span-2 w-full">
+                        <Visit doctors={doctors} />
+                    </div>
 
-                {/* Pharmacy Card */}
-                <div className="w-full">
-                    <Pharmacy />
+                    {/* Pharmacy Card */}
+                    <div className="col-span-1 mt-6 w-full lg:mt-0">
+                        <Pharmacy />
+                    </div>
                 </div>
-                {/* </div> */}
             </div>
             {/* Success Toast */}
             <Transition

@@ -1,6 +1,10 @@
 import { useForm } from '@inertiajs/react';
 import moment from 'moment-jalaali';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
 import AfghanDatePicker from '../AfghanDatePicker';
+import InputError from '../InputError';
 
 export default function RegisterVisitCard({ doctors }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -9,24 +13,30 @@ export default function RegisterVisitCard({ doctors }) {
         patient_phone: '',
         patient_address: '',
         patient_gender: '',
-        patient_birthdate: '', // keep as number (age)
+        patient_age: '',
 
         // Visit info
         doctor_id: '',
-        visit_date: moment(), // Jalali moment
+        visit_date: new DateObject({
+            calendar: persian,
+            locale: persian_en,
+        }).format('YYYY/MM/DD'), // Correctly initializes with a new DateObject
         fee: '',
         description: '',
     });
-    console.log(errors);
 
     const submit = (e) => {
         e.preventDefault();
+        const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
+            'YYYY-MM-DD',
+        );
+
+        data.visit_date_gregorian = gregorianDate;
+
         post(route('visits.store'), {
-            data: {
-                ...data,
-                visit_date: data.visit_date.format('jYYYY-jMM-jDD'), // submit as Jalali string
+            onSuccess: () => {
+                reset(); // clears all fields
             },
-            onSuccess: () => reset(),
         });
     };
 
@@ -63,11 +73,7 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         نام بیمار
                     </label>
-                    {errors.patient_name && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.patient_name}
-                        </p>
-                    )}
+                    <InputError message={errors.patient_name} />
                 </div>
 
                 {/* Phone */}
@@ -87,6 +93,7 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         شماره تماس (اختیاری)
                     </label>
+                    <InputError message={errors.patient_phone} />
                 </div>
 
                 {/* Address */}
@@ -106,13 +113,14 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         آدرس (اختیاری)
                     </label>
+                    <InputError message={errors.patient_address} />
                 </div>
 
                 {/* Gender */}
                 <div className="relative">
                     <select
                         value={data.patient_gender}
-                        id="patient_gender"
+                        id="patient_gender" // Changed 'id="c"' to 'id="patient_gender"'
                         onChange={(e) =>
                             setData('patient_gender', e.target.value)
                         }
@@ -129,25 +137,25 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         جنسیت (اختیاری)
                     </label>
+                    <InputError message={errors.patient_gender} />
                 </div>
 
                 {/* Birthdate (age) */}
                 <div className="relative">
                     <input
                         type="number"
-                        value={data.patient_birthdate}
-                        id="patient_birthdate"
-                        onChange={(e) =>
-                            setData('patient_birthdate', e.target.value)
-                        }
+                        value={data.patient_age}
+                        id="patient_age"
+                        onChange={(e) => setData('patient_age', e.target.value)}
                         className={inputClass}
                     />
                     <label
-                        htmlFor="patient_birthdate"
+                        htmlFor="patient_age"
                         className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
                         سن (اختیاری)
                     </label>
+                    <InputError message={errors.patient_age} />
                 </div>
 
                 {/* Doctor */}
@@ -172,14 +180,17 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         داکتر
                     </label>
+                    <InputError message={errors.doctor_id} />
                 </div>
 
                 {/* Visit Date */}
                 <div className="relative">
                     <AfghanDatePicker
                         value={data.visit_date}
-                        onChange={(value) => setData('visit_date', value)}
-                        className={inputClass}
+                        id="visit_date"
+                        onChange={(value) =>
+                            setData('visit_date', value.format('YYYY/MM/DD'))
+                        }
                     />
                     <label
                         htmlFor="visit_date"
@@ -187,6 +198,7 @@ export default function RegisterVisitCard({ doctors }) {
                     >
                         تاریخ ویزیت
                     </label>
+                    <InputError message={errors.visit_date_gregorian} />
                 </div>
 
                 {/* Fee */}
@@ -200,41 +212,41 @@ export default function RegisterVisitCard({ doctors }) {
                         required
                     />
                     <label
-                        htmlFor="fee"
+                        htmlFor="visit_date"
                         className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
-                        هزینه (افغانی)
+                        هزینه
                     </label>
                 </div>
 
-                {/* Description (full width) */}
-                <div className="relative md:col-span-2">
+                {/* Description */}
+                <div className="relative col-span-full">
                     <textarea
-                        value={data.description}
                         id="description"
+                        value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
-                        rows={3}
-                        className={inputClass}
+                        className={`${inputClass} min-h-[100px]`}
                     />
                     <label
                         htmlFor="description"
-                        className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                        className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
-                        توضیحات
+                        شرح حال (اختیاری)
                     </label>
+                    <InputError message={errors.description} />
                 </div>
 
-                {/* Submit button (full width) */}
-                <div className="md:col-span-2">
+                <div className="col-span-full flex justify-end">
                     <button
                         type="submit"
+                        className="rounded-md bg-blue-500 px-6 py-2 font-bold text-white shadow-md transition-colors hover:bg-blue-600 disabled:opacity-50"
                         disabled={processing}
-                        className="mt-4 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-lg transition-colors hover:bg-blue-700"
                     >
-                        ثبت بیمار و ویزیت
+                        ثبت
                     </button>
                 </div>
             </form>
         </div>
+        
     );
 }

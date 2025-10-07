@@ -972,7 +972,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property string|null $birth_date
+     * @property bool|null $age
      * @property mixed $gender
      * @property string|null $address
      * @property string|null $phone
@@ -983,7 +983,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient wherePhone($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereAddress($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereGender($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereBirthDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereAge($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Patient>|Patient newModelQuery()

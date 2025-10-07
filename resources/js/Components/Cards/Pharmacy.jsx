@@ -1,85 +1,119 @@
 import { useForm } from '@inertiajs/react';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
+import { DateObject } from 'react-multi-date-picker';
 import AfghanDatePicker from '../AfghanDatePicker';
+import InputError from '../InputError';
 
 export default function DrugSellCard() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        date: '',
-        amount: '',
-        description: '',
-    });
+    const { data, setData, post, processing, errors, reset, defaults } =
+        useForm({
+            date: new DateObject({
+                calendar: persian,
+                locale: persian_en,
+            }).format('YYYY/MM/DD'),
+            amount: '',
+            description: '',
+        });
 
     const submit = (e) => {
         e.preventDefault();
+
         post(route('pharmacy.noprescription.store'), {
-            onSuccess: () => reset(),
+            data: {
+                ...data,
+            },
+            onSuccess: () => {
+                // set new defaults, so reset will go to current values
+                defaults({
+                    date: new DateObject({
+                        calendar: persian,
+                        locale: persian_en,
+                    }).format('YYYY/MM/DD'),
+                    amount: '',
+                    description: '',
+                });
+                reset();
+            },
         });
     };
 
+    const inputClass =
+        'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+
     return (
-        <div className="w-full rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-bold">فروش دارو بدون نسخه</h2>
-            <form
-                onSubmit={submit}
-                className="grid grid-cols-1 items-end gap-4 md:grid-cols-3"
-            >
+        <div className="w-full rounded-2xl border border-gray-100 bg-white shadow-xl">
+            <div className="rounded-t-2xl bg-gray-800 p-6">
+                <h2 className="text-xl font-bold text-white">
+                    فروش دارو بدون نسخه
+                </h2>
+            </div>
+
+            <form onSubmit={submit} className="p-6">
                 {/* Date */}
-                <div className="flex flex-col">
-                    <label className="mb-1 text-sm font-medium">تاریخ</label>
+                <div className="relative mb-4">
                     <AfghanDatePicker
                         value={data.date}
-                        onChange={(value) => setData('date', value)}
+                        id="date"
+                        onChange={(value) =>
+                            setData('date', value.format('YYYY-MM-DD'))
+                        }
                     />
-                    {errors.date && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.date}
-                        </p>
-                    )}
+                    <label
+                        htmlFor="date"
+                        className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                    >
+                        تاریخ فروش
+                    </label>
+                    <InputError message={errors.date} />
                 </div>
 
                 {/* Amount */}
-                <div className="flex flex-col">
-                    <label className="mb-1 text-sm font-medium">
-                        مبلغ (ریال)
-                    </label>
+                <div className="relative mb-4">
                     <input
                         type="number"
+                        id="amount"
                         value={data.amount}
                         onChange={(e) => setData('amount', e.target.value)}
-                        className="w-full rounded border-gray-300 p-2 shadow-sm focus:ring focus:ring-blue-200"
+                        className={inputClass}
                         required
                     />
-                    {errors.amount && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.amount}
-                        </p>
-                    )}
+                    <label
+                        htmlFor="amount"
+                        className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                    >
+                        مبلغ (ریال)
+                    </label>
+                    <InputError message={errors.amount} />
                 </div>
 
-                {/* Submit Button */}
-                <div className="flex flex-col md:items-end">
+                {/* Description */}
+                <div className="relative mb-4">
+                    <textarea
+                        value={data.description}
+                        id="description"
+                        onChange={(e) => setData('description', e.target.value)}
+                        rows={3}
+                        className={inputClass}
+                    />
+                    <label
+                        htmlFor="description"
+                        className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                    >
+                        توضیحات
+                    </label>
+                    <InputError message={errors.description} />
+                </div>
+
+                {/* Submit */}
+                <div className="flex justify-end">
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full rounded bg-green-500 px-6 py-2 font-bold text-white hover:bg-green-600 md:w-auto"
+                        className="rounded-lg bg-green-500 px-6 py-2 font-semibold text-white transition-all duration-200 hover:bg-green-600 focus:ring-2 focus:ring-green-300"
                     >
                         ثبت فروش
                     </button>
-                </div>
-
-                {/* Description (full width below) */}
-                <div className="mt-2 flex flex-col md:col-span-3">
-                    <label className="mb-1 text-sm font-medium">توضیحات</label>
-                    <textarea
-                        value={data.description}
-                        onChange={(e) => setData('description', e.target.value)}
-                        className="w-full rounded border-gray-300 p-2 shadow-sm focus:ring focus:ring-blue-200"
-                        rows="2"
-                    ></textarea>
-                    {errors.description && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.description}
-                        </p>
-                    )}
                 </div>
             </form>
         </div>
