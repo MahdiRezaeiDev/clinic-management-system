@@ -97,10 +97,18 @@ class MedicineController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PurchasedMedicine $purchase)
+    public function edit(int $id)
     {
         $suppliers = Supplier::all();
-        return Inertia::render('Medicine/Edit');
+        $purchase = PurchasedMedicine::find($id);
+
+        return Inertia::render(
+            'Medicine/Edit',
+            [
+                'suppliers' => $suppliers,
+                'purchase' => $purchase
+            ]
+        );
     }
 
     /**

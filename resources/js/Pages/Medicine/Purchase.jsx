@@ -19,7 +19,6 @@ export default function Purchase({ suppliers }) {
             locale: persian_en,
         }).format('YYYY/MM/DD'), // default today
         description: '',
-        status: 'unpaid',
         user_id: 1,
     });
 
@@ -158,24 +157,8 @@ export default function Purchase({ suppliers }) {
                         <InputError message={errors.purchase_date} />
                     </div>
 
-                    {/* Status */}
+                    {/* description */}
                     <div className="relative">
-                        <label className="mb-1 block text-sm font-medium text-gray-600">
-                            وضعیت پرداخت
-                        </label>
-                        <select
-                            value={data.status}
-                            onChange={(e) => setData('status', e.target.value)}
-                            className={inputClass}
-                        >
-                            <option value="unpaid">پرداخت نشده</option>
-                            <option value="paid">تسویه شده</option>
-                        </select>
-                        <InputError message={errors.status} />
-                    </div>
-
-                    {/* Description */}
-                    <div className="col-span-1 md:col-span-2">
                         <label className="mb-1 block text-sm font-medium text-gray-600">
                             توضیحات (اختیاری)
                         </label>
