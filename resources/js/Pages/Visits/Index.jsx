@@ -74,6 +74,12 @@ export default function Index({ visits, doctors, filters }) {
                             <h3 className="text-blueGray-700 text-lg font-semibold">
                                 لیست وزیت های ثبت شده
                             </h3>
+                            <Link
+                                href={route('visits.create')}
+                                className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                            >
+                                پرداخت حقوق
+                            </Link>
                         </div>
 
                         {/* Filter Form */}
