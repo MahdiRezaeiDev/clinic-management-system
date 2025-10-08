@@ -46,7 +46,7 @@ export default function Purchase({ suppliers }) {
     return (
         <AuthenticatedLayout title="ثبت خرید جدید">
             <Head title="ثبت خرید جدید" />
-            <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-sm md:p-8">
+            <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-sm md:p-8">
                 <h2 className="mb-8 text-xl font-semibold text-gray-700">
                     ثبت خرید جدید
                 </h2>

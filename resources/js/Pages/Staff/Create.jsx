@@ -22,7 +22,7 @@ export default function Create() {
     return (
         <AuthenticatedLayout title="افزودن پرسنل">
             <Head title="افزودن پرسنل" />
-            <div className="flex flex-wrap pt-8">
+            <div className="mx-auto flex max-w-2xl flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
                     <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">
                         <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">

@@ -32,7 +32,7 @@ export default function Edit({ staff }) {
         <AuthenticatedLayout title="ویرایش کارمند">
             <Head title="ویرایش کارمند" />
 
-            <div className="mx-auto p-6">
+            <div className="mx-auto max-w-2xl p-6">
                 <div className="rounded-lg bg-white p-6 shadow">
                     <h2 className="mb-6 text-xl font-bold text-gray-800">
                         ✏️ ویرایش اطلاعات کارمند

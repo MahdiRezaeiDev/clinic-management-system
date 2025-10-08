@@ -65,7 +65,7 @@ export default function PharmacySaleInvoiceForm() {
     return (
         <AuthenticatedLayout title="ثبت فروش دارو">
             <Head title="ثبت فروش دارو" />
-            <div className="mx-auto my-8 max-w-4xl rounded-2xl border border-gray-200 bg-white shadow-xl print:border-0 print:shadow-none">
+            <div className="mx-auto my-8 max-w-4xl rounded-2xl border border-gray-200 shadow-xl print:border-0 print:shadow-none">
                 {/* Header */}
                 <div className="flex items-center justify-between border-b p-6">
                     <div>

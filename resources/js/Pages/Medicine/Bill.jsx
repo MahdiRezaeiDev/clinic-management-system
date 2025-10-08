@@ -9,7 +9,7 @@ export default function BillShow({ purchase }) {
         <AuthenticatedLayout title="جزئیات بل">
             <Head title="جزئیات بل" />
 
-            <div className="border-blueGray-200 mx-auto mt-10 max-w-4xl rounded-lg border bg-white p-6 text-right shadow-md md:p-8">
+            <div className="border-blueGray-200 mx-auto mt-10 max-w-4xl rounded-lg border p-6 text-right shadow-md md:p-8">
                 {/* Header */}
                 <div className="border-blueGray-200 mb-6 flex items-center justify-between border-b pb-3">
                     <div className="text-right">

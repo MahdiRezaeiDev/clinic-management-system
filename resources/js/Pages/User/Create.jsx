@@ -37,7 +37,7 @@ export default function Create() {
             <div className="mx-auto w-full px-4 md:px-10 md:pt-16">
                 <div className="flex flex-wrap pt-8">
                     <div className="mb-12 w-full px-4">
-                        <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-white shadow-lg">
+                        <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-green-200 shadow-lg">
                             <div className="block w-full overflow-x-auto">
                                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                                     <div className="overflow-hidden p-6 shadow-sm sm:rounded-lg">

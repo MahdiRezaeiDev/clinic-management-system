@@ -49,7 +49,7 @@ export default function EditPurchase({ suppliers, purchase }) {
     return (
         <AuthenticatedLayout title="ویرایش خرید">
             <Head title="ویرایش خرید" />
-            <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-sm md:p-8">
+            <div className="mx-auto max-w-4xl rounded-xl p-6 shadow-sm md:p-8">
                 <h2 className="mb-8 text-xl font-semibold text-gray-700">
                     ویرایش خرید
                 </h2>
