@@ -59,7 +59,6 @@ class MedicineController extends Controller
             'remaining_amount'  => 'nullable|numeric|min:0',
             'purchase_date'     => 'required|date',
             'description'       => 'nullable|string|max:1000',
-            'status'            => 'required|in:paid,unpaid',
             'user_id'           => 'required|exists:users,id',
         ], [
             'supplier_id.required'      => 'انتخاب شرکت همکار الزامی است.',
@@ -71,14 +70,13 @@ class MedicineController extends Controller
             'purchase_date.required'    => 'تاریخ خرید الزامی است.',
             'purchase_date.date'        => 'تاریخ خرید معتبر نیست.',
             'description.max'           => 'توضیحات نباید بیشتر از ۱۰۰۰ کاراکتر باشد.',
-            'status.required'           => 'وضعیت پرداخت الزامی است.',
-            'status.in'                 => 'وضعیت پرداخت نامعتبر است.',
             'user_id.required'          => 'شناسه کاربر الزامی است.',
             'user_id.exists'            => 'کاربر انتخاب‌شده معتبر نیست.',
         ]);
 
         // Auto-calculate remaining to prevent tampering
         $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
+        $validated['status'] = $validated['remaining_amount'] == 0 ? "paid" : "unpaid";
 
         // Store purchase
         PurchasedMedicine::create($validated);

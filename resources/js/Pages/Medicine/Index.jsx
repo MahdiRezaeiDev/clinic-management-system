@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { DollarSign, Edit, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PurchasesIndex({ purchases }) {
     const [activeTab, setActiveTab] = useState('remaining');
@@ -9,6 +10,17 @@ export default function PurchasesIndex({ purchases }) {
     const remaining = purchases.filter((p) => p.status === 'unpaid');
     const fullyPaid = purchases.filter((p) => p.status === 'paid');
     const displayed = activeTab === 'remaining' ? remaining : fullyPaid;
+
+    const { flash } = usePage().props;
+    const [showFlash, setShowFlash] = useState(false);
+
+    useEffect(() => {
+        if (flash.success) {
+            setShowFlash(true);
+            const timeout = setTimeout(() => setShowFlash(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
 
     return (
         <AuthenticatedLayout title="خریدهای ثبت شده">
@@ -165,6 +177,22 @@ export default function PurchasesIndex({ purchases }) {
                     </div>
                 )}
             </div>
+
+            {/* Flash Message */}
+            <Transition
+                show={showFlash}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
+            >
+                <div className="rounded bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-lg">
+                    {flash.success}
+                </div>
+            </Transition>
         </AuthenticatedLayout>
     );
 }
