@@ -26,6 +26,7 @@ class MedicineController extends Controller
                     'paid_amount' => $purchase->paid_amount,
                     'remaining_amount' => $purchase->remaining_amount,
                     'status' => $purchase->status,
+                    'description' => $purchase->description
                 ];
             });
 
@@ -96,9 +97,10 @@ class MedicineController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(PurchasedMedicine $purchase)
     {
-        //
+        $suppliers = Supplier::all();
+        return Inertia::render('Medicine/Edit');
     }
 
     /**
