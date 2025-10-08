@@ -1,5 +1,7 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import InputError from '@/Components/InputError';
+import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import moment from 'moment-jalaali';
@@ -7,7 +9,7 @@ import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 
-export default function create({ doctors }) {
+export default function Create({ doctors }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         // Patient info
         patient_name: '',
@@ -21,28 +23,42 @@ export default function create({ doctors }) {
         visit_date: new DateObject({
             calendar: persian,
             locale: persian_en,
-        }).format('YYYY/MM/DD'), // Correctly initializes with a new DateObject
+        }).format('YYYY/MM/DD'),
         fee: '',
         description: '',
     });
 
     const submit = (e) => {
         e.preventDefault();
+
+        // Convert Jalali to Gregorian
         const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
             'YYYY-MM-DD',
         );
-
-        data.visit_date_gregorian = gregorianDate;
+        const formData = { ...data, visit_date_gregorian: gregorianDate };
 
         post(route('visits.store'), {
             onSuccess: () => {
-                reset(); // clears all fields
+                // Reset only patient info and visit info, keep doctor selected
+                reset(
+                    'patient_name',
+                    'patient_phone',
+                    'patient_address',
+                    'patient_gender',
+                    'patient_age',
+                    'visit_date',
+                    'fee',
+                    'description',
+                );
             },
         });
     };
 
     const inputClass =
-        'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+        'peer block w-full rounded-sm border border-gray-300 px-3 pt-5 pb-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+
+    const labelClass =
+        'absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-sm peer-focus:text-blue-500';
 
     return (
         <AuthenticatedLayout title="ثبت ویزیت">
@@ -65,6 +81,7 @@ export default function create({ doctors }) {
                                 <input
                                     type="text"
                                     value={data.patient_name}
+                                    placeholder=" "
                                     id="patient_name"
                                     onChange={(e) =>
                                         setData('patient_name', e.target.value)
@@ -74,7 +91,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_name"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     نام بیمار
                                 </label>
@@ -86,6 +103,7 @@ export default function create({ doctors }) {
                                 <input
                                     type="tel"
                                     value={data.patient_phone}
+                                    placeholder=" "
                                     id="patient_phone"
                                     onChange={(e) =>
                                         setData('patient_phone', e.target.value)
@@ -94,7 +112,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_phone"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     شماره تماس (اختیاری)
                                 </label>
@@ -106,6 +124,7 @@ export default function create({ doctors }) {
                                 <input
                                     type="text"
                                     value={data.patient_address}
+                                    placeholder=" "
                                     id="patient_address"
                                     onChange={(e) =>
                                         setData(
@@ -117,7 +136,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_address"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     آدرس (اختیاری)
                                 </label>
@@ -128,7 +147,7 @@ export default function create({ doctors }) {
                             <div className="relative">
                                 <select
                                     value={data.patient_gender}
-                                    id="patient_gender" // Changed 'id="c"' to 'id="patient_gender"'
+                                    id="patient_gender"
                                     onChange={(e) =>
                                         setData(
                                             'patient_gender',
@@ -144,18 +163,19 @@ export default function create({ doctors }) {
                                 </select>
                                 <label
                                     htmlFor="patient_gender"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     جنسیت (اختیاری)
                                 </label>
                                 <InputError message={errors.patient_gender} />
                             </div>
 
-                            {/* Birthdate (age) */}
+                            {/* Age */}
                             <div className="relative">
                                 <input
                                     type="number"
                                     value={data.patient_age}
+                                    placeholder=" "
                                     id="patient_age"
                                     onChange={(e) =>
                                         setData('patient_age', e.target.value)
@@ -164,7 +184,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_age"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     سن (اختیاری)
                                 </label>
@@ -191,7 +211,7 @@ export default function create({ doctors }) {
                                 </select>
                                 <label
                                     htmlFor="doctor_id"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     داکتر
                                 </label>
@@ -212,7 +232,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="visit_date"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     تاریخ ویزیت
                                 </label>
@@ -227,16 +247,14 @@ export default function create({ doctors }) {
                                     type="number"
                                     id="fee"
                                     value={data.fee}
+                                    placeholder=" "
                                     onChange={(e) =>
                                         setData('fee', e.target.value)
                                     }
                                     className={inputClass}
                                     required
                                 />
-                                <label
-                                    htmlFor="visit_date"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
-                                >
+                                <label htmlFor="fee" className={labelClass}>
                                     هزینه
                                 </label>
                             </div>
@@ -246,6 +264,7 @@ export default function create({ doctors }) {
                                 <textarea
                                     id="description"
                                     value={data.description}
+                                    placeholder=" "
                                     onChange={(e) =>
                                         setData('description', e.target.value)
                                     }
@@ -253,21 +272,26 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="description"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     شرح حال (اختیاری)
                                 </label>
                                 <InputError message={errors.description} />
                             </div>
 
-                            <div className="col-span-full flex justify-end">
-                                <button
+                            {/* Buttons */}
+                            <div className="col-span-full flex items-center gap-3">
+                                <PrimaryButton
                                     type="submit"
-                                    className="rounded-md bg-blue-500 px-6 py-2 font-bold text-white shadow-md transition-colors hover:bg-blue-600 disabled:opacity-50"
                                     disabled={processing}
                                 >
-                                    ثبت
-                                </button>
+                                    ذخیره
+                                </PrimaryButton>
+                                <SecondaryButton
+                                    onClick={() => window.history.back()}
+                                >
+                                    بازگشت
+                                </SecondaryButton>
                             </div>
                         </form>
                     </div>
