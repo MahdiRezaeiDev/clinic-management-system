@@ -74,19 +74,31 @@ class SupplierController extends Controller
 
     public function show(Supplier $supplier)
     {
-        // Fetch purchases for this supplier with items and payments
-        $purchases = PurchasedMedicine::with(['items', 'payments'])
-            ->where('supplier_id', $supplier->id)
-            ->get();
+        $purchases = PurchasedMedicine::with('supplier')
+            ->where('supplier_id', $supplier->id) // only this supplier's purchases
+            ->orderBy('purchase_date', 'desc')
+            ->get()
+            ->map(function ($purchase) {
+                return [
+                    'id' => $purchase->id,
+                    'supplier_name' => $purchase->supplier->company_name ?? 'نامشخص',
+                    'purchase_date' => $purchase->purchase_date,
+                    'total_amount' => $purchase->total_amount,
+                    'paid_amount' => $purchase->paid_amount,
+                    'remaining_amount' => $purchase->remaining_amount,
+                    'status' => $purchase->status,
+                    'description' => $purchase->description,
+                ];
+            });
 
         // Separate fully paid and remaining
-        $fullyPaid = $purchases->filter(fn($purchase) => $purchase->remaining <= 0);
-        $remaining = $purchases->filter(fn($purchase) => $purchase->remaining > 0);
+        $fullyPaid = $purchases->filter(fn($purchase) => $purchase['remaining_amount'] <= 0)->values();
+        $remaining = $purchases->filter(fn($purchase) => $purchase['remaining_amount'] > 0)->values();
 
         // Totals
         $totalPurchased = $purchases->sum('total_amount');
-        $totalPaid = $purchases->sum('total_paid');
-        $totalRemaining = $totalPurchased - $totalPaid;
+        $totalPaid = $purchases->sum('paid_amount');
+        $totalRemaining = $purchases->sum('remaining_amount');
 
         return Inertia::render('Suppliers/Profile', [
             'supplier' => $supplier,
@@ -98,6 +110,7 @@ class SupplierController extends Controller
             'TotalRemaining' => $totalRemaining,
         ]);
     }
+
 
 
     /**

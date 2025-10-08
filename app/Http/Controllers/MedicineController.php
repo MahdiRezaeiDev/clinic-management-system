@@ -89,7 +89,15 @@ class MedicineController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $purchase = PurchasedMedicine::with('supplier')->with('items')->where('id', $id)
+            ->first();
+
+        return Inertia::render(
+            'Medicine/Bill',
+            [
+                'purchase' => $purchase
+            ]
+        );
     }
 
     /**
