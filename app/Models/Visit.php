@@ -13,4 +13,15 @@ class Visit extends Model
         'fee',
         'description',
     ];
+
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Staff::class);
+    }
 }

@@ -4,12 +4,14 @@ import { usePage } from '@inertiajs/react';
 import {
     Accessibility,
     BanknoteArrowUp,
-    Box,
+    Calendar,
+    CardSim,
     ChevronDown,
-    IdCardLanyard,
+    Coins,
     LayoutDashboard,
     MenuIcon,
-    Pill,
+    ParkingMeter,
+    UserIcon,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import NavLink from './NavLink';
@@ -112,113 +114,71 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-
-                        {/* Staff Menu */}
                         <li>
-                            <button
-                                onClick={() => toggleMenu('staff')}
-                                className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
+                            <NavLink
+                                href={route('staffs.index')}
+                                active={route().current('staffs.*')}
                             >
-                                <div className="flex items-center gap-2 px-2">
-                                    <IdCardLanyard className="h-5 w-5" />
-                                    <span>پرسنل</span>
+                                <div className="flex items-end gap-2">
+                                    <UserIcon className="h-5 w-5" />
+                                    مدیریت پرسنل
                                 </div>
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${
-                                        openMenus.staff ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
-                            {openMenus.staff && (
-                                <ul className="mr-6 flex flex-col gap-1">
-                                    <NavLink
-                                        href={route('staffs.index')}
-                                        active={route().current('staffs.*')}
-                                    >
-                                        لیست پرسنل
-                                    </NavLink>
-                                </ul>
-                            )}
+                            </NavLink>
                         </li>
-
-                        {/* Patients Menu */}
                         <li>
-                            <button
-                                onClick={() => toggleMenu('patients')}
-                                className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
+                            <NavLink
+                                href={route('patients.index')}
+                                active={route().current('patients.*')}
                             >
-                                <div className="flex items-center gap-2 px-2">
+                                <div className="flex items-end gap-2">
                                     <Accessibility className="h-5 w-5" />
-                                    <span>بیماران</span>
+                                    لیست بیماران
                                 </div>
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${
-                                        openMenus.patients ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
-                            {openMenus.patients && (
-                                <ul className="mr-6 flex flex-col gap-1">
-                                    <NavLink
-                                        href={route('patients.index')}
-                                        active={route().current('patients.*')}
-                                    >
-                                        لیست بیماران
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('visits.index')}
-                                        active={route().current('visits.*')}
-                                    >
-                                        ویزیت‌ها
-                                    </NavLink>
-                                </ul>
-                            )}
+                            </NavLink>
                         </li>
-
-                        {/* Pharmacy Menu */}
                         <li>
-                            <button
-                                onClick={() => toggleMenu('pharmacy')}
-                                className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
+                            <NavLink
+                                href={route('visits.index')}
+                                active={route().current('visits.*')}
                             >
-                                <div className="flex items-center gap-2 px-2">
-                                    <Pill className="h-5 w-5" />
-                                    <span>داروخانه</span>
+                                <div className="flex items-end gap-2">
+                                    <Calendar className="h-5 w-5" />
+                                    ویزیت‌ها
                                 </div>
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${
-                                        openMenus.pharmacy ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
-                            {openMenus.pharmacy && (
-                                <ul className="mr-6 flex flex-col gap-1">
-                                    <NavLink
-                                        href={route('suppliers.index')}
-                                        active={route().current(
-                                            'suppliers.index',
-                                        )}
-                                    >
-                                        شرکت های همکار
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('pharmacy.index')}
-                                        active={route().current(
-                                            'pharmacy.index',
-                                        )}
-                                    >
-                                        فروش
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('medicine.index')}
-                                        active={route().current(
-                                            'medicine.index',
-                                        )}
-                                    >
-                                        خرید
-                                    </NavLink>
-                                </ul>
-                            )}
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('suppliers.index')}
+                                active={route().current('suppliers.index')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <ParkingMeter className="h-5 w-5" />
+                                    شرکت های همکار
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('medicine.index')}
+                                active={route().current('medicine.index')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <CardSim className="h-5 w-5" />
+                                    مدیریت خرید دارو
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('medicine.index')}
+                                active={route().current('medicine.index')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <Coins className="h-5 w-5" />
+                                    فروش دارو
+                                </div>
+                            </NavLink>
                         </li>
 
                         {/* Finance Menu */}
@@ -253,24 +213,6 @@ export default function Sidebar() {
                                     </NavLink>
                                 </ul>
                             )}
-                        </li>
-
-                        {/* Assets Menu */}
-                        <li>
-                            <button
-                                onClick={() => toggleMenu('assets')}
-                                className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
-                            >
-                                <div className="flex items-center gap-2 px-2">
-                                    <Box className="h-5 w-5" />
-                                    <span>تجهیزات</span>
-                                </div>
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${
-                                        openMenus.assets ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
                         </li>
                     </ul>
                 </aside>

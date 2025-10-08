@@ -3,19 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class DoctorVisitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Start query builder
+        $query = Visit::query()->with(['patient', 'doctor']);
+
+        // Filter by doctor
+        if ($request->filled('doctor')) {
+            $query->where('doctor_id', $request->input('doctor'));
+        }
+
+        // Fetch doctors
+        $doctors = Staff::where('role', 'doctor')->get();
+
+        // Get visits (you can add orderBy or paginate if needed)
+        $visits = $query->latest()->paginate(25)->withQueryString();
+
+        // Return Inertia view
+        return Inertia::render('Visits/Index', [
+            'doctors' => $doctors,
+            'visits' => $visits,
+            'filters' => $request->only(['doctor']),
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

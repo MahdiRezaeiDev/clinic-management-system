@@ -4203,6 +4203,8 @@ namespace App\Models {
      * @property mixed $doctor_id
      * @property mixed $patient_id
      * @property int $id
+     * @property-read \App\Models\Patient $patient
+     * @property-read \App\Models\Staff $doctor
      * @method static \Illuminate\Database\Eloquent\Builder<Visit>|Visit whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Visit>|Visit wherePatientId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Visit>|Visit whereDoctorId($value)
