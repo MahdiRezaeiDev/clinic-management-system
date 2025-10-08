@@ -122,6 +122,10 @@ class MedicineController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $purchase = PurchasedMedicine::find($id);
+
+        $purchase->delete();
+
+        return redirect()->back()->with('success', 'خرید مدنظر با موفقیت حذف گردید.');
     }
 }
