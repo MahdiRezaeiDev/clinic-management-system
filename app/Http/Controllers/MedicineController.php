@@ -114,7 +114,37 @@ class MedicineController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'supplier_id'       => 'required|exists:suppliers,id',
+            'total_amount'      => 'required|numeric|min:0',
+            'paid_amount'       => 'nullable|numeric|min:0',
+            'remaining_amount'  => 'nullable|numeric|min:0',
+            'purchase_date'     => 'required|date',
+            'description'       => 'nullable|string|max:1000',
+            'user_id'           => 'required|exists:users,id',
+        ], [
+            'supplier_id.required'      => 'انتخاب شرکت همکار الزامی است.',
+            'supplier_id.exists'        => 'شرکت انتخاب‌شده معتبر نیست.',
+            'total_amount.required'     => 'لطفاً مبلغ کل را وارد کنید.',
+            'total_amount.numeric'      => 'مبلغ کل باید عددی باشد.',
+            'paid_amount.numeric'       => 'مبلغ پرداخت‌شده باید عددی باشد.',
+            'remaining_amount.numeric'  => 'مبلغ باقی‌مانده باید عددی باشد.',
+            'purchase_date.required'    => 'تاریخ خرید الزامی است.',
+            'purchase_date.date'        => 'تاریخ خرید معتبر نیست.',
+            'description.max'           => 'توضیحات نباید بیشتر از ۱۰۰۰ کاراکتر باشد.',
+            'user_id.required'          => 'شناسه کاربر الزامی است.',
+            'user_id.exists'            => 'کاربر انتخاب‌شده معتبر نیست.',
+        ]);
+
+        // Auto-calculate remaining to prevent tampering
+        $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
+        $validated['status'] = $validated['remaining_amount'] == 0 ? "paid" : "unpaid";
+
+        // Find the specific purchase and update it
+        $purchase = PurchasedMedicine::findOrFail($id);
+        $purchase->update($validated);
+
+        return redirect()->route('medicine.index')->with('success', 'خرید با موفقیت بروزرسانی شد.');
     }
 
     /**

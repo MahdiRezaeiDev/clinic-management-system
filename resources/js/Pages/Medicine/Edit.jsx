@@ -15,6 +15,7 @@ export default function EditPurchase({ suppliers, purchase }) {
         calendar: persian,
         locale: persian_en,
     }).format('YYYY/MM/DD');
+    console.log(purchase);
 
     const { data, setData, put, processing, errors } = useForm({
         supplier_id: purchase.supplier_id || '',

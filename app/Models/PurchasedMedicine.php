@@ -43,12 +43,6 @@ class PurchasedMedicine extends Model
         return $this->hasMany(PurchasedMedicinePayment::class, 'purchased_medicine_id');
     }
 
-    // Total amount for this purchase
-    public function getTotalAmountAttribute()
-    {
-        return $this->items()->sum('subtotal'); // assuming each item has total_price
-    }
-
     // Total paid for this purchase
     public function getTotalPaidAttribute()
     {

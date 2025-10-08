@@ -11,7 +11,7 @@ import persian_en from 'react-date-object/locales/persian_en';
 export default function Purchase({ suppliers }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         supplier_id: '',
-        total_amount: '',
+        total_amount: 0,
         paid_amount: '',
         remaining_amount: '',
         purchase_date: new DateObject({
@@ -21,8 +21,6 @@ export default function Purchase({ suppliers }) {
         description: '',
         user_id: 1,
     });
-
-    console.log(errors);
 
     const submit = (e) => {
         e.preventDefault();

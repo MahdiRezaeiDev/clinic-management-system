@@ -1939,9 +1939,9 @@ namespace App\Models {
      * @property string $purchase_date
      * @property float $remaining_amount
      * @property float $paid_amount
+     * @property float $total_amount
      * @property mixed $supplier_id
      * @property int $id
-     * @property-read mixed $total_amount
      * @property-read mixed $total_paid
      * @property-read mixed $remaining
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchasedMedicineItem> $items
@@ -1951,6 +1951,7 @@ namespace App\Models {
      * @property-read int|null $payments_count
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine whereSupplierId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine whereTotalAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine wherePaidAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine whereRemainingAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicine>|PurchasedMedicine wherePurchaseDate($value)
