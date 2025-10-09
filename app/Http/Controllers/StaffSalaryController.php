@@ -59,7 +59,7 @@ class StaffSalaryController extends Controller
         ]);
 
         // Create salary record
-        $staff->salaries()->create([
+        $salary = $staff->salaries()->create([
             'base_salary' => $request->base_salary,
             'overtime_amount' => $request->overtime_amount,
             'deductions' => $request->deductions,
@@ -73,7 +73,10 @@ class StaffSalaryController extends Controller
         // Mark selected overtimes as paid
         if (!empty($request->selectedOvertimes)) {
             Overtime::whereIn('id', $request->selectedOvertimes)
-                ->update(['status' => 1]);
+                ->update([
+                    'status' => 1,
+                    'salary_id' => $salary->id
+                ]);
         }
 
         return redirect()->route('staffs.salary.index', $staff->id)
@@ -100,26 +103,41 @@ class StaffSalaryController extends Controller
     public function update(Request $request, Staff $staff, Salary $salary)
     {
         $request->validate([
-            'salary_month' => 'required|date',
-            'amount_paid' => 'required|numeric|min:0',
+            'salary_month' => 'required|numeric|min:1|max:12',
+            'base_salary' => 'required|numeric|min:0',
+            'deductions' => 'nullable|numeric|min:0',
+            'total_paid' => 'required|numeric|min:0',
+            'payment_date' => 'required|string',
+            'payment_date_gregorian' => 'required|string',
             'description' => 'nullable|string|max:255',
-        ], [
-            'salary_month.required' => 'وارد کردن تاریخ الزامی است.',
-            'amount_paid.required' => 'وارد کردن مبلغ الزامی است.',
-            'amount_paid.numeric' => 'مبلغ باید عدد باشد.',
+            'selectedOvertimes' => 'array',
         ]);
 
-        $salary->update($request->all());
+        // 1️⃣ بروزرسانی اطلاعات حقوق
+        $salary->update([
+            'base_salary' => $request->base_salary,
+            'overtime_amount' => $request->overtime_amount ?? 0,
+            'deductions' => $request->deductions ?? 0,
+            'total_paid' => $request->total_paid,
+            'salary_month' => $request->salary_month,
+            'payment_date' => $request->payment_date,
+            'payment_date_gregorian' => $request->payment_date_gregorian,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('staffs.salary.index', $staff->id)
-            ->with('success', 'حقوق با موفقیت بروزرسانی شد.');
-    }
+        // 2️⃣ جدا کردن اضافه‌کاری‌هایی که دیگر انتخاب نشده‌اند
+        Overtime::where('salary_id', $salary->id)
+            ->whereNotIn('id', $request->selectedOvertimes ?? [])
+            ->update(['salary_id' => null, 'status' => 0]);
 
-    public function destroy(Staff $staff, Salary $salary)
-    {
-        $salary->delete();
+        // 3️⃣ لینک کردن اضافه‌کاری‌های جدید به این حقوق
+        if ($request->selectedOvertimes && count($request->selectedOvertimes) > 0) {
+            Overtime::whereIn('id', $request->selectedOvertimes)
+                ->update(['salary_id' => $salary->id, 'status' => 1]);
+        }
 
-        return redirect()->route('staffs.salary.index', $staff->id)
-            ->with('success', 'حقوق با موفقیت حذف شد.');
+        return redirect()
+            ->route('staffs.salary.index', $staff->id)
+            ->with('success', 'حقوق با موفقیت ویرایش شد.');
     }
 }

@@ -1,6 +1,5 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -27,20 +26,21 @@ const afghanMonths = [
 ];
 
 export default function Edit({ staff, salary, overTimes }) {
-    // Pre-fill selected overtimes from salary relation
-    const selectedOvertimesIds = salary.overtimes?.map((ot) => ot.id) || [];
-    const totalOvertimeAmount =
-        salary.overtimes?.reduce((sum, ot) => sum + parseFloat(ot.total), 0) ||
-        0;
+    // اضافه‌کاری‌هایی که مربوط به همین حقوق هستند باید تیک‌خورده باشند
+    const preSelectedOvertimes = overTimes
+        .filter((ot) => ot.salary_id === salary.id)
+        .map((ot) => ot.id);
+
+    // محاسبه مجموع اولیه اضافه‌کاری‌ها
+    const totalInitialOvertime = overTimes
+        .filter((ot) => ot.salary_id === salary.id)
+        .reduce((sum, ot) => sum + parseFloat(ot.total || 0), 0);
 
     const { data, setData, put, processing, errors } = useForm({
         base_salary: salary.base_salary || staff.base_salary || 0,
-        overtime_amount: totalOvertimeAmount,
+        overtime_amount: totalInitialOvertime,
         deductions: salary.deductions || 0,
-        total_paid:
-            (salary.base_salary || staff.base_salary || 0) +
-            totalOvertimeAmount -
-            (salary.deductions || 0),
+        total_paid: salary.total_paid,
         salary_month: salary.salary_month || '',
         payment_date: salary.payment_date
             ? new DateObject({
@@ -53,32 +53,45 @@ export default function Edit({ staff, salary, overTimes }) {
               ),
         payment_date_gregorian: salary.payment_date_gregorian || '',
         description: salary.description || '',
-        selectedOvertimes: selectedOvertimesIds,
+        selectedOvertimes: preSelectedOvertimes,
     });
 
     const toggleOvertime = (id, amount) => {
         const selected = [...data.selectedOvertimes];
-        let newSelected, newOvertimeAmount, newTotalPaid;
+        const isSelected = selected.includes(id);
+        const amountNum = parseFloat(amount);
 
-        amount = parseFloat(amount);
+        let newSelected = [];
+        let newOvertime = parseFloat(data.overtime_amount) || 0;
+        let newTotalPaid = parseFloat(data.total_paid) || 0;
 
-        if (selected.includes(id)) {
-            newSelected = selected.filter((i) => i !== id);
-            newOvertimeAmount =
-                (parseFloat(data.overtime_amount) || 0) - amount;
-            newTotalPaid = (parseFloat(data.total_paid) || 0) - amount;
+        if (isSelected) {
+            newSelected = selected.filter((sid) => sid !== id);
+            newOvertime -= amountNum;
+            newTotalPaid -= amountNum;
         } else {
             newSelected = [...selected, id];
-            newOvertimeAmount =
-                (parseFloat(data.overtime_amount) || 0) + amount;
-            newTotalPaid = (parseFloat(data.total_paid) || 0) + amount;
+            newOvertime += amountNum;
+            newTotalPaid += amountNum;
         }
 
         setData({
             ...data,
             selectedOvertimes: newSelected,
-            overtime_amount: newOvertimeAmount,
+            overtime_amount: newOvertime >= 0 ? newOvertime : 0,
             total_paid: newTotalPaid >= 0 ? newTotalPaid : 0,
+        });
+    };
+
+    const handleDeductionChange = (value) => {
+        const deduction = parseFloat(value) || 0;
+        const base = parseFloat(data.base_salary) || 0;
+        const overtime = parseFloat(data.overtime_amount) || 0;
+
+        setData({
+            ...data,
+            deductions: deduction,
+            total_paid: base + overtime - deduction,
         });
     };
 
@@ -92,253 +105,173 @@ export default function Edit({ staff, salary, overTimes }) {
         data.payment_date_gregorian = payment_date_gregorian;
 
         put(route('staffs.salary.update', [staff.id, salary.id]), {
-            onSuccess: () => {
-                // optionally redirect
+            data: {
+                ...data,
+                payment_date_gregorian,
             },
         });
     };
 
     return (
         <AuthenticatedLayout title={`ویرایش حقوق ${staff.full_name}`}>
-            <Head title={`ویرایش حقوق برای ${staff.full_name}`} />
+            <Head title={`ویرایش حقوق ${staff.full_name}`} />
 
             <div className="mx-5 mt-10 max-w-3xl md:mx-auto">
-                {/* Unpaid Overtime Table */}
                 {overTimes.length > 0 && (
-                    <div className="ring-blueGray-200 mb-6 rounded-2xl bg-white p-6 shadow-md ring-1">
+                    <div className="ring-blueGray-200 rounded-2xl bg-white p-6 shadow-md ring-1">
                         <h3 className="text-blueGray-700 mb-2 font-semibold">
-                            اضافه‌کاری‌های پرداخت نشده
+                            اضافه‌کاری‌ها
                         </h3>
-                        <div className="overflow-x-auto">
-                            <table className="divide-blueGray-200 min-w-full divide-y border">
-                                <thead className="bg-blueGray-600 text-white">
-                                    <tr>
-                                        <th className="px-4 py-2 text-right text-sm">
-                                            انتخاب
-                                        </th>
-                                        <th className="px-4 py-2 text-right text-sm">
-                                            تاریخ
-                                        </th>
-                                        <th className="px-4 py-2 text-right text-sm">
-                                            مقدار
-                                        </th>
-                                        <th className="px-4 py-2 text-right text-sm">
-                                            توضیحات
-                                        </th>
+                        <table className="divide-blueGray-200 min-w-full divide-y border">
+                            <thead className="bg-blueGray-600 text-white">
+                                <tr>
+                                    <th className="px-4 py-2 text-right text-sm">
+                                        انتخاب
+                                    </th>
+                                    <th className="px-4 py-2 text-right text-sm">
+                                        تاریخ
+                                    </th>
+                                    <th className="px-4 py-2 text-right text-sm">
+                                        مقدار
+                                    </th>
+                                    <th className="px-4 py-2 text-right text-sm">
+                                        توضیحات
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-blueGray-200 divide-y">
+                                {overTimes.map((ot) => (
+                                    <tr
+                                        key={ot.id}
+                                        className={`${
+                                            ot.salary_id === salary.id
+                                                ? 'bg-green-50'
+                                                : ''
+                                        } hover:bg-blueGray-50`}
+                                    >
+                                        <td className="px-4 py-2 text-sm">
+                                            <Checkbox
+                                                checked={data.selectedOvertimes.includes(
+                                                    ot.id,
+                                                )}
+                                                onChange={() =>
+                                                    toggleOvertime(
+                                                        ot.id,
+                                                        ot.total,
+                                                    )
+                                                }
+                                            />
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            {ot.date}
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            {ot.total}
+                                        </td>
+                                        <td className="px-4 py-2 text-sm">
+                                            {ot.description}
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody className="divide-blueGray-200 divide-y">
-                                    {overTimes.map((overTime) => (
-                                        <tr
-                                            key={overTime.id}
-                                            className="hover:bg-blueGray-50"
-                                        >
-                                            <td className="text-smr px-4 py-2">
-                                                <Checkbox
-                                                    checked={data.selectedOvertimes.includes(
-                                                        overTime.id,
-                                                    )}
-                                                    onChange={() =>
-                                                        toggleOvertime(
-                                                            overTime.id,
-                                                            overTime.total,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {overTime.date}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {overTime.total}
-                                            </td>
-                                            <td className="px-4 py-2 text-sm">
-                                                {overTime.description}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 )}
 
-                {/* Salary Form */}
-                <div className="ring-blueGray-200 rounded-2xl bg-white p-8 shadow-md ring-1">
+                <div className="ring-blueGray-200 mt-6 rounded-2xl bg-white p-8 shadow-md ring-1">
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            {/* Base Salary */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="base_salary"
-                                    value="حقوق پایه"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <TextInput
-                                        type="number"
-                                        id="base_salary"
-                                        value={data.base_salary}
-                                        onChange={(e) =>
-                                            setData(
-                                                'base_salary',
-                                                e.target.value,
-                                            )
-                                        }
-                                        className="w-full pr-10"
-                                        min={0}
-                                    />
-                                    <InputError message={errors.base_salary} />
-                                </div>
-                            </div>
-
-                            {/* Overtime Amount (readonly) */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="overtime_amount"
-                                    value="اضافه کاری"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <TextInput
-                                        type="number"
-                                        id="overtime_amount"
-                                        value={data.overtime_amount}
-                                        readOnly
-                                        className="bg-blueGray-50 text-blueGray-700 w-full pr-10"
-                                    />
-                                    <InputError
-                                        message={errors.overtime_amount}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Deductions */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="deductions"
-                                    value="کسرات"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <TextInput
-                                        type="number"
-                                        id="deductions"
-                                        value={data.deductions}
-                                        onChange={(e) =>
-                                            setData(
-                                                'deductions',
-                                                e.target.value,
-                                            )
-                                        }
-                                        className="w-full pr-10"
-                                        min={0}
-                                    />
-                                    <InputError message={errors.deductions} />
-                                </div>
-                            </div>
-
-                            {/* Total Paid */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="total_paid"
-                                    value="مبلغ پرداختی کل"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <TextInput
-                                        type="number"
-                                        id="total_paid"
-                                        value={data.total_paid}
-                                        readOnly
-                                        className="bg-blueGray-50 text-blueGray-700 w-full pr-10 font-semibold"
-                                    />
-                                    <InputError message={errors.total_paid} />
-                                </div>
-                            </div>
-
-                            {/* Salary Month */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="salary_month"
-                                    value="ماه حقوق"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <select
-                                        id="salary_month"
-                                        value={data.salary_month}
-                                        onChange={(e) =>
-                                            setData(
-                                                'salary_month',
-                                                e.target.value,
-                                            )
-                                        }
-                                        className="border-blueGray-200 text-blueGray-700 focus:border-blueGray-400 w-full border px-10 py-2 text-sm shadow-sm focus:ring-0"
-                                    >
-                                        <option value="">
-                                            ماه را انتخاب کنید
-                                        </option>
-                                        {afghanMonths.map((month) => (
-                                            <option
-                                                key={month.value}
-                                                value={month.value}
-                                            >
-                                                {month.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <InputError message={errors.salary_month} />
-                                </div>
-                            </div>
-
-                            {/* Payment Date */}
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                                <InputLabel
-                                    htmlFor="payment_date"
-                                    value="تاریخ پرداخت"
-                                    className="text-blueGray-600 sm:w-20"
-                                />
-                                <div className="flex-1">
-                                    <AfghanDatePicker
-                                        id="payment_date"
-                                        value={data.payment_date}
-                                        onChange={(val) =>
-                                            setData(
-                                                'payment_date',
-                                                val.format('YYYY/MM/DD'),
-                                            )
-                                        }
-                                        placeholder="تاریخ پرداخت را انتخاب کنید"
-                                    />
-                                    <InputError message={errors.payment_date} />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:gap-3">
-                            <InputLabel
-                                htmlFor="description"
-                                value="توضیحات"
-                                className="text-blueGray-600 pt-2 sm:w-20"
-                            />
-                            <div className="flex-1">
-                                <textarea
-                                    id="description"
-                                    value={data.description}
+                            <div>
+                                <InputLabel value="حقوق پایه" />
+                                <TextInput
+                                    type="number"
+                                    value={data.base_salary}
                                     onChange={(e) =>
-                                        setData('description', e.target.value)
+                                        setData(
+                                            'base_salary',
+                                            parseFloat(e.target.value) || 0,
+                                        )
                                     }
-                                    rows={3}
-                                    className="border-blueGray-200 text-blueGray-700 placeholder-blueGray-400 focus:border-blueGray-400 w-full resize-none rounded-xl border px-3 py-2 text-sm shadow-sm focus:ring-0"
-                                    placeholder="توضیحات مربوط به پرداخت..."
+                                    className="w-full"
                                 />
-                                <InputError message={errors.description} />
+                            </div>
+
+                            <div>
+                                <InputLabel value="مبلغ اضافه‌کاری" />
+                                <TextInput
+                                    type="number"
+                                    readOnly
+                                    value={data.overtime_amount}
+                                    className="bg-blueGray-50 w-full"
+                                />
+                            </div>
+
+                            <div>
+                                <InputLabel value="کسرات" />
+                                <TextInput
+                                    type="number"
+                                    value={data.deductions}
+                                    onChange={(e) =>
+                                        handleDeductionChange(e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+
+                            <div>
+                                <InputLabel value="مبلغ کل پرداختی" />
+                                <TextInput
+                                    type="number"
+                                    readOnly
+                                    value={data.total_paid}
+                                    className="bg-blueGray-50 w-full font-semibold"
+                                />
+                            </div>
+
+                            <div>
+                                <InputLabel value="ماه حقوق" />
+                                <select
+                                    value={data.salary_month}
+                                    onChange={(e) =>
+                                        setData('salary_month', e.target.value)
+                                    }
+                                    className="border-blueGray-200 focus:border-blueGray-400 w-full border px-3 py-2 text-sm shadow-sm focus:ring-0"
+                                >
+                                    <option value="">انتخاب ماه</option>
+                                    {afghanMonths.map((m) => (
+                                        <option key={m.value} value={m.value}>
+                                            {m.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <InputLabel value="تاریخ پرداخت" />
+                                <AfghanDatePicker
+                                    value={data.payment_date}
+                                    onChange={(val) =>
+                                        setData(
+                                            'payment_date',
+                                            val.format('YYYY/MM/DD'),
+                                        )
+                                    }
+                                />
                             </div>
                         </div>
 
-                        {/* Buttons */}
+                        <div>
+                            <InputLabel value="توضیحات" />
+                            <textarea
+                                value={data.description}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
+                                rows={3}
+                                className="border-blueGray-200 focus:border-blueGray-400 w-full rounded-xl border px-3 py-2 text-sm shadow-sm focus:ring-0"
+                            />
+                        </div>
+
                         <div className="flex justify-start gap-3 pt-4">
                             <Link
                                 href={route('staffs.salary.index', staff.id)}

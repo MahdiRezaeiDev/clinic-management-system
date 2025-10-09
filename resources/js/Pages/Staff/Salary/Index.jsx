@@ -22,8 +22,6 @@ const afghanMonths = [
 ];
 
 export default function Index({ staff, salaries }) {
-    console.log(staff);
-
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -128,8 +126,9 @@ export default function Index({ staff, salaries }) {
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {
-                                            afghanMonths[salary.salary_month]
-                                                .label
+                                            afghanMonths[
+                                                salary.salary_month - 1
+                                            ].label
                                         }
                                     </td>
 
