@@ -7,6 +7,7 @@ use App\Models\Staff;
 use App\Models\Salary;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Carbon;
 
 class StaffSalaryController extends Controller
 {
@@ -45,7 +46,6 @@ class StaffSalaryController extends Controller
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
-            'payment_date_gregorian' => 'required|date',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'nullable|array',
             'selectedOvertimes.*' => 'numeric|exists:overtimes,id',
@@ -58,6 +58,21 @@ class StaffSalaryController extends Controller
             'payment_date.date' => 'تاریخ پرداخت معتبر نیست.',
         ]);
 
+        // Extract year from payment_date_gregorian (e.g. 2025-10-09 → 2025)
+        $year = date('Y', strtotime($request->payment_date_gregorian));
+
+        // 🔹 Prevent duplicate salary for same staff, month, and year
+        $exists = $staff->salaries()
+            ->where('salary_month', $request->salary_month)
+            ->whereYear('payment_date', $year)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors([
+                'salary_month' => 'حقوق این ماه برای این کارمند قبلاً ثبت شده است.'
+            ]);
+        }
+
         // Create salary record
         $salary = $staff->salaries()->create([
             'base_salary' => $request->base_salary,
@@ -65,8 +80,7 @@ class StaffSalaryController extends Controller
             'deductions' => $request->deductions,
             'total_paid' => $request->total_paid,
             'salary_month' => $request->salary_month,
-            'payment_date' => $request->payment_date,
-            'payment_date_gregorian' => $request->payment_date_gregorian,
+            'payment_date' => $request->payment_date_gregorian,
             'description' => $request->description,
         ]);
 
@@ -107,31 +121,46 @@ class StaffSalaryController extends Controller
             'base_salary' => 'required|numeric|min:0',
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
-            'payment_date' => 'required|string',
-            'payment_date_gregorian' => 'required|string',
+            'payment_date' => 'required|string', // تاریخ شمسی (فرم)
+            'payment_date_gregorian' => 'required|date_format:Y-m-d', // تاریخ میلادی
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'array',
         ]);
 
-        // 1️⃣ بروزرسانی اطلاعات حقوق
+        // 📅 استخراج سال از تاریخ میلادی
+        $year = Carbon::parse($request->payment_date)->year;
+
+        // 🛑 جلوگیری از ثبت تکراری برای همان کارمند، همان ماه، همان سال
+        $exists = Salary::where('staff_id', $staff->id)
+            ->where('id', '!=', $salary->id)
+            ->where('salary_month', $request->salary_month)
+            ->whereYear('payment_date', $year)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors([
+                'salary_month' => 'حقوق این ماه برای این کارمند قبلاً ثبت شده است.'
+            ])->withInput();
+        }
+
+        // ✏️ بروزرسانی اطلاعات حقوق
         $salary->update([
             'base_salary' => $request->base_salary,
             'overtime_amount' => $request->overtime_amount ?? 0,
             'deductions' => $request->deductions ?? 0,
             'total_paid' => $request->total_paid,
             'salary_month' => $request->salary_month,
-            'payment_date' => $request->payment_date,
-            'payment_date_gregorian' => $request->payment_date_gregorian,
+            'payment_date' => $request->payment_date, // تاریخ میلادی
             'description' => $request->description,
         ]);
 
-        // 2️⃣ جدا کردن اضافه‌کاری‌هایی که دیگر انتخاب نشده‌اند
+        // 🔄 جدا کردن اضافه‌کاری‌هایی که دیگر انتخاب نشده‌اند
         Overtime::where('salary_id', $salary->id)
             ->whereNotIn('id', $request->selectedOvertimes ?? [])
             ->update(['salary_id' => null, 'status' => 0]);
 
-        // 3️⃣ لینک کردن اضافه‌کاری‌های جدید به این حقوق
-        if ($request->selectedOvertimes && count($request->selectedOvertimes) > 0) {
+        // 🔗 لینک کردن اضافه‌کاری‌های انتخاب‌شده
+        if (!empty($request->selectedOvertimes)) {
             Overtime::whereIn('id', $request->selectedOvertimes)
                 ->update(['salary_id' => $salary->id, 'status' => 1]);
         }
