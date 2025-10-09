@@ -8,6 +8,8 @@ import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function Index({ staff, salaries }) {
+    console.log(salaries);
+
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -42,11 +44,6 @@ export default function Index({ staff, salaries }) {
         reset();
     };
 
-    const totalPaid = salaries.reduce(
-        (sum, s) => sum + parseFloat(s.amount_paid),
-        0,
-    );
-
     return (
         <AuthenticatedLayout title={`حقوق پرسنل: ${staff.full_name}`}>
             <Head title={`حقوق ${staff.full_name}`} />
@@ -68,9 +65,18 @@ export default function Index({ staff, salaries }) {
                             <tr className="bg-blueGray-600 text-sm text-white">
                                 <th className="px-6 py-3 text-right">#</th>
                                 <th className="px-6 py-3 text-right">
+                                    حقوق پایه
+                                </th>
+                                <th className="px-6 py-3 text-right">
+                                    اضافه کاری
+                                </th>
+                                <th className="px-6 py-3 text-right">کسورات</th>
+                                <th className="px-6 py-3 text-right">
                                     تاریخ پرداخت
                                 </th>
-                                <th className="px-6 py-3 text-right">مبلغ</th>
+                                <th className="px-6 py-3 text-right">
+                                    مبلغ پرداخت نهایی
+                                </th>
                                 <th className="px-6 py-3 text-right">
                                     توضیحات
                                 </th>
@@ -87,13 +93,16 @@ export default function Index({ staff, salaries }) {
                                         {index + 1}
                                     </td>
                                     <td className="px-6 py-2 text-right">
+                                        {salary.base_salary}
+                                    </td>
+                                    <td className="px-6 py-2 text-right">
                                         {moment(salary.salary_month).format(
                                             'jYYYY/jMM/jDD',
                                         )}{' '}
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {parseFloat(
-                                            salary.amount_paid,
+                                            salary.total_paid,
                                         ).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-2 text-right">

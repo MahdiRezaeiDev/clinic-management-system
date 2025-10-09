@@ -18,4 +18,9 @@ class Salary extends Model
         "payment_date",
         "description"
     ];
+
+    public function overtimes()
+    {
+        return $this->hasMany(Overtime::class);
+    }
 }

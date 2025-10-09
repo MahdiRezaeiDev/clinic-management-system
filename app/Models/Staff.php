@@ -14,4 +14,9 @@ class Staff extends Model
     {
         return $this->hasMany(Salary::class);
     }
+
+    public function overtimes()
+    {
+        return $this->hasMany(Overtime::class);
+    }
 }

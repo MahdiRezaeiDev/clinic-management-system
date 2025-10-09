@@ -21,7 +21,7 @@ const weekDays = ['شن', 'یک', 'دو', 'سه', 'چه', 'پن', 'جم'];
 export default function AfghanDatePicker({
     value,
     onChange,
-    inputClass = 'w-full text-sm text-gray-700 border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400',
+    inputClass = 'w-full text-sm text-gray-700 border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-sm',
     format = 'YYYY/MM/DD',
     ...props
 }) {

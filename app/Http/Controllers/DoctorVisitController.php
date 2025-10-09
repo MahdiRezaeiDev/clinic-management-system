@@ -47,7 +47,7 @@ class DoctorVisitController extends Controller
         // Fetch doctors
         $doctors = Staff::where('role', 'doctor')->get();
         return Inertia::render('Visits/Create', [
-            'doctors' => $doctors
+            'doctors' => $doctors,
         ]);
     }
 

@@ -651,20 +651,26 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $description
+     * @property bool $status
      * @property mixed $approved_by
      * @property float $total
      * @property float $rate
      * @property float $hours
      * @property string $date
+     * @property mixed $salary_id
      * @property mixed $staff_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereStaffId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereSalaryId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereDate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereHours($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereRate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereTotal($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereApprovedBy($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereStatus($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime newModelQuery()
@@ -2914,9 +2920,11 @@ namespace App\Models {
      * @property float $deductions
      * @property float $overtime_amount
      * @property float $base_salary
-     * @property string $salary_month
+     * @property bool $salary_month
      * @property mixed $staff_id
      * @property int $id
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
+     * @property-read int|null $overtimes_count
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereStaffId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Salary>|Salary whereSalaryMonth($value)
@@ -3240,6 +3248,8 @@ namespace App\Models {
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
      * @property-read int|null $salaries_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
+     * @property-read int|null $overtimes_count
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereFullName($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Staff>|Staff whereRole($value)

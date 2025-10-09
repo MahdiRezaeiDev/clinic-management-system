@@ -247,6 +247,5 @@ export default function RegisterVisitCard({ doctors }) {
                 </div>
             </form>
         </div>
-        
     );
 }
