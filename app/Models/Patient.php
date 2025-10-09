@@ -12,6 +12,7 @@ class Patient extends Model
         "full_name",
         "phone",
         "gender",
-        "birth_date"
+        "birth_date",
+        "address"
     ];
 }

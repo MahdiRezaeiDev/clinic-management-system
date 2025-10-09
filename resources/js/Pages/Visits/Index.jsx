@@ -189,7 +189,7 @@ export default function Index({ visits, doctors, filters }) {
                                                             <Link
                                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                                 href={route(
-                                                                    'staffs.edit',
+                                                                    'visits.edit',
                                                                     visit.id,
                                                                 )}
                                                             >

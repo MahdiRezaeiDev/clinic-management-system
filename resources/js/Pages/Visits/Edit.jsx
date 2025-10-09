@@ -10,6 +10,8 @@ import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 
 export default function Edit({ visit, doctors }) {
+    console.log(visit);
+
     const { data, setData, put, processing, errors } = useForm({
         // Patient info
         patient_name: visit.patient?.full_name || '',
@@ -36,9 +38,9 @@ export default function Edit({ visit, doctors }) {
             'YYYY-MM-DD',
         );
 
-        put(route('visits.update', visit.id), {
-            data: { ...data, visit_date_gregorian: gregorianDate },
-        });
+        data.visit_date_gregorian = gregorianDate;
+
+        put(route('visits.update', visit.id));
     };
 
     const inputClass =

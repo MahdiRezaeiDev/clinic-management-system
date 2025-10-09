@@ -54,8 +54,9 @@ class DoctorVisitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
+
         $request->validate([
             // Patient info
             'patient_name' => 'required|string|max:255',
@@ -70,7 +71,7 @@ class DoctorVisitController extends Controller
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ], [
-            // Patient info messages
+            // Patient messages
             'patient_name.required' => 'نام بیمار الزامی است.',
             'patient_name.string' => 'نام بیمار باید رشته باشد.',
             'patient_name.max' => 'نام بیمار نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
@@ -87,7 +88,7 @@ class DoctorVisitController extends Controller
             'patient_birthdate.min' => 'سن نمی‌تواند کمتر از ۰ باشد.',
             'patient_birthdate.max' => 'سن نمی‌تواند بیش از ۱۲۰ سال باشد.',
 
-            // Visit info messages
+            // Visit messages
             'doctor_id.required' => 'انتخاب پزشک الزامی است.',
             'doctor_id.exists' => 'پزشک انتخاب‌شده معتبر نیست.',
 
@@ -102,29 +103,32 @@ class DoctorVisitController extends Controller
             'description.max' => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
         ]);
 
-        // Create patient record
-        $patient = new Patient();
-        $patient->full_name = $request->patient_name;
-        $patient->phone = $request->patient_phone;
-        $patient->address = $request->patient_address;
-        $patient->gender = $request->patient_gender;
-        $patient->age = $request->patient_birthdate;
-        $patient->save();
+        // Find the visit and related patient
+        $visit = Visit::with('patient')->findOrFail($id);
+        $patient = $visit->patient;
 
-        // Create visit record
-        $visit = new Visit();
-        $visit->patient_id = $patient->id;
-        $visit->user_id = Auth::id();
-        $visit->doctor_id = $request->doctor_id;
-        $visit->visit_date = $request->visit_date_gregorian;
-        $visit->fee = $request->fee;
-        $visit->description = $request->description;
-        $visit->save();
+        // Update patient info
+        $patient->update([
+            'full_name' => $request->patient_name,
+            'phone' => $request->patient_phone,
+            'address' => $request->patient_address,
+            'gender' => $request->patient_gender,
+            'age' => $request->patient_birthdate,
+        ]);
+
+        // Update visit info
+        $visit->update([
+            'doctor_id' => $request->doctor_id,
+            'visit_date' => $request->visit_date_gregorian,
+            'fee' => $request->fee,
+            'description' => $request->description,
+        ]);
 
         return redirect()
-            ->back()
-            ->with('success', 'ویزیت بیمار با موفقیت ثبت شد.');
+            ->route('visits.index')
+            ->with('success', 'ویزیت با موفقیت بروزرسانی شد.');
     }
+
 
 
     /**
@@ -141,18 +145,11 @@ class DoctorVisitController extends Controller
     public function edit(string $id)
     {
         $doctors = Staff::where('role', 'doctor')->get();
-        $visit = Visit::with('patient')->where('id', $id)->get();
+        $visit = Visit::with('patient')->where('id', $id)->first();
         return Inertia::render('Visits/Edit', [
-            'doctors' => $doctors
+            'doctors' => $doctors,
+            'visit' => $visit
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**
