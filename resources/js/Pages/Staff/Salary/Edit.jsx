@@ -1,5 +1,6 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import Checkbox from '@/Components/Checkbox';
+import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -194,6 +195,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     }
                                     className="w-full"
                                 />
+                                <InputError message={errors.base_salary} />
                             </div>
 
                             <div>
@@ -204,6 +206,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     value={data.overtime_amount}
                                     className="bg-blueGray-50 w-full"
                                 />
+                                <InputError message={errors.overtime_amount} />
                             </div>
 
                             <div>
@@ -216,6 +219,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     }
                                     className="w-full"
                                 />
+                                <InputError message={errors.deductions} />
                             </div>
 
                             <div>
@@ -226,6 +230,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     value={data.total_paid}
                                     className="bg-blueGray-50 w-full font-semibold"
                                 />
+                                <InputError message={errors.total_paid} />
                             </div>
 
                             <div>
@@ -244,6 +249,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                         </option>
                                     ))}
                                 </select>
+                                <InputError message={errors.salary_month} />
                             </div>
 
                             <div>
@@ -257,6 +263,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                         )
                                     }
                                 />
+                                <InputError message={errors.payment_date} />
                             </div>
                         </div>
 
@@ -270,15 +277,10 @@ export default function Edit({ staff, salary, overTimes }) {
                                 rows={3}
                                 className="border-blueGray-200 focus:border-blueGray-400 w-full rounded-xl border px-3 py-2 text-sm shadow-sm focus:ring-0"
                             />
+                            <InputError message={errors.description} />
                         </div>
 
                         <div className="flex justify-start gap-3 pt-4">
-                            <Link
-                                href={route('staffs.salary.index', staff.id)}
-                                className="border-blueGray-300 text-blueGray-600 hover:bg-blueGray-50 rounded border px-4 py-2 text-sm transition"
-                            >
-                                بازگشت
-                            </Link>
                             <PrimaryButton
                                 type="submit"
                                 disabled={processing}
@@ -286,6 +288,12 @@ export default function Edit({ staff, salary, overTimes }) {
                             >
                                 ذخیره تغییرات
                             </PrimaryButton>
+                            <Link
+                                href={route('staffs.salary.index', staff.id)}
+                                className="border-blueGray-300 text-blueGray-600 hover:bg-blueGray-50 rounded border px-4 py-2 text-sm transition"
+                            >
+                                بازگشت
+                            </Link>
                         </div>
                     </form>
                 </div>
