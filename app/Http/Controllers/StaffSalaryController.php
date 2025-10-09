@@ -46,6 +46,7 @@ class StaffSalaryController extends Controller
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
+            'payment_date_gregorian' => 'required|date',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'nullable|array',
             'selectedOvertimes.*' => 'numeric|exists:overtimes,id',
@@ -150,7 +151,7 @@ class StaffSalaryController extends Controller
             'deductions' => $request->deductions ?? 0,
             'total_paid' => $request->total_paid,
             'salary_month' => $request->salary_month,
-            'payment_date' => $request->payment_date, // تاریخ میلادی
+            'payment_date' => $request->payment_date_gregorian, // تاریخ میلادی
             'description' => $request->description,
         ]);
 

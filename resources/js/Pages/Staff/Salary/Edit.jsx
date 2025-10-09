@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -42,15 +43,18 @@ export default function Edit({ staff, salary, overTimes }) {
         deductions: salary.deductions || 0,
         total_paid: salary.total_paid,
         salary_month: salary.salary_month || '',
-        payment_date: salary.payment_date
+        payment_date: salary.payment_date_gregorian
             ? new DateObject({
-                  date: salary.payment_date,
+                  date: moment(salary.payment_date_gregorian).format(
+                      'JYYYY/JMM/JDD',
+                  ),
                   calendar: persian,
                   locale: persian_en,
               }).format('YYYY/MM/DD')
-            : new DateObject({ calendar: persian, locale: persian_en }).format(
-                  'YYYY/MM/DD',
-              ),
+            : new DateObject({
+                  calendar: persian,
+                  locale: persian_en,
+              }).format('YYYY/MM/DD'),
         description: salary.description || '',
         selectedOvertimes: preSelectedOvertimes,
     });
@@ -96,6 +100,12 @@ export default function Edit({ staff, salary, overTimes }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const payment_date_gregorian = moment(
+            data.payment_date,
+            'jYYYY/jMM/jDD',
+        ).format('YYYY-MM-DD');
+
+        data.payment_date_gregorian = payment_date_gregorian;
 
         put(route('staffs.salary.update', [staff.id, salary.id]), {
             data: {

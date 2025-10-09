@@ -4,6 +4,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 const afghanMonths = [
@@ -138,7 +139,9 @@ export default function Index({ staff, salaries }) {
                                         ).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-2 text-right">
-                                        {salary.payment_date}
+                                        {moment(salary.payment_date).format(
+                                            'jYYYY/jMM/jDD',
+                                        )}
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {salary.description || '-'}
