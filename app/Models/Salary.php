@@ -11,8 +11,11 @@ class Salary extends Model
     protected $fillable = [
         "staff_id",
         "salary_month",
-        "amount_paid",
-        "status",
-        "description",
+        "base_salary",
+        "overtime_amount",
+        "deductions",
+        "total_paid",
+        "payment_date",
+        "description"
     ];
 }
