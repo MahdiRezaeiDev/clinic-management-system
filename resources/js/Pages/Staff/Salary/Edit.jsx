@@ -235,7 +235,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     onChange={(e) =>
                                         setData('salary_month', e.target.value)
                                     }
-                                    className="border-blueGray-200 focus:border-blueGray-400 w-full border px-3 py-2 text-sm shadow-sm focus:ring-0"
+                                    className="border-blueGray-200 focus:border-blueGray-400 w-full border px-10 py-2 text-sm shadow-sm focus:ring-0"
                                 >
                                     <option value="">انتخاب ماه</option>
                                     {afghanMonths.map((m) => (
