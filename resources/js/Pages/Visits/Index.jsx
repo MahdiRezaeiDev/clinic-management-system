@@ -78,7 +78,7 @@ export default function Index({ visits, doctors, filters }) {
                                 href={route('visits.create')}
                                 className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                             >
-                                پرداخت حقوق
+                                ثبت ویزیت
                             </Link>
                         </div>
 

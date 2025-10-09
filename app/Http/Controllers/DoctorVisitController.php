@@ -140,7 +140,11 @@ class DoctorVisitController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $doctors = Staff::where('role', 'doctor')->get();
+        $visit = Visit::with('patient')->where('id', $id)->get();
+        return Inertia::render('Visits/Edit', [
+            'doctors' => $doctors
+        ]);
     }
 
     /**
