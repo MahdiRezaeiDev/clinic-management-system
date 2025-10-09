@@ -4,11 +4,25 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
+const afghanMonths = [
+    { value: '1', label: 'حمل' },
+    { value: '2', label: 'ثور' },
+    { value: '3', label: 'جوزا' },
+    { value: '4', label: 'سرطان' },
+    { value: '5', label: 'اسد' },
+    { value: '6', label: 'سنبله' },
+    { value: '7', label: 'میزان' },
+    { value: '8', label: 'عقرب' },
+    { value: '9', label: 'قوس' },
+    { value: '10', label: 'جدی' },
+    { value: '11', label: 'دلو' },
+    { value: '12', label: 'حوت' },
+];
+
 export default function Index({ staff, salaries }) {
-    console.log(salaries);
+    console.log(staff);
 
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(false);
@@ -44,6 +58,11 @@ export default function Index({ staff, salaries }) {
         reset();
     };
 
+    const totalPaid = salaries.reduce(
+        (sum, ot) => sum + parseFloat(ot.total_paid),
+        0,
+    );
+
     return (
         <AuthenticatedLayout title={`حقوق پرسنل: ${staff.full_name}`}>
             <Head title={`حقوق ${staff.full_name}`} />
@@ -71,11 +90,13 @@ export default function Index({ staff, salaries }) {
                                     اضافه کاری
                                 </th>
                                 <th className="px-6 py-3 text-right">کسورات</th>
-                                <th className="px-6 py-3 text-right">
-                                    تاریخ پرداخت
-                                </th>
+                                <th className="px-6 py-3 text-right">ماه</th>
+
                                 <th className="px-6 py-3 text-right">
                                     مبلغ پرداخت نهایی
+                                </th>
+                                <th className="px-6 py-3 text-right">
+                                    تاریخ پرداخت
                                 </th>
                                 <th className="px-6 py-3 text-right">
                                     توضیحات
@@ -96,14 +117,29 @@ export default function Index({ staff, salaries }) {
                                         {salary.base_salary}
                                     </td>
                                     <td className="px-6 py-2 text-right">
-                                        {moment(salary.salary_month).format(
-                                            'jYYYY/jMM/jDD',
-                                        )}{' '}
+                                        {salary.overtimes.reduce(
+                                            (sum, ot) =>
+                                                sum + parseFloat(ot.total),
+                                            0,
+                                        )}
                                     </td>
+                                    <td className="px-6 py-2 text-right">
+                                        {salary.deductions}
+                                    </td>
+                                    <td className="px-6 py-2 text-right">
+                                        {
+                                            afghanMonths[salary.salary_month]
+                                                .label
+                                        }
+                                    </td>
+
                                     <td className="px-6 py-2 text-right">
                                         {parseFloat(
                                             salary.total_paid,
                                         ).toLocaleString()}
+                                    </td>
+                                    <td className="px-6 py-2 text-right">
+                                        {salary.payment_date}
                                     </td>
                                     <td className="px-6 py-2 text-right">
                                         {salary.description || '-'}
@@ -141,7 +177,7 @@ export default function Index({ staff, salaries }) {
                                 <td className="px-6 py-2 text-right">
                                     {totalPaid.toLocaleString()}
                                 </td>
-                                <td colSpan="2"></td>
+                                <td colSpan="6"></td>
                             </tr>
                         </tfoot>
                     </table>

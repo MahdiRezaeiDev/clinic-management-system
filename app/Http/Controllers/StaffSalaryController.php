@@ -12,16 +12,17 @@ class StaffSalaryController extends Controller
 {
     public function index(Staff $staff)
     {
-        $salaries = Staff::with(['salaries' => function ($q) {
-            $q->orderBy('salary_month', 'desc');
-        }, 'overtimes'])
-            ->find($staff->id);
+        $staffWithSalaries = $staff->load(['salaries' => function ($q) {
+            $q->orderBy('salary_month', 'asc')
+                ->with('overtimes'); // load overtimes for each salary
+        }]);
 
         return Inertia::render('Staff/Salary/Index', [
-            'staff' => $staff,
-            'salaries' => $salaries,
+            'staff' => $staffWithSalaries,
+            'salaries' => $staffWithSalaries->salaries,
         ]);
     }
+
 
     public function create(Staff $staff)
     {
@@ -82,9 +83,17 @@ class StaffSalaryController extends Controller
 
     public function edit(Staff $staff, Salary $salary)
     {
+        $overtimes = Overtime::where('staff_id', $staff->id)
+            ->where(function ($query) use ($salary) {
+                $query->whereNull('salary_id') // unpaid ones
+                    ->orWhere('salary_id', $salary->id); // already linked to this salary
+            })
+            ->get();
+
         return Inertia::render('Staff/Salary/Edit', [
             'staff' => $staff,
             'salary' => $salary,
+            'overTimes' => $overtimes
         ]);
     }
 
