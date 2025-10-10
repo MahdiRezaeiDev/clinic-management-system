@@ -38,7 +38,7 @@ export default function DrugSellCard() {
 
     return (
         <div className="w-full rounded-2xl border border-gray-100 bg-white shadow-xl">
-            <div className="rounded-t-2xl bg-gray-800 p-6">
+            <div className="bg-blueGray-600 rounded-t-2xl p-6">
                 <h2 className="text-xl font-bold text-white">
                     فروش دارو بدون نسخه
                 </h2>
