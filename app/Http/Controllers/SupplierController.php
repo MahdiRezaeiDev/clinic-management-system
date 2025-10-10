@@ -70,8 +70,6 @@ class SupplierController extends Controller
             ->with('success', 'شرکت همکار مدنظر شما موفقانه ثبت گردید.');
     }
 
-
-
     public function show(Supplier $supplier)
     {
         $purchases = PurchasedMedicine::with('supplier')
@@ -112,21 +110,57 @@ class SupplierController extends Controller
     }
 
 
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Supplier $supplier)
     {
-        //
+        return Inertia::render('Suppliers/Edit', [
+            'supplier' => $supplier
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Supplier $supplier)
     {
-        //
+        $request->validate([
+            'company_name'   => 'required|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
+            'phone'          => 'nullable|string|max:30',
+            'address'        => 'nullable|string|max:255',
+            'description'    => 'nullable|string|max:1000',
+        ], [
+            'company_name.required' => 'نام شرکت الزامی است.',
+            'company_name.string'   => 'نام شرکت باید رشته باشد.',
+            'company_name.max'      => 'نام شرکت نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
+
+            'contact_person.string' => 'نام شخص تماس باید رشته باشد.',
+            'contact_person.max'    => 'نام شخص تماس نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
+
+            'phone.string'          => 'شماره تماس باید رشته باشد.',
+            'phone.max'             => 'شماره تماس نمی‌تواند بیش از ۳۰ کاراکتر باشد.',
+
+            'address.string'        => 'آدرس باید رشته باشد.',
+            'address.max'           => 'آدرس نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
+
+            'description.string'    => 'توضیحات باید رشته باشد.',
+            'description.max'       => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
+        ]);
+
+        // Update the supplier
+        $supplier->update([
+            'company_name'   => $request->company_name,
+            'contact_person' => $request->contact_person,
+            'phone'          => $request->phone,
+            'address'        => $request->address,
+            'description'    => $request->description,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', 'شرکت همکار مدنظر شما موفقانه ویرایش شد.');
     }
 
     /**
