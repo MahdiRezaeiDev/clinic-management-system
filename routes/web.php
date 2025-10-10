@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     Route::resource('staffs', StaffController::class);
 
-    // Nested Staff Routes: Salary, Overtime, Payments
+    // Nested Staff Routes: Salary, Overtime,
     Route::prefix('staffs/{staff}')->name('staffs.')->group(function () {
         Route::resource('salary', StaffSalaryController::class);
         Route::resource('overtime', StaffOvertimeController::class);

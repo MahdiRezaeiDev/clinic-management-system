@@ -70,8 +70,10 @@ class StaffOvertimeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Staff $staff, Overtime $overtime)
     {
-        //
+        $overtime->delete();
+
+        return redirect()->back()->with('success', 'اضافه کاری مدنظر موفقانه حذف گردید.');
     }
 }

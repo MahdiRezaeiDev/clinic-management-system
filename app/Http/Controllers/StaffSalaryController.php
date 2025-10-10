@@ -24,7 +24,6 @@ class StaffSalaryController extends Controller
         ]);
     }
 
-
     public function create(Staff $staff)
     {
         $unpaidOvertimes = Overtime::where('staff_id', $staff->id)
@@ -97,7 +96,6 @@ class StaffSalaryController extends Controller
         return redirect()->route('staffs.salary.index', $staff->id)
             ->with('success', 'حقوق با موفقیت ثبت شد.');
     }
-
 
     public function edit(Staff $staff, Salary $salary)
     {
