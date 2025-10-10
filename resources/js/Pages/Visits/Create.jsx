@@ -137,12 +137,11 @@ export default function create({ doctors }) {
                                             e.target.value,
                                         )
                                     }
-                                    className={inputClass}
+                                    className="peer block w-full rounded-sm border border-gray-300 px-10 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 >
                                     <option value="" disabled hidden />
                                     <option value="male">مرد</option>
                                     <option value="female">زن</option>
-                                    <option value="other">دیگر</option>
                                 </select>
                                 <label
                                     htmlFor="patient_gender"

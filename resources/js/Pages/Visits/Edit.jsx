@@ -142,7 +142,6 @@ export default function Edit({ visit, doctors }) {
                                     <option value="" disabled hidden />
                                     <option value="male">مرد</option>
                                     <option value="female">زن</option>
-                                    <option value="other">دیگر</option>
                                 </select>
                                 <label
                                     htmlFor="patient_gender"
