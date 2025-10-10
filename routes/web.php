@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
 
     // Nested medicine Routes: payment,
     Route::prefix('medicine/{medicine}')->name('medicine.')->group(function () {
-        Route::resource('payments', PaymentsController::class);
+        Route::resource('payments', PaymentsController::class)->except(['create', 'edit', 'show']);
     });
 
 

@@ -24,13 +24,6 @@ class PaymentsController extends Controller
             'payments' => $payments,
         ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        dd('Here we are');
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -98,56 +91,87 @@ class PaymentsController extends Controller
     {
         $validated = $request->validate(
             [
-                'payment_date'    => 'required|date',
-                'amount'          => 'required|numeric|min:1',
-                'payment_method'  => 'required|string|max:255',
-                'description'     => 'nullable|string|max:1000',
-                'user_id'         => 'required|integer|exists:users,id',
+                'payment_date' => 'required|date',
+                'amount'       => 'required|numeric|min:1',
+                'description'  => 'nullable|string|max:1000',
             ],
             [
-                'payment_date.required'   => 'تاریخ پرداخت الزامی است.',
-                'payment_date.date'       => 'فرمت تاریخ پرداخت نامعتبر است.',
-                'amount.required'         => 'مبلغ پرداخت الزامی است.',
-                'amount.numeric'          => 'مبلغ پرداخت باید عددی باشد.',
-                'amount.min'              => 'مبلغ پرداخت نمی‌تواند کمتر از ۱ باشد.',
-                'payment_method.required' => 'روش پرداخت الزامی است.',
-                'payment_method.string'   => 'روش پرداخت باید رشته‌ای از حروف باشد.',
-                'payment_method.max'      => 'روش پرداخت نباید بیش از ۲۵۵ کاراکتر باشد.',
-                'description.string'      => 'توضیحات باید به صورت متن وارد شود.',
-                'description.max'         => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
-                'user_id.required'        => 'کاربر الزامی است.',
-                'user_id.exists'          => 'کاربر انتخاب شده معتبر نیست.',
+                'payment_date.required' => 'تاریخ پرداخت الزامی است.',
+                'payment_date.date'     => 'فرمت تاریخ پرداخت نامعتبر است.',
+                'amount.required'       => 'مبلغ پرداخت الزامی است.',
+                'amount.numeric'        => 'مبلغ پرداخت باید عددی باشد.',
+                'amount.min'            => 'مبلغ پرداخت نمی‌تواند کمتر از ۱ باشد.',
+                'description.string'    => 'توضیحات باید به صورت متن وارد شود.',
+                'description.max'       => 'توضیحات نمی‌تواند بیش از ۱۰۰0 کاراکتر باشد.',
             ]
         );
 
+        // مجموع پرداخت‌های قبلی به جز این پرداخت
+        $totalPaidExcludingCurrent = $medicine->payments()->where('id', '!=', $payment->id)->sum('amount');
+
+        // بررسی مجموع جدید با پرداخت ویرایش شده
+        $newTotal = $totalPaidExcludingCurrent + $validated['amount'];
+
+        $remaining_amount = abs($medicine->total_amount - $totalPaidExcludingCurrent);
+
+        if ($newTotal > $medicine->total_amount) {
+            return back()
+                ->withErrors([
+                    'amount' => 'مجموع پرداخت‌ها نمی‌تواند بیشتر از مبلغ باقی مانده (' . number_format($remaining_amount) . ') باشد.',
+                ])
+                ->withInput();
+        }
+
+        // به‌روزرسانی پرداخت
         $payment->update($validated);
+
+        // به‌روزرسانی وضعیت پرداخت دارو
+        if ($newTotal >= $medicine->total_amount) {
+            $medicine->status = 'paid';
+        } else {
+            $medicine->status = 'unpaid';
+        }
+
+        $medicine->paid_amount = $newTotal;
+        $medicine->remaining_amount = $medicine->total_amount - $newTotal;
+        $medicine->save();
 
         return redirect()
             ->route('medicine.payments.index', $medicine->id)
-            ->with('success', 'اطلاعات پرداخت با موفقیت ویرایش شد.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        dd('Show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+            ->with('success', 'پرداخت با موفقیت ویرایش شد.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PurchasedMedicine $medicine, PurchasedMedicinePayment $payment)
     {
-        //
+        // Ensure the payment belongs to this medicine
+        if ($payment->purchased_medicine_id !== $medicine->id) {
+            abort(404);
+        }
+
+        // Subtract the payment amount from totals
+        $totalPaidExcluding = $medicine->payments()->where('id', '!=', $payment->id)->sum('amount');
+
+        // Delete the payment
+        $payment->delete();
+
+        // Update the medicine totals
+        $medicine->paid_amount = $totalPaidExcluding;
+        $medicine->remaining_amount = $medicine->total_amount - $totalPaidExcluding;
+
+        // Update status
+        if ($totalPaidExcluding >= $medicine->total_amount) {
+            $medicine->status = 'paid';
+        } else {
+            $medicine->status = 'unpaid';
+        }
+
+        $medicine->save();
+
+        return redirect()
+            ->route('medicine.payments.index', $medicine->id)
+            ->with('success', 'پرداخت با موفقیت حذف شد.');
     }
 }
