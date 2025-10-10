@@ -168,4 +168,19 @@ class StaffSalaryController extends Controller
             ->route('staffs.salary.index', $staff->id)
             ->with('success', 'حقوق با موفقیت ویرایش شد.');
     }
+
+
+    public function destroy(Staff $staff, Salary $salary)
+    {
+        // unlink overtimes
+        $salary->overtimes()->update([
+            'salary_id' => null,
+            'status' => 0, // اختیاری: اگر می‌خواهی وضعیت unpaid شود
+        ]);
+
+        // حالا حقوق را حذف کن
+        $salary->delete();
+
+        return redirect()->back()->with('success', 'حقوق مدنظر با موفقیت حذف شد.');
+    }
 }

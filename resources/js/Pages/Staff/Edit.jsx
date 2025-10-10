@@ -1,3 +1,4 @@
+import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -52,11 +53,7 @@ export default function Edit({ staff }) {
                                 }
                                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                             />
-                            {errors.name && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.name}
-                                </p>
-                            )}
+                            <InputError message={errors.full_name} />
                         </div>
 
                         {/* Phone */}
@@ -72,11 +69,7 @@ export default function Edit({ staff }) {
                                 }
                                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                             />
-                            {errors.phone && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.phone}
-                                </p>
-                            )}
+                            <InputError message={errors.phone} />
                         </div>
 
                         {/* Role */}
@@ -98,11 +91,7 @@ export default function Edit({ staff }) {
                                     </option>
                                 ))}
                             </select>
-                            {errors.role && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.role}
-                                </p>
-                            )}
+                            <InputError message={errors.role} />
                         </div>
 
                         {/* Salary */}
@@ -118,11 +107,7 @@ export default function Edit({ staff }) {
                                 }
                                 className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                             />
-                            {errors.base_salary && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.base_salary}
-                                </p>
-                            )}
+                            <InputError message={errors.base_salary} />
                         </div>
 
                         {/* Submit */}

@@ -1,3 +1,4 @@
+import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -48,11 +49,7 @@ export default function Create() {
                                     }
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 />
-                                {errors.full_name && (
-                                    <p className="mt-1 text-xs text-red-600">
-                                        {errors.full_name}
-                                    </p>
-                                )}
+                                <InputError message={errors.full_name} />
                             </div>
 
                             {/* Phone */}
@@ -68,11 +65,7 @@ export default function Create() {
                                     }
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 />
-                                {errors.phone && (
-                                    <p className="mt-1 text-xs text-red-600">
-                                        {errors.phone}
-                                    </p>
-                                )}
+                                <InputError message={errors.phone} />
                             </div>
 
                             {/* Role */}
@@ -89,7 +82,7 @@ export default function Create() {
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 >
                                     <option value="">انتخاب نقش</option>
-                                    <option value="doctor">پزشک</option>
+                                    <option value="doctor">داکتر</option>
                                     <option value="nurse">نرس</option>
                                     <option value="pharmacist">فارمسیست</option>
                                     <option value="lab">لابراتوار</option>
@@ -101,11 +94,7 @@ export default function Create() {
                                         خدمات / سایر
                                     </option>
                                 </select>
-                                {errors.role && (
-                                    <p className="mt-1 text-xs text-red-600">
-                                        {errors.role}
-                                    </p>
-                                )}
+                                <InputError message={errors.role} />
                             </div>
 
                             {/* Base Salary */}
@@ -121,11 +110,7 @@ export default function Create() {
                                     }
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 />
-                                {errors.base_salary && (
-                                    <p className="mt-1 text-xs text-red-600">
-                                        {errors.base_salary}
-                                    </p>
-                                )}
+                                <InputError message={errors.base_salary} />
                             </div>
 
                             {/* Buttons */}
