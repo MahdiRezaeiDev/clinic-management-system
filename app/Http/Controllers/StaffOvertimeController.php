@@ -96,18 +96,49 @@ class StaffOvertimeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Staff $staff, Overtime $overtime)
     {
-        //
+        return Inertia::render('Staff/OverTime/Edit', [
+            'staff' => $staff,
+            'overtime' => $overtime,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Staff $staff, Overtime $overtime)
     {
-        //
+        // اعتبارسنجی داده‌ها
+        $validated = $request->validate([
+            'date_gregorian' => 'required|date',
+            'hours' => 'required|numeric|min:0',
+            'rate' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:255',
+        ], [
+            'date_gregorian.required' => 'تاریخ الزامی است.',
+            'date_gregorian.date' => 'فرمت تاریخ معتبر نیست.',
+            'hours.required' => 'تعداد ساعت الزامی است.',
+            'hours.numeric' => 'تعداد ساعت باید عددی باشد.',
+            'rate.required' => 'نرخ الزامی است.',
+            'rate.numeric' => 'نرخ باید عددی باشد.',
+            'total.required' => 'مجموع الزامی است.',
+            'total.numeric' => 'مجموع باید عددی باشد.',
+            'description.max' => 'توضیحات نباید بیش از ۲۵۵ حرف باشد.',
+        ]);
+
+        $validated['date'] = $validated['date_gregorian'];
+
+        // بروزرسانی رکورد
+        $overtime->update($validated);
+
+        // بازگشت به صفحه‌ی لیست اضافه‌کاری‌ها با پیام موفقیت
+        return redirect()
+            ->route('staffs.overtime.index', $staff->id)
+            ->with('success', 'اطلاعات اضافه‌کاری با موفقیت بروزرسانی شد.');
     }
+
 
     /**
      * Remove the specified resource from storage.
