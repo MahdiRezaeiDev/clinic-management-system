@@ -5,7 +5,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+import { Check, Cross } from 'lucide-react';
 import { useState } from 'react';
 
 export default function PurchasePayments({
@@ -16,23 +17,15 @@ export default function PurchasePayments({
     const [confirmingPayment, setConfirmingPayment] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
     const [deletePaymentId, setDeletePaymentId] = useState(null);
-
-    const {
-        delete: destroy,
-        post,
-        put,
-        data,
-        setData,
-        processing,
-        reset,
-        errors,
-        clearErrors,
-    } = useForm({
+    const [data, setData] = useState({
         id: null,
         amount: '',
         payment_date: '',
         description: '',
     });
+
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
 
     const totalPaid = payments.reduce(
         (sum, p) => sum + parseFloat(p.amount),
@@ -42,47 +35,28 @@ export default function PurchasePayments({
 
     function closeModal() {
         setConfirmingPayment(false);
-        reset();
-        clearErrors();
-    }
-
-    function openEditModal(payment) {
-        setData({
-            id: payment.id,
-            amount: payment.amount,
-            payment_date: payment.payment_date,
-            description: payment.description,
-        });
-        setConfirmingPayment(true);
+        setData({ id: null, amount: '', payment_date: '', description: '' });
+        setErrors({});
     }
 
     function savePayment(e) {
         e.preventDefault();
+        setProcessing(true);
 
+        // Simulate saving/updating payment
         if (data.id) {
-            // Edit payment
-            put(route('medicine.payments.update', [medicine.id, data.id]), {
-                onSuccess: () => {
-                    // Update payments locally
-                    setPayments((prev) =>
-                        prev.map((p) =>
-                            p.id === data.id ? { ...p, ...data } : p,
-                        ),
-                    );
-                    closeModal();
-                },
-            });
+            // Edit existing payment
+            setPayments((prev) =>
+                prev.map((p) => (p.id === data.id ? { ...p, ...data } : p)),
+            );
         } else {
             // Add new payment
-            post(route('medicine.payments.store', medicine.id), {
-                onSuccess: () => {
-                    // Add payment locally (simulate ID)
-                    const newPayment = { ...data, id: Date.now() };
-                    setPayments((prev) => [...prev, newPayment]);
-                    closeModal();
-                },
-            });
+            const newPayment = { ...data, id: Date.now() };
+            setPayments((prev) => [...prev, newPayment]);
         }
+
+        setProcessing(false);
+        closeModal();
     }
 
     function handleDeletePayment(id) {
@@ -91,18 +65,9 @@ export default function PurchasePayments({
     }
 
     function confirmDelete() {
-        destroy(
-            route('medicine.payments.destroy', [medicine.id, deletePaymentId]),
-            {
-                onSuccess: () => {
-                    setPayments((prev) =>
-                        prev.filter((p) => p.id !== deletePaymentId),
-                    );
-                    setConfirmingDelete(false);
-                    setDeletePaymentId(null);
-                },
-            },
-        );
+        setPayments((prev) => prev.filter((p) => p.id !== deletePaymentId));
+        setConfirmingDelete(false);
+        setDeletePaymentId(null);
     }
 
     return (
@@ -111,7 +76,8 @@ export default function PurchasePayments({
 
             <div className="m-6 mx-auto max-w-4xl bg-gray-50 font-sans print:bg-white">
                 {/* Header */}
-                <div className="mb-6 flex items-center justify-between rounded-t-lg bg-blue-700 p-6 text-white print:mb-4 print:rounded-none print:bg-white print:text-black">
+                <div className="bg-blueGray-600 mb-6 flex items-center justify-between rounded-t-lg p-6 text-white print:mb-4 print:rounded-none print:bg-white print:text-black">
+                    {/* Logo and Store Name */}
                     <div className="flex items-center">
                         <img
                             src={log}
@@ -125,6 +91,8 @@ export default function PurchasePayments({
                             <p className="mt-1 text-gray-200">بیل خرید</p>
                         </div>
                     </div>
+
+                    {/* Invoice Info */}
                     <div className="text-right">
                         <p className="text-lg font-semibold">
                             تاریخ بیل: {medicine.purchase_date}
@@ -142,17 +110,17 @@ export default function PurchasePayments({
                             اطلاعات تامین‌کننده
                         </h2>
                         <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">شرکت:</span>{' '}
+                            <span className="text-sm font-semibold">شرکت:</span>
                             {medicine.supplier.company_name}
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 شماره تماس:
-                            </span>{' '}
+                            </span>
                             {medicine.supplier.phone}
                         </p>
                         <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">آدرس:</span>{' '}
+                            <span className="text-sm font-semibold">آدرس:</span>
                             {medicine.supplier.address || '-'}
                         </p>
                     </div>
@@ -163,19 +131,19 @@ export default function PurchasePayments({
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 توضیحات :
-                            </span>{' '}
+                            </span>
                             {medicine.description}
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 تاریخ خرید:
-                            </span>{' '}
+                            </span>
                             {medicine.purchase_date}
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 مبلغ کل:
-                            </span>{' '}
+                            </span>
                             {medicine.total_amount.toLocaleString()} AFN
                         </p>
                     </div>
@@ -184,24 +152,25 @@ export default function PurchasePayments({
                 {/* Payments Table */}
                 <div className="mx-3 overflow-hidden rounded-lg border shadow-sm print:border print:shadow-none">
                     <table className="min-w-full table-auto border-collapse">
-                        <thead className="bg-gray-200 print:bg-gray-100">
+                        <thead className="bg-blueGray-600 print:bg-gray-100">
                             <tr>
-                                <th className="border-b px-4 py-2 text-right">
+                                <th className="border-b p-2 text-right text-sm text-white">
                                     مبلغ
                                 </th>
-                                <th className="border-b px-4 py-2 text-right">
+                                <th className="border-b p-2 text-right text-sm text-white">
                                     روش پرداخت
                                 </th>
-                                <th className="border-b px-4 py-2 text-right">
+                                <th className="border-b p-2 text-right text-sm text-white">
                                     تاریخ پرداخت
                                 </th>
-                                <th className="border-b px-4 py-2 text-right">
-                                    توضیحات
-                                </th>
-                                <th className="border-b px-4 py-2 text-center">
+
+                                <th className="border-b p-2 text-center text-sm text-white">
                                     وضعیت
                                 </th>
-                                <th className="border-b px-4 py-2 text-center">
+                                <th className="border-b p-2 text-right text-sm text-white">
+                                    توضیحات
+                                </th>
+                                <th className="border-b p-2 text-center text-sm text-white">
                                     عملیات
                                 </th>
                             </tr>
@@ -221,32 +190,43 @@ export default function PurchasePayments({
                                     <td className="p-2 text-right text-sm">
                                         {p.payment_date}
                                     </td>
+                                    <td className="p-2 text-left text-sm">
+                                        {p.amount === remaining ? (
+                                            <Cross className="mx-auto h-4 w-4" />
+                                        ) : (
+                                            <Check className="mx-auto h-4 w-4 font-semibold text-green-600" />
+                                        )}
+                                    </td>
                                     <td className="p-2 text-right text-sm">
                                         {p.description || '-'}
                                     </td>
-                                    <td className="p-2 text-center text-sm">
-                                        <span
-                                            className={`rounded-full px-2 py-1 text-xs ${p.amount === remaining ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'}`}
-                                        >
-                                            {p.amount === remaining
-                                                ? 'پرداخت نشده'
-                                                : 'پرداخت شده'}
-                                        </span>
-                                    </td>
-                                    <td className="space-x-2 p-2 text-center">
+
+                                    <td className="flex justify-center gap-2 p-2">
+                                        {/* Edit Button */}
                                         <button
                                             type="button"
-                                            onClick={() => openEditModal(p)}
-                                            className="text-sm text-blue-600 hover:underline"
+                                            onClick={() => {
+                                                setData({
+                                                    amount: p.amount,
+                                                    payment_date:
+                                                        p.payment_date,
+                                                    description: p.description,
+                                                    id: p.id,
+                                                });
+                                                setConfirmingPayment(true);
+                                            }}
+                                            className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-200"
                                         >
                                             ویرایش
                                         </button>
+
+                                        {/* Delete Button */}
                                         <button
                                             type="button"
                                             onClick={() =>
                                                 handleDeletePayment(p.id)
                                             }
-                                            className="text-sm text-red-600 hover:underline"
+                                            className="rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
                                         >
                                             حذف
                                         </button>
@@ -254,28 +234,28 @@ export default function PurchasePayments({
                                 </tr>
                             ))}
                         </tbody>
-                        <tfoot className="bg-gray-200 font-semibold print:bg-gray-300">
+                        <tfoot className="bg-blueGray-600 font-semibold print:bg-gray-300">
                             <tr>
-                                <td className="border-t px-4 py-2 text-right">
+                                <td className="p-2 text-right text-sm text-white">
                                     جمع کل پرداخت‌ها
                                 </td>
-                                <td className="border-t px-4 py-2 text-right">
+                                <td className="p-2 text-right text-sm text-white">
                                     {totalPaid.toLocaleString()}
                                 </td>
                                 <td
-                                    className="border-t px-4 py-2"
+                                    className="p-2 text-sm text-white"
                                     colSpan={4}
                                 ></td>
                             </tr>
                             <tr>
-                                <td className="border-t px-4 py-2 text-right">
+                                <td className="p-2 text-right text-sm text-white">
                                     باقی مانده
                                 </td>
-                                <td className="border-t px-4 py-2 text-right font-bold text-red-600">
+                                <td className="p-2 text-right text-sm font-bold text-white">
                                     {remaining.toLocaleString()}
                                 </td>
                                 <td
-                                    className="border-t px-4 py-2"
+                                    className="p-2 text-sm text-white"
                                     colSpan={4}
                                 ></td>
                             </tr>
@@ -290,7 +270,7 @@ export default function PurchasePayments({
                     </PrimaryButton>
                 </div>
 
-                {/* Payment Modal */}
+                {/* ✅ Payment Modal */}
                 <Modal show={confirmingPayment} onClose={closeModal}>
                     <form onSubmit={savePayment} className="space-y-4 p-6">
                         <h2 className="text-lg font-medium text-gray-900">
@@ -306,8 +286,9 @@ export default function PurchasePayments({
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                                 value={data.amount}
                                 onChange={(e) =>
-                                    setData('amount', e.target.value)
+                                    setData({ ...data, amount: e.target.value })
                                 }
+                                placeholder="مبلغ پرداخت"
                                 required
                             />
                             <InputError message={errors.amount} />
@@ -320,10 +301,10 @@ export default function PurchasePayments({
                             <AfghanDatePicker
                                 value={data.payment_date}
                                 onChange={(v) =>
-                                    setData(
-                                        'payment_date',
-                                        v.format('YYYY-MM-DD'),
-                                    )
+                                    setData({
+                                        ...data,
+                                        payment_date: v.format('YYYY-MM-DD'),
+                                    })
                                 }
                             />
                             <InputError message={errors.payment_date} />
@@ -338,8 +319,12 @@ export default function PurchasePayments({
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                                 value={data.description}
                                 onChange={(e) =>
-                                    setData('description', e.target.value)
+                                    setData({
+                                        ...data,
+                                        description: e.target.value,
+                                    })
                                 }
+                                placeholder="توضیحات پرداخت"
                             />
                             <InputError message={errors.description} />
                         </div>
@@ -355,17 +340,17 @@ export default function PurchasePayments({
                     </form>
                 </Modal>
 
-                {/* Delete Confirmation Modal */}
+                {/* ✅ Delete Confirmation Modal */}
                 <Modal
                     show={confirmingDelete}
                     onClose={() => setConfirmingDelete(false)}
                 >
                     <div className="space-y-4 p-6">
-                        <h2 className="text-lg font-medium text-gray-900">
+                        <h2 className="text-lg font-semibold text-gray-900">
                             حذف پرداخت
                         </h2>
                         <p>
-                            آیا از حذف این پرداخت اطمینان دارید؟ این عملیات قابل
+                            آیا از حذف این پرداخت مطمئن هستید؟ این عملیات قابل
                             بازگشت نیست.
                         </p>
                         <div className="mt-4 flex justify-end gap-3">
