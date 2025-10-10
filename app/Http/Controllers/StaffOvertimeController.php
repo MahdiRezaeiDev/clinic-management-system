@@ -14,14 +14,20 @@ class StaffOvertimeController extends Controller
      */
     public function index(Staff $staff)
     {
-        $overtimes = Staff::with(['salaries', 'overtimes'])
-            ->where('id', $staff)
+        // Get all overtimes for this staff (whether assigned or not)
+        $overtimes = Overtime::with('salary')
+            ->where('staff_id', $staff->id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         dd($overtimes);
 
-        return Inertia::render('Staff/OverTime/Index');
+        return Inertia::render('Staff/OverTime/Index', [
+            'staff' => $staff,
+            'overtimes' => $overtimes,
+        ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

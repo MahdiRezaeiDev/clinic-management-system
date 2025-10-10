@@ -15,4 +15,9 @@ class Overtime extends Model
         "total_amount",
         "date_paid"
     ];
+
+    public function salary()
+    {
+        return $this->belongsTo(Salary::class);
+    }
 }

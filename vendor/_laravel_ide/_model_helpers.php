@@ -661,6 +661,7 @@ namespace App\Models {
      * @property mixed $salary_id
      * @property mixed $staff_id
      * @property int $id
+     * @property-read \App\Models\Salary $salary
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereStaffId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereSalaryId($value)
