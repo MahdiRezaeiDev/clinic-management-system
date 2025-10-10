@@ -38,7 +38,6 @@ class DoctorVisitController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -94,8 +93,6 @@ class DoctorVisitController extends Controller
             ->route('visits.index')
             ->with('success', 'ویزیت جدید با موفقیت ثبت شد.');
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -174,8 +171,6 @@ class DoctorVisitController extends Controller
             ->with('success', 'ویزیت با موفقیت بروزرسانی شد.');
     }
 
-
-
     /**
      * Display the specified resource.
      */
@@ -200,8 +195,11 @@ class DoctorVisitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Visit $visit)
     {
-        //
+        $visit->delete();
+
+        return redirect()
+            ->back()->with('success', 'ویزیت مدنظر شما موفقانه حذف گردید.');
     }
 }

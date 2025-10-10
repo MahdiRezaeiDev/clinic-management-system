@@ -10,9 +10,9 @@ import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function Index({ visits, doctors, filters }) {
-    const [confirmingStaffDeletion, setConfirmingStaffDeletion] =
+    const [confirmingVisitDeletion, setConfirmingVisitDeletion] =
         useState(false);
-    const [staffId, setStaffId] = useState(null);
+    const [visitId, setVisitId] = useState(null);
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
 
@@ -32,14 +32,14 @@ export default function Index({ visits, doctors, filters }) {
         clearErrors,
     } = useForm();
 
-    const confirmStaffDeletion = (id) => {
-        setConfirmingStaffDeletion(true);
-        setStaffId(id);
+    const confirmVisitDeletion = (id) => {
+        setConfirmingVisitDeletion(true);
+        setVisitId(id);
     };
 
     const deleteStaff = (e) => {
         e.preventDefault();
-        destroy(route('staffs.destroy', staffId), {
+        destroy(route('visits.destroy', visitId), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => console.log(errors),
@@ -48,8 +48,8 @@ export default function Index({ visits, doctors, filters }) {
     };
 
     const closeModal = () => {
-        setConfirmingStaffDeletion(false);
-        setStaffId(null);
+        setConfirmingVisitDeletion(false);
+        setVisitId(null);
         clearErrors();
         reset();
     };
@@ -140,6 +140,9 @@ export default function Index({ visits, doctors, filters }) {
                                             تاریخ مراجعه
                                         </th>
                                         <th className="px-6 py-3 text-right text-sm">
+                                            تاریخ مراجعه
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-sm">
                                             عملیات
                                         </th>
                                     </tr>
@@ -177,6 +180,9 @@ export default function Index({ visits, doctors, filters }) {
                                                         visit.visit_date,
                                                     ).format('jYYYY/jMM/jDD')}
                                                 </td>
+                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                    {visit.description}
+                                                </td>
 
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     <Dropdown>
@@ -198,7 +204,7 @@ export default function Index({ visits, doctors, filters }) {
                                                             <button
                                                                 className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
                                                                 onClick={() =>
-                                                                    confirmStaffDeletion(
+                                                                    confirmVisitDeletion(
                                                                         visit.id,
                                                                     )
                                                                 }
@@ -247,7 +253,7 @@ export default function Index({ visits, doctors, filters }) {
             </div>
 
             {/* Delete Modal */}
-            <Modal show={confirmingStaffDeletion} onClose={closeModal}>
+            <Modal show={confirmingVisitDeletion} onClose={closeModal}>
                 <form onSubmit={deleteStaff} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
                         آیا مطمئن هستید که می‌خواهید این پرسنل را حذف کنید؟
