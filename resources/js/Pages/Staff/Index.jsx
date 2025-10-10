@@ -201,7 +201,7 @@ export default function Index({ staffs, filters }) {
                                                     >
                                                         اضافه کاری
                                                     </Link>
-                                                    <Link
+                                                    {/* <Link
                                                         className="rounded-md bg-purple-50 px-3 py-1 font-medium text-purple-600 transition hover:bg-purple-100"
                                                         href={route(
                                                             'staffs.edit',
@@ -209,7 +209,7 @@ export default function Index({ staffs, filters }) {
                                                         )}
                                                     >
                                                         گزارش حقوق
-                                                    </Link>
+                                                    </Link> */}
                                                 </td>
 
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">

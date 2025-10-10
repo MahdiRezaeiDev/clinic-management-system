@@ -10,10 +10,13 @@ class Overtime extends Model
     use HasFactory; // <-- this is required!
     protected $fillable = [
         "staff_id",
+        "salary_id",
+        "date",
         "hours",
-        "rate_per_hour",
-        "total_amount",
-        "date_paid"
+        "rate",
+        "total",
+        "approved_by",
+        "description",
     ];
 
     public function salary()
