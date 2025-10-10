@@ -54,16 +54,61 @@ class DoctorVisitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function update(Request $request, $id)
+    public function store(Request $request)
     {
-
         $request->validate([
             // Patient info
             'patient_name' => 'required|string|max:255',
             'patient_phone' => 'nullable|string|max:20',
             'patient_address' => 'nullable|string|max:255',
             'patient_gender' => 'nullable|in:male,female,other',
-            'patient_birthdate' => 'nullable|integer|min:0|max:120',
+            'patient_age' => 'nullable|integer|min:0|max:120',
+
+            // Visit info
+            'doctor_id' => 'required|exists:staff,id',
+            'visit_date_gregorian' => 'required|date_format:Y-m-d',
+            'fee' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        // ✅ Create the patient first
+        $patient = Patient::create([
+            'full_name' => $request->patient_name,
+            'phone' => $request->patient_phone,
+            'address' => $request->patient_address,
+            'gender' => $request->patient_gender,
+            'age' => $request->patient_age,
+        ]);
+
+        // ✅ Then create the visit linked to that patient
+        Visit::create([
+            'patient_id' => $patient->id, // 👈 REQUIRED
+            'doctor_id' => $request->doctor_id,
+            'user_id' => Auth::id(),
+            'visit_date' => $request->visit_date_gregorian,
+            'fee' => $request->fee,
+            'description' => $request->description,
+        ]);
+
+        return redirect()
+            ->route('visits.index')
+            ->with('success', 'ویزیت جدید با موفقیت ثبت شد.');
+    }
+
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            // Patient info
+            'patient_name' => 'required|string|max:255',
+            'patient_phone' => 'nullable|string|max:20',
+            'patient_address' => 'nullable|string|max:255',
+            'patient_gender' => 'nullable|in:male,female,other',
+            'patient_age' => 'nullable|integer|min:0|max:120',
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
@@ -84,9 +129,9 @@ class DoctorVisitController extends Controller
 
             'patient_gender.in' => 'جنسیت معتبر نیست.',
 
-            'patient_birthdate.integer' => 'سن باید عدد باشد.',
-            'patient_birthdate.min' => 'سن نمی‌تواند کمتر از ۰ باشد.',
-            'patient_birthdate.max' => 'سن نمی‌تواند بیش از ۱۲۰ سال باشد.',
+            'patient_age.integer' => 'سن باید عدد باشد.',
+            'patient_age.min' => 'سن نمی‌تواند کمتر از ۰ باشد.',
+            'patient_age.max' => 'سن نمی‌تواند بیش از ۱۲۰ سال باشد.',
 
             // Visit messages
             'doctor_id.required' => 'انتخاب پزشک الزامی است.',
@@ -113,7 +158,7 @@ class DoctorVisitController extends Controller
             'phone' => $request->patient_phone,
             'address' => $request->patient_address,
             'gender' => $request->patient_gender,
-            'age' => $request->patient_birthdate,
+            'age' => $request->patient_age,
         ]);
 
         // Update visit info

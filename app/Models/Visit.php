@@ -9,9 +9,11 @@ class Visit extends Model
     protected $table = 'doctor_visits';
     protected $fillable = [
         'doctor_id',
-        'date',
+        'patient_id',
+        'visit_date',
         'fee',
         'description',
+        'user_id'
     ];
 
 

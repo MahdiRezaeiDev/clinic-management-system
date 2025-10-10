@@ -10,41 +10,37 @@ import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 
 export default function Edit({ visit, doctors }) {
-    console.log(visit);
-
     const { data, setData, put, processing, errors } = useForm({
-        // Patient info
         patient_name: visit.patient?.full_name || '',
         patient_phone: visit.patient?.phone || '',
         patient_address: visit.patient?.address || '',
         patient_gender: visit.patient?.gender || '',
         patient_age: visit.patient?.age || '',
-
-        // Visit info
         doctor_id: visit.doctor_id || '',
         visit_date:
             moment(visit.visit_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') ||
-            new DateObject({
-                calendar: persian,
-                locale: persian_en,
-            }).format('YYYY/MM/DD'),
+            new DateObject({ calendar: persian, locale: persian_en }).format(
+                'YYYY/MM/DD',
+            ),
         fee: visit.fee || '',
         description: visit.description || '',
     });
 
     const submit = (e) => {
         e.preventDefault();
+
         const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
             'YYYY-MM-DD',
         );
-
         data.visit_date_gregorian = gregorianDate;
-
         put(route('visits.update', visit.id));
     };
 
     const inputClass =
-        'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+        'peer block w-full rounded-sm border border-gray-300 px-3 pt-5 pb-2 text-gray-700 placeholder-transparent focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+
+    const labelClass =
+        'absolute left-3 top-2 bg-white px-1 text-gray-500 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-1 peer-focus:text-xs peer-focus:text-blue-500';
 
     return (
         <AuthenticatedLayout title="ویرایش ویزیت">
@@ -68,6 +64,7 @@ export default function Edit({ visit, doctors }) {
                                     type="text"
                                     value={data.patient_name}
                                     id="patient_name"
+                                    placeholder="نام بیمار"
                                     onChange={(e) =>
                                         setData('patient_name', e.target.value)
                                     }
@@ -76,23 +73,20 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_name"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all ${
-                                        data.patient_name
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     نام بیمار
                                 </label>
                                 <InputError message={errors.patient_name} />
                             </div>
 
-                            {/* Phone */}
+                            {/* Patient Phone */}
                             <div className="relative">
                                 <input
-                                    type="tel"
+                                    type="text"
                                     value={data.patient_phone}
                                     id="patient_phone"
+                                    placeholder="شماره تماس"
                                     onChange={(e) =>
                                         setData('patient_phone', e.target.value)
                                     }
@@ -100,23 +94,20 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_phone"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all ${
-                                        data.patient_phone
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     شماره تماس (اختیاری)
                                 </label>
                                 <InputError message={errors.patient_phone} />
                             </div>
 
-                            {/* Address */}
+                            {/* Patient Address */}
                             <div className="relative">
                                 <input
                                     type="text"
                                     value={data.patient_address}
                                     id="patient_address"
+                                    placeholder="آدرس"
                                     onChange={(e) =>
                                         setData(
                                             'patient_address',
@@ -127,29 +118,26 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_address"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all ${
-                                        data.patient_address
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     آدرس (اختیاری)
                                 </label>
                                 <InputError message={errors.patient_address} />
                             </div>
 
-                            {/* Gender */}
+                            {/* Patient Gender */}
                             <div className="relative">
                                 <select
                                     value={data.patient_gender}
                                     id="patient_gender"
+                                    placeholder="جنسیت"
                                     onChange={(e) =>
                                         setData(
                                             'patient_gender',
                                             e.target.value,
                                         )
                                     }
-                                    className={inputClass}
+                                    className="focus:ring-blue-400' peer block w-full rounded-sm border border-gray-300 px-10 text-gray-700 placeholder-transparent focus:border-blue-400 focus:outline-none focus:ring-2"
                                 >
                                     <option value="" disabled hidden />
                                     <option value="male">مرد</option>
@@ -158,23 +146,20 @@ export default function Edit({ visit, doctors }) {
                                 </select>
                                 <label
                                     htmlFor="patient_gender"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all ${
-                                        data.patient_gender
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     جنسیت (اختیاری)
                                 </label>
                                 <InputError message={errors.patient_gender} />
                             </div>
 
-                            {/* Age */}
+                            {/* Patient Age */}
                             <div className="relative">
                                 <input
                                     type="number"
                                     value={data.patient_age}
                                     id="patient_age"
+                                    placeholder="سن"
                                     onChange={(e) =>
                                         setData('patient_age', e.target.value)
                                     }
@@ -182,11 +167,7 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_age"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all ${
-                                        data.patient_age
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     سن (اختیاری)
                                 </label>
@@ -198,10 +179,11 @@ export default function Edit({ visit, doctors }) {
                                 <select
                                     value={data.doctor_id}
                                     id="doctor_id"
+                                    placeholder="داکتر"
                                     onChange={(e) =>
                                         setData('doctor_id', e.target.value)
                                     }
-                                    className={inputClass}
+                                    className="focus:ring-blue-400' peer block w-full rounded-sm border border-gray-300 px-10 text-gray-700 placeholder-transparent focus:border-blue-400 focus:outline-none focus:ring-2"
                                     required
                                 >
                                     <option value="" disabled hidden />
@@ -213,11 +195,7 @@ export default function Edit({ visit, doctors }) {
                                 </select>
                                 <label
                                     htmlFor="doctor_id"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all ${
-                                        data.doctor_id
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     داکتر
                                 </label>
@@ -229,6 +207,7 @@ export default function Edit({ visit, doctors }) {
                                 <AfghanDatePicker
                                     value={data.visit_date}
                                     id="visit_date"
+                                    placeholder="تاریخ ویزیت"
                                     onChange={(value) =>
                                         setData(
                                             'visit_date',
@@ -238,7 +217,7 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="visit_date"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                    className={labelClass}
                                 >
                                     تاریخ ویزیت
                                 </label>
@@ -251,22 +230,16 @@ export default function Edit({ visit, doctors }) {
                             <div className="relative">
                                 <input
                                     type="number"
-                                    id="fee"
                                     value={data.fee}
+                                    id="fee"
+                                    placeholder="هزینه"
                                     onChange={(e) =>
                                         setData('fee', e.target.value)
                                     }
                                     className={inputClass}
                                     required
                                 />
-                                <label
-                                    htmlFor="fee"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all ${
-                                        data.fee
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
-                                >
+                                <label htmlFor="fee" className={labelClass}>
                                     هزینه
                                 </label>
                                 <InputError message={errors.fee} />
@@ -275,8 +248,9 @@ export default function Edit({ visit, doctors }) {
                             {/* Description */}
                             <div className="relative col-span-full">
                                 <textarea
-                                    id="description"
                                     value={data.description}
+                                    id="description"
+                                    placeholder="شرح حال"
                                     onChange={(e) =>
                                         setData('description', e.target.value)
                                     }
@@ -284,11 +258,7 @@ export default function Edit({ visit, doctors }) {
                                 />
                                 <label
                                     htmlFor="description"
-                                    className={`absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all ${
-                                        data.description
-                                            ? '-top-3 text-xs text-blue-500'
-                                            : 'peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500'
-                                    }`}
+                                    className={labelClass}
                                 >
                                     شرح حال (اختیاری)
                                 </label>
