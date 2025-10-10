@@ -11,6 +11,15 @@ class PurchasedMedicinePayment extends Model
 
     protected $table = 'purchased_medicine_payments';
 
+    protected $fillable = [
+        "purchased_medicine_id",
+        "payment_date",
+        "amount",
+        "payment_method",
+        "description",
+        "user_id"
+    ];
+
     public function purchase()
     {
         return $this->belongsTo(PurchasedMedicine::class, 'purchased_medicine_id');

@@ -14,6 +14,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\PaymentsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -79,6 +80,12 @@ Route::middleware('auth')->group(function () {
     // medicine
     // ----------------------
     Route::resource('medicine', MedicineController::class);
+
+    // Nested medicine Routes: payment,
+    Route::prefix('medicine/{medicine}')->name('medicine.')->group(function () {
+        Route::resource('payments', PaymentsController::class);
+    });
+
 
     // ----------------------
     // Finance: Incomes & Expenses

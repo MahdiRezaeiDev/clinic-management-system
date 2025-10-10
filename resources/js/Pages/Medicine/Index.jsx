@@ -1,6 +1,9 @@
+import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import DangerButton from '@/Components/DangerButton';
 import Dropdown from '@/Components/Dropdown';
+import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
+import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
@@ -15,18 +18,27 @@ export default function PurchasesIndex({ purchases }) {
     const displayed = activeTab === 'remaining' ? remaining : fullyPaid;
 
     const { flash } = usePage().props;
+
     const [purchaseId, setPurchaseId] = useState(null);
-    const [showFlash, setShowFlash] = useState(false);
     const [confirmingPurchaseDeletion, setConfirmingPurchaseDeletion] =
         useState(false);
+    const [confirmingPayment, setConfirmingPayment] = useState(false);
+    const [showFlash, setShowFlash] = useState(false);
 
     const {
         delete: destroy,
+        post,
+        data,
+        setData,
         processing,
         reset,
         errors,
         clearErrors,
-    } = useForm();
+    } = useForm({
+        amount: '',
+        payment_date: '',
+        description: '',
+    });
 
     useEffect(() => {
         if (flash.success) {
@@ -41,22 +53,41 @@ export default function PurchasesIndex({ purchases }) {
         setPurchaseId(id);
     };
 
+    const confirmPaymentModal = (id) => {
+        setPurchaseId(id);
+        setConfirmingPayment(true);
+    };
+
     const deletePurchase = (e) => {
         e.preventDefault();
         destroy(route('medicine.destroy', purchaseId), {
             preserveScroll: true,
             onSuccess: closeModal,
-            onError: () => console.log(errors),
             onFinish: reset,
+        });
+    };
+
+    const savePayment = (e) => {
+        e.preventDefault();
+        post(route('medicine.payments.store', purchaseId), {
+            preserveScroll: true,
+            onSuccess: () => {
+                closeModal();
+                reset();
+            },
         });
     };
 
     const closeModal = () => {
         setConfirmingPurchaseDeletion(false);
+        setConfirmingPayment(false);
         setPurchaseId(null);
         clearErrors();
         reset();
     };
+
+    const inputClass =
+        'peer block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400 transition';
 
     return (
         <AuthenticatedLayout title="خریدهای ثبت شده">
@@ -70,7 +101,7 @@ export default function PurchasesIndex({ purchases }) {
                     </h1>
                     <Link
                         href={route('medicine.create')}
-                        className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm text-white shadow transition hover:bg-blue-700"
+                        className="bg-blueGray-600 inline-flex items-center gap-2 rounded px-4 py-2 text-sm text-white shadow transition"
                     >
                         <Plus className="h-4 w-4" /> ثبت خرید جدید
                     </Link>
@@ -159,7 +190,11 @@ export default function PurchasesIndex({ purchases }) {
                                     <td className="p-3 text-center text-xs font-semibold">
                                         <span className="flex items-center justify-center gap-2">
                                             <span
-                                                className={`h-3 w-3 rounded-full ${purchase.status === 'paid' ? 'bg-green-500' : 'bg-gray-400'}`}
+                                                className={`h-3 w-3 rounded-full ${
+                                                    purchase.status === 'paid'
+                                                        ? 'bg-green-500'
+                                                        : 'bg-gray-400'
+                                                }`}
                                             ></span>
                                             <span className="text-gray-700">
                                                 {purchase.status === 'paid'
@@ -171,15 +206,14 @@ export default function PurchasesIndex({ purchases }) {
 
                                     {/* Quick Payment */}
                                     <td className="p-3 text-xs font-semibold">
-                                        <Link
+                                        <button
                                             className="rounded-md bg-green-50 px-3 py-1 font-medium text-green-600 transition hover:bg-green-100"
-                                            href={route(
-                                                'medicine.index',
-                                                purchase.id,
-                                            )}
+                                            onClick={() =>
+                                                confirmPaymentModal(purchase.id)
+                                            }
                                         >
-                                            پرداخت
-                                        </Link>
+                                            پرداخت سریع
+                                        </button>
                                     </td>
 
                                     {/* Dropdown Actions */}
@@ -193,6 +227,15 @@ export default function PurchasesIndex({ purchases }) {
                                             </Dropdown.Trigger>
                                             <Dropdown.Content>
                                                 <Link
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    href={route(
+                                                        'medicine.payments.index',
+                                                        purchase.id,
+                                                    )}
+                                                >
+                                                    پرداخت‌های انجام‌شده
+                                                </Link>
+                                                <Link
                                                     href={route(
                                                         'medicine.edit',
                                                         purchase.id,
@@ -201,6 +244,7 @@ export default function PurchasesIndex({ purchases }) {
                                                 >
                                                     ویرایش
                                                 </Link>
+
                                                 <button
                                                     className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
                                                     onClick={() =>
@@ -243,6 +287,68 @@ export default function PurchasesIndex({ purchases }) {
                             انصراف
                         </SecondaryButton>
                         <DangerButton disabled={processing}>حذف</DangerButton>
+                    </div>
+                </form>
+            </Modal>
+
+            {/* ✅ Payment Modal */}
+            <Modal show={confirmingPayment} onClose={closeModal}>
+                <form onSubmit={savePayment} className="space-y-4 p-6">
+                    <h2 className="text-lg font-medium text-gray-900">
+                        ثبت پرداخت جدید
+                    </h2>
+
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">
+                            مبلغ پرداخت
+                        </label>
+                        <input
+                            type="number"
+                            className={inputClass}
+                            value={data.amount}
+                            onChange={(e) => setData('amount', e.target.value)}
+                            placeholder="مبلغ پرداخت"
+                            required
+                        />
+                        <InputError message={errors.amount} />
+                    </div>
+
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">
+                            تاریخ پرداخت
+                        </label>
+                        <AfghanDatePicker
+                            value={data.payment_date}
+                            onChange={(v) =>
+                                setData('payment_date', v.format('YYYY-MM-DD'))
+                            }
+                        />
+                        <InputError message={errors.payment_date} />
+                    </div>
+
+                    <div>
+                        <label className="text-sm font-medium text-gray-700">
+                            یادداشت (اختیاری)
+                        </label>
+                        <textarea
+                            rows="2"
+                            className={inputClass}
+                            value={data.description}
+                            onChange={(e) =>
+                                setData('description', e.target.value)
+                            }
+                            placeholder="توضیحات پرداخت"
+                        />
+                        <InputError message={errors.description} />
+                    </div>
+
+                    <div className="mt-6 flex justify-end gap-3">
+                        <SecondaryButton onClick={closeModal}>
+                            انصراف
+                        </SecondaryButton>
+                        <PrimaryButton disabled={processing}>
+                            ثبت پرداخت
+                        </PrimaryButton>
                     </div>
                 </form>
             </Modal>
