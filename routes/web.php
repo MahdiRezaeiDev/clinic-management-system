@@ -83,13 +83,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('medicine', MedicineController::class);
 
     // ----------------------
-    // medicine
-    // ----------------------
-    Route::resource('medicine', MedicineController::class);
-
-
-
-    // ----------------------
     // Finance: Incomes & Expenses
     // ----------------------
     Route::resource('incomes', IncomeController::class);

@@ -2920,7 +2920,7 @@ namespace App\Models {
      * @property float $deductions
      * @property float $overtime_amount
      * @property float $base_salary
-     * @property bool $salary_month
+     * @property bool|null $salary_month
      * @property mixed $staff_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes

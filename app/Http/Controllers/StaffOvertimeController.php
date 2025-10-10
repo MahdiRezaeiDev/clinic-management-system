@@ -3,15 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Staff;
+use App\Models\Overtime;
 
 class StaffOvertimeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Staff $staff)
     {
-        //
+        $overtimes = Staff::with(['salaries', 'overtimes'])
+            ->where('id', $staff)
+            ->get();
+
+        dd($overtimes);
+
+        return Inertia::render('Staff/OverTime/Index');
     }
 
     /**
