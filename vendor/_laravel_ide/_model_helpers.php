@@ -2601,6 +2601,7 @@ namespace App\Models {
      * @property mixed $purchased_medicine_id
      * @property int $id
      * @property-read \App\Models\PurchasedMedicine $purchase
+     * @property-read \App\Models\User $user
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicinePayment>|PurchasedMedicinePayment whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicinePayment>|PurchasedMedicinePayment wherePurchasedMedicineId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PurchasedMedicinePayment>|PurchasedMedicinePayment wherePaymentDate($value)

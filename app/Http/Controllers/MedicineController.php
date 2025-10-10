@@ -89,7 +89,6 @@ class MedicineController extends Controller
                 'purchased_medicine_id' => $purchase->id,
                 'payment_date'          => $validated['purchase_date'],
                 'amount'                => $validated['paid_amount'],
-                'payment_method'        => 'initial', // نوع پرداخت اولیه
                 'description'           => 'پرداخت اولیه هنگام ثبت خرید',
                 'user_id'               => Auth::id(),
             ]);

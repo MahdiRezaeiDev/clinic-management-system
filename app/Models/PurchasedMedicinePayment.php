@@ -24,4 +24,9 @@ class PurchasedMedicinePayment extends Model
     {
         return $this->belongsTo(PurchasedMedicine::class, 'purchased_medicine_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -12,11 +12,18 @@ class PaymentsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PurchasedMedicine $medicine)
     {
-        //
-    }
+        $payments = PurchasedMedicinePayment::where('purchased_medicine_id', $medicine->id)
+            ->with('user')
+            ->latest()
+            ->get();
 
+        return inertia('Medicine/Payments/Index', [
+            'medicine' => $medicine->load('supplier'),
+            'payments' => $payments,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -53,10 +60,12 @@ class PaymentsController extends Controller
         // بررسی مجموع جدید
         $newTotal = $totalPaid + $validated['amount'];
 
+        $remaining_amount = abs($medicine->total_amount - $totalPaid);
+
         if ($newTotal > $medicine->total_amount) {
             return back()
                 ->withErrors([
-                    'amount' => 'مجموع پرداخت‌ها نمی‌تواند بیشتر از مبلغ کل (' . number_format($medicine->total_amount) . ') باشد.',
+                    'amount' => 'مجموع پرداخت‌ها نمی‌تواند بیشتر از مبلغ باقی مانده (' . number_format($remaining_amount) . ') باشد.',
                 ])
                 ->withInput();
         }
