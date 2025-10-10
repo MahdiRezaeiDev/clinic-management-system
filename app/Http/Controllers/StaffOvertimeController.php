@@ -20,8 +20,6 @@ class StaffOvertimeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        dd($overtimes);
-
         return Inertia::render('Staff/OverTime/Index', [
             'staff' => $staff,
             'overtimes' => $overtimes,

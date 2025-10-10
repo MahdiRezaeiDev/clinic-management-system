@@ -1,24 +1,37 @@
-import DangerButton from '@/Components/DangerButton';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Transition } from '@headlessui/react';
 import { Head, Link } from '@inertiajs/react';
 import moment from 'moment-jalaali';
 
-export default function Index({ overtimes }) {
+const afghanMonths = [
+    { value: '1', label: 'حمل' },
+    { value: '2', label: 'ثور' },
+    { value: '3', label: 'جوزا' },
+    { value: '4', label: 'سرطان' },
+    { value: '5', label: 'اسد' },
+    { value: '6', label: 'سنبله' },
+    { value: '7', label: 'میزان' },
+    { value: '8', label: 'عقرب' },
+    { value: '9', label: 'قوس' },
+    { value: '10', label: 'جدی' },
+    { value: '11', label: 'دلو' },
+    { value: '12', label: 'حوت' },
+];
+
+export default function Index({ staff, overtimes }) {
     return (
-        <AuthenticatedLayout title={`اضافه کاری پرسنل: ${staff.full_name}`}>
-            <Head title={`اضافه کاری ${staff.full_name}`} />
+        <AuthenticatedLayout title={`اضافه‌کاری‌ها - ${staff.full_name}`}>
+            <Head title={`اضافه‌کاری‌ها - ${staff.full_name}`} />
 
             <div className="mx-auto w-full md:px-10 md:py-16">
                 <div className="mb-4 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">لیست اضافه کاری </h3>
+                    <h3 className="text-lg font-semibold">
+                        لیست اضافه‌کاری‌ها
+                    </h3>
                     <Link
-                        href={route('staffs.salary.create', staff.id)}
+                        href={route('staffs.overtime.create', staff.id)}
                         className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                     >
-                        پرداخت اضافه کاری
+                        ثبت اضافه‌کاری
                     </Link>
                 </div>
 
@@ -27,142 +40,88 @@ export default function Index({ overtimes }) {
                         <thead>
                             <tr className="bg-blueGray-600 text-sm text-white">
                                 <th className="px-6 py-3 text-right">#</th>
+                                <th className="px-6 py-3 text-right">تاریخ</th>
+                                <th className="px-6 py-3 text-right">ساعت</th>
+                                <th className="px-6 py-3 text-right">نرخ</th>
                                 <th className="px-6 py-3 text-right">
-                                    اضافه کاری پایه
-                                </th>
-                                <th className="px-6 py-3 text-right">
-                                    اضافه کاری
-                                </th>
-                                <th className="px-6 py-3 text-right">کسورات</th>
-                                <th className="px-6 py-3 text-right">ماه</th>
-
-                                <th className="px-6 py-3 text-right">
-                                    مبلغ پرداخت نهایی
-                                </th>
-                                <th className="px-6 py-3 text-right">
-                                    تاریخ پرداخت
+                                    مبلغ کل
                                 </th>
                                 <th className="px-6 py-3 text-right">
                                     توضیحات
                                 </th>
-                                <th className="px-6 py-3 text-right">عملیات</th>
+                                <th className="px-6 py-3 text-right">وضعیت</th>
+                                <th className="px-6 py-3 text-right">
+                                    ماه حقوق
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {salaries.map((salary, index) => (
-                                <tr
-                                    key={salary.id}
-                                    className="border-b text-xs"
-                                >
-                                    <td className="px-6 py-2 text-right">
-                                        {index + 1}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {salary.base_salary}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {salary.overtimes.reduce(
-                                            (sum, ot) =>
-                                                sum + parseFloat(ot.total),
-                                            0,
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {salary.deductions}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {
-                                            afghanMonths[
-                                                salary.salary_month - 1
-                                            ].label
-                                        }
-                                    </td>
-
-                                    <td className="px-6 py-2 text-right">
-                                        {parseFloat(
-                                            salary.total_paid,
-                                        ).toLocaleString()}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {moment(salary.payment_date).format(
-                                            'jYYYY/jMM/jDD',
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-2 text-right">
-                                        {salary.description || '-'}
-                                    </td>
-                                    <td className="flex gap-2 px-6 py-2 text-right">
-                                        <Link
-                                            href={route('staffs.salary.edit', [
-                                                staff.id,
-                                                salary.id,
-                                            ])}
-                                            className="text-blue-600 hover:underline"
-                                        >
-                                            ویرایش
-                                        </Link>
-                                        <button
-                                            className="text-red-600 hover:underline"
-                                            onClick={() =>
-                                                confirmDelete(salary.id)
-                                            }
-                                        >
-                                            حذف
-                                        </button>
+                            {overtimes.length > 0 ? (
+                                overtimes.map((overTime, index) => (
+                                    <tr
+                                        key={overTime.id}
+                                        className={`border-b text-xs ${
+                                            overTime.salary_id
+                                                ? 'bg-green-50'
+                                                : 'bg-white'
+                                        }`}
+                                    >
+                                        <td className="px-6 py-2 text-right">
+                                            {index + 1}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {moment(overTime.date).format(
+                                                'jYYYY/jMM/jDD',
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {overTime.hours}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {parseFloat(
+                                                overTime.rate,
+                                            ).toLocaleString()}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {parseFloat(
+                                                overTime.total,
+                                            ).toLocaleString()}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {overTime.description || '-'}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {overTime.salary_id ? (
+                                                <span className="rounded bg-green-500/20 px-3 py-1 text-green-700">
+                                                    پرداخت شده
+                                                </span>
+                                            ) : (
+                                                <span className="rounded bg-yellow-500/20 px-3 py-1 text-yellow-700">
+                                                    پرداخت نشده
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-2 text-right">
+                                            {overTime.salary
+                                                ? `ماه ${afghanMonths[overTime.salary.salary_month - 1].label}`
+                                                : '-'}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan="8"
+                                        className="py-6 text-center text-gray-500"
+                                    >
+                                        هیچ اضافه‌کاری ثبت نشده است.
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
-                        <tfoot>
-                            <tr className="bg-gray-100 text-sm font-semibold">
-                                <td
-                                    colSpan="2"
-                                    className="px-6 py-2 text-right"
-                                >
-                                    جمع کل:
-                                </td>
-                                <td className="px-6 py-2 text-right">
-                                    {totalPaid.toLocaleString()}
-                                </td>
-                                <td colSpan="6"></td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
-
-            {/* Delete Modal */}
-            <Modal show={confirmingDelete} onClose={closeModal}>
-                <form onSubmit={deleteSalary} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        آیا مطمئن هستید که می‌خواهید این پرداخت حذف شود؟
-                    </h2>
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            انصراف
-                        </SecondaryButton>
-                        <DangerButton className="ms-3" disabled={processing}>
-                            حذف
-                        </DangerButton>
-                    </div>
-                </form>
-            </Modal>
-
-            {/* Flash Message */}
-            <Transition
-                show={showFlash}
-                enter="transition ease-in-out duration-300"
-                enterFrom="opacity-0 translate-y-2"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in-out duration-500"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-2"
-                className="fixed bottom-6 left-6 z-50"
-            >
-                <div className="rounded bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-lg">
-                    {flash.success}
-                </div>
-            </Transition>
         </AuthenticatedLayout>
     );
 }
