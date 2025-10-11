@@ -1,4 +1,5 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
+import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -65,8 +66,6 @@ export default function PharmacySaleInvoiceForm() {
         setData('discount', isNaN(num) ? 0 : num);
     };
 
-    console.log(errors);
-
     const totalAfterDiscount = Math.max(data.total_amount - data.discount, 0);
 
     const submitSale = (e) => {
@@ -80,7 +79,7 @@ export default function PharmacySaleInvoiceForm() {
 
         post(route('pharmacy.store'), {
             onSuccess: () => {
-                setShowInvoice(true); // show modal invoice
+                setShowInvoice(true);
             },
         });
     };
@@ -140,6 +139,10 @@ export default function PharmacySaleInvoiceForm() {
                                         }
                                         className="w-[130px] rounded-md border border-gray-300 px-2 py-1 text-center text-sm focus:ring-1 focus:ring-blue-400"
                                     />
+                                    <InputError
+                                        message={errors.sale_date}
+                                        className="mt-1 text-xs text-red-500"
+                                    />
                                 </td>
                             </tr>
 
@@ -156,6 +159,10 @@ export default function PharmacySaleInvoiceForm() {
                                         onChange={(e) =>
                                             updateDiscount(e.target.value)
                                         }
+                                    />
+                                    <InputError
+                                        message={errors.discount}
+                                        className="mt-1 text-xs text-red-500"
                                     />
                                 </td>
                             </tr>
@@ -176,6 +183,10 @@ export default function PharmacySaleInvoiceForm() {
                                                 e.target.value,
                                             )
                                         }
+                                    />
+                                    <InputError
+                                        message={errors.description}
+                                        className="mt-1 text-xs text-red-500"
                                     />
                                 </td>
                             </tr>
@@ -238,6 +249,14 @@ export default function PharmacySaleInvoiceForm() {
                                                         )
                                                     }
                                                 />
+                                                <InputError
+                                                    message={
+                                                        errors[
+                                                            `items.${idx}.drug_name`
+                                                        ]
+                                                    }
+                                                    className="mt-1 text-xs text-red-500"
+                                                />
                                             </td>
                                             <td className="p-2 text-right">
                                                 <input
@@ -253,6 +272,14 @@ export default function PharmacySaleInvoiceForm() {
                                                         )
                                                     }
                                                 />
+                                                <InputError
+                                                    message={
+                                                        errors[
+                                                            `items.${idx}.quantity`
+                                                        ]
+                                                    }
+                                                    className="mt-1 text-xs text-red-500"
+                                                />
                                             </td>
                                             <td className="p-2 text-right">
                                                 <input
@@ -267,6 +294,14 @@ export default function PharmacySaleInvoiceForm() {
                                                             e.target.value,
                                                         )
                                                     }
+                                                />
+                                                <InputError
+                                                    message={
+                                                        errors[
+                                                            `items.${idx}.unit_price`
+                                                        ]
+                                                    }
+                                                    className="mt-1 text-xs text-red-500"
                                                 />
                                             </td>
                                             <td className="p-2 text-right font-medium">
@@ -285,6 +320,14 @@ export default function PharmacySaleInvoiceForm() {
                                 )}
                             </tbody>
                         </table>
+
+                        {Object.keys(errors).length > 0 && (
+                            <div className="mb-2 rounded-md bg-red-100 p-2 text-xs text-red-600">
+                                {Object.values(errors).map((error, idx) => (
+                                    <div key={idx}>- {error}</div>
+                                ))}
+                            </div>
+                        )}
 
                         <div className="mt-2 px-4 py-1 text-right font-semibold text-gray-800">
                             جمع کل پس از تخفیف:{' '}
