@@ -165,7 +165,7 @@ export default function Sidebar() {
                             >
                                 <div className="flex items-end gap-2">
                                     <CardSim className="h-5 w-5" />
-                                    مدیریت خرید دارو
+                                    خرید دارو
                                 </div>
                             </NavLink>
                         </li>

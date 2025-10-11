@@ -14,7 +14,8 @@ export default function PharmacySalesIndex({ sales }) {
     const displayed =
         activeTab === 'with' ? withPrescription : withoutPrescription;
 
-    const { flash } = usePage().props;
+    const { flash, auth } = usePage().props;
+
     const [showFlash, setShowFlash] = useState(false);
 
     const [saleId, setSaleId] = useState(null);
@@ -102,12 +103,12 @@ export default function PharmacySalesIndex({ sales }) {
                                     تاریخ فروش
                                 </th>
                                 <th className="p-3 text-right text-sm font-semibold">
-                                    نوع فروش
-                                </th>
-                                <th className="p-3 text-right text-sm font-semibold">
                                     جمع کل
                                 </th>
-                                <th className="p-3 text-center text-xs font-semibold">
+                                <th className="p-3 text-right text-sm font-semibold">
+                                    کاربر ثبت کننده
+                                </th>
+                                <th className="p-3 text-right text-xs font-semibold">
                                     عملیات
                                 </th>
                             </tr>
@@ -136,17 +137,20 @@ export default function PharmacySalesIndex({ sales }) {
                                             {sale.total_amount.toLocaleString()}{' '}
                                             افغانی
                                         </td>
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-800">
+                                            {auth.user.name}
+                                        </td>
                                         <td className="p-3 text-center text-xs">
                                             <Dropdown>
                                                 <Dropdown.Trigger>
-                                                    <button className="bg-blueGray-600 hover:bg-blueGray-700 flex items-center gap-1 rounded px-3 py-1 text-xs text-white transition">
+                                                    <button className="bg-blueGray-600 hover:bg-blueGray-700 flex gap-1 rounded px-3 py-1 text-xs text-white transition">
                                                         <MoreVertical className="h-4 w-4" />{' '}
                                                         عملیات
                                                     </button>
                                                 </Dropdown.Trigger>
                                                 <Dropdown.Content>
                                                     <Link
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="block px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
                                                         href={route(
                                                             'pharmacy.edit',
                                                             sale.id,
@@ -165,7 +169,7 @@ export default function PharmacySalesIndex({ sales }) {
                                                         حذف
                                                     </button>
                                                     <Link
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="block px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
                                                         href={route(
                                                             'pharmacy.show',
                                                             sale.id,
