@@ -79,7 +79,7 @@ export default function DrugSellCard() {
                         htmlFor="total_amount"
                         className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
                     >
-                        مبلغ (ریال)
+                        مبلغ (افغانی)
                     </label>
                     <InputError message={errors.total_amount} />
                 </div>

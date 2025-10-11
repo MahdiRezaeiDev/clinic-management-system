@@ -111,40 +111,52 @@ export default function PurchasePayments({
                         </h2>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">شرکت:</span>
-                            {medicine.supplier.company_name}
+                            <span className="text-xs font-semibold">
+                                {medicine.supplier.company_name}
+                            </span>
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 شماره تماس:
                             </span>
-                            {medicine.supplier.phone}
+                            <span className="text-xs font-semibold">
+                                {medicine.supplier.phone}
+                            </span>
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">آدرس:</span>
-                            {medicine.supplier.address || '-'}
+                            <span className="text-xs font-semibold">
+                                {medicine.supplier.address || '-'}
+                            </span>
                         </p>
                     </div>
                     <div className="rounded border p-4 shadow-sm print:border print:shadow-none">
                         <h2 className="mb-2 text-lg font-semibold">
                             جزئیات خرید
                         </h2>
-                        <p className="flex items-center gap-2">
+                        <p className="mb-2 flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 توضیحات :
                             </span>
-                            {medicine.description}
+                            <span className="text-xs font-semibold">
+                                {medicine.description}
+                            </span>
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 تاریخ خرید:
                             </span>
-                            {medicine.purchase_date}
+                            <span className="text-xs font-semibold">
+                                {medicine.purchase_date}
+                            </span>
                         </p>
                         <p className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
                                 مبلغ کل:
                             </span>
-                            {medicine.total_amount.toLocaleString()} AFN
+                            <span className="text-xs font-semibold">
+                                {medicine.total_amount.toLocaleString()} افغانی
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -154,23 +166,23 @@ export default function PurchasePayments({
                     <table className="min-w-full table-auto border-collapse">
                         <thead className="bg-blueGray-600 print:bg-gray-100">
                             <tr>
-                                <th className="border-b p-2 text-right text-sm text-white">
+                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
                                     مبلغ
                                 </th>
-                                <th className="border-b p-2 text-right text-sm text-white">
+                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
                                     روش پرداخت
                                 </th>
-                                <th className="border-b p-2 text-right text-sm text-white">
+                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
                                     تاریخ پرداخت
                                 </th>
 
-                                <th className="border-b p-2 text-center text-sm text-white">
+                                <th className="border-b p-2 text-center text-sm text-white print:text-gray-700">
                                     وضعیت
                                 </th>
-                                <th className="border-b p-2 text-right text-sm text-white">
+                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
                                     توضیحات
                                 </th>
-                                <th className="border-b p-2 text-center text-sm text-white">
+                                <th className="border-b p-2 text-center text-sm text-white print:text-gray-700">
                                     عملیات
                                 </th>
                             </tr>
@@ -236,26 +248,26 @@ export default function PurchasePayments({
                         </tbody>
                         <tfoot className="bg-blueGray-600 font-semibold print:bg-gray-300">
                             <tr>
-                                <td className="p-2 text-right text-sm text-white">
+                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
                                     جمع کل پرداخت‌ها
                                 </td>
-                                <td className="p-2 text-right text-sm text-white">
+                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
                                     {totalPaid.toLocaleString()}
                                 </td>
                                 <td
-                                    className="p-2 text-sm text-white"
+                                    className="p-2 text-sm text-white print:text-gray-700"
                                     colSpan={4}
                                 ></td>
                             </tr>
                             <tr>
-                                <td className="p-2 text-right text-sm text-white">
+                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
                                     باقی مانده
                                 </td>
-                                <td className="p-2 text-right text-sm font-bold text-white">
+                                <td className="p-2 text-right text-sm font-bold text-white print:text-gray-700">
                                     {remaining.toLocaleString()}
                                 </td>
                                 <td
-                                    className="p-2 text-sm text-white"
+                                    className="p-2 text-sm text-white print:text-gray-700"
                                     colSpan={4}
                                 ></td>
                             </tr>
