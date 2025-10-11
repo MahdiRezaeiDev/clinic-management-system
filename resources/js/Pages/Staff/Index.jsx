@@ -247,7 +247,7 @@ export default function Index({ staffs, filters }) {
                                     ) : (
                                         <tr>
                                             <td
-                                                colSpan="6"
+                                                colSpan="7"
                                                 className="p-4 text-center text-sm"
                                             >
                                                 هیچ پرسنلی یافت نشد.
@@ -257,25 +257,28 @@ export default function Index({ staffs, filters }) {
                                 </tbody>
                             </table>
                         </div>
-
                         {/* Pagination */}
-                        <div className="flex justify-center p-4">
-                            {staffs.links.map((link, index) => (
-                                <Link
-                                    key={index}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    className={`mx-1 rounded px-3 py-1 text-sm ${
-                                        link.active
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
-                        </div>
+                        {staffs.data.length ? (
+                            <div className="flex justify-center p-4">
+                                {staffs.links.map((link, index) => (
+                                    <Link
+                                        key={index}
+                                        href={link.url || '#'}
+                                        preserveScroll
+                                        className={`mx-1 rounded px-3 py-1 text-sm ${
+                                            link.active
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            ''
+                        )}
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ namespace App\Models {
      * @property string $expense_date
      * @property string|null $description
      * @property mixed $payment_method
-     * @property float $amount
+     * @property mixed $amount
      * @property mixed $category
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereId($value)
@@ -330,7 +330,7 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
      * @property mixed $payment_method
-     * @property float $amount
+     * @property mixed $amount
      * @property mixed $user_id
      * @property mixed $category
      * @property int $id
@@ -650,9 +650,9 @@ namespace App\Models {
      * @property string|null $description
      * @property bool $status
      * @property mixed $approved_by
-     * @property float $total
-     * @property float $rate
-     * @property float $hours
+     * @property mixed $total
+     * @property mixed $rate
+     * @property mixed $hours
      * @property string $date
      * @property mixed $salary_id
      * @property mixed $staff_id
@@ -975,7 +975,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property bool|null $age
+     * @property string|null $age
      * @property mixed $gender
      * @property string|null $address
      * @property string|null $phone
@@ -1298,7 +1298,7 @@ namespace App\Models {
      * @property mixed $user_id
      * @property string $sale_date
      * @property mixed $payment_method
-     * @property float $total_amount
+     * @property mixed $total_amount
      * @property mixed $discount
      * @property mixed $sale_type
      * @property mixed $patient_id
@@ -1944,9 +1944,9 @@ namespace App\Models {
      * @property mixed $status
      * @property string|null $description
      * @property string $purchase_date
-     * @property float $remaining_amount
-     * @property float $paid_amount
-     * @property float $total_amount
+     * @property mixed $remaining_amount
+     * @property mixed $paid_amount
+     * @property mixed $total_amount
      * @property mixed $supplier_id
      * @property int $id
      * @property-read mixed $total_paid
@@ -2272,9 +2272,9 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property float $subtotal
-     * @property float $unit_price
-     * @property float $quantity
+     * @property mixed $subtotal
+     * @property mixed $unit_price
+     * @property mixed $quantity
      * @property string $drug_name
      * @property mixed $purchased_medicine_id
      * @property int $id
@@ -2596,7 +2596,7 @@ namespace App\Models {
      * @property mixed $user_id
      * @property string|null $description
      * @property mixed $payment_method
-     * @property float $amount
+     * @property mixed $amount
      * @property string $payment_date
      * @property mixed $purchased_medicine_id
      * @property int $id
@@ -2918,11 +2918,11 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
      * @property string|null $payment_date
-     * @property float $total_paid
-     * @property float $deductions
-     * @property float $overtime_amount
-     * @property float $base_salary
-     * @property bool|null $salary_month
+     * @property mixed $total_paid
+     * @property mixed $deductions
+     * @property mixed $overtime_amount
+     * @property mixed $base_salary
+     * @property mixed $salary_month
      * @property mixed $staff_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
@@ -3243,7 +3243,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property float $base_salary
+     * @property mixed $base_salary
      * @property string|null $phone
      * @property mixed $role
      * @property string $full_name
@@ -4210,7 +4210,7 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property mixed $user_id
      * @property string|null $description
-     * @property float $fee
+     * @property mixed $fee
      * @property string $visit_date
      * @property mixed $doctor_id
      * @property mixed $patient_id

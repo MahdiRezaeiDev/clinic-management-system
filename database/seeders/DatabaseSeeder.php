@@ -10,14 +10,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersSeeder::class,
-            StaffSeeder::class,
-            PatientsSeeder::class,
-            SuppliersSeeder::class,
-            IncomesSeeder::class,
-            // ExpensesSeeder::class,
-            PharmacySalesSeeder::class,
-            SalariesSeeder::class,
-            // OvertimesSeeder::class
         ]);
     }
 }

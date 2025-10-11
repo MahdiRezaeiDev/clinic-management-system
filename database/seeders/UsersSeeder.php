@@ -18,8 +18,5 @@ class UsersSeeder extends Seeder
             'email' => 'admin@clinic.com',
             'password' => Hash::make('password123'),
         ]);
-
-        // Add some random users
-        User::factory(5)->create();
     }
 }
