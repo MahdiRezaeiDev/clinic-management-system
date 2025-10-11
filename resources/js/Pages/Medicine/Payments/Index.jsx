@@ -26,6 +26,8 @@ export default function PurchasePayments({
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState({});
 
+    console.log(errors);
+
     const totalPaid = payments.reduce(
         (sum, p) => sum + parseFloat(p.amount),
         0,

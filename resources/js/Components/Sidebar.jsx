@@ -161,7 +161,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 href={route('medicine.index')}
-                                active={route().current('medicine.index')}
+                                active={route().current('medicine.*')}
                             >
                                 <div className="flex items-end gap-2">
                                     <CardSim className="h-5 w-5" />
@@ -172,7 +172,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 href={route('medicine.index')}
-                                active={route().current('medicine.index')}
+                                active={route().current('medicine.sell')}
                             >
                                 <div className="flex items-end gap-2">
                                     <Coins className="h-5 w-5" />

@@ -136,29 +136,29 @@ export default function PurchasesIndex({ purchases }) {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-blueGray-600 text-white">
                             <tr>
-                                <th className="p-3 text-right text-sm font-medium">
+                                <th className="p-3 text-right text-sm font-semibold">
                                     شرکت
                                 </th>
-                                <th className="p-3 text-right text-sm font-medium">
+                                <th className="w-72 p-3 text-right text-sm font-semibold">
                                     توضیحات
                                 </th>
-                                <th className="p-3 text-center text-sm font-medium">
+                                <th className="p-3 text-center text-sm font-semibold">
                                     تاریخ
                                 </th>
-                                <th className="p-3 text-center text-sm font-medium">
+                                <th className="p-3 text-center text-sm font-semibold">
                                     کل مبلغ
                                 </th>
-                                <th className="p-3 text-center text-sm font-medium">
+                                <th className="p-3 text-center text-sm font-semibold">
                                     پرداخت شده
                                 </th>
-                                <th className="p-3 text-center text-sm font-medium">
+                                <th className="p-3 text-center text-sm font-semibold">
                                     باقی مانده
                                 </th>
-                                <th className="p-3 text-center text-sm font-medium">
+                                <th className="p-3 text-center text-sm font-semibold">
                                     وضعیت
                                 </th>
                                 <th className="p-3"></th>
-                                <th className="p-3 text-center text-xs font-medium">
+                                <th className="p-3 text-center text-xs font-semibold">
                                     اقدامات
                                 </th>
                             </tr>
@@ -206,18 +206,24 @@ export default function PurchasesIndex({ purchases }) {
 
                                     {/* Quick Payment */}
                                     <td className="p-3 text-xs font-semibold">
-                                        <button
-                                            className="rounded-md bg-green-50 px-3 py-1 font-medium text-green-600 transition hover:bg-green-100"
-                                            onClick={() =>
-                                                confirmPaymentModal(purchase.id)
-                                            }
-                                        >
-                                            پرداخت سریع
-                                        </button>
+                                        {purchase.status != 'paid' ? (
+                                            <button
+                                                className="rounded-md bg-green-50 px-3 py-1 font-semibold text-green-600 transition hover:bg-green-100"
+                                                onClick={() =>
+                                                    confirmPaymentModal(
+                                                        purchase.id,
+                                                    )
+                                                }
+                                            >
+                                                پرداخت سریع
+                                            </button>
+                                        ) : (
+                                            ''
+                                        )}
                                     </td>
 
                                     {/* Dropdown Actions */}
-                                    <td className="flex justify-center p-2 text-xs">
+                                    <td className="p-3 text-xs">
                                         <Dropdown>
                                             <Dropdown.Trigger>
                                                 <button className="bg-blueGray-600 hover:bg-blueGray-700 flex items-center gap-1 rounded px-3 py-1 text-xs text-white transition">
@@ -233,7 +239,7 @@ export default function PurchasesIndex({ purchases }) {
                                                         purchase.id,
                                                     )}
                                                 >
-                                                    پرداخت‌های انجام‌شده
+                                                    پرداخت‌ های قبلی
                                                 </Link>
                                                 <Link
                                                     href={route(
