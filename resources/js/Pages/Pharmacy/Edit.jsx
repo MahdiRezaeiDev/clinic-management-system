@@ -6,26 +6,31 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
-import { useState } from 'react';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 
 export default function PharmacySaleUpdate({ sale }) {
-    const [showInvoice, setShowInvoice] = useState(false);
-
     const { data, setData, put, processing, errors } = useForm({
-        sale_type: sale.sale_type || 'cash',
-        payment_method: sale.payment_method || 'cash',
+        sale_type: sale.sale_type || 'with_prescription',
         sale_date:
             sale.sale_date ||
             new DateObject({ calendar: persian, locale: persian_en }).format(
                 'YYYY/MM/DD',
             ),
         description: sale.description || '',
-        items: sale.items || [],
-        total_amount: sale.total_amount || 0,
+        items:
+            sale.items?.map((item) => ({
+                id: item.id,
+                drug_name: item.drug_name,
+                quantity: item.quantity,
+                unit_price: item.unit_price,
+                subtotal: parseInt(
+                    item.subtotal || item.quantity * item.unit_price,
+                ),
+            })) || [],
         discount: sale.discount || 0,
+        total_amount: sale.total_amount,
     });
 
     const addItem = () => {
@@ -37,41 +42,46 @@ export default function PharmacySaleUpdate({ sale }) {
 
     const updateItem = (idx, field, value) => {
         const newItems = [...data.items];
-        newItems[idx][field] =
-            field === 'quantity' || field === 'unit_price'
-                ? Number(value)
-                : value;
+
+        if (field === 'quantity' || field === 'unit_price') {
+            const num = parseFloat(value) || 0;
+            newItems[idx][field] = num;
+        } else {
+            newItems[idx][field] = value;
+        }
+
         newItems[idx].subtotal =
-            newItems[idx].quantity * newItems[idx].unit_price;
-        const totalAmount = newItems.reduce((a, b) => a + b.subtotal, 0);
-        setData({ ...data, items: newItems, total_amount: totalAmount });
+            Number(newItems[idx].quantity || 0) *
+            Number(newItems[idx].unit_price || 0);
+
+        setData({ ...data, items: newItems });
     };
 
     const removeItem = (idx) => {
         const newItems = data.items.filter((_, i) => i !== idx);
-        const totalAmount = newItems.reduce((a, b) => a + b.subtotal, 0);
-        setData({ ...data, items: newItems, total_amount: totalAmount });
+        setData({ ...data, items: newItems });
     };
 
     const updateDiscount = (value) => {
-        const num = Number(value);
+        const num = parseFloat(value);
         setData('discount', isNaN(num) ? 0 : num);
     };
 
-    const totalAfterDiscount = Math.max(data.total_amount - data.discount, 0);
+    const totalAmount = data.items.reduce(
+        (acc, item) => acc + (item.subtotal || 0),
+        0,
+    );
+    const totalAfterDiscount = Math.max(totalAmount - (data.discount || 0), 0);
 
     const submitSale = (e) => {
         e.preventDefault();
-
         const sale_date_gregorian = moment(
             data.sale_date,
             'jYYYY/jMM/jDD',
         ).format('YYYY-MM-DD');
         data.sale_date_gregorian = sale_date_gregorian;
 
-        put(route('pharmacy.update', sale.id), {
-            onSuccess: () => setShowInvoice(true),
-        });
+        put(route('pharmacy.update', sale.id));
     };
 
     return (
@@ -115,25 +125,15 @@ export default function PharmacySaleUpdate({ sale }) {
                         <tbody>
                             <tr>
                                 <td className="whitespace-nowrap border-2 border-l-0 px-2 font-medium text-gray-700">
-                                    قیمت کل:
+                                    جمع کل:
                                 </td>
                                 <td className="border-2">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        className="w-full border-none p-2 text-sm"
-                                        value={data.total_amount}
-                                        onChange={(e) =>
-                                            updateDiscount(e.target.value)
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.total_amount}
-                                        className="mt-1 text-xs text-red-500"
-                                    />
+                                    <span className="w-full p-2 text-sm">
+                                        {totalAmount.toLocaleString()}
+                                    </span>
                                 </td>
                                 <td className="whitespace-nowrap border-2 border-x-0 px-2 font-medium text-gray-700">
-                                    تخفیف :
+                                    تخفیف:
                                 </td>
                                 <td className="border-2">
                                     <input
@@ -319,68 +319,6 @@ export default function PharmacySaleUpdate({ sale }) {
                     </div>
                 </form>
             </div>
-
-            {/* Invoice Modal */}
-            {showInvoice && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="relative max-h-[80vh] w-[500px] overflow-y-auto rounded-xl bg-white p-6 shadow-lg">
-                        <button
-                            onClick={() => setShowInvoice(false)}
-                            className="absolute right-3 top-2 text-gray-500 hover:text-red-600"
-                        >
-                            ✕
-                        </button>
-                        <h2 className="mb-3 text-center text-xl font-bold">
-                            فاکتور فروش
-                        </h2>
-                        <p className="mb-3 text-center text-sm text-gray-600">
-                            تاریخ فروش: {data.sale_date}
-                        </p>
-                        <table className="w-full border text-sm">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="border p-1">نام دارو</th>
-                                    <th className="border p-1">تعداد</th>
-                                    <th className="border p-1">قیمت</th>
-                                    <th className="border p-1">جمع</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.items.map((item, i) => (
-                                    <tr key={i}>
-                                        <td className="border p-1">
-                                            {item.drug_name}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.quantity}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.unit_price}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.subtotal}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
-                        <div className="mt-3 text-right font-semibold">
-                            تخفیف: {data.discount} افغانی
-                        </div>
-                        <div className="text-right font-bold text-blue-700">
-                            جمع نهایی: {totalAfterDiscount.toLocaleString()}{' '}
-                            افغانی
-                        </div>
-
-                        <div className="mt-4 text-center">
-                            <PrimaryButton onClick={() => window.print()}>
-                                چاپ فاکتور
-                            </PrimaryButton>
-                        </div>
-                    </div>
-                </div>
-            )}
         </AuthenticatedLayout>
     );
 }

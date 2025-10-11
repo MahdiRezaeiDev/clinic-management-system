@@ -27,8 +27,6 @@ class PharmacyController extends Controller
         ]);
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -99,7 +97,6 @@ class PharmacyController extends Controller
             ->with('success', 'فروش با موفقیت ثبت شد.');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -123,10 +120,83 @@ class PharmacyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, PharmacySale $pharmacy)
     {
-        //
+        // 1. Validate main fields
+        $request->validate([
+            'total_amount' => 'required|numeric|min:1',
+            'sale_date' => 'required|date',
+            'description' => 'nullable|string|max:1000',
+            'discount' => 'nullable|numeric|min:0',
+        ], [
+            'total_amount.required' => 'مبلغ کل الزامی است.',
+            'total_amount.numeric' => 'مبلغ کل باید عددی باشد.',
+            'total_amount.min' => 'مبلغ کل باید بیشتر از صفر باشد.',
+            'sale_date.required' => 'تاریخ فروش الزامی است.',
+            'sale_date.date' => 'فرمت تاریخ فروش معتبر نیست.',
+            'description.string' => 'توضیحات باید متنی باشد.',
+            'description.max' => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
+            'discount.numeric' => 'تخفیف باید عددی باشد.',
+            'discount.min' => 'تخفیف نمی‌تواند مقدار منفی داشته باشد.',
+        ]);
+
+        // 2. Filter valid items
+        $validItems = collect($request->items ?? [])->filter(function ($item) {
+            return !empty($item['drug_name'])
+                && isset($item['quantity'], $item['unit_price'])
+                && floatval($item['quantity']) > 0
+                && floatval($item['unit_price']) > 0;
+        })->values();
+
+        // 3. Determine sale type
+        $saleType = $validItems->isNotEmpty() ? 'with_prescription' : 'without_prescription';
+
+        // 4. Update main sale record
+        $pharmacy->update([
+            'sale_type' => $saleType,
+            'total_amount' => floatval($request->total_amount),
+            'discount' => floatval($request->discount ?? 0),
+            'sale_date' => $request->sale_date,
+            'description' => $request->description,
+        ]);
+
+        // 5. Sync items
+        $existingItemIds = collect($request->items ?? [])->pluck('id')->filter()->toArray();
+
+        // Delete removed items
+        $pharmacy->items()->whereNotIn('id', $existingItemIds)->delete();
+
+        // Update existing and create new
+        foreach ($validItems as $item) {
+            $quantity = floatval($item['quantity']);
+            $unit_price = floatval($item['unit_price']);
+            $subtotal = $quantity * $unit_price;
+
+            if (!empty($item['id'])) {
+                // Update existing
+                $pharmacy->items()->where('id', $item['id'])->update([
+                    'drug_name' => $item['drug_name'],
+                    'quantity' => $quantity,
+                    'unit_price' => $unit_price,
+                    'subtotal' => $subtotal,
+                ]);
+            } else {
+                // Create new
+                $pharmacy->items()->create([
+                    'pharmacy_sale_id' => $pharmacy,
+                    'drug_name' => $item['drug_name'],
+                    'quantity' => $quantity,
+                    'unit_price' => $unit_price,
+                    'subtotal' => $subtotal,
+                ]);
+            }
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'فروش با موفقیت به‌روزرسانی شد.');
     }
+
 
     /**
      * Remove the specified resource from storage.
