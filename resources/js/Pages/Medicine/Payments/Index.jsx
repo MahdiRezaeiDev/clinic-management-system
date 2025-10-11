@@ -5,8 +5,9 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Transition } from '@headlessui/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function PurchasePayments({
     medicine,
@@ -16,17 +17,34 @@ export default function PurchasePayments({
     const [confirmingPayment, setConfirmingPayment] = useState(false);
     const [confirmingDelete, setConfirmingDelete] = useState(false);
     const [deletePaymentId, setDeletePaymentId] = useState(null);
-    const [data, setData] = useState({
+
+    const { flash } = usePage().props;
+    const [showFlash, setShowFlash] = useState(false);
+
+    const {
+        data,
+        setData,
+        post,
+        put,
+        delete: destroy,
+        processing,
+        reset,
+        errors,
+        clearErrors,
+    } = useForm({
         id: null,
         amount: '',
         payment_date: '',
         description: '',
     });
 
-    const [processing, setProcessing] = useState(false);
-    const [errors, setErrors] = useState({});
-
-    console.log(errors);
+    useEffect(() => {
+        if (flash.success) {
+            setShowFlash(true);
+            const timeout = setTimeout(() => setShowFlash(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
 
     const totalPaid = payments.reduce(
         (sum, p) => sum + parseFloat(p.amount),
@@ -36,28 +54,44 @@ export default function PurchasePayments({
 
     function closeModal() {
         setConfirmingPayment(false);
-        setData({ id: null, amount: '', payment_date: '', description: '' });
-        setErrors({});
+        reset();
+        clearErrors();
+    }
+
+    function openEditModal(payment) {
+        setData({
+            id: payment.id,
+            amount: payment.amount,
+            payment_date: payment.payment_date,
+            description: payment.description || '',
+        });
+        setConfirmingPayment(true);
     }
 
     function savePayment(e) {
         e.preventDefault();
-        setProcessing(true);
 
-        // Simulate saving/updating payment
         if (data.id) {
-            // Edit existing payment
-            setPayments((prev) =>
-                prev.map((p) => (p.id === data.id ? { ...p, ...data } : p)),
-            );
+            // Update existing payment
+            put(route('medicine.payments.update', [medicine.id, data.id]), {
+                onSuccess: () => {
+                    setPayments((prev) =>
+                        prev.map((p) =>
+                            p.id === data.id ? { ...p, ...data } : p,
+                        ),
+                    );
+                    closeModal();
+                },
+            });
         } else {
-            // Add new payment
-            const newPayment = { ...data, id: Date.now() };
-            setPayments((prev) => [...prev, newPayment]);
+            // Create new payment
+            post(route('medicine.payments.store', medicine.id), {
+                onSuccess: (res) => {
+                    setPayments((prev) => [...prev, res.props.payment]);
+                    closeModal();
+                },
+            });
         }
-
-        setProcessing(false);
-        closeModal();
     }
 
     function handleDeletePayment(id) {
@@ -66,9 +100,18 @@ export default function PurchasePayments({
     }
 
     function confirmDelete() {
-        setPayments((prev) => prev.filter((p) => p.id !== deletePaymentId));
-        setConfirmingDelete(false);
-        setDeletePaymentId(null);
+        destroy(
+            route('medicine.payments.destroy', [medicine.id, deletePaymentId]),
+            {
+                onSuccess: () => {
+                    setPayments((prev) =>
+                        prev.filter((p) => p.id !== deletePaymentId),
+                    );
+                    setConfirmingDelete(false);
+                    setDeletePaymentId(null);
+                },
+            },
+        );
     }
 
     return (
@@ -78,9 +121,7 @@ export default function PurchasePayments({
             <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
                 {/* Header */}
                 <div className="mx-3 mb-6 flex flex-col justify-between rounded-t-xl bg-gray-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
-                    {/* Top Row */}
                     <div className="flex flex-wrap items-center justify-between gap-4">
-                        {/* Logo + Store Info */}
                         <div className="flex items-center gap-4">
                             <img
                                 src={log}
@@ -96,8 +137,6 @@ export default function PurchasePayments({
                                 </p>
                             </div>
                         </div>
-
-                        {/* Bill Info */}
                         <div className="text-right">
                             <p className="text-xl font-extrabold tracking-wide">
                                 فاکتور #{medicine.id}
@@ -107,8 +146,6 @@ export default function PurchasePayments({
                             </p>
                         </div>
                     </div>
-
-                    {/* Optional Subtext */}
                     <div className="mt-4 border-t border-gray-600 pt-2 text-center text-xs opacity-80 print:border-gray-300">
                         صادرشده توسط سیستم مدیریت دارو - بدون نیاز به امضا
                     </div>
@@ -116,14 +153,13 @@ export default function PurchasePayments({
 
                 {/* Supplier & Purchase Info */}
                 <div className="mb-6 grid grid-cols-1 gap-4 px-3 md:grid-cols-2 print:mb-4 print:grid-cols-2">
-                    {/* Supplier Info */}
                     <div className="rounded-xl border border-gray-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm print:border print:shadow-none">
                         <h2 className="mb-3 border-b pb-2 text-base font-semibold text-gray-700">
                             اطلاعات تأمین‌کننده
                         </h2>
                         <div className="space-y-1.5 text-sm">
                             <p className="flex justify-between">
-                                <span className="text-gray-600">شرکت:</span>
+                                <span className="text-gray-600">شرکت:</span>{' '}
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.supplier.company_name}
@@ -134,13 +170,13 @@ export default function PurchasePayments({
                             <p className="flex justify-between">
                                 <span className="text-gray-600">
                                     شماره تماس:
-                                </span>
+                                </span>{' '}
                                 <span className="font-medium text-gray-800">
                                     {medicine.supplier.phone}
                                 </span>
                             </p>
                             <p className="flex justify-between">
-                                <span className="text-gray-600">آدرس:</span>
+                                <span className="text-gray-600">آدرس:</span>{' '}
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.supplier.address || '-'}
@@ -150,15 +186,13 @@ export default function PurchasePayments({
                             </p>
                         </div>
                     </div>
-
-                    {/* Purchase Info */}
                     <div className="rounded-xl border border-gray-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm print:border print:shadow-none">
                         <h2 className="mb-3 border-b pb-2 text-base font-semibold text-gray-700">
                             جزئیات خرید
                         </h2>
                         <div className="space-y-1.5 text-sm">
                             <p className="flex justify-between">
-                                <span className="text-gray-600">توضیحات:</span>
+                                <span className="text-gray-600">توضیحات:</span>{' '}
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.description}
@@ -169,13 +203,13 @@ export default function PurchasePayments({
                             <p className="flex justify-between">
                                 <span className="text-gray-600">
                                     تاریخ خرید:
-                                </span>
+                                </span>{' '}
                                 <span className="font-medium text-gray-800">
                                     {medicine.purchase_date}
                                 </span>
                             </p>
                             <p className="flex justify-between">
-                                <span className="text-gray-600">مبلغ کل:</span>
+                                <span className="text-gray-600">مبلغ کل:</span>{' '}
                                 <span className="font-medium text-gray-800">
                                     {medicine.total_amount.toLocaleString()}{' '}
                                     افغانی
@@ -188,8 +222,7 @@ export default function PurchasePayments({
                 {/* Payments Table */}
                 <div className="mx-3 overflow-hidden rounded-xl border border-gray-200 shadow-sm print:border print:shadow-none">
                     <table className="min-w-full border-collapse">
-                        {/* Header */}
-                        <thead className="bg-gradient-to-l from-gray-600 to-gray-500 text-white print:bg-gray-100 print:text-gray-700">
+                        <thead className="bg-gray-700 text-white print:bg-gray-200 print:text-gray-700">
                             <tr>
                                 {[
                                     'مبلغ',
@@ -201,25 +234,19 @@ export default function PurchasePayments({
                                 ].map((h) => (
                                     <th
                                         key={h}
-                                        className="border-gry-400 border-b p-2 text-right text-sm font-medium print:border-gray-300 print:bg-gray-50"
+                                        className="border-b border-gray-400 p-2 text-right text-sm font-medium"
                                     >
                                         {h}
                                     </th>
                                 ))}
                             </tr>
                         </thead>
-
-                        {/* Body */}
                         <tbody>
                             {payments.length > 0 ? (
                                 payments.map((p, idx) => (
                                     <tr
                                         key={p.id}
-                                        className={`${
-                                            idx % 2 === 0
-                                                ? 'bg-white'
-                                                : 'bg-gray-50'
-                                        } transition-colors hover:bg-blue-50/60 print:bg-white`}
+                                        className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} transition-colors hover:bg-blue-50/60 print:bg-white`}
                                     >
                                         <td className="p-2 text-right text-sm font-medium text-gray-800">
                                             {p.amount.toLocaleString()}
@@ -247,42 +274,23 @@ export default function PurchasePayments({
                                         >
                                             {p.description || '-'}
                                         </td>
-                                        <td className="p-2 text-center">
-                                            <div className="flex justify-center gap-2">
-                                                {/* Edit */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setData({
-                                                            amount: p.amount,
-                                                            payment_date:
-                                                                p.payment_date,
-                                                            description:
-                                                                p.description,
-                                                            id: p.id,
-                                                        });
-                                                        setConfirmingPayment(
-                                                            true,
-                                                        );
-                                                    }}
-                                                    className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-200"
-                                                >
-                                                    ✏️ ویرایش
-                                                </button>
-
-                                                {/* Delete */}
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleDeletePayment(
-                                                            p.id,
-                                                        )
-                                                    }
-                                                    className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
-                                                >
-                                                    🗑️ حذف
-                                                </button>
-                                            </div>
+                                        <td className="flex justify-center gap-2 p-2 text-center">
+                                            <button
+                                                type="button"
+                                                onClick={() => openEditModal(p)}
+                                                className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-200"
+                                            >
+                                                ✏️ ویرایش
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    handleDeletePayment(p.id)
+                                                }
+                                                className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                                            >
+                                                🗑️ حذف
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -297,8 +305,6 @@ export default function PurchasePayments({
                                 </tr>
                             )}
                         </tbody>
-
-                        {/* Footer */}
                         <tfoot className="bg-gray-100 font-semibold print:bg-gray-200">
                             <tr>
                                 <td
@@ -324,11 +330,7 @@ export default function PurchasePayments({
                                 </td>
                                 <td
                                     colSpan={2}
-                                    className={`p-2 text-right text-sm font-bold ${
-                                        remaining === 0
-                                            ? 'text-green-700'
-                                            : 'text-red-700'
-                                    }`}
+                                    className={`p-2 text-right text-sm font-bold ${remaining === 0 ? 'text-green-700' : 'text-red-700'}`}
                                 >
                                     {remaining.toLocaleString()} افغانی
                                 </td>
@@ -345,7 +347,7 @@ export default function PurchasePayments({
                     </PrimaryButton>
                 </div>
 
-                {/* ✅ Payment Modal */}
+                {/* Payment Modal */}
                 <Modal show={confirmingPayment} onClose={closeModal}>
                     <form onSubmit={savePayment} className="space-y-4 p-6">
                         <h2 className="text-lg font-medium text-gray-900">
@@ -415,7 +417,7 @@ export default function PurchasePayments({
                     </form>
                 </Modal>
 
-                {/* ✅ Delete Confirmation Modal */}
+                {/* Delete Confirmation Modal */}
                 <Modal
                     show={confirmingDelete}
                     onClose={() => setConfirmingDelete(false)}
@@ -441,6 +443,21 @@ export default function PurchasePayments({
                     </div>
                 </Modal>
             </div>
+            {/* Flash Message */}
+            <Transition
+                show={showFlash}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
+            >
+                <div className="rounded bg-green-600 p-3 text-sm text-white shadow-lg">
+                    {flash.success}
+                </div>
+            </Transition>
         </AuthenticatedLayout>
     );
 }

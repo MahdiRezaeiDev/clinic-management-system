@@ -18,12 +18,12 @@ export default function PurchasesIndex({ purchases }) {
     const displayed = activeTab === 'remaining' ? remaining : fullyPaid;
 
     const { flash } = usePage().props;
+    const [showFlash, setShowFlash] = useState(false);
 
     const [purchaseId, setPurchaseId] = useState(null);
     const [confirmingPurchaseDeletion, setConfirmingPurchaseDeletion] =
         useState(false);
     const [confirmingPayment, setConfirmingPayment] = useState(false);
-    const [showFlash, setShowFlash] = useState(false);
 
     const {
         delete: destroy,
