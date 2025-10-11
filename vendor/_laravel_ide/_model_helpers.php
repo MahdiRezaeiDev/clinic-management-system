@@ -1307,6 +1307,8 @@ namespace App\Models {
      * @property mixed $sale_type
      * @property mixed $patient_id
      * @property int $id
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PharmacySaleItem> $items
+     * @property-read int|null $items_count
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePatientId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleType($value)

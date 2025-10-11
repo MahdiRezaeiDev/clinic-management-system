@@ -9,11 +9,11 @@ class PharmacySaleItem extends Model
 {
     use HasFactory; // <-- this is required!
     protected $fillable = [
-        "sale_id",
+        "pharmacy_sale_id",
         "drug_name",
         "quantity",
         "unit_price",
         "subtotal",
-        
+
     ];
 }

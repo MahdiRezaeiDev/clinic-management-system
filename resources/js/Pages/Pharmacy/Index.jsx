@@ -1,414 +1,228 @@
-import AfghanDatePicker from '@/Components/AfghanDatePicker';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import log from '@/img/logo.jpg';
+import DangerButton from '@/Components/DangerButton';
+import Dropdown from '@/Components/Dropdown';
+import Modal from '@/Components/Modal';
+import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import { Trash } from 'lucide-react';
-import moment from 'moment-jalaali';
-import { useState } from 'react';
-import DateObject from 'react-date-object';
-import persian from 'react-date-object/calendars/persian';
-import persian_en from 'react-date-object/locales/persian_en';
+import { Transition } from '@headlessui/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { MoreVertical, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export default function PharmacySaleInvoiceForm() {
-    const [showInvoice, setShowInvoice] = useState(false);
+export default function PharmacySalesIndex({ sales }) {
+    const [activeTab, setActiveTab] = useState('with');
+    const { with: withPrescription, without: withoutPrescription } = sales;
+    const displayed =
+        activeTab === 'with' ? withPrescription : withoutPrescription;
 
-    const { data, setData, post, processing, errors, reset } = useForm({
-        sale_type: 'cash',
-        payment_method: 'cash',
-        sale_date: new DateObject({
-            calendar: persian,
-            locale: persian_en,
-        }).format('YYYY/MM/DD'),
-        description: '',
-        items: [],
-        total_amount: 0,
-        discount: 0,
-    });
+    const { flash } = usePage().props;
+    const [showFlash, setShowFlash] = useState(false);
 
-    const addItem = () => {
-        setData('items', [
-            ...data.items,
-            { drug_name: '', quantity: 1, unit_price: 0, subtotal: 0 },
-        ]);
+    const [saleId, setSaleId] = useState(null);
+    const [confirmingSaleDeletion, setConfirmingSaleDeletion] = useState(false);
+    const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+
+    const { delete: destroy, reset, clearErrors, processing } = useForm({});
+
+    useEffect(() => {
+        if (flash.success) {
+            setShowFlash(true);
+            const timeout = setTimeout(() => setShowFlash(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [flash.success]);
+
+    const confirmSaleDeletion = (id) => {
+        setConfirmingSaleDeletion(true);
+        setSaleId(id);
     };
 
-    const updateItem = (idx, field, value) => {
-        const newItems = [...data.items];
-        newItems[idx][field] =
-            field === 'quantity' || field === 'unit_price'
-                ? Number(value)
-                : value;
-        newItems[idx].subtotal =
-            newItems[idx].quantity * newItems[idx].unit_price;
-
-        const totalAmount = newItems.reduce((a, b) => a + b.subtotal, 0);
-        setData({
-            ...data,
-            items: newItems,
-            total_amount: totalAmount,
-        });
-    };
-
-    const removeItem = (idx) => {
-        const newItems = data.items.filter((_, i) => i !== idx);
-        const totalAmount = newItems.reduce((a, b) => a + b.subtotal, 0);
-        setData({
-            ...data,
-            items: newItems,
-            total_amount: totalAmount,
-        });
-    };
-
-    const updateDiscount = (value) => {
-        const num = Number(value);
-        setData('discount', isNaN(num) ? 0 : num);
-    };
-
-    const totalAfterDiscount = Math.max(data.total_amount - data.discount, 0);
-
-    const submitSale = (e) => {
+    const deleteSale = (e) => {
         e.preventDefault();
-        const sale_date_gregorian = moment(
-            data.sale_date,
-            'jYYYY/jMM/jDD',
-        ).format('YYYY-MM-DD');
-
-        data.sale_date_gregorian = sale_date_gregorian;
-
-        post(route('pharmacy.store'), {
-            onSuccess: () => {
-                setShowInvoice(true);
-            },
+        destroy(route('pharmacy.destroy', saleId), {
+            preserveScroll: true,
+            onSuccess: closeModal,
+            onFinish: reset,
         });
+    };
+
+    const closeModal = () => {
+        setConfirmingSaleDeletion(false);
+        setShowInvoiceModal(false);
+        setSaleId(null);
+        clearErrors();
+        reset();
     };
 
     return (
-        <AuthenticatedLayout title="ثبت فروش دارو">
-            <Head title="ثبت فروش دارو" />
+        <AuthenticatedLayout title="فروش دارو">
+            <Head title="فروش دارو" />
 
-            <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
+            <div className="mx-auto max-w-7xl space-y-6 px-4 pt-8 md:px-10">
                 {/* Header */}
-                <div className="bg-blueGray-600 mx-3 flex flex-col justify-between rounded-t-xl p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <img
-                                src={log}
-                                alt="Logo"
-                                className="h-16 w-16 rounded-full border border-gray-500 bg-white shadow-sm"
-                            />
-                            <div>
-                                <h1 className="text-2xl font-bold leading-tight">
-                                    کلینیک صحت مادر
-                                </h1>
-                                <p className="text-sm opacity-80">
-                                    نسخه فروش دارو
-                                </p>
-                            </div>
-                        </div>
-                        <div className="text-right">
-                            <p className="text-xl font-extrabold tracking-wide">
-                                فاکتور #
-                            </p>
-                            <p className="mt-1 text-sm opacity-90">تاریخ:</p>
-                        </div>
-                    </div>
+                <div className="bg-blueGray-600 flex flex-col items-center justify-between rounded-lg p-6 text-white shadow-sm md:flex-row">
+                    <h1 className="text-2xl font-bold">لیست فروش دارو</h1>
+                    <Link
+                        href={route('pharmacy.create')}
+                        className="text-blueGray-600 inline-flex items-center gap-2 rounded bg-white px-4 py-2 text-sm font-semibold shadow transition hover:bg-gray-100"
+                    >
+                        <Plus className="h-4 w-4" /> ثبت فروش جدید
+                    </Link>
                 </div>
 
-                {/* Sale Info */}
-                <div className="border-blueGray-600 mx-3 border-x-4 bg-white/80 p-3 text-sm shadow-sm">
-                    <h2 className="mb-2 border-b pb-1 font-semibold text-gray-700">
-                        اطلاعات فاکتور
-                    </h2>
+                {/* Tabs */}
+                <div className="flex w-fit gap-2 rounded-lg bg-gray-100 p-1">
+                    <button
+                        onClick={() => setActiveTab('with')}
+                        className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                            activeTab === 'with'
+                                ? 'bg-white text-blue-600 shadow'
+                                : 'text-gray-600 hover:text-blue-600'
+                        }`}
+                    >
+                        با نسخه
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('without')}
+                        className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                            activeTab === 'without'
+                                ? 'bg-white text-blue-600 shadow'
+                                : 'text-gray-600 hover:text-blue-600'
+                        }`}
+                    >
+                        بدون نسخه
+                    </button>
+                </div>
 
-                    <table className="w-full border-separate border-spacing-y-2">
-                        <tbody>
+                {/* Sales Table */}
+                <div className="rounded-lg bg-white shadow">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-blueGray-600 text-white">
                             <tr>
-                                <td className="w-1/3 whitespace-nowrap font-medium text-gray-700">
-                                    تاریخ فروش:
-                                </td>
-                                <td className="w-2/3">
-                                    <AfghanDatePicker
-                                        value={data.sale_date}
-                                        onChange={(v) =>
-                                            setData(
-                                                'sale_date',
-                                                v.format('YYYY-MM-DD'),
-                                            )
-                                        }
-                                        className="w-[130px] rounded-md border border-gray-300 px-2 py-1 text-center text-sm focus:ring-1 focus:ring-blue-400"
-                                    />
-                                    <InputError
-                                        message={errors.sale_date}
-                                        className="mt-1 text-xs text-red-500"
-                                    />
-                                </td>
+                                <th className="p-3 text-right text-sm font-semibold">
+                                    تاریخ فروش
+                                </th>
+                                <th className="p-3 text-right text-sm font-semibold">
+                                    نوع فروش
+                                </th>
+                                <th className="p-3 text-right text-sm font-semibold">
+                                    جمع کل
+                                </th>
+                                <th className="p-3 text-center text-xs font-semibold">
+                                    عملیات
+                                </th>
                             </tr>
-
-                            <tr>
-                                <td className="whitespace-nowrap font-medium text-gray-700">
-                                    تخفیف (افغانی):
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        className="w-[100px] rounded-md border border-gray-300 px-2 py-1 text-center text-sm focus:ring-1 focus:ring-blue-400"
-                                        value={data.discount}
-                                        onChange={(e) =>
-                                            updateDiscount(e.target.value)
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.discount}
-                                        className="mt-1 text-xs text-red-500"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr className="align-top">
-                                <td className="whitespace-nowrap pt-1 font-medium text-gray-700">
-                                    توضیحات:
-                                </td>
-                                <td className="pt-1">
-                                    <textarea
-                                        rows={2}
-                                        placeholder="توضیحات فاکتور..."
-                                        className="w-full resize-none rounded-md border border-gray-300 px-2 py-1 text-sm focus:ring-1 focus:ring-blue-400"
-                                        value={data.description}
-                                        onChange={(e) =>
-                                            setData(
-                                                'description',
-                                                e.target.value,
-                                            )
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.description}
-                                        className="mt-1 text-xs text-red-500"
-                                    />
-                                </td>
-                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {displayed.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={4}
+                                        className="p-3 text-center text-gray-500"
+                                    >
+                                        هیچ فروشی در این بخش وجود ندارد
+                                    </td>
+                                </tr>
+                            ) : (
+                                displayed.map((sale) => (
+                                    <tr
+                                        key={sale.id}
+                                        className="transition hover:bg-gray-50"
+                                    >
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-800">
+                                            {sale.sale_date}
+                                        </td>
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-700">
+                                            {sale.has_prescription
+                                                ? 'با نسخه'
+                                                : 'بدون نسخه'}
+                                        </td>
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-800">
+                                            {sale.total_amount.toLocaleString()}{' '}
+                                            افغانی
+                                        </td>
+                                        <td className="p-3 text-center text-xs">
+                                            <Dropdown>
+                                                <Dropdown.Trigger>
+                                                    <button className="bg-blueGray-600 hover:bg-blueGray-700 flex items-center gap-1 rounded px-3 py-1 text-xs text-white transition">
+                                                        <MoreVertical className="h-4 w-4" />{' '}
+                                                        عملیات
+                                                    </button>
+                                                </Dropdown.Trigger>
+                                                <Dropdown.Content>
+                                                    <Link
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        href={route(
+                                                            'pharmacy.edit',
+                                                            sale.id,
+                                                        )}
+                                                    >
+                                                        ویرایش
+                                                    </Link>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
+                                                        onClick={() =>
+                                                            confirmSaleDeletion(
+                                                                sale.id,
+                                                            )
+                                                        }
+                                                    >
+                                                        حذف
+                                                    </button>
+                                                    <button
+                                                        className="block w-full px-4 py-2 text-right text-sm text-green-600 hover:bg-gray-100"
+                                                        onClick={() => {
+                                                            setSaleId(sale.id);
+                                                            setShowInvoiceModal(
+                                                                true,
+                                                            );
+                                                        }}
+                                                    >
+                                                        نمایش فاکتور
+                                                    </button>
+                                                </Dropdown.Content>
+                                            </Dropdown>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
-
-                {/* Items Table */}
-                <form onSubmit={submitSale}>
-                    <div className="border-blueGray-600 mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 shadow-sm">
-                        <table className="min-w-full border-collapse text-sm">
-                            <thead className="bg-blueGray-600 text-white">
-                                <tr>
-                                    {[
-                                        '#',
-                                        'نام دارو',
-                                        'تعداد',
-                                        'قیمت واحد',
-                                        'جمع جزء',
-                                        'عملیات',
-                                    ].map((h) => (
-                                        <th
-                                            key={h}
-                                            className="border-b border-gray-400 p-2 text-right font-medium"
-                                        >
-                                            {h}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.items.length === 0 ? (
-                                    <tr>
-                                        <td
-                                            colSpan={6}
-                                            className="p-2 text-center text-gray-500"
-                                        >
-                                            هیچ دارویی اضافه نشده است
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    data.items.map((item, idx) => (
-                                        <tr
-                                            key={idx}
-                                            className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} transition-colors hover:bg-blue-50/60`}
-                                        >
-                                            <td className="p-2 text-right">
-                                                {idx + 1}
-                                            </td>
-                                            <td className="p-2 text-right">
-                                                <input
-                                                    type="text"
-                                                    className="w-full rounded border px-1 text-right text-xs font-semibold"
-                                                    value={item.drug_name}
-                                                    onChange={(e) =>
-                                                        updateItem(
-                                                            idx,
-                                                            'drug_name',
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.drug_name`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
-                                                />
-                                            </td>
-                                            <td className="p-2 text-right">
-                                                <input
-                                                    type="number"
-                                                    min="1"
-                                                    className="w-16 rounded border px-1 text-right text-xs font-semibold"
-                                                    value={item.quantity}
-                                                    onChange={(e) =>
-                                                        updateItem(
-                                                            idx,
-                                                            'quantity',
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.quantity`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
-                                                />
-                                            </td>
-                                            <td className="p-2 text-right">
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    className="w-20 rounded border px-1 text-right text-xs font-semibold"
-                                                    value={item.unit_price}
-                                                    onChange={(e) =>
-                                                        updateItem(
-                                                            idx,
-                                                            'unit_price',
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.unit_price`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
-                                                />
-                                            </td>
-                                            <td className="p-2 text-right font-medium">
-                                                {item.subtotal.toLocaleString()}
-                                            </td>
-                                            <td className="p-2 text-center">
-                                                <Trash
-                                                    onClick={() =>
-                                                        removeItem(idx)
-                                                    }
-                                                    className="h-4 w-4 cursor-pointer text-red-600"
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-
-                        {Object.keys(errors).length > 0 && (
-                            <div className="mb-2 rounded-md bg-red-100 p-2 text-xs text-red-600">
-                                {Object.values(errors).map((error, idx) => (
-                                    <div key={idx}>- {error}</div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div className="mt-2 px-4 py-1 text-right font-semibold text-gray-800">
-                            جمع کل پس از تخفیف:{' '}
-                            <span className="font-bold text-blue-700">
-                                {totalAfterDiscount.toLocaleString()} افغانی
-                            </span>
-                        </div>
-
-                        <div className="mt-2 flex justify-end gap-2 px-4 py-1">
-                            <PrimaryButton type="button" onClick={addItem}>
-                                + افزودن دارو
-                            </PrimaryButton>
-                            <PrimaryButton type="submit" disabled={processing}>
-                                ثبت و نمایش فاکتور
-                            </PrimaryButton>
-                        </div>
-                    </div>
-                </form>
             </div>
 
-            {/* Invoice Modal */}
-            {showInvoice && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    <div className="relative max-h-[80vh] w-[500px] overflow-y-auto rounded-xl bg-white p-6 shadow-lg">
-                        <button
-                            onClick={() => setShowInvoice(false)}
-                            className="absolute right-3 top-2 text-gray-500 hover:text-red-600"
-                        >
-                            ✕
-                        </button>
-                        <h2 className="mb-3 text-center text-xl font-bold">
-                            فاکتور فروش
-                        </h2>
-                        <p className="mb-3 text-center text-sm text-gray-600">
-                            تاریخ فروش: {data.sale_date}
-                        </p>
-                        <table className="w-full border text-sm">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="border p-1">نام دارو</th>
-                                    <th className="border p-1">تعداد</th>
-                                    <th className="border p-1">قیمت</th>
-                                    <th className="border p-1">جمع</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.items.map((item, i) => (
-                                    <tr key={i}>
-                                        <td className="border p-1">
-                                            {item.drug_name}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.quantity}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.unit_price}
-                                        </td>
-                                        <td className="border p-1 text-center">
-                                            {item.subtotal}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
-                        <div className="mt-3 text-right font-semibold">
-                            تخفیف: {data.discount} افغانی
-                        </div>
-                        <div className="text-right font-bold text-blue-700">
-                            جمع نهایی: {totalAfterDiscount.toLocaleString()}{' '}
-                            افغانی
-                        </div>
-
-                        <div className="mt-4 text-center">
-                            <PrimaryButton onClick={() => window.print()}>
-                                چاپ فاکتور
-                            </PrimaryButton>
-                        </div>
+            {/* Delete Modal */}
+            <Modal show={confirmingSaleDeletion} onClose={closeModal}>
+                <form onSubmit={deleteSale} className="p-6">
+                    <h2 className="text-lg font-medium text-gray-900">
+                        آیا مطمئن هستید که می‌خواهید این فروش را حذف کنید؟
+                    </h2>
+                    <p className="mt-1 text-sm text-gray-600">
+                        بعد از حذف، اطلاعات فروش دیگر در دسترس نخواهد بود.
+                    </p>
+                    <div className="mt-6 flex justify-end gap-3">
+                        <SecondaryButton onClick={closeModal}>
+                            انصراف
+                        </SecondaryButton>
+                        <DangerButton disabled={processing}>حذف</DangerButton>
                     </div>
+                </form>
+            </Modal>
+
+            {/* Flash Message */}
+            <Transition
+                show={showFlash}
+                enter="transition ease-in-out duration-300"
+                enterFrom="opacity-0 translate-y-2"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in-out duration-500"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-2"
+                className="fixed bottom-6 left-6 z-50"
+            >
+                <div className="rounded bg-green-600 p-3 text-sm text-white shadow-lg">
+                    {flash.success}
                 </div>
-            )}
+            </Transition>
         </AuthenticatedLayout>
     );
 }

@@ -15,15 +15,26 @@ class PharmacyController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Pharmacy/Index');
+        $sales = PharmacySale::with('items')->get();
+
+        $salesGrouped = [
+            'with' => $sales->filter(fn($s) => $s->sale_type === 'with_prescription')->values(),
+            'without' => $sales->filter(fn($s) => $s->sale_type === 'without_prescription')->values(),
+        ];
+
+        return Inertia::render('Pharmacy/Index', [
+            'sales' => $salesGrouped,
+        ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return Inertia::render('Pharmacy/Create');
     }
 
     public function store(Request $request)
@@ -84,7 +95,7 @@ class PharmacyController extends Controller
 
         // 🧩 6. Redirect back
         return redirect()
-            ->route('pharmacy.index')
+            ->back()
             ->with('success', 'فروش با موفقیت ثبت شد.');
     }
 
@@ -102,7 +113,11 @@ class PharmacyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $sale = PharmacySale::with('items')->findOrFail($id);
+
+        return Inertia::render('Pharmacy/Edit', [
+            'sale' => $sale
+        ]);
     }
 
     /**

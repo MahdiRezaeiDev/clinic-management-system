@@ -18,4 +18,9 @@ class PharmacySale extends Model
         "payment_method",
         "description"
     ];
+
+    public function items()
+    {
+        return $this->hasMany(PharmacySaleItem::class);
+    }
 }
