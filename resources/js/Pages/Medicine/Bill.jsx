@@ -158,7 +158,7 @@ export default function BillShow({ purchase }) {
                 {/* Actions */}
                 <div className="mt-6 flex justify-end gap-2">
                     <a
-                        href={`/bills/${purchase.id}/payments`}
+                        href={route('medicine.payments.index', purchase.id)}
                         className="rounded bg-yellow-600 px-3 py-1.5 text-xs text-white shadow transition hover:bg-yellow-700"
                     >
                         مشاهده پرداخت‌ها
