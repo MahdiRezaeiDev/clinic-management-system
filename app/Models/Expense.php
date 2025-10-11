@@ -7,14 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Expense extends Model
 {
-    use HasFactory; // <-- this is required!
-    protected $fillable = [
-        "category",
-        "staff_id",
-        "supplier_id",
-        "user_id",
-        "amount",
-        "expense_date",
-        "description"
-    ];
+    use HasFactory;
+    protected $fillable = ['category', 'amount', 'payment_method', 'expense_date', 'description', 'user_id'];
 }
