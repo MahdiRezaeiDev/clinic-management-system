@@ -91,18 +91,18 @@ class PharmacyController extends Controller
             ]);
         }
 
-        // 🧩 6. Redirect back
-        return redirect()
-            ->back()
-            ->with('success', 'فروش با موفقیت ثبت شد.');
+        return redirect()->route('pharmacy.show', $pharmacy);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PharmacySale $pharmacy)
     {
-        //
+        $sale = PharmacySale::with('items')->findOrFail($pharmacy->id);
+        return Inertia::render('Pharmacy/Prescription', [
+            'sale' => $sale
+        ]);
     }
 
     /**
@@ -192,9 +192,7 @@ class PharmacyController extends Controller
             }
         }
 
-        return redirect()
-            ->back()
-            ->with('success', 'فروش با موفقیت به‌روزرسانی شد.');
+        return redirect()->route('pharmacy.show', $pharmacy);
     }
 
 

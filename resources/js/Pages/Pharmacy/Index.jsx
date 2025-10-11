@@ -131,11 +131,7 @@ export default function PharmacySalesIndex({ sales }) {
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
                                             {sale.sale_date}
                                         </td>
-                                        <td className="p-3 text-right text-sm font-semibold text-gray-700">
-                                            {sale.has_prescription
-                                                ? 'با نسخه'
-                                                : 'بدون نسخه'}
-                                        </td>
+
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
                                             {sale.total_amount.toLocaleString()}{' '}
                                             افغانی
@@ -168,17 +164,15 @@ export default function PharmacySalesIndex({ sales }) {
                                                     >
                                                         حذف
                                                     </button>
-                                                    <button
-                                                        className="block w-full px-4 py-2 text-right text-sm text-green-600 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                            setSaleId(sale.id);
-                                                            setShowInvoiceModal(
-                                                                true,
-                                                            );
-                                                        }}
+                                                    <Link
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        href={route(
+                                                            'pharmacy.show',
+                                                            sale.id,
+                                                        )}
                                                     >
-                                                        نمایش فاکتور
-                                                    </button>
+                                                        فاکتور
+                                                    </Link>
                                                 </Dropdown.Content>
                                             </Dropdown>
                                         </td>

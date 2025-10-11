@@ -172,7 +172,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 href={route('pharmacy.index')}
-                                active={route().current('pharmacy.index')}
+                                active={route().current('pharmacy.*')}
                             >
                                 <div className="flex items-end gap-2">
                                     <Coins className="h-5 w-5" />
