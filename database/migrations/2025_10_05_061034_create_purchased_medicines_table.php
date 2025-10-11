@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('purchased_medicines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete();
-            $table->decimal('total_amount', 12, 2);
-            $table->decimal('paid_amount', 12, 2)->default(0);
-            $table->decimal('remaining_amount', 12, 2)->default(0);
+            $table->integer('total_amount');
+            $table->integer('paid_amount')->default(0);
+            $table->integer('remaining_amount')->default(0);
             $table->date('purchase_date');
             $table->text('description')->nullable();
             $table->enum('status', ['paid', 'partial', 'unpaid'])->default('unpaid');

@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
+            $table->foreignId('salary_id')->constrained('salaries')->cascadeOnDelete();
             $table->date('date');
-            $table->decimal('hours', 5, 2);
-            $table->decimal('rate', 12, 2);
-            $table->decimal('total', 12, 2);
+            $table->integer('hours')->default(0);
+            $table->integer('rate')->default(0);
+            $table->integer('total')->default(0);
             $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->tinyInteger('status')->default(0);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

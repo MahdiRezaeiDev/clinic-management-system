@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('purchased_medicine_id')->constrained('purchased_medicines')->cascadeOnDelete();
             $table->date('payment_date');
-            $table->decimal('amount', 12, 2);
+            $table->integer('amount');
             $table->enum('payment_method', ['cash', 'card'])->default('cash');
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

@@ -332,14 +332,10 @@ namespace App\Models {
      * @property mixed $payment_method
      * @property float $amount
      * @property mixed $user_id
-     * @property mixed $doctor_id
-     * @property mixed $patient_id
      * @property mixed $category
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCategory($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePatientId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereDoctorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePaymentMethod($value)

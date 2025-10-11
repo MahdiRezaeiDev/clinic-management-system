@@ -199,8 +199,10 @@ class PharmacyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PharmacySale $pharmacy)
     {
-        //
+        $pharmacy->delete();
+        return redirect()->back()
+            ->with('success', 'فروش مدنظر شما موفقانه حذف گردید.');
     }
 }

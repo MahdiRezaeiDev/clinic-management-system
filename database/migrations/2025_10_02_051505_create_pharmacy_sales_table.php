@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->nullable()->constrained('patients')->nullOnDelete();
             $table->enum('sale_type', ['with_prescription', 'without_prescription']);
-            $table->decimal('total_amount', 12, 2);
+            $table->integer('discount')->nullable(0);
+            $table->integer('total_amount');
             $table->enum('payment_method', ['cash', 'card'])->default('cash');
             $table->date('sale_date');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('staff_id')->constrained('staff')->cascadeOnDelete();
             $table->date('salary_month'); // e.g., 1404-07
-            $table->decimal('base_salary', 12, 2)->default(0);
-            $table->decimal('overtime_amount', 12, 2)->default(0);
-            $table->decimal('deductions', 12, 2)->default(0);
-            $table->decimal('total_paid', 12, 2)->default(0);
+            $table->integer('base_salary')->default(0);
+            $table->integer('overtime_amount')->default(0);
+            $table->integer('deductions')->default(0);
+            $table->integer('total_paid')->default(0);
             $table->date('payment_date')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

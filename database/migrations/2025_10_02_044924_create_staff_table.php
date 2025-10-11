@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->enum('role', ['doctor', 'nurse', 'pharmacist', 'admin', 'lab', 'dentist', 'emergency', 'gynecology', 'inpatient', 'service']);
             $table->string('phone')->nullable();
-            $table->decimal('base_salary', 12, 2)->default(0);
+            $table->integer('base_salary')->default(0);
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->enum('category', ['building', 'kitchen', 'repair', 'furniture', 'other']);
-            $table->decimal('amount', 12, 2);
+            $table->integer('amount')->default(0);
             $table->enum('payment_method', ['cash', 'card'])->default('cash');
             $table->text('description')->nullable();
             $table->date('expense_date');
