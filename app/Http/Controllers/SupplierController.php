@@ -65,6 +65,7 @@ class SupplierController extends Controller
         $supplier->address = $request->address;
 
         $supplier->save();
+        
         return redirect()
             ->back()
             ->with('success', 'شرکت همکار مدنظر شما موفقانه ثبت گردید.');
