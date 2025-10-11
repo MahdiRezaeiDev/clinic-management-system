@@ -13,6 +13,7 @@ class PharmacySaleItem extends Model
         "drug_name",
         "quantity",
         "unit_price",
-        "subtotal"
+        "subtotal",
+        
     ];
 }

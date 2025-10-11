@@ -1303,12 +1303,14 @@ namespace App\Models {
      * @property string $sale_date
      * @property mixed $payment_method
      * @property float $total_amount
+     * @property mixed $discount
      * @property mixed $sale_type
      * @property mixed $patient_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePatientId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleType($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDiscount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereTotalAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePaymentMethod($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleDate($value)
