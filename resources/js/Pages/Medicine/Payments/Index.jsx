@@ -6,7 +6,6 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { Check, Cross } from 'lucide-react';
 import { useState } from 'react';
 
 export default function PurchasePayments({
@@ -74,202 +73,264 @@ export default function PurchasePayments({
         <AuthenticatedLayout title="صورتحساب پرداخت‌ها">
             <Head title="صورتحساب پرداخت‌ها" />
 
-            <div className="m-6 mx-auto max-w-4xl bg-gray-50 font-sans print:bg-white">
+            <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
                 {/* Header */}
-                <div className="bg-blueGray-600 mb-6 flex items-center justify-between rounded-t-lg p-6 text-white print:mb-4 print:rounded-none print:bg-white print:text-black">
-                    {/* Logo and Store Name */}
-                    <div className="flex items-center">
-                        <img
-                            src={log}
-                            alt="Logo"
-                            className="mr-4 h-16 w-16 rounded-full"
-                        />
-                        <div>
-                            <h1 className="text-3xl font-bold">
-                                فروشگاه {medicine.supplier.company_name}
-                            </h1>
-                            <p className="mt-1 text-gray-200">بیل خرید</p>
+                <div className="mx-3 mb-6 flex flex-col justify-between rounded-t-xl bg-gray-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
+                    {/* Top Row */}
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                        {/* Logo + Store Info */}
+                        <div className="flex items-center gap-4">
+                            <img
+                                src={log}
+                                alt="Logo"
+                                className="h-16 w-16 rounded-full border border-gray-500 bg-white shadow-sm print:border-gray-300 print:shadow-none"
+                            />
+                            <div>
+                                <h1 className="text-2xl font-bold leading-tight">
+                                    فروشگاه {medicine.supplier.company_name}
+                                </h1>
+                                <p className="text-sm opacity-80">
+                                    فاکتور خرید
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Bill Info */}
+                        <div className="text-right">
+                            <p className="text-xl font-extrabold tracking-wide">
+                                فاکتور #{medicine.id}
+                            </p>
+                            <p className="mt-1 text-sm opacity-90">
+                                تاریخ: {medicine.purchase_date}
+                            </p>
                         </div>
                     </div>
 
-                    {/* Invoice Info */}
-                    <div className="text-right">
-                        <p className="text-lg font-semibold">
-                            تاریخ بیل: {medicine.purchase_date}
-                        </p>
-                        <p className="text-lg font-semibold">
-                            شماره بیل: {medicine.id}
-                        </p>
+                    {/* Optional Subtext */}
+                    <div className="mt-4 border-t border-gray-600 pt-2 text-center text-xs opacity-80 print:border-gray-300">
+                        صادرشده توسط سیستم مدیریت دارو - بدون نیاز به امضا
                     </div>
                 </div>
 
                 {/* Supplier & Purchase Info */}
-                <div className="mb-6 grid grid-cols-1 gap-6 px-3 md:grid-cols-2 print:mb-4 print:grid-cols-2">
-                    <div className="rounded border p-4 shadow-sm print:border print:shadow-none">
-                        <h2 className="mb-2 text-lg font-semibold">
-                            اطلاعات تامین‌کننده
+                <div className="mb-6 grid grid-cols-1 gap-4 px-3 md:grid-cols-2 print:mb-4 print:grid-cols-2">
+                    {/* Supplier Info */}
+                    <div className="rounded-xl border border-gray-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm print:border print:shadow-none">
+                        <h2 className="mb-3 border-b pb-2 text-base font-semibold text-gray-700">
+                            اطلاعات تأمین‌کننده
                         </h2>
-                        <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">شرکت:</span>
-                            <span className="text-xs font-semibold">
-                                {medicine.supplier.company_name}
-                            </span>
-                        </p>
-                        <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">
-                                شماره تماس:
-                            </span>
-                            <span className="text-xs font-semibold">
-                                {medicine.supplier.phone}
-                            </span>
-                        </p>
-                        <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">آدرس:</span>
-                            <span className="text-xs font-semibold">
-                                {medicine.supplier.address || '-'}
-                            </span>
-                        </p>
+                        <div className="space-y-1.5 text-sm">
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">شرکت:</span>
+                                <span
+                                    className="max-w-[180px] truncate font-medium text-gray-800"
+                                    title={medicine.supplier.company_name}
+                                >
+                                    {medicine.supplier.company_name}
+                                </span>
+                            </p>
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">
+                                    شماره تماس:
+                                </span>
+                                <span className="font-medium text-gray-800">
+                                    {medicine.supplier.phone}
+                                </span>
+                            </p>
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">آدرس:</span>
+                                <span
+                                    className="max-w-[180px] truncate font-medium text-gray-800"
+                                    title={medicine.supplier.address || '-'}
+                                >
+                                    {medicine.supplier.address || '-'}
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div className="rounded border p-4 shadow-sm print:border print:shadow-none">
-                        <h2 className="mb-2 text-lg font-semibold">
+
+                    {/* Purchase Info */}
+                    <div className="rounded-xl border border-gray-200 bg-white/70 p-4 shadow-sm backdrop-blur-sm print:border print:shadow-none">
+                        <h2 className="mb-3 border-b pb-2 text-base font-semibold text-gray-700">
                             جزئیات خرید
                         </h2>
-                        <p className="mb-2 flex items-center gap-2">
-                            <span className="text-sm font-semibold">
-                                توضیحات :
-                            </span>
-                            <span className="text-xs font-semibold">
-                                {medicine.description}
-                            </span>
-                        </p>
-                        <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">
-                                تاریخ خرید:
-                            </span>
-                            <span className="text-xs font-semibold">
-                                {medicine.purchase_date}
-                            </span>
-                        </p>
-                        <p className="flex items-center gap-2">
-                            <span className="text-sm font-semibold">
-                                مبلغ کل:
-                            </span>
-                            <span className="text-xs font-semibold">
-                                {medicine.total_amount.toLocaleString()} افغانی
-                            </span>
-                        </p>
+                        <div className="space-y-1.5 text-sm">
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">توضیحات:</span>
+                                <span
+                                    className="max-w-[180px] truncate font-medium text-gray-800"
+                                    title={medicine.description}
+                                >
+                                    {medicine.description || '-'}
+                                </span>
+                            </p>
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">
+                                    تاریخ خرید:
+                                </span>
+                                <span className="font-medium text-gray-800">
+                                    {medicine.purchase_date}
+                                </span>
+                            </p>
+                            <p className="flex justify-between">
+                                <span className="text-gray-600">مبلغ کل:</span>
+                                <span className="font-medium text-gray-800">
+                                    {medicine.total_amount.toLocaleString()}{' '}
+                                    افغانی
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 {/* Payments Table */}
-                <div className="mx-3 overflow-hidden rounded-lg border shadow-sm print:border print:shadow-none">
-                    <table className="min-w-full table-auto border-collapse">
-                        <thead className="bg-blueGray-600 print:bg-gray-100">
+                <div className="mx-3 overflow-hidden rounded-xl border border-gray-200 shadow-sm print:border print:shadow-none">
+                    <table className="min-w-full border-collapse">
+                        {/* Header */}
+                        <thead className="bg-gradient-to-l from-gray-600 to-gray-500 text-white print:bg-gray-100 print:text-gray-700">
                             <tr>
-                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
-                                    مبلغ
-                                </th>
-                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
-                                    روش پرداخت
-                                </th>
-                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
-                                    تاریخ پرداخت
-                                </th>
-
-                                <th className="border-b p-2 text-center text-sm text-white print:text-gray-700">
-                                    وضعیت
-                                </th>
-                                <th className="border-b p-2 text-right text-sm text-white print:text-gray-700">
-                                    توضیحات
-                                </th>
-                                <th className="border-b p-2 text-center text-sm text-white print:text-gray-700">
-                                    عملیات
-                                </th>
+                                {[
+                                    'مبلغ',
+                                    'روش پرداخت',
+                                    'تاریخ پرداخت',
+                                    'وضعیت',
+                                    'توضیحات',
+                                    'عملیات',
+                                ].map((h) => (
+                                    <th
+                                        key={h}
+                                        className="border-gry-400 border-b p-2 text-right text-sm font-medium print:border-gray-300 print:bg-gray-50"
+                                    >
+                                        {h}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
+
+                        {/* Body */}
                         <tbody>
-                            {payments.map((p, idx) => (
-                                <tr
-                                    key={p.id}
-                                    className={`${idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100 print:bg-white`}
-                                >
-                                    <td className="p-2 text-right text-sm">
-                                        {p.amount.toLocaleString()}
-                                    </td>
-                                    <td className="p-2 text-right text-sm">
-                                        نقدی
-                                    </td>
-                                    <td className="p-2 text-right text-sm">
-                                        {p.payment_date}
-                                    </td>
-                                    <td className="p-2 text-left text-sm">
-                                        {p.amount === remaining ? (
-                                            <Cross className="mx-auto h-4 w-4" />
-                                        ) : (
-                                            <Check className="mx-auto h-4 w-4 font-semibold text-green-600" />
-                                        )}
-                                    </td>
-                                    <td className="p-2 text-right text-sm">
-                                        {p.description || '-'}
-                                    </td>
-
-                                    <td className="flex justify-center gap-2 p-2">
-                                        {/* Edit Button */}
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setData({
-                                                    amount: p.amount,
-                                                    payment_date:
-                                                        p.payment_date,
-                                                    description: p.description,
-                                                    id: p.id,
-                                                });
-                                                setConfirmingPayment(true);
-                                            }}
-                                            className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-200"
+                            {payments.length > 0 ? (
+                                payments.map((p, idx) => (
+                                    <tr
+                                        key={p.id}
+                                        className={`${
+                                            idx % 2 === 0
+                                                ? 'bg-white'
+                                                : 'bg-gray-50'
+                                        } transition-colors hover:bg-blue-50/60 print:bg-white`}
+                                    >
+                                        <td className="p-2 text-right text-sm font-medium text-gray-800">
+                                            {p.amount.toLocaleString()}
+                                        </td>
+                                        <td className="p-2 text-right text-sm text-gray-700">
+                                            نقدی
+                                        </td>
+                                        <td className="p-2 text-right text-sm text-gray-700">
+                                            {p.payment_date}
+                                        </td>
+                                        <td className="p-2 text-center">
+                                            {p.amount === remaining ? (
+                                                <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">
+                                                    در انتظار
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                                                    پرداخت‌شده
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td
+                                            className="max-w-[200px] truncate p-2 text-right text-sm text-gray-700"
+                                            title={p.description}
                                         >
-                                            ویرایش
-                                        </button>
+                                            {p.description || '-'}
+                                        </td>
+                                        <td className="p-2 text-center">
+                                            <div className="flex justify-center gap-2">
+                                                {/* Edit */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setData({
+                                                            amount: p.amount,
+                                                            payment_date:
+                                                                p.payment_date,
+                                                            description:
+                                                                p.description,
+                                                            id: p.id,
+                                                        });
+                                                        setConfirmingPayment(
+                                                            true,
+                                                        );
+                                                    }}
+                                                    className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 transition hover:bg-blue-200"
+                                                >
+                                                    ✏️ ویرایش
+                                                </button>
 
-                                        {/* Delete Button */}
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                handleDeletePayment(p.id)
-                                            }
-                                            className="rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
-                                        >
-                                            حذف
-                                        </button>
+                                                {/* Delete */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleDeletePayment(
+                                                            p.id,
+                                                        )
+                                                    }
+                                                    className="inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700 transition hover:bg-red-200"
+                                                >
+                                                    🗑️ حذف
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan={6}
+                                        className="p-4 text-center text-sm text-gray-500"
+                                    >
+                                        هیچ پرداختی ثبت نشده است.
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
-                        <tfoot className="bg-blueGray-600 font-semibold print:bg-gray-300">
+
+                        {/* Footer */}
+                        <tfoot className="bg-gray-100 font-semibold print:bg-gray-200">
                             <tr>
-                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
+                                <td
+                                    colSpan={2}
+                                    className="p-2 text-right text-sm text-gray-800"
+                                >
                                     جمع کل پرداخت‌ها
                                 </td>
-                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
-                                    {totalPaid.toLocaleString()}
-                                </td>
                                 <td
-                                    className="p-2 text-sm text-white print:text-gray-700"
-                                    colSpan={4}
-                                ></td>
+                                    colSpan={2}
+                                    className="p-2 text-right text-sm text-blue-700"
+                                >
+                                    {totalPaid.toLocaleString()} افغانی
+                                </td>
+                                <td colSpan={2}></td>
                             </tr>
                             <tr>
-                                <td className="p-2 text-right text-sm text-white print:text-gray-700">
-                                    باقی مانده
-                                </td>
-                                <td className="p-2 text-right text-sm font-bold text-white print:text-gray-700">
-                                    {remaining.toLocaleString()}
+                                <td
+                                    colSpan={2}
+                                    className="p-2 text-right text-sm text-gray-800"
+                                >
+                                    مبلغ باقی‌مانده
                                 </td>
                                 <td
-                                    className="p-2 text-sm text-white print:text-gray-700"
-                                    colSpan={4}
-                                ></td>
+                                    colSpan={2}
+                                    className={`p-2 text-right text-sm font-bold ${
+                                        remaining === 0
+                                            ? 'text-green-700'
+                                            : 'text-red-700'
+                                    }`}
+                                >
+                                    {remaining.toLocaleString()} افغانی
+                                </td>
+                                <td colSpan={2}></td>
                             </tr>
                         </tfoot>
                     </table>
