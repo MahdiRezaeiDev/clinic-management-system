@@ -256,10 +256,10 @@ export default function Index({ visits, doctors, filters }) {
             <Modal show={confirmingVisitDeletion} onClose={closeModal}>
                 <form onSubmit={deleteStaff} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        آیا مطمئن هستید که می‌خواهید این پرسنل را حذف کنید؟
+                        آیا مطمئن هستید که می‌خواهید این ویزیت را حذف کنید؟
                     </h2>
                     <p className="mt-1 text-sm text-gray-600">
-                        بعد از حذف پرسنل، اطلاعات مرتبط با آن دیگر در دسترس
+                        بعد از حذف ویزیت، اطلاعات مرتبط با آن دیگر در دسترس
                         نخواهد بود.
                     </p>
                     <div className="mt-6 flex justify-end">
