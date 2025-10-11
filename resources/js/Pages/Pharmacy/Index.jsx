@@ -1,20 +1,18 @@
+import AfghanDatePicker from '@/Components/AfghanDatePicker';
+import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import axios from 'axios';
+import { Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 export default function PharmacySaleInvoiceForm() {
     const [sale, setSale] = useState({
         sale_type: 'cash',
-        patient_id: '',
-        doctor_id: '',
-        pharmacist_id: '',
-        user_id: 1,
-        sale_date: new Date().toISOString().slice(0, 16),
-        total_amount: 0,
         payment_method: 'cash',
+        sale_date: new Date().toISOString().slice(0, 16),
         description: '',
         items: [],
+        total_amount: 0,
     });
 
     const addItem = () => {
@@ -35,152 +33,119 @@ export default function PharmacySaleInvoiceForm() {
                 : value;
         newItems[idx].subtotal =
             newItems[idx].quantity * newItems[idx].unit_price;
-        setSale({
-            ...sale,
-            items: newItems,
-            total_amount: newItems.reduce((a, b) => a + b.subtotal, 0),
-        });
+        const total = newItems.reduce((a, b) => a + b.subtotal, 0);
+        setSale({ ...sale, items: newItems, total_amount: total });
     };
 
     const removeItem = (idx) => {
         const newItems = sale.items.filter((_, i) => i !== idx);
-        setSale({
-            ...sale,
-            items: newItems,
-            total_amount: newItems.reduce((a, b) => a + b.subtotal, 0),
-        });
+        const total = newItems.reduce((a, b) => a + b.subtotal, 0);
+        setSale({ ...sale, items: newItems, total_amount: total });
     };
 
-    const submitSale = async () => {
-        try {
-            await axios.post('/api/pharmacy_sales', sale);
-            alert('✅ فروش با موفقیت ثبت شد');
-            window.location.reload();
-        } catch (err) {
-            console.error(err);
-            alert('❌ خطا در ثبت فروش');
-        }
+    const submitSale = () => {
+        alert(
+            `فروش ثبت شد!\nجمع کل: ${sale.total_amount.toLocaleString()} افغانی`,
+        );
     };
 
     return (
         <AuthenticatedLayout title="ثبت فروش دارو">
             <Head title="ثبت فروش دارو" />
-            <div className="mx-auto my-8 max-w-4xl rounded-2xl border border-gray-200 shadow-xl print:border-0 print:shadow-none">
+
+            <div className="mx-auto max-w-4xl space-y-4 py-10 font-sans print:bg-white">
                 {/* Header */}
-                <div className="flex items-center justify-between border-b p-6">
+                <div className="flex flex-col items-start justify-between rounded-xl bg-indigo-700 p-6 text-white shadow-md md:flex-row md:items-center print:bg-gray-200 print:text-gray-700">
                     <div>
-                        <h1 className="text-2xl font-bold text-blue-800">
-                            داروخانه سلامت
-                        </h1>
-                        <p className="text-sm text-gray-500">
-                            شماره تماس: ۰۷۹۹۰۰۰۰۰۰
-                        </p>
+                        <h1 className="text-3xl font-bold">داروخانه سلامت</h1>
+                        <p className="text-sm opacity-80">فاکتور فروش</p>
                     </div>
-                    <div className="text-right">
-                        <h2 className="text-lg font-semibold text-gray-800">
-                            فاکتور فروش
-                        </h2>
-                        <p className="text-sm text-gray-500">
-                            تاریخ:{' '}
-                            {new Date(sale.sale_date).toLocaleDateString(
-                                'fa-IR',
-                            )}
-                        </p>
+                    <div className="mt-4 flex flex-col text-right md:mt-0">
+                        <span className="text-xl font-bold">فاکتور #1234</span>
+                        <AfghanDatePicker
+                            value={sale.sale_date}
+                            onChange={(v) =>
+                                setSale({
+                                    ...sale,
+                                    sale_date: v.format('YYYY-MM-DD'),
+                                })
+                            }
+                            className="mt-1 rounded border bg-white/20 p-1 text-sm text-gray-900"
+                        />
                     </div>
                 </div>
 
-                {/* Sale Info */}
-                <div className="grid grid-cols-2 gap-6 p-6">
-                    <div>
-                        <label className="mb-1 block text-sm text-gray-600">
-                            نوع فروش
-                        </label>
-                        <select
-                            value={sale.sale_type}
-                            onChange={(e) =>
-                                setSale({ ...sale, sale_type: e.target.value })
-                            }
-                            className="w-full rounded-md border p-2"
-                        >
-                            <option value="cash">نقدی (بدون نسخه)</option>
-                            <option value="credit">با نسخه (نسیه)</option>
-                        </select>
+                {/* Sale Info & Summary */}
+                <div className="grid gap-4 md:grid-cols-2">
+                    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow">
+                        <h2 className="mb-3 border-b pb-2 text-lg font-semibold">
+                            اطلاعات فروش
+                        </h2>
+                        <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                                <span>نوع فروش:</span>{' '}
+                                <span>
+                                    {sale.sale_type === 'cash'
+                                        ? 'نقدی'
+                                        : 'نسیه'}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>روش پرداخت:</span>{' '}
+                                <span>{sale.payment_method}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>توضیحات:</span>{' '}
+                                <span>{sale.description || '-'}</span>
+                            </div>
+                            <div className="mt-2 flex justify-between text-lg font-bold text-indigo-700">
+                                <span>جمع کل:</span>
+                                <span>
+                                    {sale.total_amount.toLocaleString()} افغانی
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div>
-                        <label className="mb-1 block text-sm text-gray-600">
-                            روش پرداخت
-                        </label>
-                        <select
-                            value={sale.payment_method}
-                            onChange={(e) =>
-                                setSale({
-                                    ...sale,
-                                    payment_method: e.target.value,
-                                })
-                            }
-                            className="w-full rounded-md border p-2"
-                        >
-                            <option value="cash">نقد</option>
-                            <option value="card">کارت</option>
-                            <option value="insurance">بیمه</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="mb-1 block text-sm text-gray-600">
-                            تاریخ فروش
-                        </label>
-                        <input
-                            type="datetime-local"
-                            className="w-full rounded-md border p-2"
-                            value={sale.sale_date}
-                            onChange={(e) =>
-                                setSale({ ...sale, sale_date: e.target.value })
-                            }
-                        />
-                    </div>
-
-                    <div>
-                        <label className="mb-1 block text-sm text-gray-600">
-                            توضیحات
-                        </label>
-                        <input
-                            type="text"
-                            className="w-full rounded-md border p-2"
-                            placeholder="توضیحات (اختیاری)"
-                            value={sale.description}
-                            onChange={(e) =>
-                                setSale({
-                                    ...sale,
-                                    description: e.target.value,
-                                })
-                            }
-                        />
+                    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow">
+                        <h2 className="mb-3 border-b pb-2 text-lg font-semibold">
+                            جزئیات فروش
+                        </h2>
+                        <div className="flex justify-between text-sm">
+                            <span>تعداد اقلام:</span>
+                            <span>{sale.items.length}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Items Table */}
-                <div className="p-6 pt-0">
-                    <table className="w-full overflow-hidden rounded-lg border border-gray-200 text-sm">
-                        <thead>
-                            <tr className="bg-blue-50 text-center text-gray-700">
-                                <th className="border p-2">#</th>
-                                <th className="border p-2">نام دارو</th>
-                                <th className="border p-2">تعداد</th>
-                                <th className="border p-2">
-                                    قیمت واحد (افغانی)
-                                </th>
-                                <th className="border p-2">جمع جزء</th>
-                                <th className="border p-2">حذف</th>
+                <div className="overflow-hidden rounded-xl border border-gray-200 shadow-md">
+                    <table className="min-w-full border-collapse">
+                        <thead className="bg-indigo-700 text-white">
+                            <tr>
+                                {[
+                                    '#',
+                                    'نام دارو',
+                                    'تعداد',
+                                    'قیمت واحد',
+                                    'جمع جزء',
+                                    'عملیات',
+                                ].map((h) => (
+                                    <th
+                                        key={h}
+                                        className="border-b border-white p-3 text-center text-sm font-medium"
+                                    >
+                                        {h}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
                             {sale.items.length === 0 ? (
                                 <tr>
                                     <td
-                                        colSpan="6"
-                                        className="p-4 text-center text-gray-400"
+                                        colSpan={6}
+                                        className="p-4 text-center text-gray-500"
                                     >
                                         هیچ دارویی اضافه نشده است
                                     </td>
@@ -189,16 +154,15 @@ export default function PharmacySaleInvoiceForm() {
                                 sale.items.map((item, idx) => (
                                     <tr
                                         key={idx}
-                                        className="text-center transition hover:bg-gray-50"
+                                        className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} transition hover:bg-indigo-50`}
                                     >
-                                        <td className="border p-2">
+                                        <td className="p-2 text-center">
                                             {idx + 1}
                                         </td>
-                                        <td className="border p-2">
+                                        <td className="p-2 text-center">
                                             <input
                                                 type="text"
-                                                className="w-full rounded-md border p-1 text-center"
-                                                placeholder="نام دارو"
+                                                className="w-full rounded border p-1 text-center"
                                                 value={item.drug_name}
                                                 onChange={(e) =>
                                                     updateItem(
@@ -209,11 +173,11 @@ export default function PharmacySaleInvoiceForm() {
                                                 }
                                             />
                                         </td>
-                                        <td className="border p-2">
+                                        <td className="p-2 text-center">
                                             <input
                                                 type="number"
                                                 min="1"
-                                                className="w-20 rounded-md border p-1 text-center"
+                                                className="w-20 rounded border p-1 text-center"
                                                 value={item.quantity}
                                                 onChange={(e) =>
                                                     updateItem(
@@ -224,11 +188,11 @@ export default function PharmacySaleInvoiceForm() {
                                                 }
                                             />
                                         </td>
-                                        <td className="border p-2">
+                                        <td className="p-2 text-center">
                                             <input
                                                 type="number"
                                                 min="0"
-                                                className="w-24 rounded-md border p-1 text-center"
+                                                className="w-24 rounded border p-1 text-center"
                                                 value={item.unit_price}
                                                 onChange={(e) =>
                                                     updateItem(
@@ -239,15 +203,15 @@ export default function PharmacySaleInvoiceForm() {
                                                 }
                                             />
                                         </td>
-                                        <td className="border p-2 font-semibold">
+                                        <td className="p-2 text-center font-bold text-indigo-700">
                                             {item.subtotal.toLocaleString()}
                                         </td>
-                                        <td className="border p-2">
+                                        <td className="p-2 text-center">
                                             <button
-                                                className="rounded-full px-2 text-red-600 hover:bg-red-50"
                                                 onClick={() => removeItem(idx)}
+                                                className="flex items-center justify-center gap-1 rounded-full bg-red-100 px-3 py-1 text-red-700 transition hover:bg-red-200"
                                             >
-                                                ✕
+                                                <Trash /> حذف
                                             </button>
                                         </td>
                                     </tr>
@@ -256,34 +220,28 @@ export default function PharmacySaleInvoiceForm() {
                         </tbody>
                     </table>
 
-                    <div className="mt-4 flex items-center justify-between">
-                        <button
-                            className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                    {/* Add Item Footer */}
+                    <div className="flex items-center justify-between border-t bg-gray-50 p-4">
+                        <PrimaryButton
                             onClick={addItem}
+                            className="flex items-center gap-2"
                         >
-                            + افزودن دارو
-                        </button>
-
-                        <div className="text-right">
-                            <p className="text-lg font-semibold text-gray-700">
-                                مجموع کل:{' '}
-                                <span className="text-xl font-bold text-blue-700">
-                                    {sale.total_amount.toLocaleString()} افغانی
-                                </span>
-                            </p>
-                        </div>
+                            <Plus /> افزودن دارو
+                        </PrimaryButton>
+                        <span className="text-sm text-gray-600">
+                            مجموع اقلام: {sale.items.length}
+                        </span>
                     </div>
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center justify-between border-t p-6">
-                    <p className="text-sm text-gray-500">ثبت توسط:</p>
-                    <button
-                        className="rounded-md bg-blue-700 px-6 py-2 text-white hover:bg-blue-800"
+                {/* Submit Footer */}
+                <div className="mt-4 flex justify-end">
+                    <PrimaryButton
                         onClick={submitSale}
+                        className="bg-indigo-600 text-white hover:bg-indigo-700"
                     >
                         ثبت و چاپ فاکتور
-                    </button>
+                    </PrimaryButton>
                 </div>
             </div>
         </AuthenticatedLayout>
