@@ -7,7 +7,7 @@ import factory from '@/img/factory.svg';
 import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 export default function Profile({
@@ -380,18 +380,18 @@ function RecordsTable({ records, showRemaining = false, onPayment }) {
                                 پرداخت
                             </button>
                         )}
-                        <a
+                        <Link
                             href={route('medicine.show', record.id)}
                             className="rounded bg-indigo-600 px-3 py-1 text-xs text-white shadow hover:bg-indigo-700"
                         >
                             مشاهده خرید
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href={route('medicine.payments.index', record.id)}
                             className="rounded bg-yellow-600 px-3 py-1 text-xs text-white shadow hover:bg-yellow-700"
                         >
                             مشاهده پرداخت‌ها
-                        </a>
+                        </Link>
                     </div>
                 </div>
             ))}

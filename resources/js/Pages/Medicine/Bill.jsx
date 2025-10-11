@@ -1,6 +1,6 @@
 import logo from '@/img/factory.svg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function BillShow({ purchase }) {
     console.log(purchase);
@@ -157,12 +157,12 @@ export default function BillShow({ purchase }) {
 
                 {/* Actions */}
                 <div className="mt-6 flex justify-end gap-2">
-                    <a
+                    <Link
                         href={route('medicine.payments.index', purchase.id)}
                         className="rounded bg-yellow-600 px-3 py-1.5 text-xs text-white shadow transition hover:bg-yellow-700"
                     >
                         مشاهده پرداخت‌ها
-                    </a>
+                    </Link>
                     <button
                         onClick={() => window.print()}
                         className="bg-blueGray-700 hover:bg-blueGray-800 rounded px-3 py-1.5 text-xs text-white shadow transition"

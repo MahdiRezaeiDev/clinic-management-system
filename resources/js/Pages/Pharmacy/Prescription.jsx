@@ -1,7 +1,7 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { Printer } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { Edit, Printer } from 'lucide-react';
 
 export default function Prescription({ sale }) {
     return (
@@ -106,6 +106,13 @@ export default function Prescription({ sale }) {
                         <Printer className="ml-2 h-4 w-4" />
                         چاپ
                     </PrimaryButton>
+                    <Link
+                        className="flex items-center rounded-md bg-teal-700 px-4 py-2 text-right text-sm text-white hover:bg-teal-800"
+                        href={route('pharmacy.edit', sale.id)}
+                    >
+                        <Edit className="ml-2 h-4 w-4" />
+                        ویرایش
+                    </Link>
                 </div>
 
                 {/* Contact Info */}
