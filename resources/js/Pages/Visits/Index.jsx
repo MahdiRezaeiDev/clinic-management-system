@@ -219,7 +219,7 @@ export default function Index({ visits, doctors, filters }) {
                                     ) : (
                                         <tr>
                                             <td
-                                                colSpan="10"
+                                                colSpan="11"
                                                 className="p-4 text-center text-sm"
                                             >
                                                 هیچ وزیتی یافت نشد.
@@ -229,25 +229,27 @@ export default function Index({ visits, doctors, filters }) {
                                 </tbody>
                             </table>
                         </div>
-
-                        {/* Pagination */}
-                        <div className="flex justify-center p-4">
-                            {visits.links.map((link, index) => (
-                                <Link
-                                    key={index}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    className={`mx-1 rounded px-3 py-1 text-sm ${
-                                        link.active
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
-                        </div>
+                        {visits.data.length ? (
+                            <div className="flex justify-center p-4">
+                                {visits.links.map((link, index) => (
+                                    <Link
+                                        key={index}
+                                        href={link.url || '#'}
+                                        preserveScroll
+                                        className={`mx-1 rounded px-3 py-1 text-sm ${
+                                            link.active
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            ''
+                        )}
                     </div>
                 </div>
             </div>

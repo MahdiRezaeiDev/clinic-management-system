@@ -975,7 +975,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property string|null $age
+     * @property mixed $age
      * @property mixed $gender
      * @property string|null $address
      * @property string|null $phone

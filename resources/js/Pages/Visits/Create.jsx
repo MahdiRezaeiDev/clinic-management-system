@@ -86,7 +86,7 @@ export default function create({ doctors }) {
                             {/* Phone */}
                             <div className="relative">
                                 <input
-                                    type="tel"
+                                    type="text"
                                     value={data.patient_phone}
                                     id="patient_phone"
                                     onChange={(e) =>
