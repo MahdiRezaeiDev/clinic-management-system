@@ -4,6 +4,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
@@ -66,12 +67,12 @@ export default function Index({ staff, salaries }) {
         <AuthenticatedLayout title={`حقوق پرسنل: ${staff.full_name}`}>
             <Head title={`حقوق ${staff.full_name}`} />
 
-            <div className="mx-auto w-full md:px-10 md:py-16">
+            <div className="mx-auto w-full p-5 md:px-10 md:py-16">
                 <div className="mb-4 flex items-center justify-between">
                     <h3 className="text-lg font-semibold">لیست حقوق پرداختی</h3>
                     <Link
                         href={route('staffs.salary.create', staff.id)}
-                        className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                        className="rounded bg-teal-700 px-4 py-3 text-xs font-bold text-white hover:shadow-md"
                     >
                         پرداخت حقوق
                     </Link>
@@ -80,7 +81,7 @@ export default function Index({ staff, salaries }) {
                 <div className="overflow-x-auto rounded shadow-lg">
                     <table className="w-full border-collapse bg-white">
                         <thead>
-                            <tr className="bg-blueGray-600 text-sm text-white">
+                            <tr className="bg-teal-700 text-sm text-white">
                                 <th className="px-6 py-3 text-right">#</th>
                                 <th className="px-6 py-3 text-right">
                                     حقوق پایه
@@ -107,25 +108,25 @@ export default function Index({ staff, salaries }) {
                             {salaries.map((salary, index) => (
                                 <tr
                                     key={salary.id}
-                                    className="border-b text-xs"
+                                    className="border-b text-sm"
                                 >
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {index + 1}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {salary.base_salary}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {salary.overtimes.reduce(
                                             (sum, ot) =>
                                                 sum + parseFloat(ot.total),
                                             0,
                                         )}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {salary.deductions}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {
                                             afghanMonths[
                                                 salary.salary_month - 1
@@ -133,20 +134,20 @@ export default function Index({ staff, salaries }) {
                                         }
                                     </td>
 
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {parseFloat(
                                             salary.total_paid,
                                         ).toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {moment(salary.payment_date).format(
                                             'jYYYY/jMM/jDD',
                                         )}
                                     </td>
-                                    <td className="px-6 py-2 text-right">
+                                    <td className="px-6 py-3 text-right">
                                         {salary.description || '-'}
                                     </td>
-                                    <td className="flex gap-2 px-6 py-2 text-right">
+                                    <td className="flex gap-2 px-6 py-3 text-right">
                                         <Link
                                             href={route('staffs.salary.edit', [
                                                 staff.id,
@@ -154,7 +155,7 @@ export default function Index({ staff, salaries }) {
                                             ])}
                                             className="text-blue-600 hover:underline"
                                         >
-                                            ویرایش
+                                            <Edit className="h-5 w-5" />
                                         </Link>
                                         <button
                                             className="text-red-600 hover:underline"
@@ -162,7 +163,7 @@ export default function Index({ staff, salaries }) {
                                                 confirmDelete(salary.id)
                                             }
                                         >
-                                            حذف
+                                            <Trash className="h-5 w-5" />
                                         </button>
                                     </td>
                                 </tr>
@@ -172,11 +173,11 @@ export default function Index({ staff, salaries }) {
                             <tr className="bg-gray-100 text-sm font-semibold">
                                 <td
                                     colSpan="2"
-                                    className="px-6 py-2 text-right"
+                                    className="px-6 py-3 text-right"
                                 >
                                     جمع کل:
                                 </td>
-                                <td className="px-6 py-2 text-right">
+                                <td className="px-6 py-3 text-right">
                                     {totalPaid.toLocaleString()}
                                 </td>
                                 <td colSpan="6"></td>

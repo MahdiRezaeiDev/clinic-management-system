@@ -122,10 +122,10 @@ export default function Edit({ staff, salary, overTimes }) {
                 {overTimes.length > 0 && (
                     <div className="ring-blueGray-200 rounded-2xl bg-white p-6 shadow-md ring-1">
                         <h3 className="text-blueGray-700 mb-2 font-semibold">
-                            اضافه‌کاری‌ها
+                            امتیازات این کاربر
                         </h3>
-                        <table className="divide-blueGray-200 min-w-full divide-y border">
-                            <thead className="bg-blueGray-600 text-white">
+                        <table className="min-w-full divide-y divide-teal-700 border">
+                            <thead className="bg-teal-700 text-white">
                                 <tr>
                                     <th className="px-4 py-2 text-right text-sm">
                                         انتخاب
@@ -141,7 +141,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-blueGray-200 divide-y">
+                            <tbody className="divide-y divide-teal-200">
                                 {overTimes.map((ot) => (
                                     <tr
                                         key={ot.id}
@@ -149,7 +149,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                             ot.salary_id === salary.id
                                                 ? 'bg-green-50'
                                                 : ''
-                                        } hover:bg-blueGray-50`}
+                                        } hover:bg-teal-50`}
                                     >
                                         <td className="px-4 py-2 text-sm">
                                             <Checkbox
@@ -205,7 +205,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     type="number"
                                     readOnly
                                     value={data.overtime_amount}
-                                    className="bg-blueGray-50 w-full"
+                                    className="w-full bg-teal-50"
                                 />
                                 <InputError message={errors.overtime_amount} />
                             </div>
@@ -229,7 +229,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                     type="number"
                                     readOnly
                                     value={data.total_paid}
-                                    className="bg-blueGray-50 w-full font-semibold"
+                                    className="w-full bg-teal-50 font-semibold"
                                 />
                                 <InputError message={errors.total_paid} />
                             </div>
@@ -285,13 +285,13 @@ export default function Edit({ staff, salary, overTimes }) {
                             <PrimaryButton
                                 type="submit"
                                 disabled={processing}
-                                className="bg-blueGray-700 hover:bg-blueGray-800 rounded px-6 py-2 text-sm"
+                                className="rounded bg-teal-700 px-6 py-2 text-sm hover:bg-teal-800"
                             >
                                 ذخیره تغییرات
                             </PrimaryButton>
                             <Link
                                 href={route('staffs.salary.index', staff.id)}
-                                className="border-blueGray-300 text-blueGray-600 hover:bg-blueGray-50 rounded border px-4 py-2 text-sm transition"
+                                className="border-blueGray-300 rounded border px-4 py-2 text-sm text-teal-600 transition hover:bg-teal-50"
                             >
                                 بازگشت
                             </Link>

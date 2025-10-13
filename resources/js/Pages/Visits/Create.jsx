@@ -52,7 +52,7 @@ export default function create({ doctors }) {
             <div className="mx-auto flex max-w-2xl flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
                     <div className="w-full rounded-2xl border border-gray-100 bg-white shadow-xl">
-                        <div className="rounded-t-2xl bg-gray-800 p-6">
+                        <div className="rounded-t-2xl bg-teal-700 p-6">
                             <h2 className="text-xl font-bold text-white">
                                 ثبت بیمار و ویزیت
                             </h2>

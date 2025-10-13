@@ -1,11 +1,11 @@
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
@@ -76,7 +76,7 @@ export default function Index({ visits, doctors, filters }) {
                             </h3>
                             <Link
                                 href={route('visits.create')}
-                                className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                                className="rounded bg-teal-700 px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                             >
                                 ثبت ویزیت
                             </Link>
@@ -90,7 +90,7 @@ export default function Index({ visits, doctors, filters }) {
                             <select
                                 value={doctor}
                                 onChange={(e) => setDoctor(e.target.value)}
-                                className="rounded border px-7 py-2 text-sm"
+                                className="w-72 rounded border px-7 py-2 text-sm focus:ring-2 focus:ring-teal-700"
                             >
                                 <option value="">همه داکترها</option>
                                 {doctors.map((doctor) => (
@@ -99,10 +99,7 @@ export default function Index({ visits, doctors, filters }) {
                                     </option>
                                 ))}
                             </select>
-                            <PrimaryButton
-                                type="submit"
-                                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
-                            >
+                            <PrimaryButton type="submit" className="px-4 py-2">
                                 اعمال فیلتر
                             </PrimaryButton>
                         </form>
@@ -111,7 +108,7 @@ export default function Index({ visits, doctors, filters }) {
                         <div className="block w-full">
                             <table className="w-full border-collapse bg-transparent">
                                 <thead>
-                                    <tr className="bg-blueGray-600 text-white">
+                                    <tr className="bg-teal-700 text-white">
                                         <th className="px-6 py-3 text-right text-sm">
                                             #
                                         </th>
@@ -185,34 +182,25 @@ export default function Index({ visits, doctors, filters }) {
                                                 </td>
 
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
-                                                    <Dropdown>
-                                                        <Dropdown.Trigger>
-                                                            <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
-                                                                عملیات
-                                                            </button>
-                                                        </Dropdown.Trigger>
-                                                        <Dropdown.Content>
-                                                            <Link
-                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                                href={route(
-                                                                    'visits.edit',
+                                                    <div className="flex items-center gap-2">
+                                                        <Link
+                                                            href={route(
+                                                                'visits.edit',
+                                                                visit.id,
+                                                            )}
+                                                        >
+                                                            <Edit className="h-5 w-5 text-teal-700" />
+                                                        </Link>
+                                                        <button
+                                                            onClick={() =>
+                                                                confirmVisitDeletion(
                                                                     visit.id,
-                                                                )}
-                                                            >
-                                                                ویرایش
-                                                            </Link>
-                                                            <button
-                                                                className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                                                                onClick={() =>
-                                                                    confirmVisitDeletion(
-                                                                        visit.id,
-                                                                    )
-                                                                }
-                                                            >
-                                                                حذف
-                                                            </button>
-                                                        </Dropdown.Content>
-                                                    </Dropdown>
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash className="h-5 w-5 text-rose-600" />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
