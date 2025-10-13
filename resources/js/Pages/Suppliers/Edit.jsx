@@ -40,8 +40,8 @@ export default function Edit({ supplier }) {
             <Head title={`ویرایش شرکت - ${supplier.company_name}`} />
 
             <div className="mx-auto w-full max-w-4xl px-4 md:px-10 md:pt-10">
-                <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md">
-                    <div className="bg-blueGray-600 p-5">
+                <div className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                    <div className="bg-teal-700 p-5">
                         <h2 className="text-lg font-bold text-white">
                             ویرایش شرکت همکار
                         </h2>
@@ -65,7 +65,7 @@ export default function Edit({ supplier }) {
                             />
                             <label
                                 htmlFor="company_name"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 نام شرکت
                             </label>
@@ -85,7 +85,7 @@ export default function Edit({ supplier }) {
                             />
                             <label
                                 htmlFor="contact_person"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 نام مسئول
                             </label>
@@ -105,7 +105,7 @@ export default function Edit({ supplier }) {
                             />
                             <label
                                 htmlFor="phone"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 شماره تماس
                             </label>
@@ -125,7 +125,7 @@ export default function Edit({ supplier }) {
                             />
                             <label
                                 htmlFor="address"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 آدرس
                             </label>
@@ -145,7 +145,7 @@ export default function Edit({ supplier }) {
                             />
                             <label
                                 htmlFor="description"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 توضیحات
                             </label>

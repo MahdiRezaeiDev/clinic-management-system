@@ -131,8 +131,8 @@ export default function Profile({
                 </div>
 
                 {/* Tabs */}
-                <div className="mx-auto mb-12 w-full max-w-4xl">
-                    <nav className="flex space-x-4 bg-gray-700 px-4 py-3 text-sm font-medium text-white rtl:space-x-reverse">
+                <div className="mx-auto mb-12 w-full max-w-5xl">
+                    <nav className="flex space-x-4 bg-teal-700 px-4 py-3 text-sm font-medium text-white rtl:space-x-reverse">
                         <TabButton
                             active={activeTab === 'remaining'}
                             onClick={() => setActiveTab('remaining')}
@@ -270,7 +270,7 @@ function TabButton({ active, onClick, label }) {
 function RecordsTable({ records, showRemaining = false, onPayment }) {
     if (!records.length) {
         return (
-            <div className="rounded-lg bg-white p-6 text-center text-sm text-gray-600 shadow-md">
+            <div className="max-w-5xl rounded-lg bg-white p-6 text-center text-sm text-gray-600 shadow-md">
                 <h3 className="mb-2 text-base font-bold text-gray-700">
                     هیچ موردی یافت نشد
                 </h3>
@@ -282,11 +282,11 @@ function RecordsTable({ records, showRemaining = false, onPayment }) {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="max-w-5xl space-y-6">
             {records.map((record) => (
                 <div
                     key={record.id}
-                    className="mx-auto mb-5 max-w-4xl rounded bg-white p-3 shadow-lg md:p-5"
+                    className="mx-auto mb-5 max-w-5xl rounded bg-white p-3 shadow-lg md:p-5"
                 >
                     <div className="mb-4 flex items-center justify-between">
                         <div className="text-right">

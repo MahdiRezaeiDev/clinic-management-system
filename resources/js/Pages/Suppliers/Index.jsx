@@ -1,11 +1,11 @@
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Index({ suppliers }) {
@@ -45,59 +45,46 @@ export default function Index({ suppliers }) {
 
     const AllUsers = suppliers.map((supplier) => (
         <tr key={supplier.id}>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
                 <span className="text-blueGray-600 font-bold">
                     {supplier.id}
                 </span>
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right text-xs">
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right text-sm">
                 <span className="text-blueGray-600 ml-3 font-bold">
                     {supplier.company_name}
                 </span>
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
                 {supplier.phone}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                <i className="fas fa-circle mr-2 text-green-600"></i>
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
                 {supplier.contact_person}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                <i className="fas fa-circle mr-2 text-green-600"></i>
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
                 {supplier.address}
             </td>
-            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-sm">
                 <div className="flex gap-2">
                     <Link
-                        className="rounded-sm bg-sky-400 px-2 py-1 text-white"
+                        className="rounded-sm bg-sky-400 px-2 py-1 text-xs text-white"
                         href={route('suppliers.show', supplier.id)}
                     >
-                        تاریخچه خرید
+                        تاریخچه
                     </Link>
                 </div>
             </td>
             <td className="whitespace-nowrap p-4 px-6 text-xs">
-                <Dropdown>
-                    <Dropdown.Trigger>
-                        <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
-                            عملیات
-                        </button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Content>
-                        <Link
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            href={route('suppliers.edit', supplier.id)}
-                        >
-                            ویرایش
-                        </Link>
-                        <button
-                            className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                            onClick={() => confirmSupplierDeletion(supplier.id)}
-                        >
-                            حذف
-                        </button>
-                    </Dropdown.Content>
-                </Dropdown>
+                <div className="flex items-center gap-2">
+                    <Link href={route('suppliers.edit', supplier.id)}>
+                        <Edit className="h-5 w-5 text-teal-600" />
+                    </Link>
+                    <button
+                        onClick={() => confirmSupplierDeletion(supplier.id)}
+                    >
+                        <Trash className="h-5 w-5 text-rose-600" />
+                    </button>
+                </div>
             </td>
         </tr>
     ));
@@ -118,34 +105,34 @@ export default function Index({ suppliers }) {
                                     </div>
                                     <a
                                         href={route('suppliers.create')}
-                                        className="bg-blueGray-600 active:bg-blueGray-700 mr-1 rounded px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none"
+                                        className="mr-1 rounded bg-teal-600 px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-teal-700"
                                         type="button"
                                     >
                                         ثبت شرکت همکار
                                     </a>
                                 </div>
                             </div>
-                            <div className="block w-full">
+                            <div className="block w-full overflow-x-auto">
                                 <table className="w-full border-collapse items-center bg-transparent">
                                     <thead>
-                                        <tr className="bg-blueGray-600 border-blueGray-100 border-b text-white">
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                        <tr className="border-blueGray-100 border-b bg-teal-600 text-white">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 #
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 شرکت
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 شماره تماس
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 رابط شرکت
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 ادرس
                                             </th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold"></th>
-                                            <th className="px-6 py-3 text-right align-middle text-xs font-semibold">
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold"></th>
+                                            <th className="px-6 py-3 text-right align-middle text-sm font-semibold">
                                                 عملیات
                                             </th>
                                         </tr>

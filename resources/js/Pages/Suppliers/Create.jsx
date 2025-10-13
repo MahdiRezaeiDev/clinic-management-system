@@ -32,15 +32,15 @@ export default function Create() {
     };
 
     const inputClass =
-        'peer block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
+        'peer block w-full rounded border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
 
     return (
         <AuthenticatedLayout title="شرکت های همکار">
             <Head title="ثبت شرکت همکار جدید" />
 
             <div className="mx-auto w-full max-w-4xl px-4 md:px-10 md:pt-10">
-                <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md">
-                    <div className="bg-blueGray-600 p-5">
+                <div className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                    <div className="bg-teal-700 p-5">
                         <h2 className="text-lg font-bold text-white">
                             ثبت شرکت همکار جدید
                         </h2>
@@ -64,7 +64,7 @@ export default function Create() {
                             />
                             <label
                                 htmlFor="name"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 نام شرکت
                             </label>
@@ -84,7 +84,7 @@ export default function Create() {
                             />
                             <label
                                 htmlFor="contact_person"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 نام مسئول
                             </label>
@@ -104,7 +104,7 @@ export default function Create() {
                             />
                             <label
                                 htmlFor="phone"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 شماره تماس
                             </label>
@@ -124,7 +124,7 @@ export default function Create() {
                             />
                             <label
                                 htmlFor="address"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 آدرس
                             </label>
@@ -144,7 +144,7 @@ export default function Create() {
                             />
                             <label
                                 htmlFor="description"
-                                className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500"
+                                className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:-top-3 peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                             >
                                 توضیحات
                             </label>
