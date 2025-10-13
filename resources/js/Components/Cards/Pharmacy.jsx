@@ -5,6 +5,7 @@ import persian_en from 'react-date-object/locales/persian_en';
 import { DateObject } from 'react-multi-date-picker';
 import AfghanDatePicker from '../AfghanDatePicker';
 import InputError from '../InputError';
+import PrimaryButton from '../PrimaryButton';
 
 export default function DrugSellCard() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -37,8 +38,8 @@ export default function DrugSellCard() {
         'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
 
     return (
-        <div className="w-full rounded-2xl border border-gray-100 bg-white shadow-xl">
-            <div className="bg-blueGray-600 rounded-t-2xl p-6">
+        <div className="w-full rounded-lg border border-gray-100 bg-white shadow-xl">
+            <div className="rounded-t-lg bg-teal-700 p-6">
                 <h2 className="text-xl font-bold text-white">
                     فروش دارو بدون نسخه
                 </h2>
@@ -103,14 +104,14 @@ export default function DrugSellCard() {
                 </div>
 
                 {/* Submit */}
-                <div className="flex justify-end">
-                    <button
+                <div className="flex justify-start">
+                    <PrimaryButton
                         type="submit"
                         disabled={processing}
-                        className="rounded-lg bg-green-500 px-6 py-2 font-semibold text-white transition-all duration-200 hover:bg-green-600 focus:ring-2 focus:ring-green-300"
+                        className="px-6 py-2 font-semibold focus:ring-2 focus:ring-teal-300"
                     >
                         ثبت فروش
-                    </button>
+                    </PrimaryButton>
                 </div>
             </form>
         </div>

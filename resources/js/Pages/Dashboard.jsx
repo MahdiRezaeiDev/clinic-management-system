@@ -26,13 +26,13 @@ export default function Dashboard({ doctors }) {
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
 
-            <div className="bg-blueGray-600 relative py-12">
+            <div className="relative bg-teal-700 py-12">
                 <div className="mx-auto w-full px-4 md:px-6">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-400 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
                                         سفارشات ناتکمیل
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -43,7 +43,7 @@ export default function Dashboard({ doctors }) {
                                     <CalendarSync className="h-5 w-5" />
                                 </div>
                             </div>
-                            <p className="text-blueGray-400 mt-2 text-xs">
+                            <p className="text-blueGray-600 mt-2 text-xs">
                                 مجموع سفارشات ناتکمیل تا به امروز
                             </p>
                         </div>
@@ -51,7 +51,7 @@ export default function Dashboard({ doctors }) {
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-400 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
                                         کاربران سیستم
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -62,7 +62,7 @@ export default function Dashboard({ doctors }) {
                                     <ShieldUser className="h-5 w-5" />
                                 </div>
                             </div>
-                            <p className="text-blueGray-400 mt-2 text-xs">
+                            <p className="text-blueGray-600 mt-2 text-xs">
                                 مجموع کاربران ثبت شده در سیستم
                             </p>
                         </div>
@@ -70,7 +70,7 @@ export default function Dashboard({ doctors }) {
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-400 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
                                         فروشات امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -81,7 +81,7 @@ export default function Dashboard({ doctors }) {
                                     <CircleDollarSign className="h-5 w-5" />
                                 </div>
                             </div>
-                            <p className="text-blueGray-400 mt-2 text-xs">
+                            <p className="text-blueGray-600 mt-2 text-xs">
                                 مجموع فروشات امروز
                             </p>
                         </div>
@@ -89,7 +89,7 @@ export default function Dashboard({ doctors }) {
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-400 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
                                         سفارش های تکمیل شده
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -100,7 +100,7 @@ export default function Dashboard({ doctors }) {
                                     <BaggageClaim className="h-5 w-5" />
                                 </div>
                             </div>
-                            <p className="text-blueGray-400 mt-2 text-xs">
+                            <p className="text-blueGray-600 mt-2 text-xs">
                                 مجموع سفارشات تکمیل شده الی امروز
                             </p>
                         </div>

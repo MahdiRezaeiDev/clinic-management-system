@@ -5,6 +5,7 @@ import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 import AfghanDatePicker from '../AfghanDatePicker';
 import InputError from '../InputError';
+import PrimaryButton from '../PrimaryButton';
 
 export default function RegisterVisitCard({ doctors }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -44,8 +45,8 @@ export default function RegisterVisitCard({ doctors }) {
         'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
 
     return (
-        <div className="w-full rounded-2xl border border-gray-100 bg-white shadow-xl">
-            <div className="bg-blueGray-600 rounded-t-2xl p-6">
+        <div className="w-full rounded-lg border border-gray-100 bg-white shadow-xl">
+            <div className="rounded-t-lg bg-teal-700 p-6">
                 <h2 className="text-xl font-bold text-white">
                     ثبت بیمار و ویزیت
                 </h2>
@@ -236,14 +237,14 @@ export default function RegisterVisitCard({ doctors }) {
                     <InputError message={errors.description} />
                 </div>
 
-                <div className="col-span-full flex justify-end">
-                    <button
+                <div className="col-span-full flex justify-start">
+                    <PrimaryButton
                         type="submit"
-                        className="rounded-md bg-blue-500 px-6 py-2 font-bold text-white shadow-md transition-colors hover:bg-blue-600 disabled:opacity-50"
+                        className="rounded-md px-6 py-2 font-bold text-white shadow-md disabled:opacity-50"
                         disabled={processing}
                     >
                         ثبت
-                    </button>
+                    </PrimaryButton>
                 </div>
             </form>
         </div>
