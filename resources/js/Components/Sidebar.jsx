@@ -50,10 +50,10 @@ export default function Sidebar() {
 
                 {/* Company name */}
                 <a
-                    className="text-blueGray-600 ml-0 inline-block text-right text-sm font-bold uppercase md:block md:pb-2"
+                    className="text-blueGray-800 inline-block px-5 text-lg font-bold md:block md:pb-2"
                     href={route('dashboard')}
                 >
-                    Clinic Name
+                    کلینیک مادر و طفل
                 </a>
 
                 {/* Mobile user dropdown */}

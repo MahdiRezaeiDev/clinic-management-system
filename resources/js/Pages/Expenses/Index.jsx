@@ -142,7 +142,7 @@ export default function Index({
                 <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-1/3 rounded border px-3 py-2 text-sm"
+                    className="w-1/3 rounded border px-10 py-2 text-sm"
                 >
                     <option value="">همه دسته‌بندی‌ها</option>
                     {Object.entries(categories).map(([key, label]) => (

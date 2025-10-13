@@ -1,11 +1,11 @@
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Index({ staffs, filters }) {
@@ -80,8 +80,8 @@ export default function Index({ staffs, filters }) {
     };
 
     return (
-        <AuthenticatedLayout title="پرسنل سیستم">
-            <Head title="پرسنل سیستم" />
+        <AuthenticatedLayout title="لیست پرسونل">
+            <Head title="" />
 
             <div className="flex flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
@@ -93,7 +93,7 @@ export default function Index({ staffs, filters }) {
                             </h3>
                             <Link
                                 href={route('staffs.create')}
-                                className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                                className="rounded bg-teal-700 px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                             >
                                 افزودن پرسنل
                             </Link>
@@ -109,12 +109,12 @@ export default function Index({ staffs, filters }) {
                                 placeholder="جستجو نام یا شماره تماس..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="rounded border px-3 py-2 text-sm"
+                                className="w-72 rounded border p-3 text-xs focus:ring-2 focus:ring-teal-600"
                             />
                             <select
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="rounded border px-7 py-2 text-sm"
+                                className="w-72 rounded border px-7 py-3 text-xs focus:ring-2 focus:ring-teal-600"
                             >
                                 <option value="">همه نقش‌ها</option>
                                 {Object.entries(roleNames).map(
@@ -127,17 +127,17 @@ export default function Index({ staffs, filters }) {
                             </select>
                             <PrimaryButton
                                 type="submit"
-                                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+                                className="rounded px-6 py-3 text-xs font-semibold"
                             >
                                 اعمال فیلتر
                             </PrimaryButton>
                         </form>
 
                         {/* Table */}
-                        <div className="block w-full">
-                            <table className="w-full border-collapse bg-transparent">
+                        <div className="relative w-full overflow-x-auto overflow-y-visible rounded-b">
+                            <table className="min-w-full border-collapse bg-transparent text-right">
                                 <thead>
-                                    <tr className="bg-blueGray-600 text-white">
+                                    <tr className="bg-teal-700 text-white">
                                         <th className="px-6 py-3 text-right text-sm">
                                             #
                                         </th>
@@ -164,7 +164,10 @@ export default function Index({ staffs, filters }) {
                                 <tbody>
                                     {staffs.data.length ? (
                                         staffs.data.map((staff, index) => (
-                                            <tr key={staff.id}>
+                                            <tr
+                                                key={staff.id}
+                                                className="odd:bg-gray-50"
+                                            >
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     {++index}
                                                 </td>
@@ -184,7 +187,7 @@ export default function Index({ staffs, filters }) {
                                                 </td>
                                                 <td className="flex gap-2 whitespace-nowrap p-4 px-6 text-xs">
                                                     <Link
-                                                        className="rounded-md bg-green-50 px-3 py-1 font-medium text-green-600 transition hover:bg-green-100"
+                                                        className="rounded-md bg-green-100 px-3 py-1 font-medium text-green-600 transition hover:bg-green-200"
                                                         href={route(
                                                             'staffs.salary.index',
                                                             staff.id,
@@ -201,46 +204,34 @@ export default function Index({ staffs, filters }) {
                                                     >
                                                         اضافه کاری
                                                     </Link>
-                                                    {/* <Link
-                                                        className="rounded-md bg-purple-50 px-3 py-1 font-medium text-purple-600 transition hover:bg-purple-100"
-                                                        href={route(
-                                                            'staffs.edit',
-                                                            staff.id,
-                                                        )}
-                                                    >
-                                                        گزارش حقوق
-                                                    </Link> */}
                                                 </td>
 
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
-                                                    <Dropdown>
-                                                        <Dropdown.Trigger>
-                                                            <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
-                                                                عملیات
-                                                            </button>
-                                                        </Dropdown.Trigger>
-                                                        <Dropdown.Content>
-                                                            <Link
-                                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                                href={route(
-                                                                    'staffs.edit',
+                                                    <div className="flex items-center gap-2">
+                                                        <Link
+                                                            href={route(
+                                                                'staffs.edit',
+                                                                staff.id,
+                                                            )}
+                                                        >
+                                                            <Edit
+                                                                title="ویرایش پرسونل"
+                                                                className="h-5 w-5 text-sky-600"
+                                                            />
+                                                        </Link>
+                                                        <button
+                                                            onClick={() =>
+                                                                confirmStaffDeletion(
                                                                     staff.id,
-                                                                )}
-                                                            >
-                                                                ویرایش
-                                                            </Link>
-                                                            <button
-                                                                className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                                                                onClick={() =>
-                                                                    confirmStaffDeletion(
-                                                                        staff.id,
-                                                                    )
-                                                                }
-                                                            >
-                                                                حذف
-                                                            </button>
-                                                        </Dropdown.Content>
-                                                    </Dropdown>
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash
+                                                                title="حذف پرسونل"
+                                                                className="h-5 w-5 text-rose-600"
+                                                            />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
@@ -260,21 +251,38 @@ export default function Index({ staffs, filters }) {
                         {/* Pagination */}
                         {staffs.data.length ? (
                             <div className="flex justify-center p-4">
-                                {staffs.links.map((link, index) => (
-                                    <Link
-                                        key={index}
-                                        href={link.url || '#'}
-                                        preserveScroll
-                                        className={`mx-1 rounded px-3 py-1 text-sm ${
-                                            link.active
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                        dangerouslySetInnerHTML={{
-                                            __html: link.label,
-                                        }}
-                                    />
-                                ))}
+                                {staffs.links.map((link, index) => {
+                                    let label = link.label;
+
+                                    // Convert Laravel's default pagination labels to Persian
+                                    if (
+                                        label.includes('Previous') ||
+                                        label.includes('&laquo;')
+                                    ) {
+                                        label = '&laquo; قبلی';
+                                    } else if (
+                                        label.includes('Next') ||
+                                        label.includes('&raquo;')
+                                    ) {
+                                        label = 'بعدی &raquo;';
+                                    }
+
+                                    return (
+                                        <Link
+                                            key={index}
+                                            href={link.url || '#'}
+                                            preserveScroll
+                                            className={`mx-1 rounded px-3 py-1 text-sm ${
+                                                link.active
+                                                    ? 'bg-teal-600 text-white'
+                                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                            } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                            dangerouslySetInnerHTML={{
+                                                __html: label,
+                                            }}
+                                        />
+                                    );
+                                })}
                             </div>
                         ) : (
                             ''

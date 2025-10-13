@@ -2,63 +2,98 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Income;
+use App\Models\PatientIncome;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class IncomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Income::where('user_id', Auth::id());
+
+        if ($request->filled('search')) {
+            $query->where('description', 'like', "%{$request->search}%");
+        }
+
+        if ($request->filled('title')) {
+            $query->where('title', $request->title);
+        }
+
+        $incomes = $query->latest()->paginate(10)->withQueryString();
+
+        $titles = [
+            'visit' => 'ویزیت',
+            'lab' => 'لابراتوار',
+            'dental' => 'دندان‌پزشکی',
+            'emergency' => 'ایمرجنسی',
+            'gynecology' => 'نسایی',
+            'inpatient' => 'بستری',
+        ];
+
+        $paymentMethods = [
+            'cash' => 'نقدی',
+            'bank' => 'بانکی',
+            'check' => 'چک',
+            'other' => 'سایر',
+        ];
+
+        return Inertia::render('Incomes/Index', [
+            'incomes' => $incomes,
+            'titles' => $titles,
+            'paymentMethods' => $paymentMethods,
+            'filters' => [
+                'search' => $request->search ?? '',
+                'title' => $request->title ?? '',
+            ],
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'amount' => 'required|numeric|min:1',
+            'payment_method' => 'required|in:cash,bank,check,other',
+            'income_date' => 'required|date',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        Income::create([
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'payment_method' => $request->payment_method,
+            'income_date' => $request->income_date,
+            'description' => $request->description,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'عاید مریض با موفقیت ثبت شد.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(Request $request, Income $patientIncome)
     {
-        //
+        if ($patientIncome->user_id !== Auth::id()) abort(403);
+
+        $request->validate([
+            'title' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'amount' => 'required|numeric|min:1',
+            'payment_method' => 'required|in:cash,bank,check,other',
+            'income_date' => 'required|date',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $patientIncome->update($request->only('title', 'amount', 'payment_method', 'income_date', 'description'));
+
+        return redirect()->back()->with('success', 'عاید ویرایش شد.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(Income $patientIncome)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($patientIncome->user_id !== Auth::id()) abort(403);
+        $patientIncome->delete();
+        return redirect()->back()->with('success', 'عاید حذف شد.');
     }
 }

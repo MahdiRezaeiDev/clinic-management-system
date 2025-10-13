@@ -25,14 +25,15 @@ class DoctorVisitController extends Controller
         }
 
         // Fetch doctors
-        $doctors = Staff::where('role', 'doctor')->get();
+        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $staff = Staff::whereIn('role', $disRoles)->get();
 
         // Get visits (you can add orderBy or paginate if needed)
         $visits = $query->latest()->paginate(25)->withQueryString();
 
         // Return Inertia view
         return Inertia::render('Visits/Index', [
-            'doctors' => $doctors,
+            'doctors' => $staff,
             'visits' => $visits,
             'filters' => $request->only(['doctor']),
         ]);
@@ -44,9 +45,10 @@ class DoctorVisitController extends Controller
     public function create()
     {
         // Fetch doctors
-        $doctors = Staff::where('role', 'doctor')->get();
+        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $staff = Staff::whereIn('role', $disRoles)->get();
         return Inertia::render('Visits/Create', [
-            'doctors' => $doctors,
+            'doctors' => $staff,
         ]);
     }
 
