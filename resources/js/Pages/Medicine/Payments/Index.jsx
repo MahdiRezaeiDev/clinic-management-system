@@ -120,7 +120,7 @@ export default function PurchasePayments({
 
             <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
                 {/* Header */}
-                <div className="mx-3 mb-6 flex flex-col justify-between rounded-t-xl bg-gray-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
+                <div className="mx-3 mb-6 flex flex-col justify-between rounded-t-xl bg-teal-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-teal-200 print:text-gray-700">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <img
@@ -222,7 +222,7 @@ export default function PurchasePayments({
                 {/* Payments Table */}
                 <div className="mx-3 overflow-hidden rounded-xl border border-gray-200 shadow-sm print:border print:shadow-none">
                     <table className="min-w-full border-collapse">
-                        <thead className="bg-gray-700 text-white print:bg-gray-200 print:text-gray-700">
+                        <thead className="bg-teal-700 text-white print:bg-teal-200 print:text-gray-700">
                             <tr>
                                 {[
                                     'مبلغ',
@@ -246,7 +246,7 @@ export default function PurchasePayments({
                                 payments.map((p, idx) => (
                                     <tr
                                         key={p.id}
-                                        className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} transition-colors hover:bg-blue-50/60 print:bg-white`}
+                                        className={`${idx % 2 === 0 ? 'bg-white' : 'bg-teal-50'} transition-colors hover:bg-blue-50/60 print:bg-white`}
                                     >
                                         <td className="p-2 text-right text-sm font-medium text-gray-800">
                                             {p.amount.toLocaleString()}
@@ -305,7 +305,7 @@ export default function PurchasePayments({
                                 </tr>
                             )}
                         </tbody>
-                        <tfoot className="bg-gray-100 font-semibold print:bg-gray-200">
+                        <tfoot className="bg-teal-100 font-semibold print:bg-teal-200">
                             <tr>
                                 <td
                                     colSpan={2}

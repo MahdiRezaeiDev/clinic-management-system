@@ -60,7 +60,7 @@ export default function PharmacySalesIndex({ sales }) {
 
             <div className="mx-auto max-w-7xl space-y-6 px-4 pt-8 md:px-10">
                 {/* Header */}
-                <div className="bg-blueGray-600 flex flex-col items-center justify-between rounded-lg p-6 text-white shadow-sm md:flex-row">
+                <div className="flex flex-col items-center justify-between rounded-lg bg-teal-700 p-6 text-white shadow-sm md:flex-row">
                     <h1 className="text-2xl font-bold">لیست فروش دارو</h1>
                     <Link
                         href={route('pharmacy.create')}
@@ -97,7 +97,7 @@ export default function PharmacySalesIndex({ sales }) {
                 {/* Sales Table */}
                 <div className="rounded-lg bg-white shadow">
                     <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-blueGray-600 text-white">
+                        <thead className="bg-teal-700 text-white">
                             <tr>
                                 <th className="p-3 text-right text-sm font-semibold">
                                     تاریخ فروش
@@ -143,7 +143,7 @@ export default function PharmacySalesIndex({ sales }) {
                                         <td className="p-3 text-center text-xs">
                                             <Dropdown>
                                                 <Dropdown.Trigger>
-                                                    <button className="bg-blueGray-600 hover:bg-blueGray-700 flex gap-1 rounded px-3 py-1 text-xs text-white transition">
+                                                    <button className="flex gap-1 rounded bg-teal-700 px-3 py-1 text-xs text-white transition hover:bg-teal-700">
                                                         <MoreVertical className="h-4 w-4" />{' '}
                                                         عملیات
                                                     </button>

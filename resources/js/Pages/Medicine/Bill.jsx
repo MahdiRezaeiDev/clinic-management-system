@@ -36,11 +36,11 @@ export default function BillShow({ purchase }) {
                     <table className="w-full text-right text-sm">
                         <tbody>
                             <tr className="border-blueGray-200 border-b">
-                                <td className="bg-blueGray-50 w-32 px-3 py-2 font-semibold">
+                                <td className="w-32 bg-teal-50 px-3 py-2 font-semibold">
                                     شماره بل
                                 </td>
                                 <td className="px-3 py-2">{purchase.id}</td>
-                                <td className="bg-blueGray-50 w-32 px-3 py-2 font-semibold">
+                                <td className="w-32 bg-teal-50 px-3 py-2 font-semibold">
                                     تاریخ خرید
                                 </td>
                                 <td className="px-3 py-2" dir="ltr">
@@ -48,7 +48,7 @@ export default function BillShow({ purchase }) {
                                 </td>
                             </tr>
                             <tr>
-                                <td className="bg-blueGray-50 px-3 py-2 font-semibold">
+                                <td className="bg-teal-50 px-3 py-2 font-semibold">
                                     وضعیت پرداخت
                                 </td>
                                 <td className="px-3 py-2" colSpan="3">
@@ -76,7 +76,7 @@ export default function BillShow({ purchase }) {
                             جزئیات اقلام خریداری‌شده
                         </h2>
                         <table className="border-blueGray-200 mb-6 w-full rounded border text-right text-xs">
-                            <thead className="bg-blueGray-50">
+                            <thead className="bg-teal-50">
                                 <tr>
                                     <th className="border-blueGray-200 border-l px-2 py-1 font-semibold">
                                         نام محصول
@@ -165,7 +165,7 @@ export default function BillShow({ purchase }) {
                     </Link>
                     <button
                         onClick={() => window.print()}
-                        className="bg-blueGray-700 hover:bg-blueGray-800 rounded px-3 py-1.5 text-xs text-white shadow transition"
+                        className="rounded bg-teal-700 px-3 py-1.5 text-xs text-white shadow transition hover:bg-teal-800"
                     >
                         چاپ بل
                     </button>

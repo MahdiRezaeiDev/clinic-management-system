@@ -50,7 +50,7 @@ export default function Purchase({ suppliers }) {
             <div className="mx-auto mt-10 max-w-3xl">
                 <div className="overflow-hidden rounded-2xl border border-gray-100 shadow-lg">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
+                    <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-6 py-4">
                         <h2 className="text-lg font-semibold text-white">
                             ثبت خرید جدید
                         </h2>

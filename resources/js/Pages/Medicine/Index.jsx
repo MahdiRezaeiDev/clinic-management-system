@@ -1,6 +1,5 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -8,7 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { MoreVertical, Plus } from 'lucide-react';
+import { Edit, Plus, Receipt, Trash, WalletCards } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function PurchasesIndex({ purchases }) {
@@ -101,7 +100,7 @@ export default function PurchasesIndex({ purchases }) {
                     </h1>
                     <Link
                         href={route('medicine.create')}
-                        className="bg-blueGray-600 inline-flex items-center gap-2 rounded px-4 py-2 text-sm text-white shadow transition"
+                        className="inline-flex items-center gap-2 rounded bg-teal-700 px-4 py-2 text-sm text-white shadow transition"
                     >
                         <Plus className="h-4 w-4" /> ثبت خرید جدید
                     </Link>
@@ -134,9 +133,9 @@ export default function PurchasesIndex({ purchases }) {
                 {/* Purchases Table */}
                 <div className="rounded-lg bg-white shadow">
                     <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-blueGray-600 text-white">
+                        <thead className="bg-teal-700 text-white">
                             <tr>
-                                <th className="p-3 text-right text-sm font-semibold">
+                                <th className="w-52 p-3 text-right text-sm font-semibold">
                                     شرکت
                                 </th>
                                 <th className="w-72 p-3 text-right text-sm font-semibold">
@@ -153,9 +152,6 @@ export default function PurchasesIndex({ purchases }) {
                                 </th>
                                 <th className="p-3 text-center text-sm font-semibold">
                                     باقی مانده
-                                </th>
-                                <th className="p-3 text-center text-sm font-semibold">
-                                    وضعیت
                                 </th>
                                 <th className="p-3"></th>
                                 <th className="p-3 text-center text-xs font-semibold">
@@ -187,34 +183,19 @@ export default function PurchasesIndex({ purchases }) {
                                     <td className="p-3 text-center text-xs font-semibold text-red-600">
                                         {purchase.remaining_amount.toLocaleString()}
                                     </td>
-                                    <td className="p-3 text-center text-xs font-semibold">
-                                        <span className="flex items-center justify-center gap-2">
-                                            <span
-                                                className={`h-3 w-3 rounded-full ${
-                                                    purchase.status === 'paid'
-                                                        ? 'bg-green-500'
-                                                        : 'bg-gray-400'
-                                                }`}
-                                            ></span>
-                                            <span className="text-gray-700">
-                                                {purchase.status === 'paid'
-                                                    ? 'تسویه شده'
-                                                    : 'پرداخت نشده'}
-                                            </span>
-                                        </span>
-                                    </td>
 
                                     {/* Quick Payment */}
                                     <td className="p-3 text-xs font-semibold">
                                         {purchase.status != 'paid' ? (
                                             <button
-                                                className="rounded-md bg-green-50 px-3 py-1 font-semibold text-green-600 transition hover:bg-green-100"
+                                                className="flex items-center gap-2 rounded-md bg-teal-100 px-3 py-1 font-semibold text-teal-600 transition hover:bg-teal-200 focus:ring-teal-600"
                                                 onClick={() =>
                                                     confirmPaymentModal(
                                                         purchase.id,
                                                     )
                                                 }
                                             >
+                                                <Receipt className="h-5 w-5 text-teal-700" />
                                                 پرداخت سریع
                                             </button>
                                         ) : (
@@ -224,45 +205,37 @@ export default function PurchasesIndex({ purchases }) {
 
                                     {/* Dropdown Actions */}
                                     <td className="p-3 text-xs">
-                                        <Dropdown>
-                                            <Dropdown.Trigger>
-                                                <button className="bg-blueGray-600 hover:bg-blueGray-700 flex items-center gap-1 rounded px-3 py-1 text-xs text-white transition">
-                                                    <MoreVertical className="h-4 w-4" />
-                                                    عملیات
-                                                </button>
-                                            </Dropdown.Trigger>
-                                            <Dropdown.Content>
-                                                <Link
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                    href={route(
-                                                        'medicine.payments.index',
-                                                        purchase.id,
-                                                    )}
-                                                >
-                                                    پرداخت‌ های قبلی
-                                                </Link>
-                                                <Link
-                                                    href={route(
-                                                        'medicine.edit',
-                                                        purchase.id,
-                                                    )}
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                >
-                                                    ویرایش
-                                                </Link>
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                title="پرداخت های قبلی"
+                                                href={route(
+                                                    'medicine.payments.index',
+                                                    purchase.id,
+                                                )}
+                                            >
+                                                <WalletCards className="h-5 w-5 text-sky-700" />
+                                            </Link>
+                                            <Link
+                                                title="ویرایش"
+                                                href={route(
+                                                    'medicine.edit',
+                                                    purchase.id,
+                                                )}
+                                            >
+                                                <Edit className="h-5 w-5 text-teal-800" />
+                                            </Link>
 
-                                                <button
-                                                    className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                                                    onClick={() =>
-                                                        confirmPurchaseDeletion(
-                                                            purchase.id,
-                                                        )
-                                                    }
-                                                >
-                                                    حذف
-                                                </button>
-                                            </Dropdown.Content>
-                                        </Dropdown>
+                                            <button
+                                                title="حذف"
+                                                onClick={() =>
+                                                    confirmPurchaseDeletion(
+                                                        purchase.id,
+                                                    )
+                                                }
+                                            >
+                                                <Trash className="h-5 w-5 text-rose-800" />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
