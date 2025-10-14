@@ -281,28 +281,32 @@ export default function Index({
                 </table>
 
                 {/* Pagination */}
-                <div className="mt-4 flex justify-center">
-                    {expenses.links.map((link, idx) => {
-                        let label = link.label;
+                {expenses.links.length > 3 && (
+                    <div className="mt-4 flex justify-center">
+                        {expenses.links.map((link, idx) => {
+                            let label = link.label;
 
-                        // Convert default Laravel pagination text to Persian
-                        if (label.includes('Next')) label = 'بعدی';
-                        else if (label.includes('Previous')) label = 'قبلی';
+                            // Convert pagination text to Persian
+                            if (label.includes('Next')) label = 'بعدی';
+                            else if (label.includes('Previous')) label = 'قبلی';
 
-                        return (
-                            <button
-                                key={idx}
-                                onClick={() => link.url && router.get(link.url)}
-                                className={`mx-1 rounded px-3 py-1 text-sm ${
-                                    link.active
-                                        ? 'bg-teal-700 text-white'
-                                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                                } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: label }}
-                            />
-                        );
-                    })}
-                </div>
+                            return (
+                                <button
+                                    key={idx}
+                                    onClick={() =>
+                                        link.url && router.get(link.url)
+                                    }
+                                    className={`mx-1 rounded px-3 py-1 text-sm ${
+                                        link.active
+                                            ? 'bg-teal-700 text-white'
+                                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                    } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                    dangerouslySetInnerHTML={{ __html: label }}
+                                />
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
             {/* Add/Edit/Delete Modals */}
