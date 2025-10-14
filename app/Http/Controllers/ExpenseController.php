@@ -22,7 +22,16 @@ class ExpenseController extends Controller
             $query->where('category', $request->category);
         }
 
-        $expenses = $query->latest()->paginate(10)->withQueryString();
+        // ✅ Use 'expense_date' instead of 'created_at'
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        $expenses = $query->latest('created_at')->paginate(10)->withQueryString();
 
         $categories = [
             'building' => 'ساختمان',
@@ -46,6 +55,8 @@ class ExpenseController extends Controller
             'filters' => [
                 'search' => $request->search ?? '',
                 'category' => $request->category ?? '',
+                'start_date' => $request->start_date ?? '',
+                'end_date' => $request->end_date ?? '',
             ],
         ]);
     }

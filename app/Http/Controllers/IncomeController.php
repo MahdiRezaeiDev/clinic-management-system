@@ -18,8 +18,16 @@ class IncomeController extends Controller
             $query->where('description', 'like', "%{$request->search}%");
         }
 
-        if ($request->filled('title')) {
-            $query->where('title', $request->title);
+        if ($request->filled('category')) {
+            $query->where('category', $request->title);
+        }
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
         }
 
         $incomes = $query->latest()->paginate(10)->withQueryString();
@@ -47,9 +55,12 @@ class IncomeController extends Controller
             'filters' => [
                 'search' => $request->search ?? '',
                 'title' => $request->title ?? '',
+                'start_date' => $request->start_date ?? '',
+                'end_date' => $request->end_date ?? '',
             ],
         ]);
     }
+
 
     public function store(Request $request)
     {

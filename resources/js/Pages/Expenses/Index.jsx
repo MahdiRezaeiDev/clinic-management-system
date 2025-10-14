@@ -6,6 +6,8 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function Index({
@@ -21,6 +23,12 @@ export default function Index({
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState(null);
+    const [search, setSearch] = useState(filters.search || '');
+    const [categoryFilter, setCategoryFilter] = useState(
+        filters.category || '',
+    );
+    const [startDate, setStartDate] = useState(filters.start_date || '');
+    const [endDate, setEndDate] = useState(filters.end_date || '');
 
     const {
         data,
@@ -40,12 +48,6 @@ export default function Index({
         description: '',
     });
 
-    // Filters
-    const [search, setSearch] = useState(filters.search || '');
-    const [categoryFilter, setCategoryFilter] = useState(
-        filters.category || '',
-    );
-
     useEffect(() => {
         if (flash.success) {
             setShowFlash(true);
@@ -58,9 +60,24 @@ export default function Index({
         e.preventDefault();
         router.get(
             route('expenses.index'),
-            { search, category: categoryFilter },
+            {
+                search,
+                category: categoryFilter,
+                start_date: moment(startDate, 'jYYYY/jMM/jDD').format(
+                    'YYYY-MM-DD',
+                ),
+                end_date: moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+            },
             { preserveState: true },
         );
+    };
+
+    const clearFilters = () => {
+        setSearch('');
+        setCategoryFilter('');
+        setStartDate('');
+        setEndDate('');
+        router.get(route('expenses.index'), {}, { preserveState: true });
     };
 
     const openAddModal = () => {
@@ -130,19 +147,20 @@ export default function Index({
             {/* Filter Form */}
             <form
                 onSubmit={applyFilter}
-                className="mb-4 flex flex-wrap items-center gap-3 px-4 md:px-10"
+                className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
             >
                 <input
                     type="text"
                     placeholder="جستجو توضیحات..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-1/3 rounded border px-3 py-2 text-sm"
+                    className="w-full border border-gray-300 px-3 py-2 text-sm"
                 />
+
                 <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-1/3 rounded border px-10 py-2 text-sm"
+                    className="w-full border border-gray-300 px-7 py-2 text-sm"
                 >
                     <option value="">همه دسته‌بندی‌ها</option>
                     {Object.entries(categories).map(([key, label]) => (
@@ -151,13 +169,42 @@ export default function Index({
                         </option>
                     ))}
                 </select>
-                <PrimaryButton type="submit">اعمال فیلتر</PrimaryButton>
+
+                <AfghanDatePicker
+                    value={startDate}
+                    onChange={(value) => {
+                        setStartDate(value.format('YYYY/MM/DD'));
+                    }}
+                    className="w-40 rounded border px-3 py-2 text-sm"
+                    placeholder="از تاریخ"
+                />
+                <AfghanDatePicker
+                    value={endDate}
+                    onChange={(value) => {
+                        setEndDate(value.format('YYYY/MM/DD'));
+                    }}
+                    className="w-40 rounded border px-3 py-2 text-sm"
+                    placeholder="تا تاریخ"
+                />
+
+                <div className="flex w-full flex-col gap-2 sm:flex-row">
+                    <PrimaryButton type="submit" className="flex-1">
+                        اعمال فیلتر
+                    </PrimaryButton>
+                    <DangerButton
+                        type="button"
+                        className="flex-1"
+                        onClick={clearFilters}
+                    >
+                        حذف فیلتر
+                    </DangerButton>
+                </div>
             </form>
 
             {/* Table */}
             <div className="px-4 md:px-10">
                 <table className="min-w-full divide-y divide-gray-200 rounded bg-white shadow">
-                    <thead className="bg-blueGray-600 text-white">
+                    <thead className="bg-teal-700 text-white">
                         <tr>
                             <th className="px-6 py-3 text-right text-sm">#</th>
                             <th className="px-6 py-3 text-right text-sm">
@@ -203,22 +250,20 @@ export default function Index({
                                         {expense.description}
                                     </td>
                                     <td className="flex gap-2 px-6 py-3 text-xs">
-                                        <PrimaryButton
-                                            size="xs"
+                                        <Edit
                                             onClick={() =>
                                                 openEditModal(expense)
                                             }
-                                        >
-                                            ویرایش
-                                        </PrimaryButton>
-                                        <DangerButton
-                                            size="xs"
+                                            className="h-5 w-5 text-teal-700"
+                                            title="ویرایش"
+                                        />
+                                        <Trash
                                             onClick={() =>
                                                 openDeleteModal(expense)
                                             }
-                                        >
-                                            حذف
-                                        </DangerButton>
+                                            className="h-5 w-5 text-rose-700"
+                                            title="حذف"
+                                        />
                                     </td>
                                 </tr>
                             ))
@@ -237,18 +282,26 @@ export default function Index({
 
                 {/* Pagination */}
                 <div className="mt-4 flex justify-center">
-                    {expenses.links.map((link, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => link.url && router.get(link.url)}
-                            className={`mx-1 rounded px-3 py-1 text-sm ${
-                                link.active
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                        />
-                    ))}
+                    {expenses.links.map((link, idx) => {
+                        let label = link.label;
+
+                        // Convert default Laravel pagination text to Persian
+                        if (label.includes('Next')) label = 'بعدی';
+                        else if (label.includes('Previous')) label = 'قبلی';
+
+                        return (
+                            <button
+                                key={idx}
+                                onClick={() => link.url && router.get(link.url)}
+                                className={`mx-1 rounded px-3 py-1 text-sm ${
+                                    link.active
+                                        ? 'bg-teal-700 text-white'
+                                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: label }}
+                            />
+                        );
+                    })}
                 </div>
             </div>
 
@@ -264,7 +317,7 @@ export default function Index({
 
                     <div className="flex gap-3">
                         <select
-                            className="w-1/3 rounded border px-3 py-2"
+                            className="w-1/3 rounded border border-gray-300 px-8 py-2 text-sm"
                             value={data.category}
                             onChange={(e) =>
                                 setData('category', e.target.value)
@@ -280,12 +333,12 @@ export default function Index({
                         <input
                             type="number"
                             placeholder="مبلغ"
-                            className="w-1/3 rounded border px-3 py-2"
+                            className="w-1/3 rounded border border-gray-300 px-3 py-2 text-sm"
                             value={data.amount}
                             onChange={(e) => setData('amount', e.target.value)}
                         />
                         <select
-                            className="w-1/3 rounded border px-3 py-2"
+                            className="w-1/3 rounded border border-gray-300 px-8 py-2 text-sm"
                             value={data.payment_method}
                             onChange={(e) =>
                                 setData('payment_method', e.target.value)
@@ -311,19 +364,19 @@ export default function Index({
 
                     <textarea
                         placeholder="توضیحات (اختیاری)"
-                        className="w-full rounded border px-3 py-2"
+                        className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
                         rows={2}
                         value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
                     />
 
-                    <div className="flex justify-end gap-3">
-                        <SecondaryButton onClick={closeModals}>
-                            انصراف
-                        </SecondaryButton>
+                    <div className="flex justify-start gap-3">
                         <PrimaryButton disabled={processing}>
                             {showAddModal ? 'ثبت' : 'ویرایش'}
                         </PrimaryButton>
+                        <SecondaryButton onClick={closeModals}>
+                            انصراف
+                        </SecondaryButton>
                     </div>
                 </form>
             </Modal>

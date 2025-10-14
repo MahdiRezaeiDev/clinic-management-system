@@ -87,7 +87,7 @@ export default function PharmacySaleInvoiceForm() {
 
             <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
                 {/* Header */}
-                <div className="bg-blueGray-600 mx-3 flex flex-col justify-between rounded-t-xl p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
+                <div className="mx-3 flex flex-col justify-between rounded-t-xl bg-teal-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <img
@@ -191,7 +191,7 @@ export default function PharmacySaleInvoiceForm() {
                 <form onSubmit={submitSale}>
                     <div className="border-blueGray-600 mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 shadow-sm">
                         <table className="min-w-full border-collapse text-sm">
-                            <thead className="bg-blueGray-600 text-white">
+                            <thead className="bg-teal-700 text-white">
                                 <tr>
                                     {[
                                         '#',
