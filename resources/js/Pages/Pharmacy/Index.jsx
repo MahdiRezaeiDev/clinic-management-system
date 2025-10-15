@@ -1,11 +1,10 @@
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { MoreVertical, Plus } from 'lucide-react';
+import { Edit, Plus, Receipt, Trash } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function PharmacySalesIndex({ sales }) {
@@ -97,7 +96,7 @@ export default function PharmacySalesIndex({ sales }) {
                 </div>
 
                 {/* Sales Table */}
-                <div className="rounded-lg bg-white shadow">
+                <div className="overflow-auto rounded-lg bg-white shadow">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-teal-700 text-white">
                             <tr>
@@ -108,6 +107,9 @@ export default function PharmacySalesIndex({ sales }) {
                                     جمع کل
                                 </th>
                                 <th className="p-3 text-right text-sm font-semibold">
+                                    توضیحات
+                                </th>
+                                <th className="p-3 text-right text-sm font-semibold">
                                     کاربر ثبت کننده
                                 </th>
                                 <th className="p-3 text-right text-xs font-semibold">
@@ -115,7 +117,7 @@ export default function PharmacySalesIndex({ sales }) {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody>
                             {displayed.length === 0 ? (
                                 <tr>
                                     <td
@@ -136,51 +138,46 @@ export default function PharmacySalesIndex({ sales }) {
                                         </td>
 
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
-                                            {sale.total_amount.toLocaleString()}{' '}
+                                            {sale.total_amount.toLocaleString()}
                                             افغانی
+                                        </td>
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-800">
+                                            {sale.description}
                                         </td>
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
                                             {auth.user.name}
                                         </td>
                                         <td className="p-3 text-center text-xs">
-                                            <Dropdown>
-                                                <Dropdown.Trigger>
-                                                    <button className="flex gap-1 rounded bg-teal-700 px-3 py-1 text-xs text-white transition hover:bg-teal-700">
-                                                        <MoreVertical className="h-4 w-4" />{' '}
-                                                        عملیات
-                                                    </button>
-                                                </Dropdown.Trigger>
-                                                <Dropdown.Content>
-                                                    <Link
-                                                        className="block px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
-                                                        href={route(
-                                                            'pharmacy.edit',
+                                            <div className="flex items-center gap-2">
+                                                <Link
+                                                    href={route(
+                                                        'pharmacy.edit',
+                                                        sale.id,
+                                                    )}
+                                                    title="ویرایش"
+                                                >
+                                                    <Edit className="h-5 w-5 text-teal-700" />
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        confirmSaleDeletion(
                                                             sale.id,
-                                                        )}
-                                                    >
-                                                        ویرایش
-                                                    </Link>
-                                                    <button
-                                                        className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                                                        onClick={() =>
-                                                            confirmSaleDeletion(
-                                                                sale.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        حذف
-                                                    </button>
-                                                    <Link
-                                                        className="block px-4 py-2 text-right text-sm text-gray-700 hover:bg-gray-100"
-                                                        href={route(
-                                                            'pharmacy.show',
-                                                            sale.id,
-                                                        )}
-                                                    >
-                                                        فاکتور
-                                                    </Link>
-                                                </Dropdown.Content>
-                                            </Dropdown>
+                                                        )
+                                                    }
+                                                    title="حذف"
+                                                >
+                                                    <Trash className="h-5 w-5 text-rose-800" />
+                                                </button>
+                                                <Link
+                                                    href={route(
+                                                        'pharmacy.show',
+                                                        sale.id,
+                                                    )}
+                                                    title="فاکتور"
+                                                >
+                                                    <Receipt className="h-5 w-5 text-sky-700" />
+                                                </Link>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))

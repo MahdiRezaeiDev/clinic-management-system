@@ -11,7 +11,13 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function Dashboard({ doctors }) {
+export default function Dashboard({
+    doctors,
+    userCount,
+    todayVisitCount,
+    todaySell,
+    todayExpenses,
+}) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
 
@@ -33,10 +39,10 @@ export default function Dashboard({ doctors }) {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h5 className="text-blueGray-600 text-xs font-bold uppercase">
-                                        سفارشات ناتکمیل
+                                        ویزیت های امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {/* {{ $incompleteOrders }} */}
+                                        {todayVisitCount}
                                     </span>
                                 </div>
                                 <div className="rounded-full bg-red-500 p-3 text-white">
@@ -44,7 +50,7 @@ export default function Dashboard({ doctors }) {
                                 </div>
                             </div>
                             <p className="text-blueGray-600 mt-2 text-xs">
-                                مجموع سفارشات ناتکمیل تا به امروز
+                                مجموع ویزیت های ثبت شده امروز
                             </p>
                         </div>
 
@@ -55,7 +61,7 @@ export default function Dashboard({ doctors }) {
                                         کاربران سیستم
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {/* {{ $totalUsers }} */}
+                                        {userCount}
                                     </span>
                                 </div>
                                 <div className="rounded-full bg-orange-500 p-3 text-white">
@@ -74,7 +80,7 @@ export default function Dashboard({ doctors }) {
                                         فروشات امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {/* {{ $todaysSells }} */}
+                                        {todaySell}
                                     </span>
                                 </div>
                                 <div className="rounded-full bg-pink-500 p-3 text-white">
@@ -90,10 +96,10 @@ export default function Dashboard({ doctors }) {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h5 className="text-blueGray-600 text-xs font-bold uppercase">
-                                        سفارش های تکمیل شده
+                                        مصارف امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {/* {{ $totalOrders }} */}
+                                        {todayExpenses}
                                     </span>
                                 </div>
                                 <div className="bg-lightBlue-500 rounded-full p-3 text-white">
@@ -101,7 +107,7 @@ export default function Dashboard({ doctors }) {
                                 </div>
                             </div>
                             <p className="text-blueGray-600 mt-2 text-xs">
-                                مجموع سفارشات تکمیل شده الی امروز
+                                مجموع مصارف ثبت شده امروز
                             </p>
                         </div>
                     </div>
