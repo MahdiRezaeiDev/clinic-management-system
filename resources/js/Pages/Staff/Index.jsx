@@ -180,24 +180,24 @@ export default function Index({ staffs, filters }) {
                                                 key={staff.id}
                                                 className="odd:bg-gray-50"
                                             >
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {++index}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {staff.full_name}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {staff.phone || '-'}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {roleNames[staff.role] ||
                                                         staff.role}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {staff.base_salary?.toLocaleString() ||
                                                         '-'}
                                                 </td>
-                                                <td className="flex gap-2 whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="flex gap-2 whitespace-nowrap p-4 px-6 text-sm">
                                                     <Link
                                                         className="rounded-md bg-green-100 px-3 py-1 font-medium text-green-600 transition hover:bg-green-200"
                                                         href={route(
@@ -218,7 +218,7 @@ export default function Index({ staffs, filters }) {
                                                     </Link>
                                                 </td>
 
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     <div className="flex items-center gap-2">
                                                         <Link
                                                             href={route(

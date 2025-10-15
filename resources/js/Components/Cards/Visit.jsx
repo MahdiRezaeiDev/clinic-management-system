@@ -243,7 +243,7 @@ export default function RegisterVisitCard({ doctors }) {
                         className="rounded-md px-6 py-2 font-bold text-white shadow-md disabled:opacity-50"
                         disabled={processing}
                     >
-                        ثبت
+                        ثبت ویزیت
                     </PrimaryButton>
                 </div>
             </form>

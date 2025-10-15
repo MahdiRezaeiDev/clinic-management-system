@@ -193,10 +193,12 @@ class DoctorVisitController extends Controller
      */
     public function edit(string $id)
     {
-        $doctors = Staff::where('role', 'doctor')->get();
+        // Fetch doctors
+        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $staff = Staff::whereIn('role', $disRoles)->get();
         $visit = Visit::with('patient')->where('id', $id)->first();
         return Inertia::render('Visits/Edit', [
-            'doctors' => $doctors,
+            'doctors' => $staff,
             'visit' => $visit
         ]);
     }

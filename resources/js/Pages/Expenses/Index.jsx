@@ -236,30 +236,30 @@ export default function Index({
                             {expenses.data.length ? (
                                 expenses.data.map((expense, index) => (
                                     <tr key={expense.id}>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {index + 1}
                                         </td>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {categories[expense.category]}
                                         </td>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {expense.amount.toLocaleString()}{' '}
                                             افغانی
                                         </td>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {
                                                 paymentMethods[
                                                     expense.payment_method
                                                 ]
                                             }
                                         </td>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {expense.expense_date}
                                         </td>
-                                        <td className="px-6 py-3 text-xs">
+                                        <td className="px-6 py-3 text-sm">
                                             {expense.description}
                                         </td>
-                                        <td className="flex gap-2 px-6 py-3 text-xs">
+                                        <td className="flex gap-2 px-6 py-3 text-sm">
                                             <Edit
                                                 onClick={() =>
                                                     openEditModal(expense)

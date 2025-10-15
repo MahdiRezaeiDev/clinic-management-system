@@ -17,9 +17,11 @@ class DashboardController extends Controller
         $todayVisitCount = Visit::whereDate('created_at', Carbon::today())->count();
         $todaySell = PharmacySale::whereDate('created_at', Carbon::today())->sum('total_amount');
         $todayExpenses = Expense::whereDate('created_at', Carbon::today())->sum('amount');
-        $doctors = Staff::where('role', 'doctor')->get();
+        // Fetch doctors
+        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $staff = Staff::whereIn('role', $disRoles)->get();
         return inertia('Dashboard', [
-            'doctors' => $doctors,
+            'doctors' => $staff,
             'userCount' => $usersCount,
             'todayVisitCount' => $todayVisitCount,
             'todaySell' => $todaySell,

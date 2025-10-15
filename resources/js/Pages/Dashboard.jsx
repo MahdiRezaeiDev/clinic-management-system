@@ -38,7 +38,7 @@ export default function Dashboard({
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-sm font-bold uppercase">
                                         ویزیت های امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -57,7 +57,7 @@ export default function Dashboard({
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-sm font-bold uppercase">
                                         کاربران سیستم
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -76,7 +76,7 @@ export default function Dashboard({
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-sm font-bold uppercase">
                                         فروشات امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
@@ -95,7 +95,7 @@ export default function Dashboard({
                         <div className="rounded bg-white p-4 shadow">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h5 className="text-blueGray-600 text-xs font-bold uppercase">
+                                    <h5 className="text-blueGray-600 text-sm font-bold uppercase">
                                         مصارف امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">

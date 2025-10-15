@@ -198,39 +198,39 @@ export default function Index({ visits, doctors, filters }) {
                                     {visits.data.length ? (
                                         visits.data.map((visit, index) => (
                                             <tr key={visit.id}>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {++index}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.patient.full_name}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.patient.gender}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.patient.age}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.patient.phone}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.patient.address}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.doctor.full_name}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.fee}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {moment(
                                                         visit.visit_date,
                                                     ).format('jYYYY/jMM/jDD')}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {visit.description}
                                                 </td>
-                                                <td className="whitespace-nowrap p-4 px-6 text-xs">
+                                                <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     <div className="flex items-center gap-2">
                                                         <Link
                                                             href={route(
