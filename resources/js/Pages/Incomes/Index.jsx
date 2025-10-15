@@ -131,11 +131,11 @@ export default function Index({
     };
 
     return (
-        <AuthenticatedLayout category="مدیریت عایدات بیماران">
-            <Head category="مدیریت عایدات بیماران" />
+        <AuthenticatedLayout title="مدیریت عایدات بیماران">
+            <Head title="مدیریت عایدات بیماران" />
 
             <div className="pt-8">
-                <div className="w-full overflow-hidden rounded bg-white shadow-md">
+                <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white shadow-lg">
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3">
                         <h3 className="text-lg font-semibold text-gray-700">

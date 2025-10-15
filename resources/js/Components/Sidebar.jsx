@@ -3,14 +3,15 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import {
     Accessibility,
-    BanknoteArrowUp,
     Calendar,
     CardSim,
     ChevronDown,
     Coins,
+    IdCard,
     LayoutDashboard,
     MenuIcon,
     ParkingMeter,
+    RadioReceiver,
     UserIcon,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -180,39 +181,27 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-
-                        {/* Finance Menu */}
                         <li>
-                            <button
-                                onClick={() => toggleMenu('finance')}
-                                className="flex w-full items-center justify-between py-2 text-left hover:bg-gray-100"
+                            <NavLink
+                                href={route('incomes.index')}
+                                active={route().current('incomes.*')}
                             >
-                                <div className="flex items-center gap-2 px-2">
-                                    <BanknoteArrowUp className="h-5 w-5" />
-                                    <span>مالی</span>
+                                <div className="flex items-end gap-2">
+                                    <RadioReceiver className="h-5 w-5" />
+                                    مدیریت عواید
                                 </div>
-                                <ChevronDown
-                                    className={`h-4 w-4 transition-transform ${
-                                        openMenus.finance ? 'rotate-180' : ''
-                                    }`}
-                                />
-                            </button>
-                            {openMenus.finance && (
-                                <ul className="mr-6 flex flex-col gap-1">
-                                    <NavLink
-                                        href={route('incomes.index')}
-                                        active={route().current('incomes.*')}
-                                    >
-                                        درآمدها
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('expenses.index')}
-                                        active={route().current('expenses.*')}
-                                    >
-                                        مصارف
-                                    </NavLink>
-                                </ul>
-                            )}
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('expenses.index')}
+                                active={route().current('expenses.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <IdCard className="h-5 w-5" />
+                                    مدیریت هزینه ها
+                                </div>
+                            </NavLink>
                         </li>
                     </ul>
                 </aside>

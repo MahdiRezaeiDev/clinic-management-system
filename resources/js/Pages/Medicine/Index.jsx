@@ -92,9 +92,9 @@ export default function PurchasesIndex({ purchases }) {
         <AuthenticatedLayout title="خریدهای ثبت شده">
             <Head title="خریدهای ثبت شده" />
 
-            <div className="mx-auto max-w-7xl space-y-6 px-4 pt-8 md:px-10">
+            <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white shadow-lg">
                 {/* Header */}
-                <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+                <div className="mb-4 flex flex-col items-start justify-between gap-4 px-5 md:flex-row md:items-center">
                     <h1 className="text-2xl font-bold text-gray-800">
                         لیست خریدها
                     </h1>
@@ -107,7 +107,7 @@ export default function PurchasesIndex({ purchases }) {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex w-fit gap-2 rounded-lg bg-gray-100 p-1">
+                <div className="mx-5 mb-4 flex w-fit gap-2 rounded-lg bg-gray-100 p-1">
                     <button
                         onClick={() => setActiveTab('remaining')}
                         className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
@@ -131,7 +131,7 @@ export default function PurchasesIndex({ purchases }) {
                 </div>
 
                 {/* Purchases Table */}
-                <div className="rounded-lg bg-white shadow">
+                <div className="rounded-lg bg-white px-5 shadow">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-teal-700 text-white">
                             <tr>

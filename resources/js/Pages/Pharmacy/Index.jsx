@@ -58,10 +58,12 @@ export default function PharmacySalesIndex({ sales }) {
         <AuthenticatedLayout title="فروش دارو">
             <Head title="فروش دارو" />
 
-            <div className="mx-auto max-w-7xl space-y-6 px-4 pt-8 md:px-10">
+            <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white p-5 shadow-lg">
                 {/* Header */}
-                <div className="flex flex-col items-center justify-between rounded-lg bg-teal-700 p-6 text-white shadow-sm md:flex-row">
-                    <h1 className="text-2xl font-bold">لیست فروش دارو</h1>
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-blueGray-700 text-lg font-semibold">
+                        لیست فروش دارو
+                    </h3>
                     <Link
                         href={route('pharmacy.create')}
                         className="text-blueGray-600 inline-flex items-center gap-2 rounded bg-white px-4 py-2 text-sm font-semibold shadow transition hover:bg-gray-100"
@@ -71,7 +73,7 @@ export default function PharmacySalesIndex({ sales }) {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex w-fit gap-2 rounded-lg bg-gray-100 p-1">
+                <div className="mb-4 flex w-fit gap-2 rounded-lg bg-gray-100 p-1">
                     <button
                         onClick={() => setActiveTab('with')}
                         className={`rounded-lg px-4 py-2 text-sm font-medium transition ${

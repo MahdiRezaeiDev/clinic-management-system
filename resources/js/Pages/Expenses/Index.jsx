@@ -136,181 +136,192 @@ export default function Index({
         <AuthenticatedLayout title="هزینه‌ها">
             <Head title="هزینه‌ها" />
 
-            {/* Header + Filters */}
-            <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-6 md:px-10">
-                <h3 className="text-blueGray-700 text-lg font-semibold">
-                    لیست هزینه‌ها
-                </h3>
-                <PrimaryButton onClick={openAddModal}>
-                    ثبت هزینه جدید
-                </PrimaryButton>
-            </div>
-
-            {/* Filter Form */}
-            <form
-                onSubmit={applyFilter}
-                className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
-            >
-                <input
-                    type="text"
-                    placeholder="جستجو توضیحات..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full border border-gray-300 px-3 py-2 text-sm"
-                />
-
-                <select
-                    value={categoryFilter}
-                    onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full border border-gray-300 px-7 py-2 text-sm"
-                >
-                    <option value="">همه دسته‌بندی‌ها</option>
-                    {Object.entries(categories).map(([key, label]) => (
-                        <option key={key} value={key}>
-                            {label}
-                        </option>
-                    ))}
-                </select>
-
-                <AfghanDatePicker
-                    value={startDate}
-                    onChange={(value) => {
-                        setStartDate(value.format('YYYY/MM/DD'));
-                    }}
-                    className="w-40 rounded border px-3 py-2 text-sm"
-                    placeholder="از تاریخ"
-                />
-                <AfghanDatePicker
-                    value={endDate}
-                    onChange={(value) => {
-                        setEndDate(value.format('YYYY/MM/DD'));
-                    }}
-                    className="w-40 rounded border px-3 py-2 text-sm"
-                    placeholder="تا تاریخ"
-                />
-
-                <div className="flex w-full flex-col gap-2 sm:flex-row">
-                    <PrimaryButton type="submit" className="flex-1">
-                        اعمال فیلتر
+            <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white pb-10 shadow-lg">
+                {/* Header + Filters */}
+                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-6 md:px-10">
+                    <h3 className="text-blueGray-700 text-lg font-semibold">
+                        لیست هزینه‌ها
+                    </h3>
+                    <PrimaryButton onClick={openAddModal}>
+                        ثبت هزینه جدید
                     </PrimaryButton>
-                    <DangerButton
-                        type="button"
-                        className="flex-1"
-                        onClick={clearFilters}
-                    >
-                        حذف فیلتر
-                    </DangerButton>
                 </div>
-            </form>
 
-            {/* Table */}
-            <div className="px-4 md:px-10">
-                <table className="min-w-full divide-y divide-gray-200 rounded bg-white shadow">
-                    <thead className="bg-teal-700 text-white">
-                        <tr>
-                            <th className="px-6 py-3 text-right text-sm">#</th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                دسته‌بندی
-                            </th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                مبلغ
-                            </th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                روش پرداخت
-                            </th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                تاریخ
-                            </th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                توضیحات
-                            </th>
-                            <th className="px-6 py-3 text-right text-sm">
-                                عملیات
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {expenses.data.length ? (
-                            expenses.data.map((expense, index) => (
-                                <tr key={expense.id}>
-                                    <td className="px-6 py-3 text-xs">
-                                        {index + 1}
-                                    </td>
-                                    <td className="px-6 py-3 text-xs">
-                                        {categories[expense.category]}
-                                    </td>
-                                    <td className="px-6 py-3 text-xs">
-                                        {expense.amount.toLocaleString()} افغانی
-                                    </td>
-                                    <td className="px-6 py-3 text-xs">
-                                        {paymentMethods[expense.payment_method]}
-                                    </td>
-                                    <td className="px-6 py-3 text-xs">
-                                        {expense.expense_date}
-                                    </td>
-                                    <td className="px-6 py-3 text-xs">
-                                        {expense.description}
-                                    </td>
-                                    <td className="flex gap-2 px-6 py-3 text-xs">
-                                        <Edit
-                                            onClick={() =>
-                                                openEditModal(expense)
+                {/* Filter Form */}
+                <form
+                    onSubmit={applyFilter}
+                    className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
+                >
+                    <input
+                        type="text"
+                        placeholder="جستجو توضیحات..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full border border-gray-300 px-3 py-2 text-sm"
+                    />
+
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        className="w-full border border-gray-300 px-7 py-2 text-sm"
+                    >
+                        <option value="">همه دسته‌بندی‌ها</option>
+                        {Object.entries(categories).map(([key, label]) => (
+                            <option key={key} value={key}>
+                                {label}
+                            </option>
+                        ))}
+                    </select>
+
+                    <AfghanDatePicker
+                        value={startDate}
+                        onChange={(value) => {
+                            setStartDate(value.format('YYYY/MM/DD'));
+                        }}
+                        className="w-40 rounded border px-3 py-2 text-sm"
+                        placeholder="از تاریخ"
+                    />
+                    <AfghanDatePicker
+                        value={endDate}
+                        onChange={(value) => {
+                            setEndDate(value.format('YYYY/MM/DD'));
+                        }}
+                        className="w-40 rounded border px-3 py-2 text-sm"
+                        placeholder="تا تاریخ"
+                    />
+
+                    <div className="flex w-full flex-col gap-2 sm:flex-row">
+                        <PrimaryButton type="submit" className="flex-1">
+                            اعمال فیلتر
+                        </PrimaryButton>
+                        <DangerButton
+                            type="button"
+                            className="flex-1"
+                            onClick={clearFilters}
+                        >
+                            حذف فیلتر
+                        </DangerButton>
+                    </div>
+                </form>
+
+                {/* Table */}
+                <div className="px-4 md:px-10">
+                    <table className="min-w-full divide-y divide-gray-200 rounded bg-white shadow">
+                        <thead className="bg-teal-700 text-white">
+                            <tr>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    #
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    دسته‌بندی
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    مبلغ
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    روش پرداخت
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    تاریخ
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    توضیحات
+                                </th>
+                                <th className="px-6 py-3 text-right text-sm">
+                                    عملیات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {expenses.data.length ? (
+                                expenses.data.map((expense, index) => (
+                                    <tr key={expense.id}>
+                                        <td className="px-6 py-3 text-xs">
+                                            {index + 1}
+                                        </td>
+                                        <td className="px-6 py-3 text-xs">
+                                            {categories[expense.category]}
+                                        </td>
+                                        <td className="px-6 py-3 text-xs">
+                                            {expense.amount.toLocaleString()}{' '}
+                                            افغانی
+                                        </td>
+                                        <td className="px-6 py-3 text-xs">
+                                            {
+                                                paymentMethods[
+                                                    expense.payment_method
+                                                ]
                                             }
-                                            className="h-5 w-5 cursor-pointer text-teal-700"
-                                            title="ویرایش"
-                                        />
-                                        <Trash
-                                            onClick={() =>
-                                                openDeleteModal(expense)
-                                            }
-                                            className="h-5 w-5 cursor-pointer text-rose-700"
-                                            title="حذف"
-                                        />
+                                        </td>
+                                        <td className="px-6 py-3 text-xs">
+                                            {expense.expense_date}
+                                        </td>
+                                        <td className="px-6 py-3 text-xs">
+                                            {expense.description}
+                                        </td>
+                                        <td className="flex gap-2 px-6 py-3 text-xs">
+                                            <Edit
+                                                onClick={() =>
+                                                    openEditModal(expense)
+                                                }
+                                                className="h-5 w-5 cursor-pointer text-teal-700"
+                                                title="ویرایش"
+                                            />
+                                            <Trash
+                                                onClick={() =>
+                                                    openDeleteModal(expense)
+                                                }
+                                                className="h-5 w-5 cursor-pointer text-rose-700"
+                                                title="حذف"
+                                            />
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan="7"
+                                        className="p-4 text-center text-sm text-gray-500"
+                                    >
+                                        هیچ هزینه‌ای ثبت نشده است.
                                     </td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td
-                                    colSpan="7"
-                                    className="p-4 text-center text-sm text-gray-500"
-                                >
-                                    هیچ هزینه‌ای ثبت نشده است.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            )}
+                        </tbody>
+                    </table>
 
-                {/* Pagination */}
-                {expenses.links.length > 3 && (
-                    <div className="mt-4 flex justify-center">
-                        {expenses.links.map((link, idx) => {
-                            let label = link.label;
+                    {/* Pagination */}
+                    {expenses.links.length > 3 && (
+                        <div className="mt-4 flex justify-center">
+                            {expenses.links.map((link, idx) => {
+                                let label = link.label;
 
-                            // Convert pagination text to Persian
-                            if (label.includes('Next')) label = 'بعدی';
-                            else if (label.includes('Previous')) label = 'قبلی';
+                                // Convert pagination text to Persian
+                                if (label.includes('Next')) label = 'بعدی';
+                                else if (label.includes('Previous'))
+                                    label = 'قبلی';
 
-                            return (
-                                <button
-                                    key={idx}
-                                    onClick={() =>
-                                        link.url && router.get(link.url)
-                                    }
-                                    className={`mx-1 rounded px-3 py-1 text-sm ${
-                                        link.active
-                                            ? 'bg-teal-700 text-white'
-                                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                                    } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                    dangerouslySetInnerHTML={{ __html: label }}
-                                />
-                            );
-                        })}
-                    </div>
-                )}
+                                return (
+                                    <button
+                                        key={idx}
+                                        onClick={() =>
+                                            link.url && router.get(link.url)
+                                        }
+                                        className={`mx-1 rounded px-3 py-1 text-sm ${
+                                            link.active
+                                                ? 'bg-teal-700 text-white'
+                                                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: label,
+                                        }}
+                                    />
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </div>
-
             {/* Add/Edit/Delete Modals */}
             <Modal show={showAddModal || showEditModal} onClose={closeModals}>
                 <form
