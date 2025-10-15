@@ -93,7 +93,7 @@ export default function PharmacySaleInvoiceForm() {
                             <img
                                 src={log}
                                 alt="Logo"
-                                className="h-16 w-16 rounded-full border border-gray-500 bg-white shadow-sm"
+                                className="h-16 w-16 rounded-full border border-teal-700 bg-white shadow-sm"
                             />
                             <div>
                                 <h1 className="text-2xl font-bold leading-tight">
@@ -114,7 +114,7 @@ export default function PharmacySaleInvoiceForm() {
                 </div>
 
                 {/* Sale Info */}
-                <div className="border-blueGray-600 mx-3 border-x-4 bg-white/80 p-3 text-sm shadow-sm">
+                <div className="mx-3 border-x-4 border-teal-700 bg-white/80 p-3 text-sm shadow-sm">
                     <div>
                         <h2 className="mb-2 border-b pb-1 font-semibold text-gray-700">
                             اطلاعات فاکتور
@@ -189,7 +189,7 @@ export default function PharmacySaleInvoiceForm() {
 
                 {/* Items Table */}
                 <form onSubmit={submitSale}>
-                    <div className="border-blueGray-600 mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 shadow-sm">
+                    <div className="mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm">
                         <table className="min-w-full border-collapse text-sm">
                             <thead className="bg-teal-700 text-white">
                                 <tr>

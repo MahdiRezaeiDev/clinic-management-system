@@ -150,7 +150,7 @@ export default function Index({
                     {/* Filter Form */}
                     <form
                         onSubmit={applyFilter}
-                        className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
+                        className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5"
                     >
                         <input
                             type="text"

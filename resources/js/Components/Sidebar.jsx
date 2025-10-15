@@ -12,9 +12,10 @@ import {
     MenuIcon,
     ParkingMeter,
     RadioReceiver,
+    User,
     UserIcon,
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import NavLink from './NavLink';
 
 export default function Sidebar() {
@@ -22,7 +23,6 @@ export default function Sidebar() {
     const user = auth.user;
 
     const sidebarRef = useRef();
-    const [openMenus, setOpenMenus] = useState({}); // Track which submenu is open
 
     const toggleSidebar = () => {
         const el = sidebarRef.current;
@@ -31,10 +31,6 @@ export default function Sidebar() {
         el.classList.toggle('bg-white');
         el.classList.toggle('py-3');
         el.classList.toggle('px-6');
-    };
-
-    const toggleMenu = (menu) => {
-        setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
     };
 
     return (
@@ -66,7 +62,7 @@ export default function Sidebar() {
                                     type="button"
                                     className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none"
                                 >
-                                    {user.name}
+                                    <User className="h-5 w-5" />
                                     <ChevronDown className="ml-1 h-4 w-4" />
                                 </button>
                             </span>

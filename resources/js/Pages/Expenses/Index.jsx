@@ -138,7 +138,7 @@ export default function Index({
 
             <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white pb-10 shadow-lg">
                 {/* Header + Filters */}
-                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-6 md:px-10">
+                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-6">
                     <h3 className="text-blueGray-700 text-lg font-semibold">
                         لیست هزینه‌ها
                     </h3>
@@ -150,7 +150,7 @@ export default function Index({
                 {/* Filter Form */}
                 <form
                     onSubmit={applyFilter}
-                    className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
+                    className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5"
                 >
                     <input
                         type="text"
@@ -205,7 +205,7 @@ export default function Index({
                 </form>
 
                 {/* Table */}
-                <div className="px-4 md:px-10">
+                <div className="overflow-auto px-4">
                     <table className="min-w-full divide-y divide-gray-200 rounded bg-white shadow">
                         <thead className="bg-teal-700 text-white">
                             <tr>

@@ -66,9 +66,9 @@ export default function PharmacySalesIndex({ sales }) {
                     </h3>
                     <Link
                         href={route('pharmacy.create')}
-                        className="text-blueGray-600 inline-flex items-center gap-2 rounded bg-white px-4 py-2 text-sm font-semibold shadow transition hover:bg-gray-100"
+                        className="inline-flex items-center gap-2 rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-teal-800"
                     >
-                        <Plus className="h-4 w-4" /> ثبت فروش جدید
+                        <Plus className="h-4 w-4" /> ثبت فروش
                     </Link>
                 </div>
 
