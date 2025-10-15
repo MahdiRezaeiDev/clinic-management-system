@@ -63,10 +63,12 @@ export default function Index({
             {
                 search,
                 category: categoryFilter,
-                start_date: moment(startDate, 'jYYYY/jMM/jDD').format(
-                    'YYYY-MM-DD',
-                ),
-                end_date: moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                start_date:
+                    startDate &&
+                    moment(startDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                end_date:
+                    endDate &&
+                    moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
             },
             { preserveState: true },
         );

@@ -83,9 +83,8 @@ class IncomeController extends Controller
         return redirect()->back()->with('success', 'عاید مریض با موفقیت ثبت شد.');
     }
 
-    public function update(Request $request, Income $patientIncome)
+    public function update(Request $request, Income $income)
     {
-        dd($request->all());
         $request->validate([
             'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
             'amount' => 'required|numeric|min:1',
@@ -94,16 +93,16 @@ class IncomeController extends Controller
             'description' => 'nullable|string|max:500',
         ]);
 
-        $patientIncome->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
+        $income->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
 
         return redirect()->back()->with('success', 'عاید ویرایش شد.');
     }
 
 
-    public function destroy(Income $patientIncome)
+    public function destroy(Income $income)
     {
-        if ($patientIncome->user_id !== Auth::id()) abort(403);
-        $patientIncome->delete();
+        if ($income->user_id !== Auth::id()) abort(403);
+        $income->delete();
         return redirect()->back()->with('success', 'عاید حذف شد.');
     }
 }

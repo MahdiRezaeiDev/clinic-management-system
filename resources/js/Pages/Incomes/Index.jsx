@@ -6,6 +6,7 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
@@ -45,10 +46,12 @@ export default function Index({
             {
                 search,
                 category: categoryFilter,
-                start_date: moment(startDate, 'jYYYY/jMM/jDD').format(
-                    'YYYY-MM-DD',
-                ),
-                end_date: moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                start_date:
+                    startDate &&
+                    moment(startDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                end_date:
+                    endDate &&
+                    moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
             },
             { preserveState: true },
         );
@@ -248,24 +251,22 @@ export default function Index({
                                                 {income.description || '-'}
                                             </td>
                                             <td className="flex gap-2 p-3">
-                                                <button
+                                                <Edit
                                                     onClick={() =>
                                                         openModal(income)
                                                     }
-                                                    className="text-blue-600 hover:underline"
-                                                >
-                                                    ویرایش
-                                                </button>
-                                                <button
+                                                    title="ویرایش"
+                                                    className="h-5 w-5 cursor-pointer text-teal-700"
+                                                />
+                                                <Trash
                                                     onClick={() =>
                                                         confirmDeleteIncome(
                                                             income,
                                                         )
                                                     }
-                                                    className="text-red-600 hover:underline"
-                                                >
-                                                    حذف
-                                                </button>
+                                                    title="حذف"
+                                                    className="h-5 w-5 cursor-pointer text-rose-800"
+                                                />
                                             </td>
                                         </tr>
                                     ))
