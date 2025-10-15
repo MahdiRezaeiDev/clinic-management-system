@@ -23,6 +23,13 @@ class DoctorVisitController extends Controller
         if ($request->filled('doctor')) {
             $query->where('doctor_id', $request->input('doctor'));
         }
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
 
         // Fetch doctors
         $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch

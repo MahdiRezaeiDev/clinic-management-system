@@ -330,7 +330,7 @@ export default function Index({
                                 onChange={(e) =>
                                     setData('category', e.target.value)
                                 }
-                                className="w-full rounded border px-2 py-1"
+                                className="w-full rounded border px-8 py-1"
                             >
                                 <option value="">انتخاب کنید</option>
                                 {Object.entries(categories).map(
@@ -374,7 +374,7 @@ export default function Index({
                                 onChange={(e) =>
                                     setData('payment_method', e.target.value)
                                 }
-                                className="w-full rounded border px-2 py-1"
+                                className="w-full rounded border px-8 py-1"
                             >
                                 {Object.entries(paymentMethods).map(
                                     ([key, label]) => (

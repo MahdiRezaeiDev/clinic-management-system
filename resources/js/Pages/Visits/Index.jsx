@@ -1,3 +1,4 @@
+import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import DangerButton from '@/Components/DangerButton';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -54,12 +55,33 @@ export default function Index({ visits, doctors, filters }) {
         reset();
     };
 
-    // Handle search/filter
+    // Filter states
     const [doctor, setDoctor] = useState(filters.doctor || '');
+    const [startDate, setStartDate] = useState(filters.start_date || '');
+    const [endDate, setEndDate] = useState(filters.end_date || '');
 
-    const submitFilter = (e) => {
+    const applyFilter = (e) => {
         e.preventDefault();
-        router.get(route('visits.index'), { doctor }, { preserveState: true });
+        router.get(
+            route('visits.index'),
+            {
+                doctor,
+                start_date:
+                    startDate &&
+                    moment(startDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                end_date:
+                    endDate &&
+                    moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+            },
+            { preserveState: true },
+        );
+    };
+
+    const clearFilters = () => {
+        setDoctor('');
+        setStartDate('');
+        setEndDate('');
+        router.get(route('visits.index'), {}, { preserveState: true });
     };
 
     return (
@@ -68,7 +90,7 @@ export default function Index({ visits, doctors, filters }) {
 
             <div className="flex flex-wrap pt-8">
                 <div className="mb-12 w-full px-4">
-                    <div className="relative flex w-full min-w-0 flex-col overflow-auto break-words rounded pb-8 shadow-lg">
+                    <div className="relative flex w-full min-w-0 flex-col break-words rounded pb-8 shadow-lg">
                         {/* Header */}
                         <div className="mb-0 flex items-center justify-between rounded-t border-0 px-4 py-3">
                             <h3 className="text-blueGray-700 text-lg font-semibold">
@@ -84,13 +106,13 @@ export default function Index({ visits, doctors, filters }) {
 
                         {/* Filter Form */}
                         <form
-                            onSubmit={submitFilter}
-                            className="flex flex-wrap items-center gap-3 border-b px-4 py-3"
+                            onSubmit={applyFilter}
+                            className="grid grid-cols-1 items-center gap-3 border-b px-4 py-3 md:grid-cols-4"
                         >
                             <select
                                 value={doctor}
                                 onChange={(e) => setDoctor(e.target.value)}
-                                className="w-72 rounded border px-7 py-2 text-sm focus:ring-2 focus:ring-teal-700"
+                                className="w-full rounded border px-7 py-2 text-sm focus:ring-2 focus:ring-teal-700"
                             >
                                 <option value="">همه داکترها</option>
                                 {doctors.map((doctor) => (
@@ -99,13 +121,41 @@ export default function Index({ visits, doctors, filters }) {
                                     </option>
                                 ))}
                             </select>
-                            <PrimaryButton type="submit" className="px-4 py-2">
-                                اعمال فیلتر
-                            </PrimaryButton>
+
+                            <AfghanDatePicker
+                                label="تاریخ شروع"
+                                value={startDate}
+                                onChange={(value) => {
+                                    setStartDate(value.format('YYYY/MM/DD'));
+                                }}
+                                inputClass="w-56 rounded border px-3 py-2 text-sm"
+                            />
+
+                            <AfghanDatePicker
+                                label="تاریخ پایان"
+                                value={endDate}
+                                onChange={(value) => {
+                                    setEndDate(value.format('YYYY/MM/DD'));
+                                }}
+                                inputClass="w-56 rounded border px-3 py-2 text-sm"
+                            />
+
+                            <div className="flex w-full flex-col gap-2 sm:flex-row">
+                                <PrimaryButton type="submit" className="flex-1">
+                                    اعمال فیلتر
+                                </PrimaryButton>
+                                <DangerButton
+                                    type="button"
+                                    className="flex-1"
+                                    onClick={clearFilters}
+                                >
+                                    حذف فیلتر
+                                </DangerButton>
+                            </div>
                         </form>
 
                         {/* Table */}
-                        <div className="block w-full">
+                        <div className="block w-full overflow-auto">
                             <table className="w-full border-collapse bg-transparent">
                                 <thead>
                                     <tr className="bg-teal-700 text-white">
@@ -137,7 +187,7 @@ export default function Index({ visits, doctors, filters }) {
                                             تاریخ مراجعه
                                         </th>
                                         <th className="px-6 py-3 text-right text-sm">
-                                            تاریخ مراجعه
+                                            توضیحات
                                         </th>
                                         <th className="px-6 py-3 text-right text-sm">
                                             عملیات
@@ -180,7 +230,6 @@ export default function Index({ visits, doctors, filters }) {
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     {visit.description}
                                                 </td>
-
                                                 <td className="whitespace-nowrap p-4 px-6 text-xs">
                                                     <div className="flex items-center gap-2">
                                                         <Link
@@ -217,26 +266,36 @@ export default function Index({ visits, doctors, filters }) {
                                 </tbody>
                             </table>
                         </div>
-                        {visits.data.length ? (
-                            <div className="flex justify-center p-4">
-                                {visits.links.map((link, index) => (
-                                    <Link
-                                        key={index}
-                                        href={link.url || '#'}
-                                        preserveScroll
-                                        className={`mx-1 rounded px-3 py-1 text-sm ${
-                                            link.active
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
-                                        dangerouslySetInnerHTML={{
-                                            __html: link.label,
-                                        }}
-                                    />
-                                ))}
+
+                        {/* Pagination */}
+                        {visits.links.length > 3 && (
+                            <div className="mt-4 flex justify-center">
+                                {visits.links.map((link, idx) => {
+                                    let label = link.label;
+
+                                    // Convert pagination text to Persian
+                                    if (label.includes('Next')) label = 'بعدی';
+                                    else if (label.includes('Previous'))
+                                        label = 'قبلی';
+
+                                    return (
+                                        <button
+                                            key={idx}
+                                            onClick={() =>
+                                                link.url && router.get(link.url)
+                                            }
+                                            className={`mx-1 rounded px-3 py-1 text-sm ${
+                                                link.active
+                                                    ? 'bg-teal-700 text-white'
+                                                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                            } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                            dangerouslySetInnerHTML={{
+                                                __html: label,
+                                            }}
+                                        />
+                                    );
+                                })}
                             </div>
-                        ) : (
-                            ''
                         )}
                     </div>
                 </div>
