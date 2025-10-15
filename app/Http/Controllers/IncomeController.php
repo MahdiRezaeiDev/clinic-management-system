@@ -19,7 +19,7 @@ class IncomeController extends Controller
         }
 
         if ($request->filled('category')) {
-            $query->where('category', $request->title);
+            $query->where('category', $request->category);
         }
 
         if ($request->filled('start_date')) {
@@ -32,7 +32,7 @@ class IncomeController extends Controller
 
         $incomes = $query->latest()->paginate(10)->withQueryString();
 
-        $titles = [
+        $categories = [
             'visit' => 'ویزیت',
             'lab' => 'لابراتوار',
             'dental' => 'دندان‌پزشکی',
@@ -50,22 +50,21 @@ class IncomeController extends Controller
 
         return Inertia::render('Incomes/Index', [
             'incomes' => $incomes,
-            'titles' => $titles,
+            'categories' => $categories,
             'paymentMethods' => $paymentMethods,
             'filters' => [
                 'search' => $request->search ?? '',
-                'title' => $request->title ?? '',
+                'category' => $request->category ?? '',
                 'start_date' => $request->start_date ?? '',
                 'end_date' => $request->end_date ?? '',
             ],
         ]);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
@@ -73,7 +72,7 @@ class IncomeController extends Controller
         ]);
 
         Income::create([
-            'title' => $request->title,
+            'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
             'income_date' => $request->income_date,
@@ -86,20 +85,20 @@ class IncomeController extends Controller
 
     public function update(Request $request, Income $patientIncome)
     {
-        if ($patientIncome->user_id !== Auth::id()) abort(403);
-
+        dd($request->all());
         $request->validate([
-            'title' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
             'description' => 'nullable|string|max:500',
         ]);
 
-        $patientIncome->update($request->only('title', 'amount', 'payment_method', 'income_date', 'description'));
+        $patientIncome->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
 
         return redirect()->back()->with('success', 'عاید ویرایش شد.');
     }
+
 
     public function destroy(Income $patientIncome)
     {

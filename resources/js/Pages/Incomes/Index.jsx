@@ -5,12 +5,17 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
-import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
-export default function Index({ incomes, titles, paymentMethods, filters }) {
+export default function Index({
+    incomes,
+    categories,
+    paymentMethods,
+    filters,
+}) {
     const { flash } = usePage().props;
-
     const [showToast, setShowToast] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -27,20 +32,39 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
 
     // Filters
     const [search, setSearch] = useState(filters.search || '');
-    const [title, setTitle] = useState(filters.title || '');
+    const [categoryFilter, setCategoryFilter] = useState(
+        filters.category || '',
+    );
+    const [startDate, setStartDate] = useState(filters.start_date || '');
+    const [endDate, setEndDate] = useState(filters.end_date || '');
 
-    const handleFilter = (e) => {
+    const applyFilter = (e) => {
         e.preventDefault();
         router.get(
             route('incomes.index'),
-            { search, title },
+            {
+                search,
+                category: categoryFilter,
+                start_date: moment(startDate, 'jYYYY/jMM/jDD').format(
+                    'YYYY-MM-DD',
+                ),
+                end_date: moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+            },
             { preserveState: true },
         );
     };
 
+    const clearFilters = () => {
+        setSearch('');
+        setCategoryFilter('');
+        setStartDate('');
+        setEndDate('');
+        router.get(route('incomes.index'), {}, { preserveState: true });
+    };
+
     // Form for Add/Edit
     const { data, setData, post, put, processing, reset, errors } = useForm({
-        title: '',
+        category: '',
         amount: '',
         payment_method: 'cash',
         income_date: '',
@@ -52,7 +76,7 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
             setEditMode(true);
             setSelectedIncome(income);
             setData({
-                title: income.title,
+                category: income.category,
                 amount: income.amount,
                 payment_method: income.payment_method,
                 income_date: income.income_date,
@@ -61,7 +85,7 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
         } else {
             setEditMode(false);
             setData({
-                title: '',
+                category: '',
                 amount: '',
                 payment_method: 'cash',
                 income_date: '',
@@ -104,8 +128,8 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
     };
 
     return (
-        <AuthenticatedLayout title="مدیریت عایدات بیماران">
-            <Head title="مدیریت عایدات بیماران" />
+        <AuthenticatedLayout category="مدیریت عایدات بیماران">
+            <Head category="مدیریت عایدات بیماران" />
 
             <div className="pt-8">
                 <div className="w-full overflow-hidden rounded bg-white shadow-md">
@@ -120,32 +144,61 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
                     </div>
 
                     {/* Filters */}
+                    {/* Filter Form */}
                     <form
-                        onSubmit={handleFilter}
-                        className="flex flex-wrap items-center gap-3 border-b bg-gray-50 px-4 py-3"
+                        onSubmit={applyFilter}
+                        className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5 md:px-10"
                     >
                         <input
                             type="text"
+                            placeholder="جستجو توضیحات..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            placeholder="جستجو توضیحات..."
-                            className="w-40 rounded border px-3 py-2 text-sm"
+                            className="w-full border border-gray-300 px-3 py-2 text-sm"
                         />
+
                         <select
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            className="rounded border px-3 py-2 text-sm"
+                            value={categoryFilter}
+                            onChange={(e) => setCategoryFilter(e.target.value)}
+                            className="w-full border border-gray-300 px-7 py-2 text-sm"
                         >
-                            <option value="">همه بخش‌ها</option>
-                            {Object.entries(titles).map(([key, label]) => (
+                            <option value="">همه دسته‌بندی‌ها</option>
+                            {Object.entries(categories).map(([key, label]) => (
                                 <option key={key} value={key}>
                                     {label}
                                 </option>
                             ))}
                         </select>
-                        <PrimaryButton type="submit" className="text-sm">
-                            اعمال فیلتر
-                        </PrimaryButton>
+
+                        <AfghanDatePicker
+                            value={startDate}
+                            onChange={(value) => {
+                                setStartDate(value.format('YYYY/MM/DD'));
+                            }}
+                            className="w-40 rounded border px-3 py-2 text-sm"
+                            placeholder="از تاریخ"
+                        />
+                        <AfghanDatePicker
+                            value={endDate}
+                            onChange={(value) => {
+                                setEndDate(value.format('YYYY/MM/DD'));
+                            }}
+                            className="w-40 rounded border px-3 py-2 text-sm"
+                            placeholder="تا تاریخ"
+                        />
+
+                        <div className="flex w-full flex-col gap-2 sm:flex-row">
+                            <PrimaryButton type="submit" className="flex-1">
+                                اعمال فیلتر
+                            </PrimaryButton>
+                            <DangerButton
+                                type="button"
+                                className="flex-1"
+                                onClick={clearFilters}
+                            >
+                                حذف فیلتر
+                            </DangerButton>
+                        </div>
                     </form>
 
                     {/* Table */}
@@ -173,7 +226,7 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
                                         >
                                             <td className="p-3">{index + 1}</td>
                                             <td className="p-3">
-                                                {titles[income.title]}
+                                                {categories[income.category]}
                                             </td>
                                             <td className="p-3">
                                                 {Number(
@@ -230,24 +283,33 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
                         </table>
                     </div>
 
-                    {/* Pagination */}
-                    {incomes.links.length > 1 && (
-                        <div className="flex justify-center p-4">
-                            {incomes.links.map((link, i) => (
-                                <Link
-                                    key={i}
-                                    href={link.url || '#'}
-                                    preserveScroll
-                                    className={`mx-1 rounded px-3 py-1 text-sm ${
-                                        link.active
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                    }`}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
+                    {incomes.links.length > 3 && (
+                        <div className="mt-4 flex justify-center">
+                            {incomes.links.map((link, idx) => {
+                                let label = link.label;
+
+                                // Convert pagination text to Persian
+                                if (label.includes('Next')) label = 'بعدی';
+                                else if (label.includes('Previous'))
+                                    label = 'قبلی';
+
+                                return (
+                                    <button
+                                        key={idx}
+                                        onClick={() =>
+                                            link.url && router.get(link.url)
+                                        }
+                                        className={`mx-1 rounded px-3 py-1 text-sm ${
+                                            link.active
+                                                ? 'bg-teal-700 text-white'
+                                                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                                        } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: label,
+                                        }}
+                                    />
+                                );
+                            })}
                         </div>
                     )}
                 </div>
@@ -263,22 +325,24 @@ export default function Index({ incomes, titles, paymentMethods, filters }) {
                         <div>
                             <label className="mb-1 block text-sm">بخش</label>
                             <select
-                                value={data.title}
+                                value={data.category}
                                 onChange={(e) =>
-                                    setData('title', e.target.value)
+                                    setData('category', e.target.value)
                                 }
                                 className="w-full rounded border px-2 py-1"
                             >
                                 <option value="">انتخاب کنید</option>
-                                {Object.entries(titles).map(([key, label]) => (
-                                    <option key={key} value={key}>
-                                        {label}
-                                    </option>
-                                ))}
+                                {Object.entries(categories).map(
+                                    ([key, label]) => (
+                                        <option key={key} value={key}>
+                                            {label}
+                                        </option>
+                                    ),
+                                )}
                             </select>
-                            {errors.title && (
+                            {errors.category && (
                                 <div className="text-xs text-red-600">
-                                    {errors.title}
+                                    {errors.category}
                                 </div>
                             )}
                         </div>
