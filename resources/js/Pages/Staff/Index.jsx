@@ -79,6 +79,12 @@ export default function Index({ staffs, filters }) {
         );
     };
 
+    const clearFilter = () => {
+        setSearch('');
+        setRole('');
+        route.get('staffs.index', {});
+    };
+
     return (
         <AuthenticatedLayout title="لیست پرسونل">
             <Head title="" />
@@ -131,6 +137,12 @@ export default function Index({ staffs, filters }) {
                             >
                                 اعمال فیلتر
                             </PrimaryButton>
+                            <DangerButton
+                                onClick={clearFilter}
+                                className="rounded px-6 py-3 text-xs font-semibold"
+                            >
+                                حذف فیلتر
+                            </DangerButton>
                         </form>
 
                         {/* Table */}
@@ -249,33 +261,26 @@ export default function Index({ staffs, filters }) {
                             </table>
                         </div>
                         {/* Pagination */}
-                        {staffs.data.length ? (
-                            <div className="flex justify-center p-4">
-                                {staffs.links.map((link, index) => {
+                        {staffs.links.length > 3 && (
+                            <div className="mt-4 flex justify-center">
+                                {staffs.links.map((link, idx) => {
                                     let label = link.label;
 
-                                    // Convert Laravel's default pagination labels to Persian
-                                    if (
-                                        label.includes('Previous') ||
-                                        label.includes('&laquo;')
-                                    ) {
-                                        label = '&laquo; قبلی';
-                                    } else if (
-                                        label.includes('Next') ||
-                                        label.includes('&raquo;')
-                                    ) {
-                                        label = 'بعدی &raquo;';
-                                    }
+                                    // Convert pagination text to Persian
+                                    if (label.includes('Next')) label = 'بعدی';
+                                    else if (label.includes('Previous'))
+                                        label = 'قبلی';
 
                                     return (
-                                        <Link
-                                            key={index}
-                                            href={link.url || '#'}
-                                            preserveScroll
+                                        <button
+                                            key={idx}
+                                            onClick={() =>
+                                                link.url && router.get(link.url)
+                                            }
                                             className={`mx-1 rounded px-3 py-1 text-sm ${
                                                 link.active
-                                                    ? 'bg-teal-600 text-white'
-                                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                    ? 'bg-teal-700 text-white'
+                                                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                                             } ${!link.url ? 'cursor-not-allowed opacity-50' : ''}`}
                                             dangerouslySetInnerHTML={{
                                                 __html: label,
@@ -284,8 +289,6 @@ export default function Index({ staffs, filters }) {
                                     );
                                 })}
                             </div>
-                        ) : (
-                            ''
                         )}
                     </div>
                 </div>

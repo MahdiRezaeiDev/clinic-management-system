@@ -1,10 +1,10 @@
 import DangerButton from '@/Components/DangerButton';
-import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Edit, Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
@@ -39,8 +39,6 @@ export default function Index({ staff, overtimes }) {
     }, [flash.success]);
 
     const confirmOvertimeDeletion = (id) => {
-        console.log(id);
-
         setConfirmingDelete(true);
         setSalaryId(id);
     };
@@ -63,23 +61,23 @@ export default function Index({ staff, overtimes }) {
         <AuthenticatedLayout title={`اضافه‌کاری‌ها - ${staff.full_name}`}>
             <Head title={`اضافه‌کاری‌ها - ${staff.full_name}`} />
 
-            <div className="mx-auto w-full md:px-10 md:py-16">
+            <div className="relative m-5 flex min-w-0 flex-col overflow-auto break-words rounded p-5 pb-8 shadow-lg">
                 <div className="mb-4 flex items-center justify-between">
                     <h3 className="text-lg font-semibold">
                         لیست اضافه‌کاری‌ها
                     </h3>
                     <Link
                         href={route('staffs.overtime.create', staff.id)}
-                        className="bg-blueGray-600 rounded px-4 py-2 text-xs font-bold text-white hover:shadow-md"
+                        className="rounded bg-teal-700 px-4 py-2 text-xs font-bold text-white hover:shadow-md"
                     >
                         ثبت اضافه‌کاری
                     </Link>
                 </div>
 
-                <div className="rounded shadow-lg">
+                <div className="rounded">
                     <table className="w-full border-collapse bg-white">
                         <thead>
-                            <tr className="bg-blueGray-600 text-sm text-white">
+                            <tr className="bg-teal-700 text-sm text-white">
                                 <th className="px-6 py-3 text-right">#</th>
                                 <th className="px-6 py-3 text-right">تاریخ</th>
                                 <th className="px-6 py-3 text-right">
@@ -106,7 +104,7 @@ export default function Index({ staff, overtimes }) {
                                 overtimes.map((overTime, index) => (
                                     <tr
                                         key={overTime.id}
-                                        className={`border-b text-xs ${
+                                        className={`text-xs ${
                                             overTime.salary_id
                                                 ? 'bg-green-50'
                                                 : 'bg-white'
@@ -153,37 +151,25 @@ export default function Index({ staff, overtimes }) {
                                                 : '-'}
                                         </td>
                                         <td className="whitespace-nowrap p-4 px-6 text-xs">
-                                            <Dropdown>
-                                                <Dropdown.Trigger>
-                                                    <button className="bg-blueGray-600 rounded px-3 py-1 text-xs text-white">
-                                                        عملیات
-                                                    </button>
-                                                </Dropdown.Trigger>
-                                                <Dropdown.Content>
-                                                    <Link
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        href={route(
-                                                            'staffs.overtime.edit',
-                                                            [
-                                                                staff.id,
-                                                                overTime.id,
-                                                            ],
-                                                        )}
-                                                    >
-                                                        ویرایش
-                                                    </Link>
-                                                    <button
-                                                        className="block w-full px-4 py-2 text-right text-sm text-red-600 hover:bg-gray-100"
-                                                        onClick={() =>
-                                                            confirmOvertimeDeletion(
-                                                                overTime.id,
-                                                            )
-                                                        }
-                                                    >
-                                                        حذف
-                                                    </button>
-                                                </Dropdown.Content>
-                                            </Dropdown>
+                                            <div className="flex items-center gap-2">
+                                                <Link
+                                                    href={route(
+                                                        'staffs.overtime.edit',
+                                                        [staff.id, overTime.id],
+                                                    )}
+                                                >
+                                                    <Edit className="h-5 w-5 text-teal-700" />
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        confirmOvertimeDeletion(
+                                                            overTime.id,
+                                                        )
+                                                    }
+                                                >
+                                                    <Trash className="h-5 w-5 text-rose-700" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
