@@ -205,7 +205,7 @@ export default function PurchasesIndex({ purchases }) {
 
                                     {/* Dropdown Actions */}
                                     <td className="p-3 text-xs">
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex items-center justify-center gap-2">
                                             <Link
                                                 title="پرداخت های قبلی"
                                                 href={route(

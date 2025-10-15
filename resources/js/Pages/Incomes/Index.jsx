@@ -124,7 +124,7 @@ export default function Index({
     };
 
     const deleteIncome = () => {
-        router.delete(route('patient-incomes.destroy', selectedIncome.id), {
+        router.delete(route('incomes.destroy', selectedIncome.id), {
             preserveScroll: true,
             onSuccess: () => setConfirmDelete(false),
         });
@@ -137,7 +137,7 @@ export default function Index({
             <div className="pt-8">
                 <div className="w-full overflow-hidden rounded bg-white shadow-md">
                     {/* Header */}
-                    <div className="flex items-center justify-between border-b px-4 py-3">
+                    <div className="flex items-center justify-between px-4 py-3">
                         <h3 className="text-lg font-semibold text-gray-700">
                             عایدات بیماران
                         </h3>
@@ -208,7 +208,7 @@ export default function Index({
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-sm">
                             <thead>
-                                <tr className="bg-gray-100 text-gray-700">
+                                <tr className="bg-teal-700 text-white">
                                     <th className="p-3 text-right">#</th>
                                     <th className="p-3 text-right">بخش</th>
                                     <th className="p-3 text-right">مبلغ</th>

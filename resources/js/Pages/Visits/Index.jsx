@@ -112,7 +112,7 @@ export default function Index({ visits, doctors, filters }) {
                             <select
                                 value={doctor}
                                 onChange={(e) => setDoctor(e.target.value)}
-                                className="w-full rounded border px-7 py-2 text-sm focus:ring-2 focus:ring-teal-700"
+                                className="w-full border border-gray-300 px-7 py-2 text-sm focus:ring-2 focus:ring-teal-700"
                             >
                                 <option value="">همه داکترها</option>
                                 {doctors.map((doctor) => (
@@ -123,21 +123,21 @@ export default function Index({ visits, doctors, filters }) {
                             </select>
 
                             <AfghanDatePicker
-                                label="تاریخ شروع"
+                                placeholder="تاریخ شروع"
                                 value={startDate}
                                 onChange={(value) => {
                                     setStartDate(value.format('YYYY/MM/DD'));
                                 }}
-                                inputClass="w-56 rounded border px-3 py-2 text-sm"
+                                className="border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-700"
                             />
 
                             <AfghanDatePicker
-                                label="تاریخ پایان"
+                                placeholder="تاریخ پایان"
                                 value={endDate}
                                 onChange={(value) => {
                                     setEndDate(value.format('YYYY/MM/DD'));
                                 }}
-                                inputClass="w-56 rounded border px-3 py-2 text-sm"
+                                className="border px-3 py-2 text-sm focus:ring-2 focus:ring-teal-700"
                             />
 
                             <div className="flex w-full flex-col gap-2 sm:flex-row">
