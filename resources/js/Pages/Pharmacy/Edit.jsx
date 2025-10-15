@@ -67,10 +67,7 @@ export default function PharmacySaleUpdate({ sale }) {
         setData('discount', isNaN(num) ? 0 : num);
     };
 
-    const totalAmount = data.items.reduce(
-        (acc, item) => acc + (item.subtotal || 0),
-        0,
-    );
+    const totalAmount = sale.total_amount;
     const totalAfterDiscount = Math.max(totalAmount - (data.discount || 0), 0);
 
     const submitSale = (e) => {
@@ -90,13 +87,13 @@ export default function PharmacySaleUpdate({ sale }) {
 
             <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
                 {/* Header */}
-                <div className="bg-blueGray-600 mx-3 flex flex-col justify-between rounded-t-xl p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
+                <div className="mx-3 flex flex-col justify-between rounded-t-xl bg-teal-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <img
                                 src={log}
                                 alt="Logo"
-                                className="h-16 w-16 rounded-full border border-gray-500 bg-white shadow-sm"
+                                className="h-16 w-16 rounded-full border border-teal-700 bg-white shadow-sm"
                             />
                             <div>
                                 <h1 className="text-2xl font-bold leading-tight">
@@ -117,7 +114,7 @@ export default function PharmacySaleUpdate({ sale }) {
                 </div>
 
                 {/* Sale Info */}
-                <div className="border-blueGray-600 mx-3 border-x-4 bg-white/80 p-3 text-sm shadow-sm">
+                <div className="mx-3 border-x-4 border-teal-700 bg-white/80 p-3 text-sm shadow-sm">
                     <h2 className="mb-2 border-b pb-1 font-semibold text-gray-700">
                         اطلاعات فاکتور
                     </h2>
@@ -176,9 +173,9 @@ export default function PharmacySaleUpdate({ sale }) {
 
                 {/* Items Table */}
                 <form onSubmit={submitSale}>
-                    <div className="border-blueGray-600 mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 shadow-sm">
+                    <div className="mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm">
                         <table className="min-w-full border-collapse text-sm">
-                            <thead className="bg-blueGray-600 text-white">
+                            <thead className="bg-teal-700 text-white">
                                 <tr>
                                     {[
                                         '#',
