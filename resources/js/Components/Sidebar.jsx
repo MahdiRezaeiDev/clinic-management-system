@@ -2,7 +2,6 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import {
-    Accessibility,
     Calendar,
     CardSim,
     ChevronDown,
@@ -122,7 +121,7 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink
                                 href={route('patients.index')}
                                 active={route().current('patients.*')}
@@ -132,7 +131,7 @@ export default function Sidebar() {
                                     لیست بیماران
                                 </div>
                             </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                             <NavLink
                                 href={route('visits.index')}
