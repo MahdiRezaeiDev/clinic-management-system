@@ -256,14 +256,14 @@ export default function Index({
                                             onClick={() =>
                                                 openEditModal(expense)
                                             }
-                                            className="h-5 w-5 text-teal-700"
+                                            className="h-5 w-5 cursor-pointer text-teal-700"
                                             title="ویرایش"
                                         />
                                         <Trash
                                             onClick={() =>
                                                 openDeleteModal(expense)
                                             }
-                                            className="h-5 w-5 text-rose-700"
+                                            className="h-5 w-5 cursor-pointer text-rose-700"
                                             title="حذف"
                                         />
                                     </td>
