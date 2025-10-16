@@ -4,6 +4,7 @@ import { usePage } from '@inertiajs/react';
 import {
     Calendar,
     CardSim,
+    ChartAreaIcon,
     ChevronDown,
     Coins,
     IdCard,
@@ -121,17 +122,6 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-                        {/* <li>
-                            <NavLink
-                                href={route('patients.index')}
-                                active={route().current('patients.*')}
-                            >
-                                <div className="flex items-end gap-2">
-                                    <Accessibility className="h-5 w-5" />
-                                    لیست بیماران
-                                </div>
-                            </NavLink>
-                        </li> */}
                         <li>
                             <NavLink
                                 href={route('visits.index')}
@@ -195,6 +185,17 @@ export default function Sidebar() {
                                 <div className="flex items-end gap-2">
                                     <IdCard className="h-5 w-5" />
                                     مدیریت هزینه ها
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('patients.index')}
+                                active={route().current('patients.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <ChartAreaIcon className="h-5 w-5" />
+                                    گزارشات مدیریتی
                                 </div>
                             </NavLink>
                         </li>
