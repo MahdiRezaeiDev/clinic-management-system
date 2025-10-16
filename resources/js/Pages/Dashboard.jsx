@@ -15,8 +15,8 @@ export default function Dashboard({
     doctors,
     userCount,
     todayVisitCount,
-    todaySell,
-    todayExpenses,
+    totalIncomeToday,
+    totalExpenseToday,
 }) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
@@ -80,7 +80,7 @@ export default function Dashboard({
                                         فروشات امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {todaySell}
+                                        {totalIncomeToday}
                                     </span>
                                 </div>
                                 <div className="rounded-full bg-pink-500 p-3 text-white">
@@ -99,7 +99,7 @@ export default function Dashboard({
                                         مصارف امروز
                                     </h5>
                                     <span className="text-blueGray-700 text-xl font-semibold">
-                                        {todayExpenses}
+                                        {totalExpenseToday}
                                     </span>
                                 </div>
                                 <div className="bg-lightBlue-500 rounded-full p-3 text-white">
