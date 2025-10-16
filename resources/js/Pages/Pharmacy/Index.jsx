@@ -101,6 +101,9 @@ export default function PharmacySalesIndex({ sales }) {
                         <thead className="bg-teal-700 text-white">
                             <tr>
                                 <th className="p-3 text-right text-sm font-semibold">
+                                    #
+                                </th>
+                                <th className="p-3 text-right text-sm font-semibold">
                                     تاریخ فروش
                                 </th>
                                 <th className="p-3 text-right text-sm font-semibold">
@@ -128,11 +131,14 @@ export default function PharmacySalesIndex({ sales }) {
                                     </td>
                                 </tr>
                             ) : (
-                                displayed.map((sale) => (
+                                displayed.map((sale, index) => (
                                     <tr
                                         key={sale.id}
                                         className="transition hover:bg-gray-50"
                                     >
+                                        <td className="p-3 text-right text-sm font-semibold text-gray-800">
+                                            {++index}
+                                        </td>
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
                                             {sale.sale_date}
                                         </td>

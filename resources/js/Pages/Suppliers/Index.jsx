@@ -43,12 +43,10 @@ export default function Index({ suppliers }) {
         reset();
     };
 
-    const AllUsers = suppliers.map((supplier) => (
+    const AllUsers = suppliers.map((supplier, index) => (
         <tr key={supplier.id}>
             <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
-                <span className="text-blueGray-600 font-bold">
-                    {supplier.id}
-                </span>
+                <span className="text-blueGray-600 font-bold">{++index}</span>
             </td>
             <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right text-sm">
                 <span className="text-blueGray-600 ml-3 font-bold">

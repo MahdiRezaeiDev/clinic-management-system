@@ -159,7 +159,7 @@ export default function PurchasePayments({
                         </h2>
                         <div className="space-y-1.5 text-sm">
                             <p className="flex justify-between">
-                                <span className="text-gray-600">شرکت:</span>{' '}
+                                <span className="text-gray-600">شرکت:</span>
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.supplier.company_name}
@@ -170,13 +170,13 @@ export default function PurchasePayments({
                             <p className="flex justify-between">
                                 <span className="text-gray-600">
                                     شماره تماس:
-                                </span>{' '}
+                                </span>
                                 <span className="font-medium text-gray-800">
                                     {medicine.supplier.phone}
                                 </span>
                             </p>
                             <p className="flex justify-between">
-                                <span className="text-gray-600">آدرس:</span>{' '}
+                                <span className="text-gray-600">آدرس:</span>
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.supplier.address || '-'}
@@ -192,7 +192,7 @@ export default function PurchasePayments({
                         </h2>
                         <div className="space-y-1.5 text-sm">
                             <p className="flex justify-between">
-                                <span className="text-gray-600">توضیحات:</span>{' '}
+                                <span className="text-gray-600">توضیحات:</span>
                                 <span
                                     className="max-w-[180px] truncate font-medium text-gray-800"
                                     title={medicine.description}
@@ -203,15 +203,15 @@ export default function PurchasePayments({
                             <p className="flex justify-between">
                                 <span className="text-gray-600">
                                     تاریخ خرید:
-                                </span>{' '}
+                                </span>
                                 <span className="font-medium text-gray-800">
                                     {medicine.purchase_date}
                                 </span>
                             </p>
                             <p className="flex justify-between">
-                                <span className="text-gray-600">مبلغ کل:</span>{' '}
+                                <span className="text-gray-600">مبلغ کل:</span>
                                 <span className="font-medium text-gray-800">
-                                    {medicine.total_amount.toLocaleString()}{' '}
+                                    {medicine.total_amount.toLocaleString()}
                                     افغانی
                                 </span>
                             </p>
