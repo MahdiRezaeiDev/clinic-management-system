@@ -14,6 +14,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,5 +90,10 @@ Route::middleware('auth')->group(function () {
     // doctor visits
     // ----------------------
     Route::resource('visits', DoctorVisitController::class);
+
+    // ----------------------
+    // doctor visits
+    // ----------------------
+    Route::get('/reports', ReportController::class)->name('reports');
 });
 require __DIR__ . '/auth.php';

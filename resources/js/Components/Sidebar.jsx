@@ -190,8 +190,8 @@ export default function Sidebar() {
                         </li>
                         <li>
                             <NavLink
-                                href={route('patients.index')}
-                                active={route().current('patients.*')}
+                                href={route('reports')}
+                                active={route().current('reports.*')}
                             >
                                 <div className="flex items-end gap-2">
                                     <ChartAreaIcon className="h-5 w-5" />

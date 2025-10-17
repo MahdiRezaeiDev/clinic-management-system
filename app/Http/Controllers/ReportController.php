@@ -2,63 +2,93 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Visit;
+use App\Models\Income;
+use App\Models\Expense;
+use App\Models\PurchasedMedicine;
+use App\Models\PharmacySale;
+use App\Models\Salary;
+use App\Models\Staff;
+use Morilog\Jalali\Jalalian;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __invoke()
     {
-        //
-    }
+        $jalaliYear = Jalalian::now()->format('Y');
+        $jalaliMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $firstDayOfYear = Jalalian::fromFormat('Y-m-d', "$jalaliYear-01-01");
+        if ($firstDayOfYear->isLeapYear()) {
+            $jalaliMonthDays[11] = 30;
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // نام ماه‌های افغانی
+        $afghanMonths = [
+            'حمل',
+            'ثور',
+            'جوزا',
+            'سرطان',
+            'اسد',
+            'سنبله',
+            'میزان',
+            'عقرب',
+            'قوس',
+            'جدی',
+            'دلو',
+            'حوت'
+        ];
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $monthlyData = [];
+        $totals = [
+            'pharmacySales' => 0,
+            'purchasedMedicine' => 0,
+            'staffSalaries' => 0,
+            'visits' => 0,
+            'income' => 0,
+            'expenses' => 0,
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        for ($m = 1; $m <= 12; $m++) {
+            $startJalali = Jalalian::fromFormat('Y-m-d', sprintf('%s-%02d-01', $jalaliYear, $m));
+            $endJalali = Jalalian::fromFormat('Y-m-d', sprintf('%s-%02d-%02d', $jalaliYear, $m, $jalaliMonthDays[$m - 1]));
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $startGregorian = $startJalali->toCarbon();
+            $endGregorian = $endJalali->toCarbon()->endOfDay();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $pharmacySales = PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
+            $purchasedMedicine = PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount');
+            $staffSalaries = Salary::sum('total_paid');
+            $visits = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
+            $visitIncome = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee');
+            $income = $pharmacySales + $visitIncome + Income::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount');
+            $expenses = $purchasedMedicine + $staffSalaries + Expense::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount');
+
+            $monthlyData[] = [
+                'month' => $afghanMonths[$m - 1],
+                'pharmacySales' => $pharmacySales,
+                'purchasedMedicine' => $purchasedMedicine,
+                'staffSalaries' => $staffSalaries,
+                'visits' => $visits,
+                'income' => $income,
+                'expenses' => $expenses,
+                'profit' => $income - $expenses,
+            ];
+
+            $totals['pharmacySales'] += $pharmacySales;
+            $totals['purchasedMedicine'] += $purchasedMedicine;
+            $totals['staffSalaries'] += $staffSalaries;
+            $totals['visits'] += $visits;
+            $totals['income'] += $income;
+            $totals['expenses'] += $expenses;
+        }
+
+        $totals['profit'] = $totals['income'] - $totals['expenses'];
+
+        return inertia('Reports/Index', [
+            'monthlyData' => $monthlyData,
+            'totals' => $totals,
+        ]);
     }
 }
