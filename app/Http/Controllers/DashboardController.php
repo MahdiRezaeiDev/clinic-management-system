@@ -46,6 +46,16 @@ class DashboardController extends Controller
                 'expense' => $expense,
             ];
         });
+        // 📊 آمار ماهانه (برای 12 ماه گذشته)
+        $visitMonthlyStats = collect(range(1, 12))->map(function ($month) {
+            $startOfMonth = Carbon::now()->month($month)->startOfMonth();
+            $endOfMonth = Carbon::now()->month($month)->endOfMonth();
+            $visitCount = Visit::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
+
+            return [
+                'visits' => $visitCount
+            ];
+        });
 
         $staff = Staff::whereIn('role', ['lab', 'dentist', 'emergency'])->get();
 
@@ -56,6 +66,7 @@ class DashboardController extends Controller
             'totalIncomeToday' => $totalIncome,
             'totalExpenseToday' => $totalExpense,
             'monthlyStats' => $monthlyStats,
+            'visitMonthlyStats' => $visitMonthlyStats,
         ]);
     }
 }

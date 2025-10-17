@@ -18,6 +18,7 @@ export default function Dashboard({
     totalIncomeToday,
     totalExpenseToday,
     monthlyStats,
+    visitMonthlyStats,
 }) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
@@ -123,14 +124,7 @@ export default function Dashboard({
 
                     {/* Pharmacy Card */}
                     <div className="col-span-2 mt-6 w-full lg:mt-0">
-                        <MonthlyVisitsChart
-                            data={[
-                                { visits: 20 },
-                                { visits: 35 },
-                                { visits: 50 },
-                                { visits: 15 },
-                            ]}
-                        />
+                        <MonthlyVisitsChart data={visitMonthlyStats} />
                     </div>
                 </div>
             </div>
