@@ -42,7 +42,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
         <div className="font-vazirmatn rounded-2xl bg-white text-right shadow">
             <div className="rounded-t-lg bg-teal-700 p-6">
                 <h3 className="text-center text-lg font-bold text-white">
-                    راپور ماهانه ویزیت‌ها (Bar Chart)
+                    راپور ماهانه ویزیت‌ها
                 </h3>
             </div>
 

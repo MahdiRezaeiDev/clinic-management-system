@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         $usersCount = User::count();
 
-        // آمار امروز
+        // ---------- آمار امروز ----------
         $todayVisitCount = Visit::whereDate('created_at', Carbon::today())->count();
         $visitsTotalIncome = Visit::whereDate('created_at', Carbon::today())->sum('fee');
         $incomesTotal = Income::whereDate('created_at', Carbon::today())->sum('amount');
@@ -29,53 +29,48 @@ class DashboardController extends Controller
         $totalPurchase = PurchasedMedicine::whereDate('created_at', Carbon::today())->sum('paid_amount');
         $totalExpense = $todayExpenses + $totalPurchase;
 
-        // 📅 ماه‌های جلالی از ۱ تا ۱۲
-        $monthlyStats = collect(range(1, 12))->map(function ($jalaliMonth) {
-            // امسال را به صورت جلالی بگیر
-            $jalaliYear = Jalalian::now()->getYear();
+        // ---------- طول ماه‌های سال جاری جلالی ----------
+        $jalaliYear = Jalalian::now()->format('Y');
+        $jalaliMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-            // شروع و پایان ماه به صورت جلالی
-            $startOfMonthJalali = Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")->toCarbon();
-            $endOfMonthJalali = Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")
-                ->addMonths(1)
-                ->subDays(1)
-                ->toCarbon();
+        // بررسی سال کبیسه جلالی
+        $firstDayOfYear = Jalalian::fromFormat('Y-m-d', sprintf('%s-%02d-%02d', $jalaliYear, 1, 1));
+        if ($firstDayOfYear->isLeapYear()) {
+            $jalaliMonthDays[11] = 30; // ماه آخر = ۳۰ روز در سال کبیسه
+        }
 
-            // محاسبه درآمد و مصارف برای بازه زمانی هر ماه
-            $income = Visit::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->sum('fee')
-                + Income::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->sum('amount')
-                + PharmacySale::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->sum('total_amount');
+        $monthlyStats = [];
+        $visitMonthlyStats = [];
 
-            $expense = Expense::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->sum('amount')
-                + PurchasedMedicine::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->sum('paid_amount');
+        for ($m = 1; $m <= 12; $m++) {
+            // تاریخ شروع و پایان ماه در جلالی با فرمت صحیح
+            $startJalali = Jalalian::fromFormat('Y-m-d', sprintf('%s-%02d-01', $jalaliYear, $m));
+            $endJalali = Jalalian::fromFormat('Y-m-d', sprintf('%s-%02d-%02d', $jalaliYear, $m, $jalaliMonthDays[$m - 1]));
 
-            // نمایش نام ماه به فارسی
-            $monthName = Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")->format('%B');
+            // تبدیل به میلادی
+            $startGregorian = $startJalali->toCarbon();
+            $endGregorian = $endJalali->toCarbon()->endOfDay();
 
-            return [
-                'month' => $monthName,
+            // محاسبه آمار مالی
+            $income = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee')
+                + Income::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount')
+                + PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
+
+            $expense = Expense::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount')
+                + PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount');
+
+            $monthlyStats[] = [
+                'month' => $startGregorian->translatedFormat('F'), // اسم ماه به فارسی
                 'income' => $income,
                 'expense' => $expense,
             ];
-        });
 
-        // 📊 آمار ماهانه ویزیت‌ها
-        $visitMonthlyStats = collect(range(1, 12))->map(function ($jalaliMonth) {
-            $jalaliYear = Jalalian::now()->getYear();
-
-            $startOfMonthJalali = Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")->toCarbon();
-            $endOfMonthJalali = Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")
-                ->addMonths(1)
-                ->subDays(1)
-                ->toCarbon();
-
-            $visitCount = Visit::whereBetween('created_at', [$startOfMonthJalali, $endOfMonthJalali])->count();
-
-            return [
-                'month' => Jalalian::fromFormat('Y/n/d', "$jalaliYear/$jalaliMonth/1")->format('%B'),
-                'visits' => $visitCount,
+            // آمار بازدیدها
+            $visitCount = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
+            $visitMonthlyStats[] = [
+                'visits' => $visitCount
             ];
-        });
+        }
 
         $staff = Staff::whereIn('role', ['lab', 'dentist', 'emergency'])->get();
 

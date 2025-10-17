@@ -30,6 +30,8 @@ export default function Dashboard({
             return () => clearTimeout(timeout);
         }
     }, [flash.success]);
+
+    console.log(monthlyStats);
     return (
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
