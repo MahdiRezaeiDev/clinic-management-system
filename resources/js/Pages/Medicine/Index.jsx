@@ -196,7 +196,7 @@ export default function PurchasesIndex({ purchases }) {
                                                 }
                                             >
                                                 <Receipt className="h-5 w-5 text-teal-700" />
-                                                پرداخت سریع
+                                                پرداخت
                                             </button>
                                         ) : (
                                             ''

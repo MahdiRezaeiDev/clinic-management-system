@@ -107,7 +107,7 @@ export default function Dashboard({
                                 </div>
                             </div>
                             <p className="text-blueGray-600 mt-2 text-xs">
-                                مجموع مصارف ثبت شده امروز
+                                مجموع مصارف امروز
                             </p>
                         </div>
                     </div>

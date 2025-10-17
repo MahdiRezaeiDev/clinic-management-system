@@ -28,9 +28,7 @@ class DashboardController extends Controller
         // calculate the total expenses for today
         $todayExpenses = Expense::whereDate('created_at', Carbon::today())->sum('amount');
         $totalPurchase = PurchasedMedicine::whereDate('created_at', Carbon::today())->sum('paid_amount');
-
         $totalExpense = $todayExpenses + $totalPurchase;
-
 
         // Fetch doctors
         $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
