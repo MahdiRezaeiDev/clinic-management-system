@@ -137,6 +137,14 @@ Use a more readable tab size (opinionated).
     /* Optional: force RTL layout if needed */
 }
 
+.font-vazirmatn {
+    font-family: 'Vazir', 'Tahoma', sans-serif !important;
+    font-size: 14px;
+    /* Optional: adjust size */
+    direction: rtl;
+    /* Optional: force RTL layout if needed */
+}
+
 
 html {
     line-height: 1.15;

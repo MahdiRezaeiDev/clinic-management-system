@@ -1,5 +1,5 @@
+import Chart from '@/Components/Cards/Chart';
 import Pharmacy from '@/Components/Cards/Pharmacy';
-import Visit from '@/Components/Cards/Visit';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, usePage } from '@inertiajs/react';
@@ -9,6 +9,7 @@ import {
     CircleDollarSign,
     ShieldUser,
 } from 'lucide-react';
+
 import { useEffect, useState } from 'react';
 
 export default function Dashboard({
@@ -17,6 +18,7 @@ export default function Dashboard({
     todayVisitCount,
     totalIncomeToday,
     totalExpenseToday,
+    monthlyStats,
 }) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
@@ -28,6 +30,8 @@ export default function Dashboard({
             return () => clearTimeout(timeout);
         }
     }, [flash.success]);
+    console.log(monthlyStats);
+
     return (
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
@@ -117,7 +121,7 @@ export default function Dashboard({
                 <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 lg:gap-6">
                     {/* Visit Card */}
                     <div className="col-span-2 w-full">
-                        <Visit doctors={doctors} />
+                        <Chart data={monthlyStats} />
                     </div>
 
                     {/* Pharmacy Card */}
