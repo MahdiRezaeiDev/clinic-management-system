@@ -1,5 +1,5 @@
-import Chart from '@/Components/Cards/Chart';
-import Pharmacy from '@/Components/Cards/Pharmacy';
+import FinanceChart from '@/Components/Cards/FinanceChart';
+import MonthlyVisitsChart from '@/Components/Cards/VisitChart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, usePage } from '@inertiajs/react';
@@ -13,7 +13,6 @@ import {
 import { useEffect, useState } from 'react';
 
 export default function Dashboard({
-    doctors,
     userCount,
     todayVisitCount,
     totalIncomeToday,
@@ -30,8 +29,6 @@ export default function Dashboard({
             return () => clearTimeout(timeout);
         }
     }, [flash.success]);
-    console.log(monthlyStats);
-
     return (
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />
@@ -118,18 +115,26 @@ export default function Dashboard({
                 </div>
             </div>
             <div className="mt-6 px-4 md:px-6">
-                <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 lg:gap-6">
+                <div className="mx-auto grid grid-cols-1 lg:grid-cols-4 lg:gap-6">
                     {/* Visit Card */}
                     <div className="col-span-2 w-full">
-                        <Chart data={monthlyStats} />
+                        <FinanceChart data={monthlyStats} />
                     </div>
 
                     {/* Pharmacy Card */}
-                    <div className="col-span-1 mt-6 w-full lg:mt-0">
-                        <Pharmacy />
+                    <div className="col-span-2 mt-6 w-full lg:mt-0">
+                        <MonthlyVisitsChart
+                            data={[
+                                { visits: 20 },
+                                { visits: 35 },
+                                { visits: 50 },
+                                { visits: 15 },
+                            ]}
+                        />
                     </div>
                 </div>
             </div>
+
             {/* Success Toast */}
             <Transition
                 show={show}

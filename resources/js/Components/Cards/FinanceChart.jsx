@@ -26,7 +26,7 @@ const afghanMonths = [
     'حوت',
 ];
 
-export default function MonthlyReportChart({ data = [] }) {
+export default function FinanceChart({ data = [] }) {
     const chartData = afghanMonths.map((monthName, idx) => {
         const item = data[idx] || { income: 0, expense: 0 };
         return {
