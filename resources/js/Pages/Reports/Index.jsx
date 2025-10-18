@@ -31,7 +31,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
     ];
     const tableRef = useRef();
 
-    // ⚡ حداقل دو نقطه برای Line
+    // ⚡ اطمینان از حداقل دو نقطه در نمودار
     const filteredData = useMemo(() => {
         if (selectedMonth === 'کل سال') return monthlyData;
         const monthIndex = monthlyData.findIndex(
@@ -48,24 +48,45 @@ export default function FinanceLineChart({ monthlyData, totals }) {
         return filteredData[1] || {};
     }, [selectedMonth, filteredData, totals]);
 
+    // ✅ اصلاح خروجی Excel با نام ستون‌های فارسی
     const exportExcel = () => {
-        const ws = XLSX.utils.json_to_sheet([
-            ...filteredData,
-            selectedMonth === 'کل سال'
-                ? { month: 'جمع کل سال', ...totals }
-                : filteredTotals,
-        ]);
+        const records = filteredData.map((item) => ({
+            ماه: item.month,
+            'فروش دارو': item.pharmacySales,
+            'خرید دارو': item.purchasedMedicine,
+            حقوق: item.staffSalaries,
+            ویزیت: item.visits,
+            درآمد: item.income,
+            مصارف: item.expenses,
+            'سود/زیان': item.profit,
+        }));
+
+        if (selectedMonth === 'کل سال') {
+            records.push({
+                ماه: 'جمع کل سال',
+                'فروش دارو': totals.pharmacySales,
+                'خرید دارو': totals.purchasedMedicine,
+                حقوق: totals.staffSalaries,
+                ویزیت: totals.visits,
+                درآمد: totals.income,
+                مصارف: totals.expenses,
+                'سود/زیان': totals.profit,
+            });
+        }
+
+        const ws = XLSX.utils.json_to_sheet(records);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Finance');
-        XLSX.writeFile(wb, 'FinanceReport.xlsx');
+        XLSX.utils.book_append_sheet(wb, ws, 'گزارش مالی');
+        XLSX.writeFile(wb, 'گزارش_مالی.xlsx');
     };
 
+    // ✅ PDF فارسی و راست‌چین
     const exportPDF = () => {
         const element = tableRef.current;
         html2pdf()
             .set({
                 margin: 10,
-                filename: 'FinanceReport.pdf',
+                filename: 'گزارش_مالی.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, letterRendering: true },
                 jsPDF: { orientation: 'landscape' },
@@ -77,16 +98,16 @@ export default function FinanceLineChart({ monthlyData, totals }) {
     return (
         <AuthenticatedLayout title="گزارش مالی">
             <Head title="گزارش مالی" />
-            <div className="mx-auto my-8 max-w-7xl space-y-6">
+            <div className="mx-auto my-8 max-w-6xl space-y-6" dir="rtl">
                 {/* فیلتر ماه */}
-                <div className="flex items-center gap-4 rounded-xl bg-white p-4 shadow">
-                    <label className="font-medium text-gray-700">
+                <div className="flex items-center gap-4 rounded-xl bg-teal-700 p-4 shadow">
+                    <label className="font-medium text-white">
                         انتخاب ماه:
                     </label>
                     <select
                         value={selectedMonth}
                         onChange={(e) => setSelectedMonth(e.target.value)}
-                        className="rounded-md border bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="rounded-md border bg-white px-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
                         <option value="کل سال">کل سال</option>
                         {afghanMonths.map((m, idx) => (
@@ -97,17 +118,50 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                     </select>
                 </div>
 
-                {/* نمودار منحنی */}
-                <div className="h-80 w-full rounded-xl bg-white p-4 shadow-lg">
+                {/* نمودار منحنی راست‌چین */}
+                <div
+                    dir="rtl"
+                    className="h-80 w-full rounded-xl bg-white p-4 shadow-lg"
+                >
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={filteredData}>
+                        <LineChart
+                            data={[...filteredData]} // جهت داده‌ها برعکس
+                            margin={{
+                                top: 10,
+                                right: 20,
+                                left: 20,
+                                bottom: 10,
+                            }}
+                        >
                             <XAxis
                                 dataKey="month"
-                                tick={{ fontSize: 12, fill: '#4B5563' }}
+                                reversed // 🔹 محور X راست‌چین
+                                tick={{
+                                    fontSize: 12,
+                                    fill: '#4B5563',
+                                    fontFamily: 'Vazir, Tahoma, sans-serif',
+                                    textAnchor: 'end',
+                                }}
+                                padding={{ left: 10, right: 10 }}
                             />
-                            <YAxis tick={{ fontSize: 12, fill: '#4B5563' }} />
+                            <YAxis
+                                tick={{
+                                    fontSize: 13,
+                                    fontFamily: 'Vazir, Tahoma, sans-serif',
+                                    textAnchor: 'end',
+                                }}
+                                orientation="right"
+                            />
                             <Tooltip
-                                formatter={(value) => value.toLocaleString()}
+                                labelFormatter={(name) => `ماه: ${name}`}
+                                formatter={(value) =>
+                                    `${value.toLocaleString()} افغانی`
+                                }
+                                contentStyle={{
+                                    fontFamily: 'Vazir, Tahoma, sans-serif',
+                                    fontSize: '13px',
+                                    direction: 'rtl',
+                                }}
                             />
                             <Legend />
                             <Line
@@ -141,7 +195,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                     className="overflow-x-auto rounded-xl bg-white p-4 shadow-lg"
                 >
                     <table className="min-w-full divide-y divide-gray-200 text-right">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-teal-700">
                             <tr>
                                 {[
                                     'ماه',
@@ -155,7 +209,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                 ].map((h, idx) => (
                                     <th
                                         key={idx}
-                                        className="px-6 py-3 text-sm font-medium text-gray-600"
+                                        className="px-6 py-3 text-sm font-semibold text-white"
                                     >
                                         {h}
                                     </th>
@@ -190,7 +244,11 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                         {m.expenses.toLocaleString()}
                                     </td>
                                     <td
-                                        className={`px-6 py-4 font-semibold ${m.profit >= 0 ? 'text-green-700' : 'text-red-700'}`}
+                                        className={`px-6 py-4 font-semibold ${
+                                            m.profit >= 0
+                                                ? 'text-green-700'
+                                                : 'text-red-700'
+                                        }`}
                                     >
                                         {m.profit.toLocaleString()}
                                     </td>
@@ -218,7 +276,11 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                         {totals.expenses.toLocaleString()}
                                     </td>
                                     <td
-                                        className={`px-6 py-4 ${totals.profit >= 0 ? 'text-green-700' : 'text-red-700'}`}
+                                        className={`px-6 py-4 ${
+                                            totals.profit >= 0
+                                                ? 'text-green-700'
+                                                : 'text-red-700'
+                                        }`}
                                     >
                                         {totals.profit.toLocaleString()}
                                     </td>
