@@ -1,9 +1,9 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowRight } from 'lucide-react';
+import { Head, useForm } from '@inertiajs/react';
 import moment from 'moment-jalaali';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -46,13 +46,6 @@ export default function Edit({ staff, overtime }) {
                     <h1 className="text-2xl font-semibold text-gray-800">
                         ویرایش اضافه‌کاری
                     </h1>
-                    <Link
-                        href={route('staffs.overtime.index', staff.id)}
-                        className="flex items-center text-sm text-gray-600 transition hover:text-blue-600"
-                    >
-                        بازگشت
-                        <ArrowRight className="mr-1 h-4 w-4" />
-                    </Link>
                 </div>
 
                 <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
@@ -155,10 +148,16 @@ export default function Edit({ staff, overtime }) {
                             <PrimaryButton
                                 type="submit"
                                 disabled={processing}
-                                className="bg-blueGray-700 hover:bg-blueGray-800 rounded px-6 py-2 text-sm"
+                                className="rounded bg-teal-700 px-6 py-2 text-sm hover:bg-teal-800"
                             >
                                 ذخیره تغییرات
                             </PrimaryButton>
+                            <SecondaryButton
+                                href={route('staffs.overtime.index', staff.id)}
+                                className="flex items-center text-xs text-gray-600 transition hover:text-blue-600"
+                            >
+                                بازگشت
+                            </SecondaryButton>
                         </div>
                     </form>
                 </div>
