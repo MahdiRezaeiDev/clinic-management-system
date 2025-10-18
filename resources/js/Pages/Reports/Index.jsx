@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import html2pdf from 'html2pdf.js';
+import { FileSpreadsheet, FileText } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
 import {
     Legend,
@@ -209,7 +210,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                 ].map((h, idx) => (
                                     <th
                                         key={idx}
-                                        className="px-6 py-3 text-sm font-semibold text-white"
+                                        className="px-2 py-3 text-right text-sm font-semibold text-white"
                                     >
                                         {h}
                                     </th>
@@ -220,31 +221,31 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                             {filteredData.map((m, idx) => (
                                 <tr
                                     key={idx}
-                                    className="transition-colors hover:bg-gray-50"
+                                    className="text-gray-800 transition-colors even:bg-sky-100 hover:bg-sky-200"
                                 >
-                                    <td className="px-6 py-4 font-medium text-gray-700">
+                                    <td className="p-2 text-right text-sm font-semibold">
                                         {m.month}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right text-sm font-semibold">
                                         {m.pharmacySales.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right text-sm font-semibold">
                                         {m.purchasedMedicine.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right text-sm font-semibold">
                                         {m.staffSalaries.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right text-sm font-semibold">
                                         {m.visits.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4 font-semibold text-green-600">
+                                    <td className="p-2 text-right text-sm font-semibold text-green-600">
                                         {m.income.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4 font-semibold text-red-600">
+                                    <td className="p-2 text-right text-sm font-semibold text-red-600">
                                         {m.expenses.toLocaleString()}
                                     </td>
                                     <td
-                                        className={`px-6 py-4 font-semibold ${
+                                        className={`p-2 text-right text-sm font-semibold ${
                                             m.profit >= 0
                                                 ? 'text-green-700'
                                                 : 'text-red-700'
@@ -255,33 +256,29 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                 </tr>
                             ))}
                             {selectedMonth === 'کل سال' && (
-                                <tr className="bg-gray-200 text-lg font-bold">
-                                    <td className="px-6 py-4">جمع کل سال</td>
-                                    <td className="px-6 py-4">
+                                <tr className="text-md bg-teal-700 font-semibold text-white">
+                                    <td className="p-2 text-right">
+                                        جمع کل سال
+                                    </td>
+                                    <td className="p-2 text-right">
                                         {totals.pharmacySales.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right">
                                         {totals.purchasedMedicine.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right">
                                         {totals.staffSalaries.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="p-2 text-right">
                                         {totals.visits.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4 text-green-600">
+                                    <td className="p-2 text-right">
                                         {totals.income.toLocaleString()}
                                     </td>
-                                    <td className="px-6 py-4 text-red-600">
+                                    <td className="p-2 text-right">
                                         {totals.expenses.toLocaleString()}
                                     </td>
-                                    <td
-                                        className={`px-6 py-4 ${
-                                            totals.profit >= 0
-                                                ? 'text-green-700'
-                                                : 'text-red-700'
-                                        }`}
-                                    >
+                                    <td className={`p-2 text-right`}>
                                         {totals.profit.toLocaleString()}
                                     </td>
                                 </tr>
@@ -292,20 +289,34 @@ export default function FinanceLineChart({ monthlyData, totals }) {
 
                 {/* دکمه‌ها */}
                 <div className="flex gap-4">
-                    <button
-                        onClick={exportExcel}
-                        className="rounded bg-blue-500 px-6 py-2 font-medium text-white shadow-lg transition hover:bg-blue-600"
-                    >
-                        خروجی Excel
-                    </button>
-                    <button
-                        onClick={exportPDF}
-                        className="rounded bg-green-500 px-6 py-2 font-medium text-white shadow-lg transition hover:bg-green-600"
-                    >
-                        خروجی PDF
-                    </button>
+                    <div className="mt-4 flex gap-3">
+                        <button
+                            onClick={exportExcel}
+                            className="flex items-center gap-2 rounded bg-green-700 px-6 py-2 text-white transition hover:bg-green-800"
+                        >
+                            <FileSpreadsheet className="h-5 w-5" />
+                            خروجی اکسل
+                        </button>
+
+                        <button
+                            onClick={exportPDF}
+                            className="flex items-center gap-2 rounded bg-sky-700 px-6 py-2 text-white transition hover:bg-sky-800"
+                        >
+                            <FileText className="h-5 w-5" />
+                            خروجی PDF
+                        </button>
+                    </div>
                 </div>
             </div>
+            <style>
+                {`
+                    /* Remove focus outline for charts */
+                    .recharts-wrapper:focus,
+                    .recharts-wrapper svg:focus {
+                        outline: none !important;
+                    }
+                `}
+            </style>
         </AuthenticatedLayout>
     );
 }
