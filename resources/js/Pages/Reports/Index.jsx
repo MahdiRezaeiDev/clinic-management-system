@@ -292,7 +292,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                     <div className="mt-4 flex gap-3">
                         <button
                             onClick={exportExcel}
-                            className="flex items-center gap-2 rounded bg-green-700 px-6 py-2 text-white transition hover:bg-green-800"
+                            className="flex items-center gap-2 rounded bg-green-700 px-6 py-2 text-white transition hover:bg-green-800 focus:outline-none"
                         >
                             <FileSpreadsheet className="h-5 w-5" />
                             خروجی اکسل
@@ -300,7 +300,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
 
                         <button
                             onClick={exportPDF}
-                            className="flex items-center gap-2 rounded bg-sky-700 px-6 py-2 text-white transition hover:bg-sky-800"
+                            className="flex items-center gap-2 rounded bg-sky-700 px-6 py-2 text-white transition hover:bg-sky-800 focus:outline-none"
                         >
                             <FileText className="h-5 w-5" />
                             خروجی PDF

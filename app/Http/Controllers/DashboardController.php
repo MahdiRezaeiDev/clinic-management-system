@@ -8,6 +8,7 @@ use App\Models\Income;
 use App\Models\Expense;
 use App\Models\PurchasedMedicine;
 use App\Models\PharmacySale;
+use App\Models\Salary;
 use App\Models\Staff;
 use Morilog\Jalali\Jalalian;
 use Carbon\Carbon;
@@ -57,7 +58,8 @@ class DashboardController extends Controller
                 + PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
 
             $expense = Expense::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount')
-                + PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount');
+                + PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount')
+                + Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
 
             $monthlyStats[] = [
                 'month' => $startGregorian->translatedFormat('F'), // اسم ماه به فارسی

@@ -38,7 +38,7 @@ export default function DrugSellCard() {
         'peer block w-full rounded-sm border border-gray-300 px-3 py-2 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400';
 
     return (
-        <div className="w-full rounded-lg border border-gray-100 bg-white shadow-xl">
+        <div className="h-full w-full rounded-lg border border-gray-100 bg-white shadow-xl">
             <div className="rounded-t-lg bg-teal-700 p-6">
                 <h2 className="text-xl font-bold text-white">
                     فروش دارو بدون نسخه

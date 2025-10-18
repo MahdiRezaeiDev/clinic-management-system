@@ -1,4 +1,6 @@
 import FinanceChart from '@/Components/Cards/FinanceChart';
+import Pharmacy from '@/Components/Cards/Pharmacy';
+import Visit from '@/Components/Cards/Visit';
 import MonthlyVisitsChart from '@/Components/Cards/VisitChart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
@@ -13,6 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 
 export default function Dashboard({
+    doctors,
     userCount,
     todayVisitCount,
     totalIncomeToday,
@@ -116,16 +119,31 @@ export default function Dashboard({
                     </div>
                 </div>
             </div>
-            <div className="mt-6 px-4 md:px-6">
-                <div className="mx-auto grid grid-cols-1 lg:grid-cols-4 lg:gap-6">
+            <div className="mt-4 px-4">
+                <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 lg:gap-2">
                     {/* Visit Card */}
-                    <div className="col-span-2 w-full">
-                        <FinanceChart data={monthlyStats} />
+                    <div className="col-span-1 mt-6 flex h-full w-full flex-col lg:mt-0">
+                        <Pharmacy className="flex-1" />
+                    </div>
+
+                    {/* Finance Report Chart */}
+                    <div className="col-span-2 flex h-full w-full flex-col">
+                        <FinanceChart data={monthlyStats} className="flex-1" />
+                    </div>
+                </div>
+
+                <div className="mx-auto mt-4 grid grid-cols-1 lg:grid-cols-5 lg:gap-2">
+                    {/* Visit Card */}
+                    <div className="col-span-3 flex h-full w-full flex-col">
+                        <Visit doctors={doctors} className="flex-1" />
                     </div>
 
                     {/* Pharmacy Card */}
-                    <div className="col-span-2 mt-6 w-full lg:mt-0">
-                        <MonthlyVisitsChart data={visitMonthlyStats} />
+                    <div className="col-span-2 mt-6 flex h-full w-full flex-col lg:mt-0">
+                        <MonthlyVisitsChart
+                            data={visitMonthlyStats}
+                            className="flex-1"
+                        />
                     </div>
                 </div>
             </div>

@@ -39,7 +39,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
     });
 
     return (
-        <div className="font-vazirmatn rounded-2xl bg-white text-right shadow">
+        <div className="font-vazirmatn h-full rounded-2xl bg-white text-right shadow">
             <div className="rounded-t-lg bg-teal-700 p-6">
                 <h3 className="text-center text-lg font-bold text-white">
                     راپور ماهانه ویزیت‌ها
@@ -98,4 +98,3 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
         </div>
     );
 }
-    
