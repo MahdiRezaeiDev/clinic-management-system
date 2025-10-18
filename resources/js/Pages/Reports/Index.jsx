@@ -236,7 +236,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                         {m.staffSalaries.toLocaleString()}
                                     </td>
                                     <td className="p-2 text-right text-sm font-semibold">
-                                        {m.visits.toLocaleString()}
+                                        {m.visitsIncome.toLocaleString()}
                                     </td>
                                     <td className="p-2 text-right text-sm font-semibold text-green-600">
                                         {m.income.toLocaleString()}
@@ -270,7 +270,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                         {totals.staffSalaries.toLocaleString()}
                                     </td>
                                     <td className="p-2 text-right">
-                                        {totals.visits.toLocaleString()}
+                                        {totals.visitsIncome.toLocaleString()}
                                     </td>
                                     <td className="p-2 text-right">
                                         {totals.income.toLocaleString()}

@@ -8,9 +8,7 @@ use App\Models\Expense;
 use App\Models\PurchasedMedicine;
 use App\Models\PharmacySale;
 use App\Models\Salary;
-use App\Models\Staff;
 use Morilog\Jalali\Jalalian;
-use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -47,6 +45,7 @@ class ReportController extends Controller
             'staffSalaries' => 0,
             'visits' => 0,
             'income' => 0,
+            'visitsIncome' => 0,
             'expenses' => 0,
         ];
 
@@ -59,7 +58,7 @@ class ReportController extends Controller
 
             $pharmacySales = PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
             $purchasedMedicine = PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount');
-            $staffSalaries = Salary::sum('total_paid');
+            $staffSalaries = Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
             $visits = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
             $visitIncome = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee');
             $income = $pharmacySales + $visitIncome + Income::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount');
@@ -71,15 +70,18 @@ class ReportController extends Controller
                 'purchasedMedicine' => $purchasedMedicine,
                 'staffSalaries' => $staffSalaries,
                 'visits' => $visits,
+                'visitsIncome' => $visitIncome,  // ✅ add this
                 'income' => $income,
                 'expenses' => $expenses,
                 'profit' => $income - $expenses,
             ];
 
+
             $totals['pharmacySales'] += $pharmacySales;
             $totals['purchasedMedicine'] += $purchasedMedicine;
             $totals['staffSalaries'] += $staffSalaries;
             $totals['visits'] += $visits;
+            $totals['visitsIncome'] += $visitIncome;
             $totals['income'] += $income;
             $totals['expenses'] += $expenses;
         }

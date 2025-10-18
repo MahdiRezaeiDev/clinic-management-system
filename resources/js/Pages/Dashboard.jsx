@@ -31,7 +31,6 @@ export default function Dashboard({
         }
     }, [flash.success]);
 
-    console.log(monthlyStats);
     return (
         <AuthenticatedLayout title="داشبورد">
             <Head title="داشبورد" />

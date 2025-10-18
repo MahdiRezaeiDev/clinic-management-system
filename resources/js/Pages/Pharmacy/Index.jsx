@@ -124,7 +124,7 @@ export default function PharmacySalesIndex({ sales }) {
                             {displayed.length === 0 ? (
                                 <tr>
                                     <td
-                                        colSpan={4}
+                                        colSpan={6}
                                         className="p-3 text-center text-gray-500"
                                     >
                                         هیچ فروشی در این بخش وجود ندارد
