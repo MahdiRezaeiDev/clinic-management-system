@@ -99,24 +99,46 @@ export default function FinanceLineChart({ monthlyData, totals }) {
     return (
         <AuthenticatedLayout title="گزارش مالی">
             <Head title="گزارش مالی" />
-            <div className="mx-auto my-8 max-w-6xl space-y-6" dir="rtl">
+            <div className="mx-4 my-8 max-w-6xl space-y-6" dir="rtl">
                 {/* فیلتر ماه */}
-                <div className="flex items-center gap-4 rounded-xl bg-teal-700 p-4 shadow">
-                    <label className="font-medium text-white">
-                        انتخاب ماه:
-                    </label>
-                    <select
-                        value={selectedMonth}
-                        onChange={(e) => setSelectedMonth(e.target.value)}
-                        className="rounded-md border bg-white px-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    >
-                        <option value="کل سال">کل سال</option>
-                        {afghanMonths.map((m, idx) => (
-                            <option key={idx} value={m}>
-                                {m}
-                            </option>
-                        ))}
-                    </select>
+                <div className="flex items-center justify-between gap-4 rounded-xl bg-teal-700 p-4 shadow">
+                    <div>
+                        <label className="ml-3 font-medium text-white">
+                            انتخاب ماه:
+                        </label>
+                        <select
+                            value={selectedMonth}
+                            onChange={(e) => setSelectedMonth(e.target.value)}
+                            className="rounded-md border bg-white px-8 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+                            <option value="کل سال">کل سال</option>
+                            {afghanMonths.map((m, idx) => (
+                                <option key={idx} value={m}>
+                                    {m}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {/* دکمه‌ها */}
+                    <div className="flex gap-4">
+                        <div className="flex gap-3">
+                            <button
+                                onClick={exportExcel}
+                                className="flex items-center gap-2 rounded bg-green-700 px-6 py-2 text-sm text-white transition hover:bg-green-800 focus:outline-none"
+                            >
+                                <FileSpreadsheet className="h-5 w-5" />
+                                خروجی اکسل
+                            </button>
+
+                            <button
+                                onClick={exportPDF}
+                                className="flex items-center gap-2 rounded bg-sky-700 px-6 py-2 text-sm text-white transition hover:bg-sky-800 focus:outline-none"
+                            >
+                                <FileText className="h-5 w-5" />
+                                خروجی PDF
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 {/* نمودار منحنی راست‌چین */}
@@ -285,27 +307,6 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                             )}
                         </tbody>
                     </table>
-                </div>
-
-                {/* دکمه‌ها */}
-                <div className="flex gap-4">
-                    <div className="mt-4 flex gap-3">
-                        <button
-                            onClick={exportExcel}
-                            className="flex items-center gap-2 rounded bg-green-700 px-6 py-2 text-white transition hover:bg-green-800 focus:outline-none"
-                        >
-                            <FileSpreadsheet className="h-5 w-5" />
-                            خروجی اکسل
-                        </button>
-
-                        <button
-                            onClick={exportPDF}
-                            className="flex items-center gap-2 rounded bg-sky-700 px-6 py-2 text-white transition hover:bg-sky-800 focus:outline-none"
-                        >
-                            <FileText className="h-5 w-5" />
-                            خروجی PDF
-                        </button>
-                    </div>
                 </div>
             </div>
             <style>
