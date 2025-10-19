@@ -42,7 +42,7 @@ export default function Edit({ staff, overtime }) {
             <Head title={`ویرایش اضافه‌کاری - ${staff.full_name}`} />
 
             <div className="mx-auto mt-10 max-w-3xl px-4 sm:px-6 lg:px-8">
-                <div className="mb-6 flex items-center justify-between">
+                <div className="mb-6 flex items-center justify-between">``
                     <h1 className="text-2xl font-semibold text-gray-800">
                         ویرایش اضافه‌کاری
                     </h1>

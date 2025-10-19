@@ -330,7 +330,6 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
      * @property mixed $payment_method
-     * @property string|null $income_date
      * @property mixed $amount
      * @property mixed $user_id
      * @property mixed $category
@@ -339,7 +338,6 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCategory($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereAmount($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereIncomeDate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePaymentMethod($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCreatedAt($value)
