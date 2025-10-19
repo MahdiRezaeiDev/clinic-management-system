@@ -140,7 +140,7 @@ export default function Index({
         <AuthenticatedLayout title="هزینه‌ها">
             <Head title="هزینه‌ها" />
 
-            <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white pb-10 shadow-lg">
+            <div className="relative m-6 flex min-w-0 flex-col break-words rounded bg-white shadow-lg">
                 {/* Header + Filters */}
                 <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-6">
                     <h3 className="text-blueGray-700 text-lg font-semibold">
@@ -156,14 +156,6 @@ export default function Index({
                     onSubmit={applyFilter}
                     className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5"
                 >
-                    <input
-                        type="text"
-                        placeholder="جستجو توضیحات..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-2 text-sm"
-                    />
-
                     <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value)}
@@ -193,6 +185,13 @@ export default function Index({
                         className="w-40 rounded border px-3 py-2 text-sm"
                         placeholder="تا تاریخ"
                     />
+                    <input
+                        type="text"
+                        placeholder="جستجو توضیحات..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full border border-gray-300 px-3 py-2 text-sm"
+                    />
 
                     <div className="flex w-full flex-col gap-2 sm:flex-row">
                         <PrimaryButton type="submit" className="flex-1">
@@ -209,8 +208,8 @@ export default function Index({
                 </form>
 
                 {/* Table */}
-                <div className="overflow-auto px-4">
-                    <table className="min-w-full divide-y divide-gray-200 rounded bg-white shadow">
+                <div className="overflow-auto px-4 py-6">
+                    <table className="min-w-full rounded bg-white shadow">
                         <thead className="bg-teal-700 text-white">
                             <tr>
                                 <th className="px-6 py-3 text-right text-sm">
@@ -236,10 +235,13 @@ export default function Index({
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
+                        <tbody>
                             {expenses.data.length ? (
                                 expenses.data.map((expense, index) => (
-                                    <tr key={expense.id}>
+                                    <tr
+                                        key={expense.id}
+                                        className="even:bg-sky-50 hover:bg-sky-100"
+                                    >
                                         <td className="px-6 py-3 text-sm">
                                             {index + 1}
                                         </td>
