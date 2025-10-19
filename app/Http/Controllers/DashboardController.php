@@ -53,12 +53,12 @@ class DashboardController extends Controller
             $endGregorian = $endJalali->toCarbon()->endOfDay();
 
             // محاسبه آمار مالی
-            $income = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee')
-                + Income::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount')
-                + PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
+            $income = Visit::whereBetween('visit_date', [$startGregorian, $endGregorian])->sum('fee')
+                + Income::whereBetween('income_date', [$startGregorian, $endGregorian])->sum('amount')
+                + PharmacySale::whereBetween('sale_date', [$startGregorian, $endGregorian])->sum('total_amount');
 
-            $expense = Expense::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount')
-                + PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount')
+            $expense = Expense::whereBetween('expense_date', [$startGregorian, $endGregorian])->sum('amount')
+                + PurchasedMedicine::whereBetween('purchase_date', [$startGregorian, $endGregorian])->sum('paid_amount')
                 + Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
 
             $monthlyStats[] = [
