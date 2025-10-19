@@ -210,7 +210,7 @@ export default function Index({
                     </form>
 
                     {/* Table */}
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto py-6">
                         <table className="w-full border-collapse text-sm">
                             <thead>
                                 <tr className="bg-teal-700 text-white">
@@ -230,7 +230,7 @@ export default function Index({
                                     incomes.data.map((income, index) => (
                                         <tr
                                             key={income.id}
-                                            className="border-t hover:bg-gray-50"
+                                            className="even:bg-sky-50 hover:bg-sky-100"
                                         >
                                             <td className="p-3">{index + 1}</td>
                                             <td className="p-3">
@@ -292,7 +292,7 @@ export default function Index({
                     </div>
 
                     {incomes.links.length > 3 && (
-                        <div className="mt-4 flex justify-center">
+                        <div className="my-4 flex justify-center">
                             {incomes.links.map((link, idx) => {
                                 let label = link.label;
 

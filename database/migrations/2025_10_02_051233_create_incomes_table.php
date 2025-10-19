@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('category', ['visit', 'lab', 'dental', 'emergency', 'gynecology', 'inpatient']);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->integer('amount')->default(0);
+            $table->date('income_date')->nullable();
             $table->enum('payment_method', ['cash', 'card'])->default('cash');
             $table->text('description')->nullable();
             $table->timestamps();
