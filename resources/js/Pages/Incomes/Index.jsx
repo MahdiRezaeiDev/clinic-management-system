@@ -1,5 +1,6 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import DangerButton from '@/Components/DangerButton';
+import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
@@ -67,7 +68,7 @@ export default function Index({
 
     // Form for Add/Edit
     const { data, setData, post, put, processing, reset, errors } = useForm({
-        category: '',
+        category: 'other',
         amount: '',
         payment_method: 'cash',
         income_date: '',
@@ -82,7 +83,7 @@ export default function Index({
                 category: income.category,
                 amount: income.amount,
                 payment_method: income.payment_method,
-                income_date: income.income_date,
+                income_date: moment(income.income_date).format('jYYYY/jMM/jDD'),
                 description: income.description || '',
             });
         } else {
@@ -348,11 +349,7 @@ export default function Index({
                                     ),
                                 )}
                             </select>
-                            {errors.category && (
-                                <div className="text-xs text-red-600">
-                                    {errors.category}
-                                </div>
-                            )}
+                            <InputError message={errors.category} />
                         </div>
 
                         <div>
@@ -365,39 +362,8 @@ export default function Index({
                                 }
                                 className="w-full rounded border px-2 py-1"
                             />
-                            {errors.amount && (
-                                <div className="text-xs text-red-600">
-                                    {errors.amount}
-                                </div>
-                            )}
+                            <InputError message={errors.amount} />
                         </div>
-
-                        <div>
-                            <label className="mb-1 block text-sm">
-                                روش پرداخت
-                            </label>
-                            <select
-                                value={data.payment_method}
-                                onChange={(e) =>
-                                    setData('payment_method', e.target.value)
-                                }
-                                className="w-full rounded border px-8 py-1"
-                            >
-                                {Object.entries(paymentMethods).map(
-                                    ([key, label]) => (
-                                        <option key={key} value={key}>
-                                            {label}
-                                        </option>
-                                    ),
-                                )}
-                            </select>
-                            {errors.payment_method && (
-                                <div className="text-xs text-red-600">
-                                    {errors.payment_method}
-                                </div>
-                            )}
-                        </div>
-
                         <div>
                             <label className="mb-1 block text-sm">تاریخ</label>
                             <AfghanDatePicker
@@ -409,11 +375,7 @@ export default function Index({
                                     )
                                 }
                             />
-                            {errors.income_date && (
-                                <div className="text-xs text-red-600">
-                                    {errors.income_date}
-                                </div>
-                            )}
+                            <InputError message={errors.income_date} />
                         </div>
                     </div>
 

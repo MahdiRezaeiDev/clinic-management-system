@@ -39,6 +39,7 @@ class IncomeController extends Controller
             'emergency' => 'ایمرجنسی',
             'gynecology' => 'نسایی',
             'inpatient' => 'بستری',
+            'other' => 'متفرقه'
         ];
 
         $paymentMethods = [
@@ -64,7 +65,7 @@ class IncomeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
@@ -86,7 +87,7 @@ class IncomeController extends Controller
     public function update(Request $request, Income $income)
     {
         $request->validate([
-            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient',
+            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
