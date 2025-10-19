@@ -41,9 +41,9 @@ export default function Index({
         reset,
         clearErrors,
     } = useForm({
-        category: '',
+        category: 'other',
         amount: '',
-        payment_method: '',
+        payment_method: 'cash',
         expense_date: '',
         description: '',
     });
@@ -115,6 +115,10 @@ export default function Index({
 
     const submitAdd = (e) => {
         e.preventDefault();
+        const expense_date = moment(data.expense_date, 'jYYYY/jMM/jDD').format(
+            'YYYY-MM-DD',
+        );
+        data.expense_date = expense_date;
         post(route('expenses.store'), { onSuccess: closeModals });
     };
 
@@ -254,7 +258,9 @@ export default function Index({
                                             }
                                         </td>
                                         <td className="px-6 py-3 text-sm">
-                                            {expense.expense_date}
+                                            {moment(
+                                                expense.expense_date,
+                                            ).format('jYYYY/jMM/jDD')}
                                         </td>
                                         <td className="px-6 py-3 text-sm">
                                             {expense.description}

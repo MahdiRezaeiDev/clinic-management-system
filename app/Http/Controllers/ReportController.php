@@ -61,8 +61,8 @@ class ReportController extends Controller
             $staffSalaries = Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
             $visits = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
             $visitIncome = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee');
-            $income = $pharmacySales + $visitIncome + Income::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount');
-            $expenses = $purchasedMedicine + $staffSalaries + Expense::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('amount');
+            $income = $pharmacySales + $visitIncome + Income::whereBetween('income_date', [$startGregorian, $endGregorian])->sum('amount');
+            $expenses = $purchasedMedicine + $staffSalaries + Expense::whereBetween('expense_date', [$startGregorian, $endGregorian])->sum('amount');
 
             $monthlyData[] = [
                 'month' => $afghanMonths[$m - 1],

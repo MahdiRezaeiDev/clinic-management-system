@@ -105,6 +105,11 @@ export default function Index({
 
     const submit = (e) => {
         e.preventDefault();
+        const income_date = moment(data.income_date, 'jYYYY/jMM/jDD').format(
+            'YYYY-MM-DD',
+        );
+        data.income_date = income_date;
+
         if (editMode && selectedIncome) {
             put(route('incomes.update', selectedIncome.id), {
                 preserveScroll: true,
@@ -245,7 +250,9 @@ export default function Index({
                                                 }
                                             </td>
                                             <td className="p-3">
-                                                {income.income_date}
+                                                {moment(
+                                                    income.income_date,
+                                                ).format('jYYYY/jMM/jDD')}
                                             </td>
                                             <td className="p-3">
                                                 {income.description || '-'}
