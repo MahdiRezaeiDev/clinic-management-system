@@ -56,11 +56,11 @@ class ReportController extends Controller
             $startGregorian = $startJalali->toCarbon();
             $endGregorian = $endJalali->toCarbon()->endOfDay();
 
-            $pharmacySales = PharmacySale::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('total_amount');
-            $purchasedMedicine = PurchasedMedicine::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('paid_amount');
+            $pharmacySales = PharmacySale::whereBetween('sale_date', [$startGregorian, $endGregorian])->sum('total_amount');
+            $purchasedMedicine = PurchasedMedicine::whereBetween('purchase_date', [$startGregorian, $endGregorian])->sum('paid_amount');
             $staffSalaries = Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
-            $visits = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
-            $visitIncome = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->sum('fee');
+            $visits = Visit::whereBetween('visit_date', [$startGregorian, $endGregorian])->count();
+            $visitIncome = Visit::whereBetween('visit_date', [$startGregorian, $endGregorian])->sum('fee');
             $income = $pharmacySales + $visitIncome + Income::whereBetween('income_date', [$startGregorian, $endGregorian])->sum('amount');
             $expenses = $purchasedMedicine + $staffSalaries + Expense::whereBetween('expense_date', [$startGregorian, $endGregorian])->sum('amount');
 
