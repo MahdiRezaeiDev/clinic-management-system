@@ -70,13 +70,25 @@ class ExpenseController extends Controller
             'payment_method' => 'required|in:cash,bank,check,other',
             'expense_date' => 'required|date',
             'description' => 'nullable|string|max:500',
+        ], [
+            'category.required' => 'لطفاً دسته‌بندی هزینه را انتخاب کنید.',
+            'category.in' => 'دسته‌بندی انتخاب شده معتبر نیست.',
+            'amount.required' => 'لطفاً مبلغ را وارد کنید.',
+            'amount.numeric' => 'مبلغ باید عددی باشد.',
+            'amount.min' => 'مبلغ باید حداقل ۱ باشد.',
+            'payment_method.required' => 'لطفاً روش پرداخت را انتخاب کنید.',
+            'payment_method.in' => 'روش پرداخت انتخاب شده معتبر نیست.',
+            'expense_date.required' => 'لطفاً تاریخ هزینه را وارد کنید.',
+            'expense_date.date' => 'تاریخ وارد شده معتبر نیست.',
+            'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
+
 
         Expense::create([
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'expense_date' => Jalalian::fromFormat('Y/m/d', $request->expense_date)->toCarbon(),
+            'expense_date' => jalaliToGregorian($request->expense_date),
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
@@ -97,6 +109,17 @@ class ExpenseController extends Controller
             'payment_method' => 'required|in:cash,bank,check,other',
             'expense_date' => 'required|date',
             'description' => 'nullable|string|max:500',
+        ], [
+            'category.required' => 'لطفاً دسته‌بندی هزینه را انتخاب کنید.',
+            'category.in' => 'دسته‌بندی انتخاب شده معتبر نیست.',
+            'amount.required' => 'لطفاً مبلغ را وارد کنید.',
+            'amount.numeric' => 'مبلغ باید عددی باشد.',
+            'amount.min' => 'مبلغ باید حداقل ۱ باشد.',
+            'payment_method.required' => 'لطفاً روش پرداخت را انتخاب کنید.',
+            'payment_method.in' => 'روش پرداخت انتخاب شده معتبر نیست.',
+            'expense_date.required' => 'لطفاً تاریخ هزینه را وارد کنید.',
+            'expense_date.date' => 'تاریخ وارد شده معتبر نیست.',
+            'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
 
         $expense->update([

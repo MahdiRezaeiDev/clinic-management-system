@@ -1,5 +1,6 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import DangerButton from '@/Components/DangerButton';
+import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
@@ -115,10 +116,6 @@ export default function Index({
 
     const submitAdd = (e) => {
         e.preventDefault();
-        const expense_date = moment(data.expense_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-        data.expense_date = expense_date;
         post(route('expenses.store'), { onSuccess: closeModals });
     };
 
@@ -355,6 +352,7 @@ export default function Index({
                                 </option>
                             ))}
                         </select>
+                        <InputError message={errors.category} />
                         <input
                             type="number"
                             placeholder="مبلغ"
@@ -362,30 +360,15 @@ export default function Index({
                             value={data.amount}
                             onChange={(e) => setData('amount', e.target.value)}
                         />
-                        <select
-                            className="w-1/3 rounded border border-gray-300 px-8 py-2 text-sm"
-                            value={data.payment_method}
-                            onChange={(e) =>
-                                setData('payment_method', e.target.value)
+                        <InputError message={errors.amount} />
+                        <AfghanDatePicker
+                            value={data.expense_date}
+                            className="w-1/3"
+                            onChange={(v) =>
+                                setData('expense_date', v.format('YYYY-MM-DD'))
                             }
-                        >
-                            <option value="">روش پرداخت</option>
-                            {Object.entries(paymentMethods).map(
-                                ([key, label]) => (
-                                    <option key={key} value={key}>
-                                        {label}
-                                    </option>
-                                ),
-                            )}
-                        </select>
+                        />
                     </div>
-
-                    <AfghanDatePicker
-                        value={data.expense_date}
-                        onChange={(v) =>
-                            setData('expense_date', v.format('YYYY-MM-DD'))
-                        }
-                    />
 
                     <textarea
                         placeholder="توضیحات (اختیاری)"

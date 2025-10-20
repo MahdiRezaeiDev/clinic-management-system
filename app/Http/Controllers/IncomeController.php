@@ -70,13 +70,25 @@ class IncomeController extends Controller
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
             'description' => 'nullable|string|max:500',
+        ], [
+            'category.required' => 'لطفاً نوع درآمد را انتخاب کنید.',
+            'category.in' => 'نوع درآمد انتخاب‌شده معتبر نیست.',
+            'amount.required' => 'لطفاً مبلغ را وارد کنید.',
+            'amount.numeric' => 'مبلغ باید عددی باشد.',
+            'amount.min' => 'مبلغ باید حداقل ۱ باشد.',
+            'payment_method.required' => 'لطفاً روش پرداخت را انتخاب کنید.',
+            'payment_method.in' => 'روش پرداخت انتخاب‌شده معتبر نیست.',
+            'income_date.required' => 'تاریخ را وارد کنید.',
+            'income_date.date' => 'تاریخ وارد شده معتبر نیست.',
+            'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
+
 
         Income::create([
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'income_date' => Jalalian::fromFormat('Y/m/d', $request->income_date)->toCarbon(),
+            'income_date' => jalaliToGregorian($request->income_date),
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
@@ -92,6 +104,17 @@ class IncomeController extends Controller
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
             'description' => 'nullable|string|max:500',
+        ], [
+            'category.required' => 'لطفاً نوع درآمد را انتخاب کنید.',
+            'category.in' => 'نوع درآمد انتخاب‌شده معتبر نیست.',
+            'amount.required' => 'لطفاً مبلغ را وارد کنید.',
+            'amount.numeric' => 'مبلغ باید عددی باشد.',
+            'amount.min' => 'مبلغ باید حداقل ۱ باشد.',
+            'payment_method.required' => 'لطفاً روش پرداخت را انتخاب کنید.',
+            'payment_method.in' => 'روش پرداخت انتخاب‌شده معتبر نیست.',
+            'income_date.required' => 'تاریخ را وارد کنید.',
+            'income_date.date' => 'تاریخ وارد شده معتبر نیست.',
+            'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
 
         $income->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
