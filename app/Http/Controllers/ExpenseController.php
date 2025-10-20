@@ -6,6 +6,7 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\Jalalian;
 
 class ExpenseController extends Controller
 {
@@ -75,7 +76,7 @@ class ExpenseController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'expense_date' => $request->expense_date,
+            'expense_date' => Jalalian::fromFormat('Y/m/d', $request->expense_date)->toCarbon(),
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
