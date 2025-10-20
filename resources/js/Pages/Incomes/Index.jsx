@@ -106,10 +106,6 @@ export default function Index({
 
     const submit = (e) => {
         e.preventDefault();
-        const income_date = moment(data.income_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-        data.income_date = income_date;
 
         if (editMode && selectedIncome) {
             put(route('incomes.update', selectedIncome.id), {

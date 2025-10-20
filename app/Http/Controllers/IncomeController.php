@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Income;
-use App\Models\PatientIncome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Morilog\Jalali\Jalalian;
 
 class IncomeController extends Controller
 {
@@ -76,7 +76,7 @@ class IncomeController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'income_date' => $request->income_date,
+            'income_date' => Jalalian::fromFormat('Y/m/d', $request->income_date)->toCarbon(),
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
