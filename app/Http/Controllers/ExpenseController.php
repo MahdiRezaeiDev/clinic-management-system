@@ -126,7 +126,7 @@ class ExpenseController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'expense_date' => $request->expense_date,
+            'expense_date' => jalaliToGregorian($request->expense_date),
             'description' => $request->description,
         ]);
 

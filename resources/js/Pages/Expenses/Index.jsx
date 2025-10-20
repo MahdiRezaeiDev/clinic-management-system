@@ -337,47 +337,72 @@ export default function Index({
                         {showAddModal ? 'ثبت هزینه جدید' : 'ویرایش هزینه'}
                     </h2>
 
-                    <div className="flex gap-3">
-                        <select
-                            className="w-1/3 rounded border border-gray-300 px-8 py-2 text-sm"
-                            value={data.category}
-                            onChange={(e) =>
-                                setData('category', e.target.value)
-                            }
-                        >
-                            <option value="">انتخاب دسته‌بندی</option>
-                            {Object.entries(categories).map(([key, label]) => (
-                                <option key={key} value={key}>
-                                    {label}
-                                </option>
-                            ))}
-                        </select>
-                        <InputError message={errors.category} />
-                        <input
-                            type="number"
-                            placeholder="مبلغ"
-                            className="w-1/3 rounded border border-gray-300 px-3 py-2 text-sm"
-                            value={data.amount}
-                            onChange={(e) => setData('amount', e.target.value)}
-                        />
-                        <InputError message={errors.amount} />
-                        <AfghanDatePicker
-                            value={data.expense_date}
-                            className="w-1/3"
-                            onChange={(v) =>
-                                setData('expense_date', v.format('YYYY-MM-DD'))
-                            }
-                        />
+                    <div className="flex gap-1">
+                        {/* Category */}
+                        <div className="flex w-full flex-col sm:w-1/3">
+                            <select
+                                className="border border-gray-300 px-8 py-2 text-sm"
+                                value={data.category}
+                                onChange={(e) =>
+                                    setData('category', e.target.value)
+                                }
+                            >
+                                <option value="">انتخاب دسته‌بندی</option>
+                                {Object.entries(categories).map(
+                                    ([key, label]) => (
+                                        <option key={key} value={key}>
+                                            {label}
+                                        </option>
+                                    ),
+                                )}
+                            </select>
+                            <InputError message={errors.category} />
+                        </div>
+
+                        {/* Amount */}
+                        <div className="flex w-full flex-col sm:w-1/3">
+                            <input
+                                type="number"
+                                placeholder="مبلغ"
+                                className="border border-gray-300 px-3 py-2 text-sm"
+                                value={data.amount}
+                                onChange={(e) =>
+                                    setData('amount', e.target.value)
+                                }
+                            />
+                            <InputError message={errors.amount} />
+                        </div>
+
+                        {/* Expense Date */}
+                        <div className="flex w-full flex-col sm:w-1/3">
+                            <AfghanDatePicker
+                                value={data.expense_date}
+                                onChange={(v) =>
+                                    setData(
+                                        'expense_date',
+                                        v.format('YYYY-MM-DD'),
+                                    )
+                                }
+                            />
+                            <InputError message={errors.expense_date} />
+                        </div>
                     </div>
 
-                    <textarea
-                        placeholder="توضیحات (اختیاری)"
-                        className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
-                        rows={2}
-                        value={data.description}
-                        onChange={(e) => setData('description', e.target.value)}
-                    />
+                    {/* Description */}
+                    <div className="flex flex-col">
+                        <textarea
+                            placeholder="توضیحات (اختیاری)"
+                            className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                            rows={2}
+                            value={data.description}
+                            onChange={(e) =>
+                                setData('description', e.target.value)
+                            }
+                        />
+                        <InputError message={errors.description} />
+                    </div>
 
+                    {/* Buttons */}
                     <div className="flex justify-start gap-3">
                         <PrimaryButton disabled={processing}>
                             {showAddModal ? 'ثبت' : 'ویرایش'}
