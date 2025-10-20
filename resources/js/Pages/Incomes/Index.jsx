@@ -47,12 +47,8 @@ export default function Index({
             {
                 search,
                 category: categoryFilter,
-                start_date:
-                    startDate &&
-                    moment(startDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
-                end_date:
-                    endDate &&
-                    moment(endDate, 'jYYYY/jMM/jDD').format('YYYY-MM-DD'),
+                start_date: startDate,
+                end_date: endDate,
             },
             { preserveState: true },
         );
@@ -321,77 +317,87 @@ export default function Index({
 
             {/* Add/Edit Modal */}
             <Modal show={isOpen} onClose={closeModal}>
-                <form onSubmit={submit} className="space-y-4 p-6">
-                    <h2 className="text-lg font-semibold">
+                <form onSubmit={submit} className="space-y-4">
+                    <h2 className="bg-teal-700 p-6 text-lg font-semibold text-white">
                         {editMode ? 'ویرایش عاید' : 'افزودن عاید جدید'}
                     </h2>
-                    <div className="grid grid-cols-2 gap-3">
-                        <div>
-                            <label className="mb-1 block text-sm">بخش</label>
-                            <select
-                                value={data.category}
-                                onChange={(e) =>
-                                    setData('category', e.target.value)
-                                }
-                                className="w-full rounded border px-8 py-1"
-                            >
-                                <option value="">انتخاب کنید</option>
-                                {Object.entries(categories).map(
-                                    ([key, label]) => (
-                                        <option key={key} value={key}>
-                                            {label}
-                                        </option>
-                                    ),
-                                )}
-                            </select>
-                            <InputError message={errors.category} />
+                    <div className="p-6">
+                        <div className="grid grid-cols-3 gap-3">
+                            <div>
+                                <label className="mb-1 block text-sm">
+                                    بخش
+                                </label>
+                                <select
+                                    value={data.category}
+                                    onChange={(e) =>
+                                        setData('category', e.target.value)
+                                    }
+                                    className="w-full border border-gray-300 px-8 py-2 text-sm"
+                                >
+                                    <option value="">انتخاب کنید</option>
+                                    {Object.entries(categories).map(
+                                        ([key, label]) => (
+                                            <option key={key} value={key}>
+                                                {label}
+                                            </option>
+                                        ),
+                                    )}
+                                </select>
+                                <InputError message={errors.category} />
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm">
+                                    مبلغ
+                                </label>
+                                <input
+                                    type="number"
+                                    value={data.amount}
+                                    onChange={(e) =>
+                                        setData('amount', e.target.value)
+                                    }
+                                    className="border border-gray-300 px-8 py-2 text-sm"
+                                />
+                                <InputError message={errors.amount} />
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-sm">
+                                    تاریخ
+                                </label>
+                                <AfghanDatePicker
+                                    value={data.income_date}
+                                    onChange={(date) =>
+                                        setData(
+                                            'income_date',
+                                            date.format('YYYY/MM/DD'),
+                                        )
+                                    }
+                                />
+                                <InputError message={errors.income_date} />
+                            </div>
                         </div>
 
                         <div>
-                            <label className="mb-1 block text-sm">مبلغ</label>
-                            <input
-                                type="number"
-                                value={data.amount}
+                            <label className="mb-1 block text-sm">
+                                توضیحات
+                            </label>
+                            <textarea
+                                value={data.description}
                                 onChange={(e) =>
-                                    setData('amount', e.target.value)
+                                    setData('description', e.target.value)
                                 }
                                 className="w-full rounded border px-2 py-1"
-                            />
-                            <InputError message={errors.amount} />
+                            ></textarea>
                         </div>
-                        <div>
-                            <label className="mb-1 block text-sm">تاریخ</label>
-                            <AfghanDatePicker
-                                value={data.income_date}
-                                onChange={(date) =>
-                                    setData(
-                                        'income_date',
-                                        date.format('YYYY/MM/DD'),
-                                    )
-                                }
-                            />
-                            <InputError message={errors.income_date} />
+
+                        <div className="mt-4 flex justify-end gap-3">
+                            <SecondaryButton onClick={closeModal}>
+                                انصراف
+                            </SecondaryButton>
+                            <PrimaryButton disabled={processing}>
+                                {editMode ? 'بروزرسانی' : 'ذخیره'}
+                            </PrimaryButton>
                         </div>
-                    </div>
-
-                    <div>
-                        <label className="mb-1 block text-sm">توضیحات</label>
-                        <textarea
-                            value={data.description}
-                            onChange={(e) =>
-                                setData('description', e.target.value)
-                            }
-                            className="w-full rounded border px-2 py-1"
-                        ></textarea>
-                    </div>
-
-                    <div className="mt-4 flex justify-end gap-3">
-                        <SecondaryButton onClick={closeModal}>
-                            انصراف
-                        </SecondaryButton>
-                        <PrimaryButton disabled={processing}>
-                            {editMode ? 'بروزرسانی' : 'ذخیره'}
-                        </PrimaryButton>
                     </div>
                 </form>
             </Modal>

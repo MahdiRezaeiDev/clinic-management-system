@@ -25,11 +25,11 @@ class ExpenseController extends Controller
 
         // ✅ Use 'expense_date' instead of 'created_at'
         if ($request->filled('start_date')) {
-            $query->whereDate('expense_date', '>=', $request->start_date);
+            $query->whereDate('expense_date', '>=', jalaliToGregorian($request->start_date));
         }
 
         if ($request->filled('end_date')) {
-            $query->whereDate('expense_date', '<=', $request->end_date);
+            $query->whereDate('expense_date', '<=', jalaliToGregorian($request->end_date));
         }
 
         $expenses = $query->latest('created_at')->paginate(31)->withQueryString();
