@@ -90,7 +90,7 @@ export default function Index({ suppliers }) {
     return (
         <AuthenticatedLayout title="شرکت های همکار">
             <Head title="شرکت های همکار" />
-            <div className="mx-auto min-h-screen w-full md:px-10">
+            <div className="mx-auto min-h-screen w-full">
                 <div className="flex flex-wrap pt-8">
                     <div className="mb-12 w-full px-4">
                         <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded shadow-lg">

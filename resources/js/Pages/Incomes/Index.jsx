@@ -158,14 +158,6 @@ export default function Index({
                         onSubmit={applyFilter}
                         className="mb-4 grid grid-cols-1 items-center gap-3 px-4 md:grid-cols-5"
                     >
-                        <input
-                            type="text"
-                            placeholder="جستجو توضیحات..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="w-full border border-gray-300 px-3 py-2 text-sm"
-                        />
-
                         <select
                             value={categoryFilter}
                             onChange={(e) => setCategoryFilter(e.target.value)}
@@ -194,6 +186,13 @@ export default function Index({
                             }}
                             className="w-40 rounded border px-3 py-2 text-sm"
                             placeholder="تا تاریخ"
+                        />
+                        <input
+                            type="text"
+                            placeholder="جستجو توضیحات..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="w-full border border-gray-300 px-3 py-2 text-sm"
                         />
 
                         <div className="flex w-full flex-col gap-2 sm:flex-row">
