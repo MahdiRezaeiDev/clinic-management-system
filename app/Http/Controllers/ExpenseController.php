@@ -6,7 +6,6 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
-use Morilog\Jalali\Jalalian;
 
 class ExpenseController extends Controller
 {
@@ -23,7 +22,6 @@ class ExpenseController extends Controller
             $query->where('category', $request->category);
         }
 
-        // ✅ Use 'expense_date' instead of 'created_at'
         if ($request->filled('start_date')) {
             $query->whereDate('expense_date', '>=', jalaliToGregorian($request->start_date));
         }
