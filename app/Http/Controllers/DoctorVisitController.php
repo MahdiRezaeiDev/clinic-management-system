@@ -16,6 +16,7 @@ class DoctorVisitController extends Controller
      */
     public function index(Request $request)
     {
+
         // Start query builder
         $query = Visit::query()->with(['patient', 'doctor']);
 
@@ -32,7 +33,7 @@ class DoctorVisitController extends Controller
         }
 
         // Fetch doctors
-        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $disRoles = ['doctor', 'lab', 'dentist', 'emergency']; // roles you want to fetch
         $staff = Staff::whereIn('role', $disRoles)->get();
 
         // Get visits (you can add orderBy or paginate if needed)
@@ -52,7 +53,7 @@ class DoctorVisitController extends Controller
     public function create()
     {
         // Fetch doctors
-        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $disRoles = ['doctor', 'lab', 'dentist', 'emergency']; // roles you want to fetch
         $staff = Staff::whereIn('role', $disRoles)->get();
         return Inertia::render('Visits/Create', [
             'doctors' => $staff,
@@ -74,7 +75,7 @@ class DoctorVisitController extends Controller
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
-            'visit_date' => 'required|date_format:Y-m-d',
+            'visit_date' => 'required|date_format:Y/m/d',
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ]);
@@ -118,7 +119,7 @@ class DoctorVisitController extends Controller
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
-            'visit_date' => 'required|date_format:Y-m-d',
+            'visit_date' => 'required|date_format:Y/m/d',
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ], [
@@ -194,7 +195,7 @@ class DoctorVisitController extends Controller
     public function edit(string $id)
     {
         // Fetch doctors
-        $disRoles = ['lab', 'dentist', 'emergency']; // roles you want to fetch
+        $disRoles = ['doctor', 'lab', 'dentist', 'emergency']; // roles you want to fetch
         $staff = Staff::whereIn('role', $disRoles)->get();
         $visit = Visit::with('patient')->where('id', $id)->first();
         return Inertia::render('Visits/Edit', [

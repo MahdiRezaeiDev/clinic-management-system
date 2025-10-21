@@ -27,6 +27,8 @@ export default function create({ doctors }) {
         description: '',
     });
 
+    console.log(errors);
+
     const submit = (e) => {
         e.preventDefault();
         post(route('visits.store'), {
