@@ -25,11 +25,11 @@ class DoctorVisitController extends Controller
             $query->where('doctor_id', $request->input('doctor'));
         }
         if ($request->filled('start_date')) {
-            $query->whereDate('created_at', '>=', jalaliToGregorian($request->start_date));
+            $query->whereDate('visit_date', '>=', jalaliToGregorian($request->start_date));
         }
 
         if ($request->filled('end_date')) {
-            $query->whereDate('created_at', '<=', jalaliToGregorian($request->end_date));
+            $query->whereDate('visit_date', '<=', jalaliToGregorian($request->end_date));
         }
 
         // Fetch doctors
@@ -102,6 +102,21 @@ class DoctorVisitController extends Controller
         return redirect()
             ->route('visits.index')
             ->with('success', 'ویزیت جدید با موفقیت ثبت شد.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        // Fetch doctors
+        $disRoles = ['doctor', 'lab', 'dentist', 'emergency']; // roles you want to fetch
+        $staff = Staff::whereIn('role', $disRoles)->get();
+        $visit = Visit::with('patient')->where('id', $id)->first();
+        return Inertia::render('Visits/Edit', [
+            'doctors' => $staff,
+            'visit' => $visit
+        ]);
     }
 
     /**
@@ -189,20 +204,6 @@ class DoctorVisitController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        // Fetch doctors
-        $disRoles = ['doctor', 'lab', 'dentist', 'emergency']; // roles you want to fetch
-        $staff = Staff::whereIn('role', $disRoles)->get();
-        $visit = Visit::with('patient')->where('id', $id)->first();
-        return Inertia::render('Visits/Edit', [
-            'doctors' => $staff,
-            'visit' => $visit
-        ]);
-    }
 
     /**
      * Remove the specified resource from storage.

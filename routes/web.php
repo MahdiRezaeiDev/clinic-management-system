@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // doctor visits
     // ----------------------
-    Route::resource('visits', DoctorVisitController::class);
+    Route::resource('visits', DoctorVisitController::class)->except(['show']);
 
     // ----------------------
     // doctor visits
