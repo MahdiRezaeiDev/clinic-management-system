@@ -387,7 +387,7 @@ export default function Index({
                                     onChange={(v) =>
                                         setData(
                                             'expense_date',
-                                            v.format('YYYY-MM-DD'),
+                                            v.format('YYYY/MM/DD'),
                                         )
                                     }
                                 />

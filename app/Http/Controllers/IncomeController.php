@@ -39,7 +39,7 @@ class IncomeController extends Controller
             'emergency' => 'ایمرجنسی',
             'gynecology' => 'نسایی',
             'inpatient' => 'بستری',
-            'other' => 'متفرقه'
+            'other' => 'سایر'
         ];
 
         $paymentMethods = [
@@ -116,6 +116,9 @@ class IncomeController extends Controller
             'income_date.date' => 'تاریخ وارد شده معتبر نیست.',
             'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
+
+        $incomeDateGregorian = jalaliToGregorian($request->income_date);
+        $request->merge(['income_date' => $incomeDateGregorian]);
 
         $income->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
 

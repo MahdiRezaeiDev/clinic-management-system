@@ -18,7 +18,7 @@ export default function Edit({ visit, doctors }) {
         patient_age: visit.patient?.age || '',
         doctor_id: visit.doctor_id || '',
         visit_date:
-            moment(visit.visit_date, 'YYYY-MM-DD').format('jYYYY/jMM/jDD') ||
+            moment(visit.visit_date).format('jYYYY/jMM/jDD') ||
             new DateObject({ calendar: persian, locale: persian_en }).format(
                 'YYYY/MM/DD',
             ),

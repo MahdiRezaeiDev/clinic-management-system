@@ -98,13 +98,6 @@ export default function Edit({ staff, salary, overTimes }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const payment_date_gregorian = moment(
-            data.payment_date,
-            'jYYYY/jMM/jDD',
-        ).format('YYYY-MM-DD');
-
-        data.payment_date_gregorian = payment_date_gregorian;
-
         put(route('staffs.salary.update', [staff.id, salary.id]), {
             data: {
                 ...data,

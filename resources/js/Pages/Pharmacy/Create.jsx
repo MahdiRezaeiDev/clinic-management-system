@@ -163,7 +163,7 @@ export default function PharmacySaleInvoiceForm() {
                                             onChange={(v) =>
                                                 setData(
                                                     'sale_date',
-                                                    v.format('YYYY-MM-DD'),
+                                                    v.format('YYYY/MM/DD'),
                                                 )
                                             }
                                             className="rounded-md p-2 text-center text-sm"

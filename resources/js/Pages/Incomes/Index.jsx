@@ -10,6 +10,9 @@ import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { Edit, Trash } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
 
 export default function Index({
     incomes,
@@ -85,10 +88,13 @@ export default function Index({
         } else {
             setEditMode(false);
             setData({
-                category: '',
+                category: 'other',
                 amount: '',
                 payment_method: 'cash',
-                income_date: '',
+                income_date: new DateObject({
+                    calendar: persian,
+                    locale: persian_en,
+                }).format('YYYY/MM/DD'),
                 description: '',
             });
         }
@@ -390,13 +396,13 @@ export default function Index({
                             ></textarea>
                         </div>
 
-                        <div className="mt-4 flex justify-end gap-3">
-                            <SecondaryButton onClick={closeModal}>
-                                انصراف
-                            </SecondaryButton>
+                        <div className="mt-4 flex justify-start gap-3">
                             <PrimaryButton disabled={processing}>
                                 {editMode ? 'بروزرسانی' : 'ذخیره'}
                             </PrimaryButton>
+                            <SecondaryButton onClick={closeModal}>
+                                انصراف
+                            </SecondaryButton>
                         </div>
                     </div>
                 </form>
