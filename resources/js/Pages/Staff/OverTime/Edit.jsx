@@ -74,7 +74,6 @@ export default function Edit({ staff, overtime }) {
                                 </label>
                                 <input
                                     type="number"
-                                    step="0.5"
                                     placeholder="مثلاً 8"
                                     value={data.hours}
                                     onChange={(e) =>
@@ -91,7 +90,6 @@ export default function Edit({ staff, overtime }) {
                                 </label>
                                 <input
                                     type="number"
-                                    step="0.01"
                                     placeholder="مثلاً 100"
                                     value={data.rate}
                                     onChange={(e) =>
@@ -110,7 +108,6 @@ export default function Edit({ staff, overtime }) {
                             </label>
                             <input
                                 type="number"
-                                step="0.01"
                                 placeholder="مثلاً 500"
                                 value={data.total}
                                 onChange={(e) =>
