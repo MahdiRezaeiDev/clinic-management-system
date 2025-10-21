@@ -45,9 +45,7 @@ export default function Edit({ staff, salary, overTimes }) {
         salary_month: salary.salary_month || '',
         payment_date: salary.payment_date
             ? new DateObject({
-                  date: moment(salary.payment_date, 'YYYY-MM-DD').format(
-                      'jYYYY/jMM/jDD',
-                  ),
+                  date: moment(salary.payment_date).format('jYYYY/jMM/jDD'),
                   calendar: persian,
                   locale: persian_en,
               }).format('YYYY/MM/DD')
@@ -58,8 +56,6 @@ export default function Edit({ staff, salary, overTimes }) {
         description: salary.description || '',
         selectedOvertimes: preSelectedOvertimes,
     });
-
-    console.log(salary);
 
     const toggleOvertime = (id, amount) => {
         const selected = [...data.selectedOvertimes];

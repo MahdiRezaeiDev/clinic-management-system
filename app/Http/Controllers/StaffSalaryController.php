@@ -44,8 +44,6 @@ class StaffSalaryController extends Controller
             'overtime_amount' => 'nullable|numeric|min:0',
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
-            'payment_date' => 'required|date',
-            'payment_date' => 'required|date',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'nullable|array',
             'selectedOvertimes.*' => 'numeric|exists:overtimes,id',

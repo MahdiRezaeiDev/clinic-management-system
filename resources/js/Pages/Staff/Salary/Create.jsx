@@ -37,7 +37,6 @@ export default function Create({ staff, unpaidOvertimes }) {
             locale: persian_en,
         }).format('YYYY/MM/DD'),
 
-        payment_date_gregorian: '',
         description: '',
         selectedOvertimes: [],
     });
@@ -79,7 +78,10 @@ export default function Create({ staff, unpaidOvertimes }) {
                     deductions: 0,
                     total_paid: 0,
                     salary_month: '',
-                    payment_date: '',
+                    payment_date: new DateObject({
+                        calendar: persian,
+                        locale: persian_en,
+                    }).format('YYYY/MM/DD'),
                     description: '',
                     selectedOvertimes: [],
                 });
@@ -329,19 +331,15 @@ export default function Create({ staff, unpaidOvertimes }) {
 
                         {/* Buttons */}
                         <div className="flex justify-start gap-3 pt-4">
+                            <PrimaryButton type="submit" disabled={processing}>
+                                ذخیره
+                            </PrimaryButton>
                             <Link
                                 href={route('staffs.salary.index', staff.id)}
                                 className="border-blueGray-300 text-blueGray-600 hover:bg-blueGray-50 rounded border px-4 py-2 text-sm transition"
                             >
                                 بازگشت
                             </Link>
-                            <PrimaryButton
-                                type="submit"
-                                disabled={processing}
-                                className="bg-blueGray-700 hover:bg-blueGray-800 rounded px-6 py-2 text-sm"
-                            >
-                                ذخیره
-                            </PrimaryButton>
                         </div>
                     </form>
                 </div>
