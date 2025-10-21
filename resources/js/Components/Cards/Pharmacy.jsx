@@ -1,5 +1,4 @@
 import { useForm } from '@inertiajs/react';
-import moment from 'moment-jalaali';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 import { DateObject } from 'react-multi-date-picker';
@@ -20,13 +19,6 @@ export default function DrugSellCard() {
 
     const submit = (e) => {
         e.preventDefault();
-
-        const gregorianDate = moment(data.sale_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-
-        data.sale_date_gregorian = gregorianDate;
-
         post(route('pharmacy.store'), {
             onSuccess: () => {
                 reset();
@@ -52,7 +44,7 @@ export default function DrugSellCard() {
                         value={data.sale_date}
                         id="sale_date"
                         onChange={(value) =>
-                            setData('sale_date', value.format('YYYY-MM-DD'))
+                            setData('sale_date', value.format('YYYY/MM/DD'))
                         }
                     />
                     <label

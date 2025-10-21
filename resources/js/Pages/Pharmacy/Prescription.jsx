@@ -10,7 +10,7 @@ export default function Prescription({ sale }) {
             <Head title="فاکتور فروش" />
             <div className="mx-auto my-6 max-w-2xl rounded-xl bg-white font-sans shadow-lg">
                 {/* Header */}
-                <div className="relative min-h-32 overflow-hidden rounded-t-xl border-none bg-gray-900 text-center">
+                <div className="relative min-h-32 overflow-hidden rounded-t-xl border-none bg-teal-700 text-center">
                     <figure className="absolute inset-x-0 bottom-0 -mb-px">
                         <svg
                             preserveAspectRatio="none"

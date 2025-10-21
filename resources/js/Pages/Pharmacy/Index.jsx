@@ -5,6 +5,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Edit, Plus, Receipt, Trash } from 'lucide-react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function PharmacySalesIndex({ sales }) {
@@ -138,7 +139,9 @@ export default function PharmacySalesIndex({ sales }) {
                                             {++index}
                                         </td>
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
-                                            {sale.sale_date}
+                                            {moment(sale.sale_date).format(
+                                                'jYYYY/jMM/jDD',
+                                            )}
                                         </td>
 
                                         <td className="p-3 text-right text-sm font-semibold text-gray-800">
