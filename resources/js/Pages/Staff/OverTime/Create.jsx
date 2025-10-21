@@ -4,7 +4,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
-import moment from 'moment-jalaali';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 import { DateObject } from 'react-multi-date-picker';
@@ -23,11 +22,6 @@ export default function Create({ staff }) {
 
     const submit = (e) => {
         e.preventDefault();
-        const date_gregorian = moment(data.date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-
-        data.date_gregorian = date_gregorian;
         post(route('staffs.overtime.store', staff.id));
     };
 
@@ -39,7 +33,7 @@ export default function Create({ staff }) {
                 <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-md">
                     <div className="mb-6 text-sm text-gray-700">
                         <span className="ml-1 font-medium">
-                            ثبت اضافه‌کاری  برای:
+                            ثبت اضافه‌کاری برای:
                         </span>
                         {staff.full_name}
                     </div>
@@ -54,10 +48,7 @@ export default function Create({ staff }) {
                                 id="payment_date"
                                 value={data.date}
                                 onChange={(val) =>
-                                    setData(
-                                        'payment_date',
-                                        val.format('YYYY/MM/DD'),
-                                    )
+                                    setData('date', val.format('YYYY/MM/DD'))
                                 }
                                 placeholder="تاریخ پرداخت را انتخاب کنید"
                             />

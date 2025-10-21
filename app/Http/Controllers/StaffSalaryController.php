@@ -45,7 +45,7 @@ class StaffSalaryController extends Controller
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
-            'payment_date_gregorian' => 'required|date',
+            'payment_date' => 'required|date',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'nullable|array',
             'selectedOvertimes.*' => 'numeric|exists:overtimes,id',
@@ -58,8 +58,10 @@ class StaffSalaryController extends Controller
             'payment_date.date' => 'تاریخ پرداخت معتبر نیست.',
         ]);
 
-        // Extract year from payment_date_gregorian (e.g. 2025-10-09 → 2025)
-        $year = date('Y', strtotime($request->payment_date_gregorian));
+        $request->payment_date = jalaliToGregorian($request->payment_date);
+
+        // Extract year from payment_date (e.g. 2025-10-09 → 2025)
+        $year = date('Y', strtotime($request->payment_date));
 
         // 🔹 Prevent duplicate salary for same staff, month, and year
         $exists = $staff->salaries()
@@ -80,7 +82,7 @@ class StaffSalaryController extends Controller
             'deductions' => $request->deductions,
             'total_paid' => $request->total_paid,
             'salary_month' => $request->salary_month,
-            'payment_date' => $request->payment_date_gregorian,
+            'payment_date' => $request->payment_date,
             'description' => $request->description,
         ]);
 

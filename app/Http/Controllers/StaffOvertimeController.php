@@ -44,14 +44,14 @@ class StaffOvertimeController extends Controller
     public function store(Request $request, Staff $staff)
     {
         $request->validate([
-            'date_gregorian' => 'required|date',
+            'date' => 'required|date',
             'hours' => 'required|numeric|min:0',
             'rate' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:255',
         ], [
-            'date_gregorian.required' => 'وارد کردن تاریخ الزامی است.',
-            'date_gregorian.date' => 'تاریخ وارد شده معتبر نیست.',
+            'date.required' => 'وارد کردن تاریخ الزامی است.',
+            'date.date' => 'تاریخ وارد شده معتبر نیست.',
 
             'hours.required' => 'لطفاً تعداد ساعت‌ها را وارد کنید.',
             'hours.numeric' => 'تعداد ساعت باید عددی باشد.',
@@ -70,7 +70,7 @@ class StaffOvertimeController extends Controller
         ]);
 
         $staff->overtimes()->create([
-            'date' => $request->date_gregorian,
+            'date' => jalaliToGregorian($request->date),
             'hours' => $request->hours,
             'rate' => $request->rate,
             'total' => $request->total,
@@ -82,15 +82,6 @@ class StaffOvertimeController extends Controller
         return redirect()
             ->route('staffs.overtime.index', $staff->id)
             ->with('success', 'اضافه‌کاری با موفقیت ثبت شد.');
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -111,14 +102,14 @@ class StaffOvertimeController extends Controller
     {
         // اعتبارسنجی داده‌ها
         $validated = $request->validate([
-            'date_gregorian' => 'required|date',
+            'date' => 'required|date',
             'hours' => 'required|numeric|min:0',
             'rate' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:255',
         ], [
-            'date_gregorian.required' => 'تاریخ الزامی است.',
-            'date_gregorian.date' => 'فرمت تاریخ معتبر نیست.',
+            'date.required' => 'تاریخ الزامی است.',
+            'date.date' => 'فرمت تاریخ معتبر نیست.',
             'hours.required' => 'تعداد ساعت الزامی است.',
             'hours.numeric' => 'تعداد ساعت باید عددی باشد.',
             'rate.required' => 'نرخ الزامی است.',
@@ -128,7 +119,7 @@ class StaffOvertimeController extends Controller
             'description.max' => 'توضیحات نباید بیش از ۲۵۵ حرف باشد.',
         ]);
 
-        $validated['date'] = $validated['date_gregorian'];
+        $validated['date'] = jalaliToGregorian($validated['date']);
 
         // بروزرسانی رکورد
         $overtime->update($validated);

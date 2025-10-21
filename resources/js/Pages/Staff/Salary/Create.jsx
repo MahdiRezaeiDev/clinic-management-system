@@ -6,7 +6,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -74,13 +73,6 @@ export default function Create({ staff, unpaidOvertimes }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const payment_date_gregorian = moment(
-            data.payment_date,
-            'jYYYY/jMM/jDD',
-        ).format('YYYY-MM-DD');
-
-        data.payment_date_gregorian = payment_date_gregorian;
-
         post(route('staffs.salary.store', staff.id), {
             onSuccess: () => {
                 setData({
