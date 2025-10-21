@@ -116,7 +116,10 @@ export default function Profile({
                         <div className="mt-4 grid grid-cols-2 gap-4 text-center sm:grid-cols-4 md:col-span-2 md:mt-0">
                             <SummaryCard
                                 label="تعداد سفارش‌ها"
-                                value="1"
+                                value={
+                                    remainingRecords.length +
+                                    fullyPaidRecords.length
+                                }
                                 color="sky"
                             />
                             <SummaryCard
