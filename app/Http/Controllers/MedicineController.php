@@ -79,6 +79,7 @@ class MedicineController extends Controller
         // محاسبه خودکار مبلغ باقی‌مانده
         $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
         $validated['status'] = $validated['remaining_amount'] == 0 ? 'paid' : 'unpaid';
+        $validated['purchase_date'] = jalaliToGregorian($validated['purchase_date']);
 
         // ذخیره خرید
         $purchase = PurchasedMedicine::create($validated);
@@ -163,6 +164,7 @@ class MedicineController extends Controller
         // Auto-calculate remaining to prevent tampering
         $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
         $validated['status'] = $validated['remaining_amount'] == 0 ? "paid" : "unpaid";
+        $validated['purchase_date'] = jalaliToGregorian($validated['purchase_date']);
 
         // Find the specific purchase and update it
         $purchase = PurchasedMedicine::findOrFail($id);

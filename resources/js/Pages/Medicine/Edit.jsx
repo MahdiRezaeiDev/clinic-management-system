@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -11,11 +12,10 @@ import persian_en from 'react-date-object/locales/persian_en';
 export default function EditPurchase({ suppliers, purchase }) {
     // Convert Gregorian to Persian date
     const persianDate = new DateObject({
-        date: purchase.purchase_date,
+        date: moment(purchase.purchase_date).format('jYYYY/jMM/jDD'),
         calendar: persian,
         locale: persian_en,
     }).format('YYYY/MM/DD');
-    console.log(purchase);
 
     const { data, setData, put, processing, errors } = useForm({
         supplier_id: purchase.supplier_id || '',
@@ -151,7 +151,7 @@ export default function EditPurchase({ suppliers, purchase }) {
                             onChange={(value) =>
                                 setData(
                                     'purchase_date',
-                                    value.format('YYYY-MM-DD'),
+                                    value.format('YYYY/MM/DD'),
                                 )
                             }
                         />

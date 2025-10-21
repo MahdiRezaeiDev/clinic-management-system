@@ -103,7 +103,7 @@ export default function Purchase({ suppliers }) {
                                 onChange={(value) =>
                                     setData(
                                         'purchase_date',
-                                        value.format('YYYY-MM-DD'),
+                                        value.format('YYYY/MM/DD'),
                                     )
                                 }
                             />
@@ -182,16 +182,16 @@ export default function Purchase({ suppliers }) {
                         </div>
 
                         {/* Submit Buttons */}
-                        <div className="col-span-2 mt-4 flex items-center justify-end gap-3">
+                        <div className="col-span-2 mt-4 flex items-center justify-start gap-3">
+                            <PrimaryButton type="submit" disabled={processing}>
+                                ذخیره خرید
+                            </PrimaryButton>
                             <SecondaryButton
                                 type="button"
                                 onClick={() => window.history.back()}
                             >
                                 بازگشت
                             </SecondaryButton>
-                            <PrimaryButton type="submit" disabled={processing}>
-                                ذخیره خرید
-                            </PrimaryButton>
                         </div>
                     </form>
                 </div>

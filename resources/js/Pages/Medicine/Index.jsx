@@ -8,6 +8,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Edit, Plus, Receipt, Trash, WalletCards } from 'lucide-react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
 export default function PurchasesIndex({ purchases }) {
@@ -172,7 +173,9 @@ export default function PurchasesIndex({ purchases }) {
                                         {purchase.description || '-'}
                                     </td>
                                     <td className="p-3 text-center text-xs font-semibold text-gray-700">
-                                        {purchase.purchase_date}
+                                        {moment(purchase.purchase_date).format(
+                                            'jYYYY/jMM/jDD',
+                                        )}
                                     </td>
                                     <td className="p-3 text-center text-xs font-semibold text-gray-800">
                                         {purchase.total_amount.toLocaleString()}
@@ -298,8 +301,11 @@ export default function PurchasesIndex({ purchases }) {
                         </label>
                         <AfghanDatePicker
                             value={data.payment_date}
-                            onChange={(v) =>
-                                setData('payment_date', v.format('YYYY-MM-DD'))
+                            onChange={(value) =>
+                                setData(
+                                    'payment_date',
+                                    value.format('YYYY/MM/DD'),
+                                )
                             }
                         />
                         <InputError message={errors.payment_date} />
@@ -321,13 +327,13 @@ export default function PurchasesIndex({ purchases }) {
                         <InputError message={errors.description} />
                     </div>
 
-                    <div className="mt-6 flex justify-end gap-3">
-                        <SecondaryButton onClick={closeModal}>
-                            انصراف
-                        </SecondaryButton>
+                    <div className="mt-6 flex justify-start gap-3">
                         <PrimaryButton disabled={processing}>
                             ثبت پرداخت
                         </PrimaryButton>
+                        <SecondaryButton onClick={closeModal}>
+                            انصراف
+                        </SecondaryButton>
                     </div>
                 </form>
             </Modal>

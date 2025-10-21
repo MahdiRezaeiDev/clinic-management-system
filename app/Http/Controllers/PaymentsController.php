@@ -63,6 +63,8 @@ class PaymentsController extends Controller
                 ->withInput();
         }
 
+        $validated['payment_date'] = jalaliToGregorian($validated['payment_date']);
+
         // ثبت پرداخت
         $payment = new PurchasedMedicinePayment($validated);
         $payment->user_id = Auth::id();
