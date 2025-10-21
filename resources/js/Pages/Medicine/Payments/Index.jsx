@@ -7,7 +7,7 @@ import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { Edit, Trash } from 'lucide-react';
+import { Check, Edit, Trash, WatchIcon } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
 
@@ -145,12 +145,12 @@ export default function PurchasePayments({
                                     فاکتور #{medicine.id}
                                 </p>
                                 <p className="mt-1 text-sm opacity-90">
-                                    تاریخ: {medicine.purchase_date}
+                                    تاریخ:{' '}
+                                    {moment(medicine.purchase_date).format(
+                                        'jYYYY/jMM/jDD',
+                                    )}
                                 </p>
                             </div>
-                        </div>
-                        <div className="mt-4 border-t border-gray-600 pt-2 text-center text-xs opacity-80 print:border-gray-300">
-                            صادرشده توسط سیستم مدیریت دارو - بدون نیاز به امضا
                         </div>
                     </div>
 
@@ -268,15 +268,15 @@ export default function PurchasePayments({
                                                     payment.payment_date,
                                                 ).format('jYYYY/jMM/jDD')}
                                             </td>
-                                            <td className="p-2 text-center">
+                                            <td className="p-2">
                                                 {payment.amount ===
                                                 remaining ? (
                                                     <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">
-                                                        در انتظار
+                                                        <WatchIcon className="h-3 w-3 font-semibold" />
                                                     </span>
                                                 ) : (
                                                     <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                                                        پرداخت‌شده
+                                                        <Check className="h-3 w-3 font-semibold" />
                                                     </span>
                                                 )}
                                             </td>
