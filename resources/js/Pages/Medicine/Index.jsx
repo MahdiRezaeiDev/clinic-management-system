@@ -10,6 +10,9 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Edit, Plus, Receipt, Trash, WalletCards } from 'lucide-react';
 import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
 
 export default function PurchasesIndex({ purchases }) {
     const [activeTab, setActiveTab] = useState('remaining');
@@ -36,7 +39,10 @@ export default function PurchasesIndex({ purchases }) {
         clearErrors,
     } = useForm({
         amount: '',
-        payment_date: '',
+        payment_date: new DateObject({
+            calendar: persian,
+            locale: persian_en,
+        }).format('YYYY/MM/DD'),
         description: '',
     });
 

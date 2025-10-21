@@ -69,8 +69,6 @@ export default function Create({ staff, unpaidOvertimes }) {
         });
     };
 
-    console.log(errors);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route('staffs.salary.store', staff.id), {

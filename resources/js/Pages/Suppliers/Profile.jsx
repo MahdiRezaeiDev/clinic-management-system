@@ -8,7 +8,11 @@ import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import { useEffect, useState } from 'react';
+import DateObject from 'react-date-object';
+import persian from 'react-date-object/calendars/persian';
+import persian_en from 'react-date-object/locales/persian_en';
 
 export default function Profile({
     supplier,
@@ -36,7 +40,11 @@ export default function Profile({
         clearErrors,
     } = useForm({
         amount: '',
-        payment_date: '',
+        payment_date: new DateObject({
+            calendar: persian,
+            locale: persian_en,
+        }).format('YYYY/MM/DD'),
+
         description: '',
     });
 
@@ -189,7 +197,7 @@ export default function Profile({
                         <AfghanDatePicker
                             value={data.payment_date}
                             onChange={(v) =>
-                                setData('payment_date', v.format('YYYY-MM-DD'))
+                                setData('payment_date', v.format('YYYY/MM/DD'))
                             }
                         />
                         <InputError message={errors.payment_date} />
@@ -211,7 +219,7 @@ export default function Profile({
                         <InputError message={errors.description} />
                     </div>
 
-                    <div className="mt-6 flex justify-end gap-3">
+                    <div className="mt-6 flex justify-start gap-3">
                         <SecondaryButton onClick={closeModal}>
                             انصراف
                         </SecondaryButton>
@@ -311,7 +319,9 @@ function RecordsTable({ records, showRemaining = false, onPayment }) {
                                     تاریخ خرید:
                                 </td>
                                 <td className="px-2 py-1" dir="ltr">
-                                    {record.purchase_date}
+                                    {moment(record.purchase_date).format(
+                                        'jYYYY/jMM/jDD',
+                                    )}
                                 </td>
                                 <td className="w-32 border-l px-2 py-1 font-semibold">
                                     وضعیت:

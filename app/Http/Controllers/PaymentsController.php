@@ -124,6 +124,9 @@ class PaymentsController extends Controller
                 ->withInput();
         }
 
+        $validated['payment_date'] = jalaliToGregorian($validated['payment_date']);
+
+
         // به‌روزرسانی پرداخت
         $payment->update($validated);
 

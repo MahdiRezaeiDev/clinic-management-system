@@ -64,7 +64,7 @@ export default function PurchasePayments({
         setData({
             id: payment.id,
             amount: payment.amount,
-            payment_date: payment.payment_date,
+            payment_date: moment(payment.payment_date).format('jYYYY/jMM/jDD'),
             description: payment.description || '',
         });
         setConfirmingPayment(true);
@@ -145,7 +145,7 @@ export default function PurchasePayments({
                                     فاکتور #{medicine.id}
                                 </p>
                                 <p className="mt-1 text-sm opacity-90">
-                                    تاریخ:{' '}
+                                    تاریخ:
                                     {moment(medicine.purchase_date).format(
                                         'jYYYY/jMM/jDD',
                                     )}
@@ -289,7 +289,7 @@ export default function PurchasePayments({
                                             <td className="flex justify-center gap-2 p-2 text-center">
                                                 <Edit
                                                     onClick={() =>
-                                                        openEditModal(p)
+                                                        openEditModal(payment)
                                                     }
                                                     className="h-5 w-5 text-teal-700"
                                                 />
@@ -388,11 +388,11 @@ export default function PurchasePayments({
                             </label>
                             <AfghanDatePicker
                                 value={data.payment_date}
-                                onChange={(v) =>
-                                    setData({
-                                        ...data,
-                                        payment_date: v.format('YYYY-MM-DD'),
-                                    })
+                                onChange={(value) =>
+                                    setData(
+                                        'payment_date',
+                                        value.format('YYYY/MM/DD'),
+                                    )
                                 }
                             />
                             <InputError message={errors.payment_date} />
