@@ -14,7 +14,11 @@ export default function PharmacySaleUpdate({ sale }) {
     const { data, setData, put, processing, errors } = useForm({
         sale_type: sale.sale_type || 'with_prescription',
         sale_date:
-            sale.sale_date ||
+            new DateObject({
+                date: moment(sale.sale_date).format('jYYYY/jMM/jDD'),
+                calendar: persian,
+                locale: persian_en,
+            }).format('YYYY/MM/DD') ||
             new DateObject({ calendar: persian, locale: persian_en }).format(
                 'YYYY/MM/DD',
             ),
@@ -72,12 +76,6 @@ export default function PharmacySaleUpdate({ sale }) {
 
     const submitSale = (e) => {
         e.preventDefault();
-        const sale_date_gregorian = moment(
-            data.sale_date,
-            'jYYYY/jMM/jDD',
-        ).format('YYYY-MM-DD');
-        data.sale_date_gregorian = sale_date_gregorian;
-
         put(route('pharmacy.update', sale.id));
     };
 

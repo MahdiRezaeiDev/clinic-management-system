@@ -5,7 +5,6 @@ import log from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Trash } from 'lucide-react';
-import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -67,13 +66,6 @@ export default function PharmacySaleInvoiceForm() {
 
     const submitSale = (e) => {
         e.preventDefault();
-        const sale_date_gregorian = moment(
-            data.sale_date,
-            'jYYYY/jMM/jDD',
-        ).format('YYYY-MM-DD');
-
-        data.sale_date_gregorian = sale_date_gregorian;
-
         post(route('pharmacy.store'), {
             onSuccess: () => {
                 reset();

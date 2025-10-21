@@ -19,7 +19,6 @@ export default function PharmacySalesIndex({ sales }) {
 
     const [saleId, setSaleId] = useState(null);
     const [confirmingSaleDeletion, setConfirmingSaleDeletion] = useState(false);
-    const [showInvoiceModal, setShowInvoiceModal] = useState(false);
 
     const { delete: destroy, reset, clearErrors, processing } = useForm({});
 
@@ -47,7 +46,6 @@ export default function PharmacySalesIndex({ sales }) {
 
     const closeModal = () => {
         setConfirmingSaleDeletion(false);
-        setShowInvoiceModal(false);
         setSaleId(null);
         clearErrors();
         reset();

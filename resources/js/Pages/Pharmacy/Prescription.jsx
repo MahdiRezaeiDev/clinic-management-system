@@ -2,6 +2,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Edit, Printer } from 'lucide-react';
+import moment from 'moment-jalaali';
 
 export default function Prescription({ sale }) {
     return (
@@ -45,7 +46,7 @@ export default function Prescription({ sale }) {
                         فاکتور شماره {sale.id}
                     </h3>
                     <p className="text-sm text-gray-500">
-                        تاریخ: {sale.sale_date}
+                        تاریخ: {moment(sale.sale_date).format('jYYYY/jMM/jDD')}
                     </p>
                 </div>
 
@@ -64,7 +65,7 @@ export default function Prescription({ sale }) {
                             تاریخ پرداخت:
                         </span>
                         <span className="block text-sm font-medium text-gray-800">
-                            {sale.sale_date}
+                            {moment(sale.sale_date).format('jYYYY/jMM/jDD')}
                         </span>
                     </div>
                     <div>
