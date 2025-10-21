@@ -24,11 +24,11 @@ class DoctorVisitController extends Controller
             $query->where('doctor_id', $request->input('doctor'));
         }
         if ($request->filled('start_date')) {
-            $query->whereDate('created_at', '>=', $request->start_date);
+            $query->whereDate('created_at', '>=', jalaliToGregorian($request->start_date));
         }
 
         if ($request->filled('end_date')) {
-            $query->whereDate('created_at', '<=', $request->end_date);
+            $query->whereDate('created_at', '<=', jalaliToGregorian($request->end_date));
         }
 
         // Fetch doctors
@@ -36,7 +36,7 @@ class DoctorVisitController extends Controller
         $staff = Staff::whereIn('role', $disRoles)->get();
 
         // Get visits (you can add orderBy or paginate if needed)
-        $visits = $query->latest()->paginate(25)->withQueryString();
+        $visits = $query->latest()->paginate(31)->withQueryString();
 
         // Return Inertia view
         return Inertia::render('Visits/Index', [
@@ -74,7 +74,7 @@ class DoctorVisitController extends Controller
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
-            'visit_date_gregorian' => 'required|date_format:Y-m-d',
+            'visit_date' => 'required|date_format:Y-m-d',
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ]);
@@ -93,7 +93,7 @@ class DoctorVisitController extends Controller
             'patient_id' => $patient->id, // 👈 REQUIRED
             'doctor_id' => $request->doctor_id,
             'user_id' => Auth::id(),
-            'visit_date' => $request->visit_date_gregorian,
+            'visit_date' => jalaliToGregorian($request->visit_date),
             'fee' => $request->fee,
             'description' => $request->description,
         ]);
@@ -118,7 +118,7 @@ class DoctorVisitController extends Controller
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',
-            'visit_date_gregorian' => 'required|date_format:Y-m-d',
+            'visit_date' => 'required|date_format:Y-m-d',
             'fee' => 'required|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ], [
@@ -143,8 +143,8 @@ class DoctorVisitController extends Controller
             'doctor_id.required' => 'انتخاب پزشک الزامی است.',
             'doctor_id.exists' => 'پزشک انتخاب‌شده معتبر نیست.',
 
-            'visit_date_gregorian.required' => 'تاریخ ویزیت الزامی است.',
-            'visit_date_gregorian.date_format' => 'فرمت تاریخ ویزیت معتبر نیست. (YYYY-MM-DD)',
+            'visit_date.required' => 'تاریخ ویزیت الزامی است.',
+            'visit_date.date_format' => 'فرمت تاریخ ویزیت معتبر نیست. (YYYY-MM-DD)',
 
             'fee.required' => 'مبلغ ویزیت الزامی است.',
             'fee.numeric' => 'مبلغ ویزیت باید عدد باشد.',
@@ -170,7 +170,7 @@ class DoctorVisitController extends Controller
         // Update visit info
         $visit->update([
             'doctor_id' => $request->doctor_id,
-            'visit_date' => $request->visit_date_gregorian,
+            'visit_date' => jalaliToGregorian($request->visit_date),
             'fee' => $request->fee,
             'description' => $request->description,
         ]);

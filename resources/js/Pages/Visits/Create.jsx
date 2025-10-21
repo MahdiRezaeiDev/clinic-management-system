@@ -4,7 +4,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
-import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -30,12 +29,6 @@ export default function create({ doctors }) {
 
     const submit = (e) => {
         e.preventDefault();
-        const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-
-        data.visit_date_gregorian = gregorianDate;
-
         post(route('visits.store'), {
             onSuccess: () => {
                 reset(); // clears all fields

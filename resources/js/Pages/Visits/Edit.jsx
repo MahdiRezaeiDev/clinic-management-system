@@ -28,11 +28,6 @@ export default function Edit({ visit, doctors }) {
 
     const submit = (e) => {
         e.preventDefault();
-
-        const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-        data.visit_date_gregorian = gregorianDate;
         put(route('visits.update', visit.id));
     };
 

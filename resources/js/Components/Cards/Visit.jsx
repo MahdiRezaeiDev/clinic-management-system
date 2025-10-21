@@ -28,12 +28,6 @@ export default function RegisterVisitCard({ doctors }) {
 
     const submit = (e) => {
         e.preventDefault();
-        const gregorianDate = moment(data.visit_date, 'jYYYY/jMM/jDD').format(
-            'YYYY-MM-DD',
-        );
-
-        data.visit_date_gregorian = gregorianDate;
-
         post(route('visits.store'), {
             onSuccess: () => {
                 reset(); // clears all fields
