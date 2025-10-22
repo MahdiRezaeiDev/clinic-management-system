@@ -15,6 +15,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,5 +96,22 @@ Route::middleware('auth')->group(function () {
     // doctor visits
     // ----------------------
     Route::get('/reports', ReportController::class)->name('reports');
+
+    // ----------------------
+    // Settings: Database Backup
+    // ----------------------
+    Route::get('/settings/database', function () {
+        return Inertia\Inertia::render('Settings/Database', [
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ],
+        ]);
+    })->name('settings.database');
+
+    Route::post('/backup', function () {
+        Artisan::call('db:backup');
+        return back()->with('success', 'Backup completed!');
+    })->name('backup.database');
 });
 require __DIR__ . '/auth.php';

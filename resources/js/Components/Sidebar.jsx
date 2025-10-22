@@ -7,6 +7,7 @@ import {
     ChartAreaIcon,
     ChevronDown,
     Coins,
+    FileWarning,
     IdCard,
     LayoutDashboard,
     MenuIcon,
@@ -196,6 +197,17 @@ export default function Sidebar() {
                                 <div className="flex items-end gap-2">
                                     <ChartAreaIcon className="h-5 w-5" />
                                     گزارشات مدیریتی
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('settings.database')}
+                                active={route().current('settings.database')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <FileWarning className="h-5 w-5" />
+                                    پشتیبان‌گیری از پایگاه داده
                                 </div>
                             </NavLink>
                         </li>
