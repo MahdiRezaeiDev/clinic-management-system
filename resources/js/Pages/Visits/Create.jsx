@@ -71,7 +71,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_name"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     نام بیمار
                                 </label>
@@ -91,7 +91,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_phone"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     شماره تماس (اختیاری)
                                 </label>
@@ -114,7 +114,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_address"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     آدرس (اختیاری)
                                 </label>
@@ -140,7 +140,7 @@ export default function create({ doctors }) {
                                 </select>
                                 <label
                                     htmlFor="patient_gender"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     جنسیت (اختیاری)
                                 </label>
@@ -160,7 +160,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="patient_age"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-400 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     سن (اختیاری)
                                 </label>
@@ -187,7 +187,7 @@ export default function create({ doctors }) {
                                 </select>
                                 <label
                                     htmlFor="doctor_id"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     داکتر
                                 </label>
@@ -208,7 +208,7 @@ export default function create({ doctors }) {
                                 />
                                 <label
                                     htmlFor="visit_date"
-                                    className="absolute left-3 top-2 bg-white px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:text-xs peer-focus:text-blue-500"
+                                    className="absolute left-3 top-2 bg-transparent px-2 text-sm text-gray-500 transition-all peer-focus:top-[-8px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-blue-500"
                                 >
                                     تاریخ ویزیت
                                 </label>
