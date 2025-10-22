@@ -7,15 +7,17 @@ export default function BackupPage() {
 
     const runBackup = async () => {
         setLoading(true);
-        setMessage('Starting backup...');
+        setMessage('در حال شروع پشتیبان‌گیری...');
 
         try {
             const response = await axios.post(route('backup.run'));
             setMessage(
-                response.data.message + '\n\nOutput:\n' + response.data.output,
+                response.data.message + '\n\nخروجی:\n' + response.data.output,
             );
         } catch (error) {
-            setMessage(error.response?.data?.message || 'Backup failed.');
+            setMessage(
+                error.response?.data?.message || 'پشتیبان‌گیری ناموفق بود.',
+            );
         } finally {
             setLoading(false);
         }
@@ -23,7 +25,9 @@ export default function BackupPage() {
 
     return (
         <div className="mx-auto mt-10 max-w-3xl rounded-xl bg-white p-6 shadow-md">
-            <h1 className="mb-4 text-xl font-bold">Run Database Backup</h1>
+            <h1 className="mb-4 text-xl font-bold">
+                اجرای پشتیبان‌گیری پایگاه داده
+            </h1>
 
             <button
                 onClick={runBackup}
@@ -34,7 +38,7 @@ export default function BackupPage() {
                         : 'bg-teal-500 hover:bg-teal-700'
                 }`}
             >
-                {loading ? 'Backing up...' : 'Run Backup'}
+                {loading ? 'در حال پشتیبان‌گیری...' : 'اجرای پشتیبان‌گیری'}
             </button>
 
             {message && (
