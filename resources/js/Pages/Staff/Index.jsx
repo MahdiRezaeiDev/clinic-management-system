@@ -115,12 +115,12 @@ export default function Index({ staffs, filters }) {
                                 placeholder="جستجو نام یا شماره تماس..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-72 rounded border p-3 text-xs focus:ring-2 focus:ring-teal-600"
+                                className="w-72 rounded border p-3 text-sm focus:ring-2 focus:ring-teal-600"
                             />
                             <select
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="w-72 rounded border px-7 py-3 text-xs focus:ring-2 focus:ring-teal-600"
+                                className="w-72 rounded border px-7 py-3 text-sm focus:ring-2 focus:ring-teal-600"
                             >
                                 <option value="">همه نقش‌ها</option>
                                 {Object.entries(roleNames).map(
@@ -133,13 +133,13 @@ export default function Index({ staffs, filters }) {
                             </select>
                             <PrimaryButton
                                 type="submit"
-                                className="rounded px-6 py-3 text-xs font-semibold"
+                                className="rounded px-6 py-3 text-sm"
                             >
                                 اعمال فیلتر
                             </PrimaryButton>
                             <DangerButton
                                 onClick={clearFilter}
-                                className="rounded px-6 py-3 text-xs font-semibold"
+                                className="rounded px-6 py-3 text-sm"
                             >
                                 حذف فیلتر
                             </DangerButton>

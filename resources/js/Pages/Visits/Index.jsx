@@ -193,7 +193,10 @@ export default function Index({ visits, doctors, filters }) {
                                 <tbody>
                                     {visits.data.length ? (
                                         visits.data.map((visit, index) => (
-                                            <tr key={visit.id}>
+                                            <tr
+                                                className="even:bg-teal-50"
+                                                key={visit.id}
+                                            >
                                                 <td className="whitespace-nowrap p-4 px-6 text-sm">
                                                     {++index}
                                                 </td>
