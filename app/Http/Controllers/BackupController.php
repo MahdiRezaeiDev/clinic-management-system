@@ -80,7 +80,7 @@ class BackupController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Backup completed successfully!',
+                'message' => 'پشتیبان‌گیری با موفقیت انجام شد.',
                 'file' => $filename,
                 'path' => $filePath
             ]);
