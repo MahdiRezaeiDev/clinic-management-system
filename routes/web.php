@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorVisitController;
 use App\Http\Controllers\ProfileController;
@@ -101,17 +102,9 @@ Route::middleware('auth')->group(function () {
     // Settings: Database Backup
     // ----------------------
     Route::get('/settings/database', function () {
-        return Inertia\Inertia::render('Settings/Database', [
-            'flash' => [
-                'success' => session('success'),
-                'error' => session('error'),
-            ],
-        ]);
+        return Inertia\Inertia::render('Settings/Database');
     })->name('settings.database');
 
-    Route::post('/backup', function () {
-        Artisan::call('db:backup');
-        return back()->with('success', 'Backup completed!');
-    })->name('backup.database');
+    Route::post('/backup/run', [BackupController::class, 'run'])->name('backup.run');
 });
 require __DIR__ . '/auth.php';
