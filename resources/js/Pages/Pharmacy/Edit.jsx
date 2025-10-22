@@ -123,9 +123,22 @@ export default function PharmacySaleUpdate({ sale }) {
                                     جمع کل:
                                 </td>
                                 <td className="border-2">
-                                    <span className="w-full p-2 text-sm">
-                                        {totalAmount.toLocaleString()}
-                                    </span>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        className="w-full border-none p-2 text-sm"
+                                        value={data.total_amount}
+                                        onChange={(e) =>
+                                            setData(
+                                                'total_amount',
+                                                e.target.value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.total_amount}
+                                        className="mt-1 text-xs text-red-500"
+                                    />
                                 </td>
                                 <td className="whitespace-nowrap border-2 border-x-0 px-2 font-medium text-gray-700">
                                     تخفیف:

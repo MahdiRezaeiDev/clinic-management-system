@@ -10,6 +10,7 @@ class PharmacySale extends Model
     use HasFactory; // <-- this is required!
     protected $fillable = [
         "sale_type",
+        "sale_date",
         "patient_id",
         "doctor_id",
         "pharmacist_id",
