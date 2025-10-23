@@ -150,7 +150,7 @@ export default function Edit({ visit, doctors }) {
                             {/* Patient Age */}
                             <div className="relative">
                                 <input
-                                    type="number"
+                                    type="text"
                                     value={data.patient_age}
                                     id="patient_age"
                                     placeholder="سن"

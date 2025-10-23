@@ -136,7 +136,7 @@ export default function RegisterVisitCard({ doctors }) {
                 {/* Birthdate (age) */}
                 <div className="relative">
                     <input
-                        type="number"
+                        type="text"
                         value={data.patient_age}
                         id="patient_age"
                         onChange={(e) => setData('patient_age', e.target.value)}

@@ -150,7 +150,7 @@ export default function create({ doctors }) {
                             {/* Birthdate (age) */}
                             <div className="relative">
                                 <input
-                                    type="number"
+                                    type="text"
                                     value={data.patient_age}
                                     id="patient_age"
                                     onChange={(e) =>
