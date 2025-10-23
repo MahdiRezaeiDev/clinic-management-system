@@ -74,7 +74,7 @@ class DashboardController extends Controller
             ];
         }
 
-        $staff = Staff::whereIn('role', ['lab', 'dentist', 'emergency'])->get();
+        $staff = Staff::whereIn('role', ['doctor', 'lab', 'dentist', 'emergency'])->get();
 
         return inertia('Dashboard', [
             'doctors' => $staff,
