@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pharmacy_sale_id')->constrained('pharmacy_sales')->cascadeOnDelete();
             $table->string('drug_name');
-            $table->decimal('quantity', 12, 2);
-            $table->decimal('unit_price', 12, 2);
-            $table->decimal('subtotal', 12, 2);
+            $table->integer('quantity');
+            $table->integer('unit_price');
+            $table->integer('subtotal');
             $table->timestamps();
         });
     }

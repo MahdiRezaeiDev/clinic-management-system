@@ -3,12 +3,33 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { MapPin, Phone } from 'lucide-react';
 
-export default function Prescription({ sale }) {
+export default function ModernPrescriptionAfghanistanV6() {
+    const medicines = [
+        {
+            name: 'استامینوفن شربت',
+            count: '2 شیشه',
+            price: '150 AFN',
+            description: 'هر ۶ ساعت ۵ میلی‌لیتر',
+        },
+        {
+            name: 'آموکسی‌سیلین',
+            count: '20 کپسول',
+            price: '500 AFN',
+            description: '۲۵۰ میلی‌گرم هر ۸ ساعت',
+        },
+        {
+            name: 'ویتامین D قطره',
+            count: '1 بطری',
+            price: '200 AFN',
+            description: '۱ قطره در روز',
+        },
+    ];
+
     const patientInfo = {
         name: 'سارا احمدی',
         age: '۵ سال',
         date: '۱۴۰۴/۰۸/۰۱',
-        prescriptionNo: sale.id,
+        prescriptionNo: '۱',
     };
 
     const vitals = [
@@ -81,63 +102,71 @@ export default function Prescription({ sale }) {
 
                     {/* Main Body */}
                     <div className="h-full p-4 text-xs">
-                        <div className="flex gap-4">
-                            {/* Medicines Table */}
-                            <div className="flex-1">
-                                <table className="w-full border border-gray-300 text-xs">
-                                    <thead className="bg-gray-100">
-                                        <tr>
-                                            <th className="border border-gray-300 px-3 py-2 text-right">
-                                                نام دارو
-                                            </th>
-                                            <th className="border border-gray-300 px-3 py-2 text-right">
-                                                تعداد
-                                            </th>
-                                            <th className="border border-gray-300 px-3 py-2 text-right">
-                                                قیمت واحد
-                                            </th>
-                                            <th className="border border-gray-300 px-3 py-2 text-right">
-                                                جمع کل
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {sale.items.map((item, i) => (
-                                            <tr
-                                                key={i}
-                                                className="even:bg-gray-50"
-                                            >
-                                                <td className="border border-gray-300 px-3 py-2 font-semibold text-gray-800">
-                                                    {item.drug_name}
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.quantity}
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.unit_price} AFN
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.subtotal} AFN
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        <tr className="bg-gray-100 font-bold">
-                                            <td
-                                                colSpan="3"
-                                                className="border border-gray-300 px-3 py-2 text-right"
-                                            >
-                                                مجموع کل:
+                        {/* Medicines Table */}
+                        <div className="flex-1">
+                            <table className="w-full border border-gray-300 text-xs">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="border border-gray-300 px-3 py-2 text-right">
+                                            نام دارو
+                                        </th>
+                                        <th className="border border-gray-300 px-3 py-2 text-right">
+                                            تعداد
+                                        </th>
+                                        <th className="border border-gray-300 px-3 py-2 text-right">
+                                            قیمت
+                                        </th>
+                                        <th className="border border-gray-300 px-3 py-2 text-right">
+                                            دستور مصرف
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {medicines.map((med, i) => (
+                                        <tr key={i} className="even:bg-gray-50">
+                                            <td className="border border-gray-300 px-3 py-2 font-semibold text-gray-800">
+                                                {med.name}
                                             </td>
-                                            <td className="border border-gray-300 px-3 py-2 text-gray-800">
-                                                {sale.total_amount} AFN
+                                            <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                {med.count}
+                                            </td>
+                                            <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                {med.price}
+                                            </td>
+                                            <td className="border border-gray-300 px-3 py-2 text-gray-600">
+                                                {med.description}
                                             </td>
                                         </tr>
-                                    </tbody>
-                                </table>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Doctor Notes and Vitals at Bottom */}
+                        <div className="absolute bottom-16 left-0 right-0 flex justify-between px-4">
+                            {/* Doctor Notes */}
+                            <div className="w-2/3 pr-2">
+                                <h3 className="mb-2 text-sm font-bold text-teal-700">
+                                    توصیه‌های پزشک:
+                                </h3>
+                                <ul className="list-inside list-disc space-y-1 text-[11px] text-gray-700">
+                                    <li>
+                                        مصرف داروها را طبق دستور پزشک ادامه
+                                        دهید.
+                                    </li>
+                                    <li>
+                                        در صورت بروز حساسیت یا تب بالا، مراجعه
+                                        کنید.
+                                    </li>
+                                    <li>
+                                        استراحت کافی و تغذیه سالم برای کودک
+                                        رعایت شود.
+                                    </li>
+                                </ul>
                             </div>
 
                             {/* Vitals */}
-                            <div className="w-40 overflow-hidden rounded-md border border-gray-300">
+                            <div className="w-1/3 overflow-hidden rounded-md border border-gray-300">
                                 <div className="bg-gray-100 py-2 text-center font-bold text-gray-700">
                                     Vital Signs
                                 </div>
@@ -159,25 +188,6 @@ export default function Prescription({ sale }) {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-
-                        {/* Doctor Notes */}
-                        <div className="mt-6 px-2">
-                            <h3 className="mb-2 text-sm font-bold text-teal-700">
-                                توصیه‌های پزشک:
-                            </h3>
-                            <ul className="list-inside list-disc space-y-1 text-[11px] text-gray-700">
-                                <li>
-                                    مصرف داروها را طبق دستور پزشک ادامه دهید.
-                                </li>
-                                <li>
-                                    در صورت بروز حساسیت یا تب بالا، مراجعه کنید.
-                                </li>
-                                <li>
-                                    استراحت کافی و تغذیه سالم برای کودک رعایت
-                                    شود.
-                                </li>
-                            </ul>
                         </div>
                     </div>
 
