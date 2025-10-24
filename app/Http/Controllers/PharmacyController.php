@@ -46,7 +46,7 @@ class PharmacyController extends Controller
         $request->validate([
             // اطلاعات بیمار
             'check' => 'nullable|string',
-            'patient_name' => 'required|string|max:255',
+            'patient_name' => 'required_with:check|string|max:255',
             'patient_gender' => 'nullable|in:male,female,other',
             'patient_age' => 'nullable|string|min:0|max:120',
             'doctor' => 'required_with:check|exists:staff,id',
@@ -58,7 +58,7 @@ class PharmacyController extends Controller
             'discount' => 'nullable|numeric|min:0|lte:total_amount',
         ], [
             // پیام‌های فارسی برای اطلاعات بیمار
-            'patient_name.required' => 'نام بیمار الزامی است.',
+            'patient_name.required_with' => 'نام بیمار الزامی است.',
             'patient_name.string' => 'نام بیمار باید متنی باشد.',
             'patient_name.max' => 'نام بیمار نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
             'doctor.required_with' => 'انتخاب داکتر معالج الزامی است.',
@@ -97,16 +97,20 @@ class PharmacyController extends Controller
         // 🧩 3. Set sale_type based on items
         $saleType = $validItems->isNotEmpty() ? 'with_prescription' : 'without_prescription';
 
-        // ✅ Create the patient first
-        $patient = Patient::create([
-            'full_name' => $request->patient_name,
-            'gender' => $request->patient_gender,
-            'age' => $request->patient_age,
-        ]);
+        $patient_id = null;
+        if ($request->patient_name) {
+            // ✅ Create the patient first
+            $patient = Patient::create([
+                'full_name' => $request->patient_name,
+                'gender' => $request->patient_gender,
+                'age' => $request->patient_age,
+            ]);
+            $patient_id = $patient->id;
+        }
 
         // 🧩 4. Create main sale record
         $pharmacy = new PharmacySale();
-        $pharmacy->patient_id  = $patient->id; // 👈 Link to patient
+        $pharmacy->patient_id  = $patient_id; // 👈 Link to patient
         $pharmacy->doctor_id  = $request->doctor; // 👈 Link to Doctor
         $pharmacy->sale_type = $saleType;
         $pharmacy->total_amount = $request->total_amount;
@@ -127,7 +131,10 @@ class PharmacyController extends Controller
             ]);
         }
 
-        return redirect()->route('pharmacy.show', $pharmacy);
+        if ($request->check) {
+            return redirect()->route('pharmacy.show', $pharmacy);
+        }
+        return redirect()->back()->with('success', 'فروش دارو با موفقیت ثبت شد.');
     }
 
     /**
