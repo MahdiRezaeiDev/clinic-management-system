@@ -44,31 +44,44 @@ class PharmacyController extends Controller
     {
         // 🧩 1. اعتبارسنجی فیلدهای اصلی
         $request->validate([
-            // Patient info
+            // اطلاعات بیمار
             'patient_name' => 'required|string|max:255',
             'patient_gender' => 'nullable|in:male,female,other',
             'patient_age' => 'nullable|integer|min:0|max:120',
 
-            // Pharmacy sale info
+            // اطلاعات فروش داروخانه
             'total_amount' => 'required|numeric|min:1',
-            'sale_date' => 'required|date',
+            'sale_date' => 'required|date|before_or_equal:today',
             'description' => 'nullable|string|max:1000',
-            'discount' => 'nullable|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0|lte:total_amount',
         ], [
+            // پیام‌های فارسی برای اطلاعات بیمار
+            'patient_name.required' => 'نام بیمار الزامی است.',
+            'patient_name.string' => 'نام بیمار باید متنی باشد.',
+            'patient_name.max' => 'نام بیمار نمی‌تواند بیش از ۲۵۵ کاراکتر باشد.',
+
+            'patient_gender.in' => 'جنسیت انتخاب شده معتبر نیست. مقادیر معتبر: مرد، زن یا دیگر.',
+
+            'patient_age.integer' => 'سن باید عددی باشد.',
+            'patient_age.min' => 'سن نمی‌تواند منفی باشد.',
+            'patient_age.max' => 'سن نمی‌تواند بیش از ۱۲۰ باشد.',
+
+            // پیام‌های فارسی برای فروش داروخانه
             'total_amount.required' => 'مبلغ کل الزامی است.',
             'total_amount.numeric' => 'مبلغ کل باید عددی باشد.',
             'total_amount.min' => 'مبلغ کل باید بیشتر از صفر باشد.',
 
             'sale_date.required' => 'تاریخ فروش الزامی است.',
             'sale_date.date' => 'فرمت تاریخ فروش معتبر نیست.',
+            'sale_date.before_or_equal' => 'تاریخ فروش نمی‌تواند بعد از امروز باشد.',
 
             'description.string' => 'توضیحات باید متنی باشد.',
             'description.max' => 'توضیحات نمی‌تواند بیش از ۱۰۰۰ کاراکتر باشد.',
 
             'discount.numeric' => 'تخفیف باید عددی باشد.',
-            'discount.min' => 'تخفیف نمی‌تواند مقدار منفی داشته باشد.',
+            'discount.min' => 'تخفیف نمی‌تواند منفی باشد.',
+            'discount.lte' => 'تخفیف نمی‌تواند بیشتر از مبلغ کل باشد.',
         ]);
-
 
         // 🧩 2. Filter valid items (non-empty name & subtotal > 0)
         $validItems = collect($request->items ?? [])->filter(function ($item) {
