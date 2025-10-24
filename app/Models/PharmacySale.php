@@ -24,4 +24,14 @@ class PharmacySale extends Model
     {
         return $this->hasMany(PharmacySaleItem::class);
     }
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Staff::class, 'doctor_id');
+    }
 }

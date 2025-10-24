@@ -71,7 +71,7 @@ class DoctorVisitController extends Controller
             'patient_phone' => 'nullable|string|max:20',
             'patient_address' => 'nullable|string|max:255',
             'patient_gender' => 'nullable|in:male,female,other',
-            'patient_age' => 'nullable|integer|min:0|max:120',
+            'patient_age' => 'nullable|string|min:0|max:120',
 
             // Visit info
             'doctor_id' => 'required|exists:staff,id',

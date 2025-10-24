@@ -3,6 +3,7 @@ import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { MapPin, Phone } from 'lucide-react';
+import moment from 'moment-jalaali';
 
 export default function Prescription({ sale }) {
     const patientInfo = {
@@ -93,23 +94,25 @@ export default function Prescription({ sale }) {
                                 <span className="pl-2 font-semibold">
                                     نام بیمار:
                                 </span>
-                                {patientInfo.name}
+                                {sale.patient.full_name}
                             </p>
                             <p>
                                 <span className="pl-2 font-semibold">سن:</span>
-                                {patientInfo.age}
+                                {sale.patient.age}
                             </p>
                             <p className="text-left">
                                 <span className="pl-2 font-semibold">
                                     تاریخ:
                                 </span>
-                                {patientInfo.date}
+                                {moment(sale.created_at).format(
+                                    'jYYYY/jMM/jDD',
+                                )}
                             </p>
                             <p className="text-left">
                                 <span className="pl-2 font-semibold">
                                     نسخه شماره:
                                 </span>
-                                {patientInfo.prescriptionNo}
+                                {sale.id}
                             </p>
                         </div>
                     </section>

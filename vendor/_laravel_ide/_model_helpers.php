@@ -1303,12 +1303,16 @@ namespace App\Models {
      * @property mixed $total_amount
      * @property mixed $discount
      * @property mixed $sale_type
+     * @property mixed $doctor_id
      * @property mixed $patient_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PharmacySaleItem> $items
      * @property-read int|null $items_count
+     * @property-read \App\Models\Patient $patient
+     * @property-read \App\Models\Staff $doctor
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePatientId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDoctorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleType($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDiscount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereTotalAmount($value)

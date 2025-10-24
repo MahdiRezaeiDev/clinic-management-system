@@ -48,7 +48,7 @@ class PharmacyController extends Controller
             'check' => 'nullable|string',
             'patient_name' => 'required|string|max:255',
             'patient_gender' => 'nullable|in:male,female,other',
-            'patient_age' => 'nullable|integer|min:0|max:120',
+            'patient_age' => 'nullable|string|min:0|max:120',
             'doctor' => 'required_with:check|exists:staff,id',
 
             // اطلاعات فروش داروخانه
@@ -135,7 +135,7 @@ class PharmacyController extends Controller
      */
     public function show(PharmacySale $pharmacy)
     {
-        $sale = PharmacySale::with('items')->findOrFail($pharmacy->id);
+        $sale = PharmacySale::with('items')->with('doctor')->with('patient')->findOrFail($pharmacy->id);
         return Inertia::render('Pharmacy/Prescription', [
             'sale' => $sale
         ]);
