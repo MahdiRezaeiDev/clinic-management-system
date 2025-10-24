@@ -6,7 +6,8 @@ import '@/css/factor.css';
 import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
-import { Trash } from 'lucide-react';
+import { Settings, Trash } from 'lucide-react';
+import { useEffect } from 'react';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -22,7 +23,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
             locale: persian_en,
         }).format('YYYY/MM/DD'),
         description: '',
-        items: [],
+        items: [{ drug_name: '', quantity: 1, unit_price: 0, subtotal: 0 }],
         total_amount: 0,
         discount: 0,
     });
@@ -75,7 +76,20 @@ export default function PharmacySaleInvoiceForm({ staff }) {
         });
     };
 
-    console.log(staff);
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.ctrlKey && e.shiftKey) {
+                addItem();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup listener on component unmount
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [addItem]);
 
     return (
         <AuthenticatedLayout title="ثبت فروش دارو">
@@ -115,27 +129,6 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                         </div>
                     </div>
                 </header>
-                {/* information section */}
-                <section className="border-t-8 border-teal-700 py-4">
-                    <p className="text-center text-xs text-gray-700">
-                        <span className="pl-2 font-semibold">
-                            داکتر نادر پاینده:
-                        </span>
-                        متخصص امراض داخله و جراحی اطفال
-                    </p>
-                    <p className="text-center text-xs text-gray-700">
-                        <span className="pl-2 font-semibold">
-                            داکتر محمد حسین الماس:
-                        </span>
-                        معالج امراض داخله عمومی و اطفال
-                    </p>
-                    <p className="text-center text-xs text-gray-700">
-                        <span className="pl-2 font-semibold">
-                            داکتر الیاس عمران:
-                        </span>
-                        معالج امراض داخله عمومی و اعصاب و روان
-                    </p>
-                </section>
 
                 {/* Patient Info */}
                 <section className="border-b-4 border-dashed border-gray-400 px-4 py-3">
@@ -207,7 +200,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                         date.format('YYYY/MM/DD'),
                                     )
                                 }
-                                className="w-full rounded border px-2 py-1 text-center"
+                                className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm"
                             />
                         </div>
                     </div>
@@ -217,23 +210,26 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                 <form onSubmit={submitSale}>
                     <div className="mx-3 mt-4 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm print:border-0">
                         <table className="min-w-full border-collapse text-sm">
-                            <thead className="bg-teal-700 text-white">
+                            <thead className="border-2 border-teal-700 bg-teal-700 text-white">
                                 <tr>
-                                    {[
-                                        '#',
-                                        'نام دارو',
-                                        'تعداد',
-                                        'قیمت واحد',
-                                        'جمع جزء',
-                                        'عملیات',
-                                    ].map((h) => (
-                                        <th
-                                            key={h}
-                                            className="border-b border-gray-400 p-2 text-right font-medium"
-                                        >
-                                            {h}
-                                        </th>
-                                    ))}
+                                    <th className="p-2 text-right font-medium">
+                                        #
+                                    </th>
+                                    <th className="p-2 text-right font-medium">
+                                        نام دارو
+                                    </th>
+                                    <th className="w-20 p-2 text-center font-medium">
+                                        تعداد
+                                    </th>
+                                    <th className="w-32 p-2 text-center font-medium">
+                                        قیمت جزء
+                                    </th>
+                                    <th className="p-2 text-center font-medium">
+                                        مجموع
+                                    </th>
+                                    <th className="p-2 text-center font-medium">
+                                        <Settings className="inline h-4 w-4" />
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -250,19 +246,16 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                     data.items.map((item, idx) => (
                                         <tr
                                             key={idx}
-                                            className={`${
-                                                idx % 2 === 0
-                                                    ? 'bg-white'
-                                                    : 'bg-gray-50'
-                                            } transition-colors hover:bg-blue-50/60`}
+                                            className="text-xs even:bg-teal-50"
                                         >
-                                            <td className="p-2 text-right">
+                                            <td className="border-2 border-gray-500 text-center">
                                                 {idx + 1}
                                             </td>
-                                            <td className="p-2 text-right">
+                                            <td className="border-2 border-gray-500 text-right">
                                                 <input
                                                     type="text"
-                                                    className="w-full rounded border px-1 text-right text-xs font-semibold"
+                                                    name="drug"
+                                                    className="w-full border-none bg-transparent px-1 text-xs font-semibold focus:outline-none"
                                                     value={item.drug_name}
                                                     onChange={(e) =>
                                                         updateItem(
@@ -273,11 +266,12 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                                     }
                                                 />
                                             </td>
-                                            <td className="p-2 text-right">
+                                            <td className="border-2 border-gray-500 text-center">
                                                 <input
                                                     type="number"
+                                                    name="quantity"
                                                     min="1"
-                                                    className="w-16 rounded border px-1 text-right text-xs font-semibold"
+                                                    className="w-full rounded border-none bg-transparent px-1 text-center text-xs font-semibold focus:outline-none"
                                                     value={item.quantity}
                                                     onChange={(e) =>
                                                         updateItem(
@@ -288,11 +282,12 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                                     }
                                                 />
                                             </td>
-                                            <td className="p-2 text-right">
+                                            <td className="border-2 border-gray-500 text-center">
                                                 <input
                                                     type="number"
                                                     min="0"
-                                                    className="w-20 rounded border px-1 text-right text-xs font-semibold"
+                                                    name="price"
+                                                    className="w-full rounded border-none px-1 text-center text-xs font-semibold"
                                                     value={item.unit_price}
                                                     onChange={(e) =>
                                                         updateItem(
@@ -303,15 +298,15 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                                     }
                                                 />
                                             </td>
-                                            <td className="p-2 text-right font-medium">
+                                            <td className="border-2 border-gray-500 text-center font-medium">
                                                 {item.subtotal.toLocaleString()}
                                             </td>
-                                            <td className="p-2 text-center">
+                                            <td className="border-2 border-gray-500 text-center">
                                                 <Trash
                                                     onClick={() =>
                                                         removeItem(idx)
                                                     }
-                                                    className="h-4 w-4 cursor-pointer text-red-600"
+                                                    className="mx-auto h-4 w-4 cursor-pointer text-red-600"
                                                 />
                                             </td>
                                         </tr>

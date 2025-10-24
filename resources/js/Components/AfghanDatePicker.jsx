@@ -23,6 +23,7 @@ export default function AfghanDatePicker({
     onChange,
     inputClass = 'w-full text-sm text-gray-700 border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-sm',
     format = 'YYYY/MM/DD',
+    className = '',
     ...props
 }) {
     return (
@@ -34,7 +35,7 @@ export default function AfghanDatePicker({
             weekDays={weekDays}
             value={value}
             onChange={onChange}
-            inputClass={`w-full ${inputClass}`} // force full width
+            inputClass={`w-full ${inputClass} ${className}`}
             {...props}
         />
     );
