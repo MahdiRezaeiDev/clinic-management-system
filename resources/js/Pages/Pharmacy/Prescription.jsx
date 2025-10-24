@@ -6,21 +6,16 @@ import { MapPin, Phone } from 'lucide-react';
 import moment from 'moment-jalaali';
 
 export default function Prescription({ sale }) {
-    const patientInfo = {
-        name: 'سارا احمدی',
-        age: '۵ سال',
-        date: '۱۴۰۴/۰۸/۰۱',
-        prescriptionNo: sale.id,
-    };
-
     const vitals = [
         { label: 'BP', value: '' },
         { label: 'PR', value: '' },
         { label: 'RR', value: '' },
         { label: 'T', value: '' },
         { label: 'SPO2', value: '' },
-        { label: 'CC', value: '' },
+        { label: 'Diagnosis', value: '' },
     ];
+
+    const lastName = sale.doctor.full_name?.trim().split(' ').pop();
 
     return (
         <AuthenticatedLayout title="نسخه مدرن افغانستان V6">
@@ -64,18 +59,18 @@ export default function Prescription({ sale }) {
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 text-xs text-white">
                             <div>
-                                <td className="pl-2 font-semibold">
-                                    نسخه شماره:
-                                </td>
-                                <td>{sale.id}</td>
-                            </div>
-                            <div>
                                 <td className="pl-2 font-semibold">تاریخ:</td>
                                 <td>
                                     {moment(sale.created_at).format(
                                         'jYYYY/jMM/jDD',
                                     )}
                                 </td>
+                            </div>
+                            <div>
+                                <td className="pl-2 font-semibold">
+                                    نمبر مسلسل:
+                                </td>
+                                <td>{sale.id}</td>
                             </div>
                         </div>
                     </header>
@@ -101,15 +96,19 @@ export default function Prescription({ sale }) {
                             </span>
                             معالج امراض داخله عمومی و اعصاب و روان
                         </p>
+                        <p className="text-center text-xs text-gray-700">
+                            <span className="pl-2 font-semibold">
+                                داکتر سید شیر احمد موسوی:
+                            </span>
+                            معالج داخله عمومی و اطفال
+                        </p>
                     </section>
 
                     {/* Patient Info */}
-                    <section className="border-b-4 border-dashed border-gray-400 px-4 py-3">
+                    <section className="border-b-4 border-dashed border-gray-400 px-4 pb-3">
                         <div className="grid grid-cols-4 gap-2 text-[12px]">
                             <p>
-                                <span className="pl-2 font-semibold">
-                                    نام مریض:
-                                </span>
+                                <span className="pl-2 font-semibold">نام:</span>
                                 {sale.patient.full_name}
                             </p>
                             <p>
@@ -125,8 +124,10 @@ export default function Prescription({ sale }) {
                                     : 'مونث'}
                             </p>
                             <p>
-                                <span className="pl-2 font-semibold">سن:</span>
-                                {sale.patient.age}
+                                <span className="pl-2 font-semibold">
+                                    داکتر معالج:
+                                </span>
+                                {lastName}
                             </p>
                         </div>
                     </section>
@@ -155,29 +156,54 @@ export default function Prescription({ sale }) {
                                     </thead>
                                     <tbody>
                                         {sale.items.map((item, i) => (
-                                            <tr
-                                                key={i}
-                                                className="even:bg-gray-50"
-                                            >
-                                                <td className="border border-gray-300 px-3 py-2 font-semibold text-gray-800">
-                                                    {item.drug_name}
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.quantity}
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.unit_price}
-                                                    <span className="pr-1 text-[8px]">
-                                                        افغانی
-                                                    </span>
-                                                </td>
-                                                <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.subtotal}
-                                                    <span className="pr-1 text-[8px]">
-                                                        افغانی
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                            <>
+                                                <tr
+                                                    key={i}
+                                                    className="even:bg-gray-50"
+                                                >
+                                                    <td className="border border-gray-300 px-3 py-2 font-semibold text-gray-800">
+                                                        {item.drug_name}
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.quantity}
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.unit_price}
+                                                        <span className="pr-1 text-[8px]">
+                                                            افغانی
+                                                        </span>
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.subtotal}
+                                                        <span className="pr-1 text-[8px]">
+                                                            افغانی
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    key={i}
+                                                    className="even:bg-gray-50"
+                                                >
+                                                    <td className="border border-gray-300 px-3 py-2 font-semibold text-gray-800">
+                                                        {item.drug_name}
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.quantity}
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.unit_price}
+                                                        <span className="pr-1 text-[8px]">
+                                                            افغانی
+                                                        </span>
+                                                    </td>
+                                                    <td className="border border-gray-300 px-3 py-2 text-gray-700">
+                                                        {item.subtotal}
+                                                        <span className="pr-1 text-[8px]">
+                                                            افغانی
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </>
                                         ))}
                                         <tr className="bg-gray-100 font-bold">
                                             <td
@@ -204,12 +230,18 @@ export default function Prescription({ sale }) {
                                 </div>
                                 <table className="w-full text-xs">
                                     <tbody>
+                                        <tr className="">
+                                            <td
+                                                colSpan={2}
+                                                className="px-2 py-24 text-left text-gray-600"
+                                            ></td>
+                                        </tr>
                                         {vitals.map((v, i) => (
                                             <tr key={i} className="">
-                                                <td className="px-2 py-1 text-left text-gray-600">
+                                                <td className="px-2 text-left text-gray-600">
                                                     {v.value}
                                                 </td>
-                                                <td className="px-3 py-2 text-left font-semibold text-gray-700">
+                                                <td className="px-2 text-left font-semibold text-gray-700">
                                                     :{v.label}
                                                 </td>
                                             </tr>
