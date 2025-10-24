@@ -35,9 +35,10 @@ export default function ModernPrescriptionAfghanistanV6() {
     const vitals = [
         { label: 'BP', value: '120/80' },
         { label: 'PR', value: '78' },
+        { label: 'RR', value: '78' },
         { label: 'T', value: '37°C' },
         { label: 'SPO2', value: '98%' },
-        { label: 'RX', value: '-' },
+        { label: 'CC', value: '-' },
     ];
 
     return (
@@ -55,112 +56,110 @@ export default function ModernPrescriptionAfghanistanV6() {
                                 <h1 className="text-xl font-bold">
                                     کلینیک ۲۴ ساعته کودک و مادر
                                 </h1>
-                                <p className="text-sm">
+                                <p className="text-xs">
                                     مرکز صحی جامع برای مراقبت از اطفال و مادران
                                 </p>
                             </div>
                             <div className="parallelogram w-1/2 bg-teal-600 p-4 text-left text-white">
                                 <h1 className="text-xl font-bold">
-                                    Mother & Child 24/7 Clinic
+                                    Mother & Child Clinic
                                 </h1>
-                                <p className="text-sm">
-                                    Comprehensive Health Center for Children and
-                                    Mothers
+                                <p className="text-xs">
+                                    A comprehensive Health Center for Children
+                                    and Mothers
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    {/* Patient Info in one row */}
-                    <div className="grid grid-cols-4 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-4 text-sm text-gray-700">
-                        <div>
-                            <span className="pl-2 font-semibold">
-                                نام بیمار:
-                            </span>
-                            {patientInfo.name}
+                    {/* Patient Info */}
+                    <section className="border-b bg-gray-100 px-4 py-3">
+                        <div className="grid grid-cols-4 gap-2 text-[12px]">
+                            <div>
+                                <p>
+                                    <span className="pl-2 font-semibold">
+                                        نام بیمار:
+                                    </span>
+                                    سارا احمدی
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    <span className="pl-2 font-semibold">
+                                        سن:
+                                    </span>
+                                    ۵ سال
+                                </p>
+                            </div>
+                            <div className="text-left">
+                                <p>
+                                    <span className="pl-2 font-semibold">
+                                        تاریخ:
+                                    </span>
+                                    ۱۸ کیلوگرم
+                                </p>
+                            </div>
+                            <div className="text-left">
+                                <p>
+                                    <span className="pl-2 font-semibold">
+                                        نسخه شماره:
+                                    </span>
+                                    ۱۱۰
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <span className="font-semibold">سن:</span>
-                            {patientInfo.age}
-                        </div>
-                        <div>
-                            <span className="font-semibold">تاریخ:</span>
-                            {patientInfo.date}
-                        </div>
-                        <div className="text-left">
-                            <span className="font-semibold">شماره نسخه:</span>
-                            {patientInfo.prescriptionNo}
-                        </div>
-                    </div>
+                    </section>
 
                     {/* Main Body: Vitals + Prescription Table */}
-                    <div className="gap-6 p-4">
-                        <table className="w-full border-2 border-gray-600">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="border-l-2 border-gray-600 px-4 py-2 text-right">
-                                        داروها
-                                    </th>
-                                    <th className="w-1/4 px-4 py-2 text-left">
-                                        شاخصه‌ها
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="border-l-2 border-gray-600">
-                                        <table className="w-full text-sm">
-                                            <thead className="bg-teal-50 text-gray-700">
-                                                <tr>
-                                                    <th className="px-2 py-3 text-right">
-                                                        نام دارو
-                                                    </th>
-                                                    <th className="px-2 py-3 text-right">
-                                                        تعداد
-                                                    </th>
-                                                    <th className="px-2 py-3 text-right">
-                                                        قیمت
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {medicines.map((med, i) => (
-                                                    <tr
-                                                        key={i}
-                                                        className="border-b transition last:border-none hover:bg-gray-50"
-                                                    >
-                                                        <td className="px-2 py-3">
-                                                            {med.name}
-                                                        </td>
-                                                        <td className="px-2 py-3">
-                                                            {med.count}
-                                                        </td>
-                                                        <td className="px-2 py-3">
-                                                            {med.price}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <ul className="px-4 text-left">
-                                            {vitals.map((vital, i) => (
-                                                <li
-                                                    key={i}
-                                                    className="flex justify-between"
-                                                >
-                                                    <span className="font-semibold">
-                                                        {vital.label}:
-                                                    </span>
-                                                    <span>{vital.value}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div className="flex h-full text-xs">
+                        {/* Medicines Column */}
+                        <div className="flex flex-1 flex-col gap-2">
+                            <div className="flex justify-between border-b border-gray-300 bg-gray-100 px-4 py-2 pb-1 pl-4 font-bold text-gray-700">
+                                <span>نام دارو</span>
+                                <span>تعداد</span>
+                                <span>قیمت</span>
+                            </div>
+                            {medicines.map((med, i) => (
+                                <div
+                                    key={i}
+                                    className="flex justify-between rounded-lg border border-gray-300 p-2 shadow-sm transition hover:shadow-md"
+                                >
+                                    <span className="font-semibold text-gray-700">
+                                        {med.name}
+                                    </span>
+                                    <span className="text-gray-600">
+                                        {med.count}
+                                    </span>
+                                    <span className="text-gray-600">
+                                        {med.price}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Vitals Column */}
+                        <div className="flex w-32 flex-col gap-2 border-r-4 border-gray-300">
+                            <div className="bg-gray-100 px-4 py-2 font-bold text-gray-700">
+                                شاخصه‌ها
+                            </div>
+                            <table className="w-full table-auto border-collapse pl-4">
+                                <tbody>
+                                    {vitals.map((vital, i) => (
+                                        <tr
+                                            key={i}
+                                            className="px-4 py-2 text-center"
+                                        >
+                                            <td className="text-left text-gray-600">
+                                                {vital.value}
+                                            </td>
+                                            <td className="px-4 text-left font-semibold text-gray-700">
+                                                {vital.label}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {/* Doctor's Notes */}

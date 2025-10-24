@@ -1,7 +1,7 @@
 .parallelogram {
     --p: 50px;
     /* control the shape (can be percentage) */
-    height: 130px;
+    height: 110px;
     aspect-ratio: 3/2;
     clip-path: polygon(0 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
 }
