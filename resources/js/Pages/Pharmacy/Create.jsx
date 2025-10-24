@@ -16,10 +16,11 @@ import persian_en from 'react-date-object/locales/persian_en';
 
 export default function PharmacySaleInvoiceForm({ staff }) {
     const { data, setData, post, processing, errors, reset } = useForm({
+        check: 'check',
         patient_name: '',
         patient_age: '',
         patient_gender: '',
-        doctor_name: '',
+        doctor: '',
         sale_type: 'cash',
         payment_method: 'cash',
         sale_date: new DateObject({
@@ -157,8 +158,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                         <div className="flex flex-col">
                             <InputLabel value="سن:" className="font-semibold" />
                             <TextInput
-                                value={data.age}
-                                onChange={(e) => setData('age', e.target.value)}
+                                value={data.patient_age}
+                                onChange={(e) =>
+                                    setData('patient_age', e.target.value)
+                                }
                                 className="w-full rounded border px-2 py-1 text-right"
                             />
                             <InputError
@@ -172,9 +175,9 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 className="font-semibold"
                             />
                             <select
-                                value={data.gender}
+                                value={data.patient_gender}
                                 onChange={(e) =>
-                                    setData('gender', e.target.value)
+                                    setData('patient_gender', e.target.value)
                                 }
                                 className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             >
@@ -193,9 +196,9 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 className="font-semibold"
                             />
                             <select
-                                value={data.doctor_name}
+                                value={data.doctor}
                                 onChange={(e) =>
-                                    setData('doctor_name', e.target.value)
+                                    setData('doctor', e.target.value)
                                 }
                                 className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             >
@@ -207,7 +210,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 ))}
                             </select>
                             <InputError
-                                message={errors.doctor_name}
+                                message={errors.doctor}
                                 className="mt-1"
                             />
                         </div>
@@ -342,6 +345,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 )}
                             </tbody>
                         </table>
+                        <InputError
+                            message={errors.items}
+                            className="m-2 text-right"
+                        />
 
                         {/* تخفیف و جمع کل */}
                         <div className="flex flex-wrap items-center bg-teal-700 text-xs text-white">
@@ -350,6 +357,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                             </div>
                             <div className="flex-1 border-2 border-teal-700 text-center">
                                 {data.total_amount.toLocaleString()}
+                                <InputError
+                                    message={errors.total_amount}
+                                    className="mt-1"
+                                />
                             </div>
                             <div className="flex-1 border-2 border-teal-700 text-center font-bold">
                                 تخفیف
@@ -364,12 +375,20 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                         updateDiscount(e.target.value)
                                     }
                                 />
+                                <InputError
+                                    message={errors.discount}
+                                    className="mt-1"
+                                />
                             </div>
                             <div className="flex-1 border-2 border-teal-700 text-center font-bold">
                                 جمع کل پس از تخفیف
                             </div>
                             <div className="flex-1 border-2 border-teal-700 text-center font-medium">
                                 {totalAfterDiscount.toLocaleString()}
+                                <InputError
+                                    message={errors.totalAfterDiscount}
+                                    className="mt-1"
+                                />
                             </div>
                         </div>
 
