@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
+import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
@@ -34,7 +35,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
     const addItem = () => {
         setData('items', [
             ...data.items,
-            { drug_name: '', quantity: 1, unit_price: 0, subtotal: 0 },
+            { drug_name: '', quantity: 1, unit_price: '', subtotal: 0 },
         ]);
     };
 
@@ -148,6 +149,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 }
                                 className="w-full rounded border px-2 py-1 text-right"
                             />
+                            <InputError
+                                message={errors.patient_name}
+                                className="mt-1"
+                            />
                         </div>
                         <div className="flex flex-col">
                             <InputLabel value="سن:" className="font-semibold" />
@@ -155,6 +160,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 value={data.age}
                                 onChange={(e) => setData('age', e.target.value)}
                                 className="w-full rounded border px-2 py-1 text-right"
+                            />
+                            <InputError
+                                message={errors.patient_age}
+                                className="mt-1"
                             />
                         </div>
                         <div className="flex flex-col">
@@ -173,6 +182,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 <option value="male">مذکر</option>
                                 <option value="female">مونث</option>
                             </select>
+                            <InputError
+                                message={errors.patient_gender}
+                                className="mt-1"
+                            />
                         </div>
                         <div className="flex flex-col">
                             <InputLabel
@@ -193,6 +206,10 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                     </option>
                                 ))}
                             </select>
+                            <InputError
+                                message={errors.doctor_name}
+                                className="mt-1"
+                            />
                         </div>
                         <div className="flex flex-col">
                             <InputLabel
@@ -209,13 +226,17 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 }
                                 className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm"
                             />
+                            <InputError
+                                message={errors.sale_date}
+                                className="mt-1"
+                            />
                         </div>
                     </div>
                 </section>
 
                 {/* Items Table */}
                 <form onSubmit={submitSale}>
-                    <div className="mx-3 mt-4 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm print:border-0">
+                    <div className="mt-4 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm print:border-0">
                         <table className="min-w-full border-collapse text-sm">
                             <thead className="border-2 border-teal-700 bg-teal-700 text-white">
                                 <tr>
@@ -323,44 +344,49 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                         </table>
 
                         {/* تخفیف و جمع کل */}
-                        <div className="mt-2 px-4 py-1 text-right font-semibold text-gray-800">
-                            جمع کل:
-                            <span className="font-bold text-blue-700">
-                                {data.total_amount.toLocaleString()} افغانی
-                            </span>
-                            <br />
-                            تخفیف:
-                            <input
-                                type="number"
-                                min="0"
-                                className="ml-2 w-20 border px-1 text-right text-xs font-semibold"
-                                value={data.discount}
-                                onChange={(e) => updateDiscount(e.target.value)}
-                            />
-                            <br />
-                            جمع پس از تخفیف:
-                            <span className="font-bold text-blue-700">
-                                {totalAfterDiscount.toLocaleString()} افغانی
-                            </span>
+                        <div className="flex flex-wrap items-center bg-teal-700 text-xs text-white">
+                            <div className="flex-1 border-2 border-teal-700 text-center font-bold">
+                                مجموع قبل از تخفیف
+                            </div>
+                            <div className="flex-1 border-2 border-teal-700 text-center">
+                                {data.total_amount.toLocaleString()}
+                            </div>
+                            <div className="flex-1 border-2 border-teal-700 text-center font-bold">
+                                تخفیف
+                            </div>
+                            <div className="flex-1 border-2 border-teal-700 text-center font-medium">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    className="w-full px-2 py-1 text-right text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-blue-400"
+                                    value={data.discount}
+                                    onChange={(e) =>
+                                        updateDiscount(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div className="flex-1 border-2 border-teal-700 text-center font-bold">
+                                جمع کل پس از تخفیف
+                            </div>
+                            <div className="flex-1 border-2 border-teal-700 text-center font-medium">
+                                {totalAfterDiscount.toLocaleString()}
+                            </div>
                         </div>
 
                         {/* Doctor Notes */}
-                        <div className="mt-4 border-t border-gray-300 px-4 py-2">
+                        <div className="mt-4 flex-1 border-t border-gray-300 px-4 py-2">
                             <h3 className="mb-2 text-sm font-bold text-teal-700">
                                 توصیه‌های پزشک:
                             </h3>
-                            <ul className="list-inside list-disc space-y-1 text-[11px] text-gray-700">
-                                <li>
-                                    مصرف داروها را طبق دستور پزشک ادامه دهید.
-                                </li>
-                                <li>
-                                    در صورت بروز حساسیت یا تب بالا، مراجعه کنید.
-                                </li>
-                                <li>
-                                    استراحت کافی و تغذیه سالم برای کودک رعایت
-                                    شود.
-                                </li>
-                            </ul>
+                            <textarea
+                                value={data.description}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
+                                className="w-full rounded border px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                                rows={4}
+                                placeholder="توصیه‌ها و یادداشت‌های پزشک را اینجا وارد کنید..."
+                            />
                         </div>
 
                         {/* Buttons */}

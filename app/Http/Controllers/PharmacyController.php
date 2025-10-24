@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use App\Models\PharmacySale;
 use App\Models\PharmacySaleItem;
 use App\Models\Staff;
@@ -43,6 +44,12 @@ class PharmacyController extends Controller
     {
         // 🧩 1. اعتبارسنجی فیلدهای اصلی
         $request->validate([
+            // Patient info
+            'patient_name' => 'required|string|max:255',
+            'patient_gender' => 'nullable|in:male,female,other',
+            'patient_age' => 'nullable|integer|min:0|max:120',
+
+            // Pharmacy sale info
             'total_amount' => 'required|numeric|min:1',
             'sale_date' => 'required|date',
             'description' => 'nullable|string|max:1000',
@@ -74,8 +81,16 @@ class PharmacyController extends Controller
         // 🧩 3. Set sale_type based on items
         $saleType = $validItems->isNotEmpty() ? 'with_prescription' : 'without_prescription';
 
+        // ✅ Create the patient first
+        $patient = Patient::create([
+            'full_name' => $request->patient_name,
+            'gender' => $request->patient_gender,
+            'age' => $request->patient_age,
+        ]);
+
         // 🧩 4. Create main sale record
         $pharmacy = new PharmacySale();
+        $pharmacy->patient_id  = $patient->id; // 👈 Link to patient
         $pharmacy->sale_type = $saleType;
         $pharmacy->total_amount = $request->total_amount;
         $pharmacy->discount = $request->discount ?? 0;
