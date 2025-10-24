@@ -1,4 +1,5 @@
 import '@/css/factor.css';
+import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { MapPin, Phone } from 'lucide-react';
@@ -23,13 +24,24 @@ export default function Prescription({ sale }) {
     return (
         <AuthenticatedLayout title="نسخه مدرن افغانستان V6">
             <Head title="نسخه مدرن افغانستان V6" />
-            <div
+            <article
                 dir="rtl"
                 className="flex items-center justify-center bg-gray-50 py-10"
             >
                 <div className="relative h-[210mm] w-[148mm] overflow-hidden bg-white shadow-md">
+                    {/* Watermark */}
+                    <img
+                        src={logo}
+                        alt="Watermark"
+                        className="pointer-events-none absolute inset-0 m-auto h-64 w-64 select-none object-contain opacity-10"
+                        style={{
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }}
+                    />
                     {/* Header */}
-                    <div className="relative bg-teal-700">
+                    <header className="relative bg-teal-700">
                         <div className="flex justify-between">
                             <div className="w-1/2 p-4 text-right text-white">
                                 <h1 className="text-xl font-bold">
@@ -49,10 +61,33 @@ export default function Prescription({ sale }) {
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </header>
+
+                    {/* information section */}
+                    <section className="border-t-8 border-teal-700 py-4">
+                        <p className="text-center text-xs text-gray-700">
+                            <span className="pl-2 font-semibold">
+                                داکتر نادر پاینده:
+                            </span>
+                            متخصص امراض داخله و جراحی اطفال
+                        </p>
+                        <p className="text-center text-xs text-gray-700">
+                            <span className="pl-2 font-semibold">
+                                {' '}
+                                داکتر محمد حسین الماس:
+                            </span>
+                            معالج امراض داخله عمومی و اطفال
+                        </p>
+                        <p className="text-center text-xs text-gray-700">
+                            <span className="pl-2 font-semibold">
+                                داکتر الیاس عمران:
+                            </span>
+                            معالج امراض داخله عمومی و اعصاب و روان
+                        </p>
+                    </section>
 
                     {/* Patient Info */}
-                    <section className="border-b px-4 py-3">
+                    <section className="border-b-4 border-dashed border-gray-400 px-4 py-3">
                         <div className="grid grid-cols-4 gap-2 text-[12px]">
                             <p>
                                 <span className="pl-2 font-semibold">
@@ -80,7 +115,7 @@ export default function Prescription({ sale }) {
                     </section>
 
                     {/* Main Body */}
-                    <div className="h-full p-4 text-xs">
+                    <section className="h-full p-4 text-xs">
                         <div className="flex gap-4">
                             {/* Medicines Table */}
                             <div className="flex-1">
@@ -185,10 +220,10 @@ export default function Prescription({ sale }) {
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </section>
 
                     {/* Footer */}
-                    <footer className="absolute bottom-0 left-0 right-0 space-y-2 border-t-8 border-teal-400 bg-teal-700 px-4 py-2">
+                    <footer className="absolute bottom-0 left-0 right-0 space-y-2 border-t-4 border-teal-400 bg-teal-700 px-4 py-2">
                         <div>
                             <MapPin className="ml-2 inline h-4 w-4 text-white" />
                             <span className="text-[10px] font-semibold text-white">
@@ -202,7 +237,7 @@ export default function Prescription({ sale }) {
                         </div>
                     </footer>
                 </div>
-            </div>
+            </article>
         </AuthenticatedLayout>
     );
 }
