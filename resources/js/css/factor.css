@@ -1,0 +1,48 @@
+/* HTML: <div class="parallelogram"></div> */
+.parallelogram {
+    --p: 50px;
+    /* control the shape (can be percentage) */
+    height: 150px;
+    aspect-ratio: 3/2;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
+}
+
+/* global.css یا در کامپوننت با <style> */
+@media print {
+
+    /* حذف فاصله‌های کلی صفحه */
+    @page {
+        size: A5;
+        margin: 0;
+        /* اگر پرینتر اجازه دهد، حاشیهٔ چاپ صفر می‌شود */
+    }
+
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+    }
+
+
+    /* روت کارت/نسخه — تمام padding داخلی را هم صفر کن */
+    .prescription-root {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+
+    /* اگر چهارچوب شما wrapper دیگری دارد آن را هم صفر کنید */
+    .print-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+
+    /* موارد غیر ضروری را در چاپ مخفی کنید */
+    .no-print {
+        display: none !important;
+    }
+}
