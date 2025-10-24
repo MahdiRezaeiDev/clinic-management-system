@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -15,6 +16,8 @@ import persian_en from 'react-date-object/locales/persian_en';
 export default function PharmacySaleInvoiceForm({ staff }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         patient_name: '',
+        patient_age: '',
+        patient_gender: '',
         doctor_name: '',
         sale_type: 'cash',
         payment_method: 'cash',
@@ -23,7 +26,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
             locale: persian_en,
         }).format('YYYY/MM/DD'),
         description: '',
-        items: [{ drug_name: '', quantity: 1, unit_price: 0, subtotal: 0 }],
+        items: [{ drug_name: '', quantity: 1, unit_price: '', subtotal: 0 }],
         total_amount: 0,
         discount: 0,
     });
@@ -159,13 +162,17 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                 value="جنسیت:"
                                 className="font-semibold"
                             />
-                            <TextInput
+                            <select
                                 value={data.gender}
                                 onChange={(e) =>
                                     setData('gender', e.target.value)
                                 }
-                                className="w-full rounded border px-2 py-1 text-right"
-                            />
+                                className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            >
+                                <option value="">-- جنسیت --</option>
+                                <option value="male">مذکر</option>
+                                <option value="female">مونث</option>
+                            </select>
                         </div>
                         <div className="flex flex-col">
                             <InputLabel
@@ -271,7 +278,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                                     type="number"
                                                     name="quantity"
                                                     min="1"
-                                                    className="w-full rounded border-none bg-transparent px-1 text-center text-xs font-semibold focus:outline-none"
+                                                    className="w-full border-none bg-transparent px-1 text-center text-xs font-semibold focus:outline-none"
                                                     value={item.quantity}
                                                     onChange={(e) =>
                                                         updateItem(
@@ -287,7 +294,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
                                                     type="number"
                                                     min="0"
                                                     name="price"
-                                                    className="w-full rounded border-none px-1 text-center text-xs font-semibold"
+                                                    className="w-full border-none px-1 text-center text-xs font-semibold"
                                                     value={item.unit_price}
                                                     onChange={(e) =>
                                                         updateItem(
@@ -317,21 +324,21 @@ export default function PharmacySaleInvoiceForm({ staff }) {
 
                         {/* تخفیف و جمع کل */}
                         <div className="mt-2 px-4 py-1 text-right font-semibold text-gray-800">
-                            جمع کل:{' '}
+                            جمع کل:
                             <span className="font-bold text-blue-700">
                                 {data.total_amount.toLocaleString()} افغانی
                             </span>
                             <br />
-                            تخفیف:{' '}
+                            تخفیف:
                             <input
                                 type="number"
                                 min="0"
-                                className="ml-2 w-20 rounded border px-1 text-right text-xs font-semibold"
+                                className="ml-2 w-20 border px-1 text-right text-xs font-semibold"
                                 value={data.discount}
                                 onChange={(e) => updateDiscount(e.target.value)}
                             />
                             <br />
-                            جمع پس از تخفیف:{' '}
+                            جمع پس از تخفیف:
                             <span className="font-bold text-blue-700">
                                 {totalAfterDiscount.toLocaleString()} افغانی
                             </span>
@@ -358,9 +365,6 @@ export default function PharmacySaleInvoiceForm({ staff }) {
 
                         {/* Buttons */}
                         <div className="mt-4 flex justify-end gap-2 px-4 py-1">
-                            <PrimaryButton type="button" onClick={addItem}>
-                                + افزودن دارو
-                            </PrimaryButton>
                             <PrimaryButton type="submit" disabled={processing}>
                                 ثبت و نمایش فاکتور
                             </PrimaryButton>
