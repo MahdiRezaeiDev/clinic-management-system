@@ -12,12 +12,12 @@ export default function Prescription({ sale }) {
     };
 
     const vitals = [
-        { label: 'BP', value: '120/80' },
-        { label: 'PR', value: '78' },
-        { label: 'RR', value: '78' },
-        { label: 'T', value: '37°C' },
-        { label: 'SPO2', value: '98%' },
-        { label: 'CC', value: '-' },
+        { label: 'BP', value: '' },
+        { label: 'PR', value: '' },
+        { label: 'RR', value: '' },
+        { label: 'T', value: '' },
+        { label: 'SPO2', value: '' },
+        { label: 'CC', value: '' },
     ];
 
     return (
@@ -114,10 +114,16 @@ export default function Prescription({ sale }) {
                                                     {item.quantity}
                                                 </td>
                                                 <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.unit_price} AFN
+                                                    {item.unit_price}
+                                                    <span className="pr-1 text-[8px]">
+                                                        افغانی
+                                                    </span>
                                                 </td>
                                                 <td className="border border-gray-300 px-3 py-2 text-gray-700">
-                                                    {item.subtotal} AFN
+                                                    {item.subtotal}
+                                                    <span className="pr-1 text-[8px]">
+                                                        افغانی
+                                                    </span>
                                                 </td>
                                             </tr>
                                         ))}
@@ -129,7 +135,10 @@ export default function Prescription({ sale }) {
                                                 مجموع کل:
                                             </td>
                                             <td className="border border-gray-300 px-3 py-2 text-gray-800">
-                                                {sale.total_amount} AFN
+                                                {sale.total_amount}
+                                                <span className="pr-1 text-[8px]">
+                                                    افغانی
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -137,22 +146,19 @@ export default function Prescription({ sale }) {
                             </div>
 
                             {/* Vitals */}
-                            <div className="w-40 overflow-hidden rounded-md border border-gray-300">
-                                <div className="bg-gray-100 py-2 text-center font-bold text-gray-700">
-                                    Vital Signs
+                            <div className="w-36 overflow-hidden">
+                                <div className="bg-gray-100 px-4 py-2 text-left font-bold text-gray-700">
+                                    Clinical Record
                                 </div>
                                 <table className="w-full text-xs">
                                     <tbody>
                                         {vitals.map((v, i) => (
-                                            <tr
-                                                key={i}
-                                                className="border-t border-gray-200"
-                                            >
-                                                <td className="px-3 py-1 text-right font-semibold text-gray-700">
-                                                    {v.label}
-                                                </td>
+                                            <tr key={i} className="">
                                                 <td className="px-2 py-1 text-left text-gray-600">
                                                     {v.value}
+                                                </td>
+                                                <td className="px-3 py-2 text-left font-semibold text-gray-700">
+                                                    :{v.label}
                                                 </td>
                                             </tr>
                                         ))}
