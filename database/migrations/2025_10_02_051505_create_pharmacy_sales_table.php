@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pharmacy_sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->nullable()->constrained('patients')->nullOnDelete();
+            $table->foreignId('doctor_id')->nullable()->constrained('staff')->nullOnDelete();
             $table->enum('sale_type', ['with_prescription', 'without_prescription']);
             $table->integer('discount')->nullable(0);
             $table->integer('total_amount');

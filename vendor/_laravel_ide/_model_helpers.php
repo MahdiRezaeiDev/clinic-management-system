@@ -1623,9 +1623,9 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property float $subtotal
-     * @property float $unit_price
-     * @property float $quantity
+     * @property mixed $subtotal
+     * @property mixed $unit_price
+     * @property mixed $quantity
      * @property string $drug_name
      * @property mixed $pharmacy_sale_id
      * @property int $id
