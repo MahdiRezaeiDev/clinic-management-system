@@ -1,9 +1,17 @@
-/* HTML: <div class="parallelogram"></div> */
 .parallelogram {
     --p: 50px;
     /* control the shape (can be percentage) */
-    height: 150px;
+    height: 130px;
     aspect-ratio: 3/2;
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
+}
+
+.parallelogram_footer {
+    --p: 30px;
+    /* control the slant amount */
+    height: 40px;
+    width: 93%;
+    /* take full width */
     clip-path: polygon(0 0, 100% 0, calc(100% - var(--p)) 100%, 0 100%);
 }
 
