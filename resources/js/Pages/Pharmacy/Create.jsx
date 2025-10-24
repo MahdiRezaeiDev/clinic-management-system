@@ -1,7 +1,9 @@
 import AfghanDatePicker from '@/Components/AfghanDatePicker';
-import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
-import log from '@/img/logo.jpg';
+import TextInput from '@/Components/TextInput';
+import '@/css/factor.css';
+import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Trash } from 'lucide-react';
@@ -9,8 +11,10 @@ import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
 
-export default function PharmacySaleInvoiceForm() {
+export default function PharmacySaleInvoiceForm({ staff }) {
     const { data, setData, post, processing, errors, reset } = useForm({
+        patient_name: '',
+        doctor_name: '',
         sale_type: 'cash',
         payment_method: 'cash',
         sale_date: new DateObject({
@@ -67,121 +71,151 @@ export default function PharmacySaleInvoiceForm() {
     const submitSale = (e) => {
         e.preventDefault();
         post(route('pharmacy.store'), {
-            onSuccess: () => {
-                reset();
-            },
+            onSuccess: () => reset(),
         });
     };
+
+    console.log(staff);
 
     return (
         <AuthenticatedLayout title="ثبت فروش دارو">
             <Head title="ثبت فروش دارو" />
 
-            <div className="m-6 mx-auto max-w-4xl font-sans print:bg-white">
+            <div className="relative m-6 mx-auto max-w-4xl bg-gray-100 font-sans print:bg-white">
+                {/* Watermark */}
+                <img
+                    src={logo}
+                    alt="Watermark"
+                    className="pointer-events-none absolute inset-0 m-auto h-64 w-64 select-none object-contain opacity-10"
+                    style={{
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }}
+                />
                 {/* Header */}
-                <div className="mx-3 flex flex-col justify-between rounded-t-xl bg-teal-700 p-6 text-white shadow-sm print:mb-4 print:rounded-none print:bg-gray-200 print:text-gray-700">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <img
-                                src={log}
-                                alt="Logo"
-                                className="h-16 w-16 rounded-full border border-teal-700 bg-white shadow-sm"
+                <header className="relative bg-teal-700">
+                    <div className="flex justify-between">
+                        <div className="w-1/2 p-4 text-right text-white">
+                            <h1 className="text-xl font-bold">
+                                کلینیک ۲۴ ساعته کودک و مادر
+                            </h1>
+                            <p className="text-xs">
+                                مرکز صحی جامع برای مراقبت از اطفال و مادران
+                            </p>
+                        </div>
+                        <div className="parallelogram w-1/2 bg-teal-600 p-4 text-left text-white">
+                            <h1 className="text-xl font-bold">
+                                Mother & Child Clinic
+                            </h1>
+                            <p className="text-xs">
+                                A comprehensive Health Center for Children and
+                                Mothers
+                            </p>
+                        </div>
+                    </div>
+                </header>
+                {/* information section */}
+                <section className="border-t-8 border-teal-700 py-4">
+                    <p className="text-center text-xs text-gray-700">
+                        <span className="pl-2 font-semibold">
+                            داکتر نادر پاینده:
+                        </span>
+                        متخصص امراض داخله و جراحی اطفال
+                    </p>
+                    <p className="text-center text-xs text-gray-700">
+                        <span className="pl-2 font-semibold">
+                            داکتر محمد حسین الماس:
+                        </span>
+                        معالج امراض داخله عمومی و اطفال
+                    </p>
+                    <p className="text-center text-xs text-gray-700">
+                        <span className="pl-2 font-semibold">
+                            داکتر الیاس عمران:
+                        </span>
+                        معالج امراض داخله عمومی و اعصاب و روان
+                    </p>
+                </section>
+
+                {/* Patient Info */}
+                <section className="border-b-4 border-dashed border-gray-400 px-4 py-3">
+                    <div className="grid grid-cols-5 gap-4 text-sm">
+                        <div className="flex flex-col">
+                            <InputLabel
+                                value="نام بیمار:"
+                                className="font-semibold"
                             />
-                            <div>
-                                <h1 className="text-2xl font-bold leading-tight">
-                                    کلینیک صحت مادر
-                                </h1>
-                                <p className="text-sm opacity-80">
-                                    نسخه فروش دارو
-                                </p>
-                            </div>
+                            <TextInput
+                                value={data.patient_name}
+                                onChange={(e) =>
+                                    setData('patient_name', e.target.value)
+                                }
+                                className="w-full rounded border px-2 py-1 text-right"
+                            />
                         </div>
-                        <div className="flex items-center text-right">
-                            <p className="text-sm">تاریخ:</p>
-                            <span className="px-2 text-sm">
-                                {data.sale_date}
-                            </span>
+                        <div className="flex flex-col">
+                            <InputLabel value="سن:" className="font-semibold" />
+                            <TextInput
+                                value={data.age}
+                                onChange={(e) => setData('age', e.target.value)}
+                                className="w-full rounded border px-2 py-1 text-right"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <InputLabel
+                                value="جنسیت:"
+                                className="font-semibold"
+                            />
+                            <TextInput
+                                value={data.gender}
+                                onChange={(e) =>
+                                    setData('gender', e.target.value)
+                                }
+                                className="w-full rounded border px-2 py-1 text-right"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <InputLabel
+                                value="داکتر معالج:"
+                                className="font-semibold"
+                            />
+                            <select
+                                value={data.doctor_name}
+                                onChange={(e) =>
+                                    setData('doctor_name', e.target.value)
+                                }
+                                className="w-full rounded-md border border-gray-300 px-8 py-2 text-right text-xs shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            >
+                                <option value="">-- انتخاب داکتر --</option>
+                                {staff.map((member) => (
+                                    <option key={member.id} value={member.id}>
+                                        {member.full_name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="flex flex-col">
+                            <InputLabel
+                                value="تاریخ:"
+                                className="font-semibold"
+                            />
+                            <AfghanDatePicker
+                                value={data.sale_date}
+                                onChange={(date) =>
+                                    setData(
+                                        'sale_date',
+                                        date.format('YYYY/MM/DD'),
+                                    )
+                                }
+                                className="w-full rounded border px-2 py-1 text-center"
+                            />
                         </div>
                     </div>
-                </div>
-
-                {/* Sale Info */}
-                <div className="mx-3 border-x-4 border-teal-700 bg-white/80 p-3 text-sm shadow-sm">
-                    <div>
-                        <h2 className="mb-2 border-b pb-1 font-semibold text-gray-700">
-                            اطلاعات فاکتور
-                        </h2>
-
-                        <table className="w-full">
-                            <tbody>
-                                <tr>
-                                    <td className="whitespace-nowrap border-2 border-l-0 px-2 font-medium text-gray-700">
-                                        قیمت کل:
-                                    </td>
-                                    <td className="border-2">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            className="w-full border-none p-2 text-sm"
-                                            value={data.total_amount}
-                                            onChange={(e) =>
-                                                setData(
-                                                    'total_amount',
-                                                    e.target.value,
-                                                )
-                                            }
-                                        />
-                                        <InputError
-                                            message={errors.total_amount}
-                                            className="mt-1 text-xs text-red-500"
-                                        />
-                                    </td>
-                                    <td className="whitespace-nowrap border-2 border-x-0 px-2 font-medium text-gray-700">
-                                        تخفیف :
-                                    </td>
-                                    <td className="border-2">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            className="w-full border-none p-2 text-sm"
-                                            value={data.discount}
-                                            onChange={(e) =>
-                                                updateDiscount(e.target.value)
-                                            }
-                                        />
-                                        <InputError
-                                            message={errors.discount}
-                                            className="mt-1 text-xs text-red-500"
-                                        />
-                                    </td>
-                                    <td className="whitespace-nowrap border-2 border-x-0 px-2 font-medium text-gray-700">
-                                        تاریخ فروش:
-                                    </td>
-                                    <td className="border-2">
-                                        <AfghanDatePicker
-                                            value={data.sale_date}
-                                            onChange={(v) =>
-                                                setData(
-                                                    'sale_date',
-                                                    v.format('YYYY/MM/DD'),
-                                                )
-                                            }
-                                            className="rounded-md p-2 text-center text-sm"
-                                        />
-                                        <InputError
-                                            message={errors.sale_date}
-                                            className="mt-1 text-xs text-red-500"
-                                        />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                </section>
 
                 {/* Items Table */}
                 <form onSubmit={submitSale}>
-                    <div className="mx-3 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm">
+                    <div className="mx-3 mt-4 overflow-hidden rounded-b-xl border-x-4 border-b-4 border-teal-700 shadow-sm print:border-0">
                         <table className="min-w-full border-collapse text-sm">
                             <thead className="bg-teal-700 text-white">
                                 <tr>
@@ -216,7 +250,11 @@ export default function PharmacySaleInvoiceForm() {
                                     data.items.map((item, idx) => (
                                         <tr
                                             key={idx}
-                                            className={`${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} transition-colors hover:bg-blue-50/60`}
+                                            className={`${
+                                                idx % 2 === 0
+                                                    ? 'bg-white'
+                                                    : 'bg-gray-50'
+                                            } transition-colors hover:bg-blue-50/60`}
                                         >
                                             <td className="p-2 text-right">
                                                 {idx + 1}
@@ -234,14 +272,6 @@ export default function PharmacySaleInvoiceForm() {
                                                         )
                                                     }
                                                 />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.drug_name`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
-                                                />
                                             </td>
                                             <td className="p-2 text-right">
                                                 <input
@@ -257,14 +287,6 @@ export default function PharmacySaleInvoiceForm() {
                                                         )
                                                     }
                                                 />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.quantity`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
-                                                />
                                             </td>
                                             <td className="p-2 text-right">
                                                 <input
@@ -279,14 +301,6 @@ export default function PharmacySaleInvoiceForm() {
                                                             e.target.value,
                                                         )
                                                     }
-                                                />
-                                                <InputError
-                                                    message={
-                                                        errors[
-                                                            `items.${idx}.unit_price`
-                                                        ]
-                                                    }
-                                                    className="mt-1 text-xs text-red-500"
                                                 />
                                             </td>
                                             <td className="p-2 text-right font-medium">
@@ -306,22 +320,49 @@ export default function PharmacySaleInvoiceForm() {
                             </tbody>
                         </table>
 
-                        {Object.keys(errors).length > 0 && (
-                            <div className="mb-2 rounded-md bg-red-100 p-2 text-xs text-red-600">
-                                {Object.values(errors).map((error, idx) => (
-                                    <div key={idx}>- {error}</div>
-                                ))}
-                            </div>
-                        )}
-
+                        {/* تخفیف و جمع کل */}
                         <div className="mt-2 px-4 py-1 text-right font-semibold text-gray-800">
-                            جمع کل پس از تخفیف:{' '}
+                            جمع کل:{' '}
+                            <span className="font-bold text-blue-700">
+                                {data.total_amount.toLocaleString()} افغانی
+                            </span>
+                            <br />
+                            تخفیف:{' '}
+                            <input
+                                type="number"
+                                min="0"
+                                className="ml-2 w-20 rounded border px-1 text-right text-xs font-semibold"
+                                value={data.discount}
+                                onChange={(e) => updateDiscount(e.target.value)}
+                            />
+                            <br />
+                            جمع پس از تخفیف:{' '}
                             <span className="font-bold text-blue-700">
                                 {totalAfterDiscount.toLocaleString()} افغانی
                             </span>
                         </div>
 
-                        <div className="mt-2 flex justify-end gap-2 px-4 py-1">
+                        {/* Doctor Notes */}
+                        <div className="mt-4 border-t border-gray-300 px-4 py-2">
+                            <h3 className="mb-2 text-sm font-bold text-teal-700">
+                                توصیه‌های پزشک:
+                            </h3>
+                            <ul className="list-inside list-disc space-y-1 text-[11px] text-gray-700">
+                                <li>
+                                    مصرف داروها را طبق دستور پزشک ادامه دهید.
+                                </li>
+                                <li>
+                                    در صورت بروز حساسیت یا تب بالا، مراجعه کنید.
+                                </li>
+                                <li>
+                                    استراحت کافی و تغذیه سالم برای کودک رعایت
+                                    شود.
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Buttons */}
+                        <div className="mt-4 flex justify-end gap-2 px-4 py-1">
                             <PrimaryButton type="button" onClick={addItem}>
                                 + افزودن دارو
                             </PrimaryButton>

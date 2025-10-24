@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PharmacySale;
 use App\Models\PharmacySaleItem;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -32,7 +33,10 @@ class PharmacyController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Pharmacy/Create');
+        $staff = Staff::whereIn('role', ['doctor', 'lab', 'dentist', 'emergency'])->get();
+        return Inertia::render('Pharmacy/Create', [
+            'staff' => $staff
+        ]);
     }
 
     public function store(Request $request)
