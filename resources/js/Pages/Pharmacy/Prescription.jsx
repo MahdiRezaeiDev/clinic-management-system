@@ -26,7 +26,7 @@ export default function ModernPrescriptionAfghanistanV6() {
         name: 'سارا احمدی',
         age: '۵ سال',
         date: '۱۴۰۴/۰۸/۰۱',
-        prescriptionNo: '۰۰۱۲۳۴',
+        prescriptionNo: '۱',
     };
 
     const vitals = [
@@ -66,21 +66,21 @@ export default function ModernPrescriptionAfghanistanV6() {
                 </div>
 
                 {/* Patient Info in one row */}
-                <div className="grid grid-cols-4 gap-4 border-b border-gray-200 bg-gray-50 px-8 py-4 text-sm text-gray-700">
+                <div className="grid grid-cols-4 gap-4 border-b border-gray-200 bg-gray-50 px-4 py-4 text-sm text-gray-700">
                     <div>
-                        <span className="font-semibold">نام بیمار:</span>{' '}
+                        <span className="font-semibold">نام بیمار:</span>
                         {patientInfo.name}
                     </div>
                     <div>
-                        <span className="font-semibold">سن:</span>{' '}
+                        <span className="font-semibold">سن:</span>
                         {patientInfo.age}
                     </div>
                     <div>
-                        <span className="font-semibold">تاریخ:</span>{' '}
+                        <span className="font-semibold">تاریخ:</span>
                         {patientInfo.date}
                     </div>
                     <div>
-                        <span className="font-semibold">شماره نسخه:</span>{' '}
+                        <span className="font-semibold">شماره نسخه:</span>
                         {patientInfo.prescriptionNo}
                     </div>
                 </div>
