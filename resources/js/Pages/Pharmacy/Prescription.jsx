@@ -62,6 +62,22 @@ export default function Prescription({ sale }) {
                                 </p>
                             </div>
                         </div>
+                        <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 text-xs text-white">
+                            <div>
+                                <td className="pl-2 font-semibold">
+                                    نسخه شماره:
+                                </td>
+                                <td>{sale.id}</td>
+                            </div>
+                            <div>
+                                <td className="pl-2 font-semibold">تاریخ:</td>
+                                <td>
+                                    {moment(sale.created_at).format(
+                                        'jYYYY/jMM/jDD',
+                                    )}
+                                </td>
+                            </div>
+                        </div>
                     </header>
 
                     {/* information section */}
@@ -92,7 +108,7 @@ export default function Prescription({ sale }) {
                         <div className="grid grid-cols-4 gap-2 text-[12px]">
                             <p>
                                 <span className="pl-2 font-semibold">
-                                    نام بیمار:
+                                    نام مریض:
                                 </span>
                                 {sale.patient.full_name}
                             </p>
@@ -100,19 +116,17 @@ export default function Prescription({ sale }) {
                                 <span className="pl-2 font-semibold">سن:</span>
                                 {sale.patient.age}
                             </p>
-                            <p className="text-left">
+                            <p>
                                 <span className="pl-2 font-semibold">
-                                    تاریخ:
+                                    جنسیت:
                                 </span>
-                                {moment(sale.created_at).format(
-                                    'jYYYY/jMM/jDD',
-                                )}
+                                {sale.patient.gender === 'male'
+                                    ? 'مذکر'
+                                    : 'مونث'}
                             </p>
-                            <p className="text-left">
-                                <span className="pl-2 font-semibold">
-                                    نسخه شماره:
-                                </span>
-                                {sale.id}
+                            <p>
+                                <span className="pl-2 font-semibold">سن:</span>
+                                {sale.patient.age}
                             </p>
                         </div>
                     </section>

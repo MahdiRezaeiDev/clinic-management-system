@@ -143,6 +143,11 @@ class PharmacyController extends Controller
     public function show(PharmacySale $pharmacy)
     {
         $sale = PharmacySale::with('items')->with('doctor')->with('patient')->findOrFail($pharmacy->id);
+
+        if (count($sale->items) === 0) {
+            return redirect()->route('pharmacy.index')
+                ->with('error', 'فروش مدنظر شما دارای هیچ دارویی نمی‌باشد.');
+        }
         return Inertia::render('Pharmacy/Prescription', [
             'sale' => $sale
         ]);
