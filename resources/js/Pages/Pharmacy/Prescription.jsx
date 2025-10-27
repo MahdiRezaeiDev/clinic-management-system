@@ -351,7 +351,7 @@ export default function Prescription({ sale }) {
                         </div>
                         <div className="flex text-xs text-white">
                             <Phone className="ml-2 inline h-4 w-4 text-white" />
-                            <p>۰۷۷۱۱۶۱۶۶۲۵</p>-<p>۰۷۴۹۶۵۹۰۱۳</p>
+                            <p>۰۷۷۱۱۶۱۶۶۲۵</p> - <p>۰۷۴۹۶۵۹۰۱۳</p>
                         </div>
                     </footer>
                 </div>

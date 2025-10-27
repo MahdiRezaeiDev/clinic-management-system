@@ -148,7 +148,7 @@ class PharmacyController extends Controller
             return redirect()->route('pharmacy.index')
                 ->with('error', 'فروش مدنظر شما دارای هیچ دارویی نمی‌باشد.');
         }
-        return Inertia::render('Pharmacy/Prescription', [
+        return Inertia::render('Pharmacy/Dental', [
             'sale' => $sale
         ]);
     }
