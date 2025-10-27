@@ -18,8 +18,8 @@ export default function Prescription({ sale }) {
     const lastName = sale.doctor.full_name?.trim().split(' ').pop();
 
     return (
-        <AuthenticatedLayout title="نسخه مدرن افغانستان V6">
-            <Head title="نسخه مدرن افغانستان V6" />
+        <AuthenticatedLayout title="نسخه بیمار">
+            <Head title="نسخه بیمار" />
             <article
                 dir="rtl"
                 className="flex items-center justify-center bg-gray-50 py-10"
