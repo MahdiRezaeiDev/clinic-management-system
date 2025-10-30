@@ -129,6 +129,12 @@ export default function Index({
         });
     };
 
+    let totalExpense = 0;
+
+    for (const expense of expenses.data) {
+        totalExpense += expense.amount;
+    }
+
     return (
         <AuthenticatedLayout title="هزینه‌ها">
             <Head title="هزینه‌ها" />
@@ -199,6 +205,13 @@ export default function Index({
                         </DangerButton>
                     </div>
                 </form>
+                <span className="mx-4 inline w-96 bg-sky-700 px-4 py-2 text-xs text-white">
+                    مجموع عواید حاصله عبارت است از
+                    <span className="px-1 font-semibold text-green-600">
+                        {totalExpense}
+                    </span>
+                    افغانی.
+                </span>
 
                 {/* Table */}
                 <div className="overflow-auto px-4 py-6">
