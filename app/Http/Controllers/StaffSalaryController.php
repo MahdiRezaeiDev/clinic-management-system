@@ -120,8 +120,7 @@ class StaffSalaryController extends Controller
             'base_salary' => 'required|numeric|min:0',
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
-            'payment_date' => 'required|string', // تاریخ شمسی (فرم)
-            'payment_date_gregorian' => 'required|date_format:Y-m-d', // تاریخ میلادی
+            'payment_date' => 'required|string',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'array',
         ]);
@@ -142,6 +141,18 @@ class StaffSalaryController extends Controller
             ])->withInput();
         }
 
+        // 🔄 جدا کردن اضافه‌کاری‌هایی که دیگر انتخاب نشده‌اند
+        Overtime::where('salary_id', $salary->id)
+            ->whereNotIn('id', $request->selectedOvertimes ?? [])
+            ->update(['salary_id' => null, 'status' => 0]);
+
+
+        // 🔗 لینک کردن اضافه‌کاری‌های انتخاب‌شده
+        if (!empty($request->selectedOvertimes)) {
+            Overtime::whereIn('id', $request->selectedOvertimes)
+                ->update(['salary_id' => $salary->id, 'status' => 1]);
+        }
+
         // ✏️ بروزرسانی اطلاعات حقوق
         $salary->update([
             'base_salary' => $request->base_salary,
@@ -152,17 +163,6 @@ class StaffSalaryController extends Controller
             'payment_date' => $request->payment_date_gregorian, // تاریخ میلادی
             'description' => $request->description,
         ]);
-
-        // 🔄 جدا کردن اضافه‌کاری‌هایی که دیگر انتخاب نشده‌اند
-        Overtime::where('salary_id', $salary->id)
-            ->whereNotIn('id', $request->selectedOvertimes ?? [])
-            ->update(['salary_id' => null, 'status' => 0]);
-
-        // 🔗 لینک کردن اضافه‌کاری‌های انتخاب‌شده
-        if (!empty($request->selectedOvertimes)) {
-            Overtime::whereIn('id', $request->selectedOvertimes)
-                ->update(['salary_id' => $salary->id, 'status' => 1]);
-        }
 
         return redirect()
             ->route('staffs.salary.index', $staff->id)
