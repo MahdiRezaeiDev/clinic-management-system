@@ -1,17 +1,15 @@
-// import '@/css/factor.css';
+import '@/css/factor.css';
 import tooth from '@/img/tooth.svg';
 import toothBlack from '@/img/toothBlack.svg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
 import moment from 'moment-jalaali';
 export default function Dental({ sale }) {
     moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
 
     return (
         <AuthenticatedLayout title="نسخه دندان پزشک">
-            <Head title="نسخه دندان پزشک" />
             <div
-                className="flex h-[148mm] w-[210mm] overflow-hidden rounded-lg bg-white shadow-lg"
+                className="print-wrapper A5_landscape flex h-[148mm] w-[210mm] overflow-hidden rounded-lg bg-white shadow-lg"
                 dir="rtl"
                 style={{
                     width: '210mm',
@@ -31,13 +29,13 @@ export default function Dental({ sale }) {
                     }}
                 >
                     {/* Top-left small fields */}
-                    <div className="absolute right-6 top-6 text-right">
-                        <div className="mb-1 text-gray-900">
+                    <div className="absolute left-0 right-0 top-0 bg-teal-400 px-6 pt-4 text-right">
+                        <div className="text-gray-900">
                             <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold">
+                                <span className="text-xs font-semibold">
                                     تاریخ :
                                 </span>
-                                <span className="inline-block text-sm">
+                                <span className="inline-block text-xs">
                                     {moment(sale.sale_date).format(
                                         'jYYYY/jMM/jDD',
                                     )}
@@ -46,13 +44,44 @@ export default function Dental({ sale }) {
                         </div>
 
                         <div className="text-gray-900">
+                            <table className="w-full text-xs">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span className="font-semibold">
+                                                مریض :
+                                            </span>
+                                            <span className="px-1">
+                                                {sale.patient.full_name}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="text-sm font-semibold">
+                                                سن :
+                                            </span>
+                                            <span className="px-1">
+                                                {sale.patient.age}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="font-semibold">
+                                                جنسیت :
+                                            </span>
+                                            <span className="px-1">
+                                                {sale.patient.gender == 'male'
+                                                    ? 'مذکر'
+                                                    : 'مونث'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold">
-                                    مریض :
-                                </span>
-                                <span className="inline-block text-sm">
-                                    {sale.patient.full_name}
-                                </span>
+                                <div>
+                                    <span className="inline-block text-sm"></span>
+                                </div>
+                                <div></div>
+                                <div></div>
                             </div>
                         </div>
                     </div>
@@ -119,7 +148,7 @@ export default function Dental({ sale }) {
                                 </tbody>
                             </table>
                             {/* Doctor Notes */}
-                            <div className="mt-6 px-2">
+                            <div className="absolute bottom-6 right-6 mt-6 px-2">
                                 <h3 className="mb-2 text-sm font-bold text-teal-700">
                                     توصیه‌های پزشک:
                                 </h3>
@@ -145,7 +174,7 @@ export default function Dental({ sale }) {
                 <div className="flex w-2/6 flex-col items-center justify-between border-l border-gray-200 bg-white p-6">
                     <div className="w-full text-center">
                         {/* Logo area */}
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center border-b border-dashed border-gray-200 pb-6">
                             <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-teal-50">
                                 <img
                                     className="h-10 w-10"
@@ -154,25 +183,29 @@ export default function Dental({ sale }) {
                                 />
                             </div>
 
-                            <h1 className="font-nastaliq text-7xl font-extrabold text-gray-800">
-                                دکتر علی آقا اشرفی
+                            <h1 className="font-nastaliq text-6xl font-extrabold text-gray-800">
+                                داکتر علی آغا اشرفی
                             </h1>
                             <p className="text-sm text-teal-600">
-                                Dr. Aliaqa Ashrafi
+                                Dr. Aliaqha Ashrafi
                             </p>
-                            <p className="mt-3 text-sm text-gray-500">
-                                جراح و متخصص دندانپزشک
+                            <p className="text-xs text-gray-500">
+                                DMD - ستوماتولوگ
+                            </p>
+                            <p className="mt-3 text-xs text-gray-500">
+                                معالج دندان و امراض جوف دهن
                             </p>
                         </div>
 
                         {/* Divider */}
-                        <div className="mt-6 border-t border-dashed border-gray-200 pt-4 text-sm text-teal-600">
-                            <p>پذیرش دوشنبه، چهارشنبه</p>
-                            <p>از ساعت 8 الی 20</p>
+                        <div className="mt-14 pt-4 text-sm text-teal-600">
+                            <p className="font-nastaliq text-4xl">
+                                « ما به زیبایی لبخند شما می اندیشیم »
+                            </p>
                         </div>
 
                         {/* Contact */}
-                        <div className="mt-32 text-sm text-gray-700">
+                        <div className="mt-20 text-sm text-gray-700">
                             <p className="mt-7 text-xs leading-relaxed text-gray-500">
                                 دشت برچی، پل خشک، حمام جنرال حیدر، سرک زیارت
                                 قرآن، کلینیک کودک و مادر
@@ -185,7 +218,7 @@ export default function Dental({ sale }) {
                         <hr className="my-2" />
                         <div className="flex items-center justify-between">
                             <p className="flex items-center gap-1">
-                                <span> ۰۷۷۱۱۶۱۶۶۲۵</span>
+                                <span> 0708708405</span>
                                 <svg
                                     fill="#000000"
                                     width="18px"
@@ -208,7 +241,7 @@ export default function Dental({ sale }) {
                                 </svg>
                             </p>
                             <p className="flex items-center gap-1">
-                                <span>۰۷۴۹۶۵۹۰۱۳</span>
+                                <span>0729135842</span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     aria-label="WhatsApp"

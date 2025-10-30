@@ -1,4 +1,4 @@
-import '@/css/factor.css';
+import '@/css/factorPortrait.css';
 import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
@@ -22,9 +22,9 @@ export default function Prescription({ sale }) {
             <Head title="نسخه بیمار" />
             <article
                 dir="rtl"
-                className="flex items-center justify-center bg-gray-50 py-10"
+                className="print-wrapper relative mx-auto overflow-hidden bg-white"
             >
-                <div className="relative h-[210mm] w-[148mm] overflow-hidden bg-white shadow-md">
+                <div className="relative mx-auto h-[210mm] w-[148mm] overflow-hidden bg-white shadow-md">
                     {/* Watermark */}
                     <img
                         src={logo}
