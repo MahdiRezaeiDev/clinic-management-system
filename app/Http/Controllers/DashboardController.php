@@ -68,7 +68,7 @@ class DashboardController extends Controller
             ];
 
             // آمار بازدیدها
-            $visitCount = Visit::whereBetween('created_at', [$startGregorian, $endGregorian])->count();
+            $visitCount = Visit::whereBetween('visit_date', [$startGregorian, $endGregorian])->count();
             $visitMonthlyStats[] = [
                 'visits' => $visitCount
             ];
