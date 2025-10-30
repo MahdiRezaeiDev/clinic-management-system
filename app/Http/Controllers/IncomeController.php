@@ -6,7 +6,6 @@ use App\Models\Income;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Morilog\Jalali\Jalalian;
 
 class IncomeController extends Controller
 {
@@ -33,9 +32,7 @@ class IncomeController extends Controller
         $incomes = $query->latest()->paginate(31)->withQueryString();
 
         $categories = [
-            'visit' => 'ویزیت',
             'lab' => 'لابراتوار',
-            'dental' => 'دندان‌پزشکی',
             'emergency' => 'ایمرجنسی',
             'gynecology' => 'نسایی',
             'inpatient' => 'بستری',
@@ -65,7 +62,7 @@ class IncomeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient,other',
+            'category' => 'required|in:lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
@@ -99,7 +96,7 @@ class IncomeController extends Controller
     public function update(Request $request, Income $income)
     {
         $request->validate([
-            'category' => 'required|in:visit,lab,dental,emergency,gynecology,inpatient,other',
+            'category' => 'required|in:lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'income_date' => 'required|date',
