@@ -55,6 +55,11 @@ export default function Index({ visits, doctors, filters }) {
         reset();
     };
 
+    let totalVisit = 0;
+    for (const visit of visits.data) {
+        totalVisit += visit.fee;
+    }
+
     // Filter states
     const [doctor, setDoctor] = useState(filters.doctor || '');
     const [startDate, setStartDate] = useState(filters.start_date || '');
@@ -149,6 +154,14 @@ export default function Index({ visits, doctors, filters }) {
                                 </DangerButton>
                             </div>
                         </form>
+
+                        <span className="mx-4 my-4 inline w-96 bg-sky-700 px-4 py-2 text-xs text-white">
+                            مجموع عواید حاصله عبارت است از
+                            <span className="px-1 font-semibold text-green-600">
+                                {totalVisit}
+                            </span>
+                            افغانی.
+                        </span>
 
                         {/* Table */}
                         <div className="block w-full overflow-auto">

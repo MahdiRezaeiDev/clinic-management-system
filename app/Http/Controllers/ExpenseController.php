@@ -37,6 +37,7 @@ class ExpenseController extends Controller
             'kitchen' => 'آشپزخانه',
             'repair' => 'تعمیرات',
             'furniture' => 'فرنیچر',
+            'ads' => 'نشرات',
             'other' => 'سایر',
         ];
 
@@ -63,7 +64,7 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category' => 'required|in:building,kitchen,repair,furniture,other',
+            'category' => 'required|in:building,kitchen,repair,furniture,other,ads',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'expense_date' => 'required|date',
@@ -102,7 +103,7 @@ class ExpenseController extends Controller
         }
 
         $request->validate([
-            'category' => 'required|in:building,kitchen,repair,furniture,other',
+            'category' => 'required|in:building,kitchen,repair,furniture,other,ads',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
             'expense_date' => 'required|date',
