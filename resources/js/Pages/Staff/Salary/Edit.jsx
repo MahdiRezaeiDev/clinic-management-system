@@ -133,11 +133,11 @@ export default function Edit({ staff, salary, overTimes }) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-teal-200">
-                                {overTimes.map((ot) => (
+                                {overTimes.map((overTime) => (
                                     <tr
-                                        key={ot.id}
+                                        key={overTime.id}
                                         className={`${
-                                            ot.salary_id === salary.id
+                                            overTime.salary_id === salary.id
                                                 ? 'bg-green-50'
                                                 : ''
                                         } hover:bg-teal-50`}
@@ -145,24 +145,26 @@ export default function Edit({ staff, salary, overTimes }) {
                                         <td className="px-4 py-2 text-sm">
                                             <Checkbox
                                                 checked={data.selectedOvertimes.includes(
-                                                    ot.id,
+                                                    overTime.id,
                                                 )}
                                                 onChange={() =>
                                                     toggleOvertime(
-                                                        ot.id,
-                                                        ot.total,
+                                                        overTime.id,
+                                                        overTime.total,
                                                     )
                                                 }
                                             />
                                         </td>
                                         <td className="px-4 py-2 text-sm">
-                                            {ot.date}
+                                            {moment(overTime.date).format(
+                                                'jYYYY/jMM/jDD',
+                                            )}
                                         </td>
                                         <td className="px-4 py-2 text-sm">
-                                            {ot.total}
+                                            {overTime.total}
                                         </td>
                                         <td className="px-4 py-2 text-sm">
-                                            {ot.description}
+                                            {overTime.description}
                                         </td>
                                     </tr>
                                 ))}

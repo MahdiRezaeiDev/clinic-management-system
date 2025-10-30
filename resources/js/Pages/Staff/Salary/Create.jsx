@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import moment from 'moment-jalaali';
 import DateObject from 'react-date-object';
 import persian from 'react-date-object/calendars/persian';
 import persian_en from 'react-date-object/locales/persian_en';
@@ -138,7 +139,9 @@ export default function Create({ staff, unpaidOvertimes }) {
                                                 />
                                             </td>
                                             <td className="px-4 py-2 text-sm">
-                                                {overTime.date}
+                                                {moment(overTime.date).format(
+                                                    'jYYYY/jMM/jDD',
+                                                )}
                                             </td>
                                             <td className="px-4 py-2 text-sm">
                                                 {overTime.total}
