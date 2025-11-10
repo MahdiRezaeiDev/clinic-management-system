@@ -29,6 +29,7 @@ class IncomeController extends Controller
             $query->whereDate('income_date', '<=', jalaliToGregorian($request->end_date));
         }
 
+        $totalIncomes = (clone $query)->sum('amount');
         $incomes = $query->latest()->paginate(31)->withQueryString();
 
         $categories = [
@@ -50,6 +51,7 @@ class IncomeController extends Controller
             'incomes' => $incomes,
             'categories' => $categories,
             'paymentMethods' => $paymentMethods,
+            'totalIncomes' => $totalIncomes,
             'filters' => [
                 'search' => $request->search ?? '',
                 'category' => $request->category ?? '',

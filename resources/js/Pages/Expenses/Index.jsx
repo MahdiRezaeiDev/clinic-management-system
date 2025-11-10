@@ -16,6 +16,7 @@ export default function Index({
     categories,
     paymentMethods,
     filters,
+    totalExpense,
 }) {
     const { flash } = usePage().props;
     const [showFlash, setShowFlash] = useState(false);
@@ -128,12 +129,6 @@ export default function Index({
             onSuccess: closeModals,
         });
     };
-
-    let totalExpense = 0;
-
-    for (const expense of expenses.data) {
-        totalExpense += expense.amount;
-    }
 
     return (
         <AuthenticatedLayout title="هزینه‌ها">

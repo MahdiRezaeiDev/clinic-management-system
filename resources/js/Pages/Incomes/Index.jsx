@@ -19,6 +19,7 @@ export default function Index({
     categories,
     paymentMethods,
     filters,
+    totalIncomes,
 }) {
     const { flash } = usePage().props;
     const [showToast, setShowToast] = useState(false);
@@ -134,11 +135,6 @@ export default function Index({
         });
     };
 
-    let TotalIncome = 0;
-    for (const income of incomes.data) {
-        TotalIncome += income.amount;
-    }
-
     return (
         <AuthenticatedLayout title="مدیریت عایدات بیماران">
             <Head title="مدیریت عایدات بیماران" />
@@ -213,7 +209,7 @@ export default function Index({
                     <span className="mx-4 inline w-96 bg-sky-700 px-4 py-2 text-xs text-white">
                         مجموع عواید حاصله عبارت است از
                         <span className="px-1 font-semibold text-green-600">
-                            {TotalIncome}
+                            {totalIncomes}
                         </span>
                         افغانی.
                     </span>

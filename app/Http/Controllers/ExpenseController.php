@@ -30,6 +30,8 @@ class ExpenseController extends Controller
             $query->whereDate('expense_date', '<=', jalaliToGregorian($request->end_date));
         }
 
+        $totalExpense = (clone $query)->sum('amount');
+
         $expenses = $query->latest('created_at')->paginate(31)->withQueryString();
 
         $categories = [
@@ -52,6 +54,7 @@ class ExpenseController extends Controller
             'expenses' => $expenses,
             'categories' => $categories,
             'paymentMethods' => $paymentMethods,
+            'totalExpense' => $totalExpense,
             'filters' => [
                 'search' => $request->search ?? '',
                 'category' => $request->category ?? '',
