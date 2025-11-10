@@ -15,7 +15,11 @@ export default function Prescription({ sale }) {
         { label: 'Diagnosis', value: '' },
     ];
 
-    const lastName = sale.doctor.full_name?.trim().split(' ').pop();
+    let lastName = '';
+
+    if (sale.doctor) {
+        lastName = sale.doctor.full_name?.trim().split(' ').pop();
+    }
 
     return (
         <AuthenticatedLayout title="نسخه بیمار">
@@ -85,7 +89,6 @@ export default function Prescription({ sale }) {
                         </p>
                         <p className="text-center text-xs text-gray-700">
                             <span className="pl-2 font-semibold">
-                                {' '}
                                 داکتر محمد حسین الماس:
                             </span>
                             معالج امراض داخله عمومی و اطفال
@@ -109,19 +112,21 @@ export default function Prescription({ sale }) {
                         <div className="grid grid-cols-4 gap-2 text-[12px]">
                             <p>
                                 <span className="pl-2 font-semibold">نام:</span>
-                                {sale.patient.full_name}
+                                {sale.patient ? sale.full_name : ''}
                             </p>
                             <p>
                                 <span className="pl-2 font-semibold">سن:</span>
-                                {sale.patient.age}
+                                {sale.patient ? sale.patient.age : ''}
                             </p>
                             <p>
                                 <span className="pl-2 font-semibold">
                                     جنسیت:
                                 </span>
-                                {sale.patient.gender === 'male'
-                                    ? 'مذکر'
-                                    : 'مونث'}
+                                {sale.patient
+                                    ? sale.patient.gender === 'male'
+                                        ? 'مذکر'
+                                        : 'مونث'
+                                    : ''}
                             </p>
                             <p>
                                 <span className="pl-2 font-semibold">
@@ -147,7 +152,7 @@ export default function Prescription({ sale }) {
                                                 تعداد
                                             </th>
                                             <th className="border border-gray-300 px-3 py-2 text-right">
-                                                قیمت واحد
+                                                فی
                                             </th>
                                             <th className="border border-gray-300 px-3 py-2 text-right">
                                                 جمع کل
@@ -157,98 +162,6 @@ export default function Prescription({ sale }) {
                                     <tbody>
                                         {sale.items.map((item, i) => (
                                             <>
-                                                <tr
-                                                    key={i}
-                                                    className="even:bg-gray-50"
-                                                >
-                                                    <td className="border border-gray-300 px-3 py-1 font-semibold text-gray-800">
-                                                        {item.drug_name}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.quantity}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.unit_price}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.subtotal}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    key={i}
-                                                    className="even:bg-gray-50"
-                                                >
-                                                    <td className="border border-gray-300 px-3 py-1 font-semibold text-gray-800">
-                                                        {item.drug_name}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.quantity}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.unit_price}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.subtotal}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    key={i}
-                                                    className="even:bg-gray-50"
-                                                >
-                                                    <td className="border border-gray-300 px-3 py-1 font-semibold text-gray-800">
-                                                        {item.drug_name}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.quantity}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.unit_price}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.subtotal}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    key={i}
-                                                    className="even:bg-gray-50"
-                                                >
-                                                    <td className="border border-gray-300 px-3 py-1 font-semibold text-gray-800">
-                                                        {item.drug_name}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.quantity}
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.unit_price}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                    <td className="border border-gray-300 px-3 py-1 text-gray-700">
-                                                        {item.subtotal}
-                                                        <span className="pr-1 text-[8px]">
-                                                            افغانی
-                                                        </span>
-                                                    </td>
-                                                </tr>
                                                 <tr
                                                     key={i}
                                                     className="even:bg-gray-50"
