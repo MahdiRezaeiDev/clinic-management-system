@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drug;
 use App\Models\Patient;
 use App\Models\PharmacySale;
 use App\Models\PharmacySaleItem;
@@ -252,5 +253,24 @@ class PharmacyController extends Controller
         $pharmacy->delete();
         return redirect()->back()
             ->with('success', 'فروش مدنظر شما موفقانه حذف گردید.');
+    }
+
+
+    public function searchDrugs(Request $request)
+    {
+        $query = $request->get('q', '');
+        if (is_array($query)) {
+            $query = implode(' ', $query);
+        }
+
+        $drugs = Drug::query();
+
+        if ($query !== '') {
+            $drugs->where('brand_name', 'LIKE', "%{$query}%");
+        }
+
+        $result = $drugs->limit(10)->get(['brand_name', 'brand_name_fa']);
+
+        return response()->json($result);
     }
 }
