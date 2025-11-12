@@ -90,9 +90,9 @@ class PharmacyController extends Controller
         // 🧩 2. Filter valid items (non-empty name & subtotal > 0)
         $validItems = collect($request->items ?? [])->filter(function ($item) {
             return !empty($item['drug_name'])
-                && isset($item['quantity'], $item['unit_price'])
+                && isset($item['quantity'], $item['price'])
                 && $item['quantity'] > 0
-                && $item['unit_price'] > 0;
+                && $item['price'] > 0;
         })->values();
 
         // 🧩 3. Set sale_type based on items
@@ -125,10 +125,10 @@ class PharmacyController extends Controller
         foreach ($validItems as $item) {
             PharmacySaleItem::create([
                 'pharmacy_sale_id' => $pharmacy->id,
-                'drug_name' => $item['drug_name'],
+                'drug_name' => $item['brand_name'],
                 'quantity' => $item['quantity'],
-                'unit_price' => $item['unit_price'],
-                'subtotal' => $item['subtotal'] ?? ($item['quantity'] * $item['unit_price']),
+                'unit_price' => $item['price'],
+                'subtotal' => $item['subtotal'] ?? ($item['quantity'] * $item['price']),
             ]);
         }
 
@@ -192,9 +192,9 @@ class PharmacyController extends Controller
         // 2. Filter valid items
         $validItems = collect($request->items ?? [])->filter(function ($item) {
             return !empty($item['drug_name'])
-                && isset($item['quantity'], $item['unit_price'])
+                && isset($item['quantity'], $item['price'])
                 && floatval($item['quantity']) > 0
-                && floatval($item['unit_price']) > 0;
+                && floatval($item['price']) > 0;
         })->values();
 
         // 3. Determine sale type
@@ -218,13 +218,13 @@ class PharmacyController extends Controller
         // Update existing and create new
         foreach ($validItems as $item) {
             $quantity = floatval($item['quantity']);
-            $unit_price = floatval($item['unit_price']);
+            $unit_price = floatval($item['price']);
             $subtotal = $quantity * $unit_price;
 
             if (!empty($item['id'])) {
                 // Update existing
                 $pharmacy->items()->where('id', $item['id'])->update([
-                    'drug_name' => $item['drug_name'],
+                    'drug_name' => $item['brand_name'],
                     'quantity' => $quantity,
                     'unit_price' => $unit_price,
                     'subtotal' => $subtotal,
@@ -233,7 +233,7 @@ class PharmacyController extends Controller
                 // Create new
                 $pharmacy->items()->create([
                     'pharmacy_sale_id' => $pharmacy,
-                    'drug_name' => $item['drug_name'],
+                    'drug_name' => $item['brand_name'],
                     'quantity' => $quantity,
                     'unit_price' => $unit_price,
                     'subtotal' => $subtotal,

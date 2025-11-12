@@ -54,7 +54,7 @@ export default function Login({ status }) {
                                         setData('email', e.target.value)
                                     }
                                     placeholder="ایمیل آدرس"
-                                    className="placeholder-blueGray-300 text-blueGray-600 w-full rounded border-0 bg-white px-3 py-3 text-sm shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
+                                    className="text-blueGray-600 placeholder-blueGray-300 w-full rounded border-0 bg-white px-3 py-3 text-sm shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
                                 />
                                 <InputError
                                     message={errors.email}
@@ -77,7 +77,7 @@ export default function Login({ status }) {
                                             setData('password', e.target.value)
                                         }
                                         placeholder="رمز عبور"
-                                        className="placeholder-blueGray-300 text-blueGray-600 w-full rounded border-0 bg-white px-3 py-3 text-sm shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
+                                        className="text-blueGray-600 placeholder-blueGray-300 w-full rounded border-0 bg-white px-3 py-3 text-sm shadow transition-all duration-150 ease-linear focus:outline-none focus:ring"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
@@ -101,7 +101,7 @@ export default function Login({ status }) {
                             </div>
                             <div className="mt-6 text-center">
                                 <PrimaryButton
-                                    className="bg-blueGray-800 active:bg-blueGray-600 mb-1 mr-1 w-full rounded px-6 py-3 text-center text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                    className="mb-1 mr-1 flex w-full justify-center rounded bg-teal-800 px-6 py-3 text-center text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-cyan-600"
                                     disabled={processing}
                                 >
                                     ورود به حساب
