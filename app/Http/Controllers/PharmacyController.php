@@ -89,7 +89,7 @@ class PharmacyController extends Controller
 
         // 🧩 2. Filter valid items (non-empty name & subtotal > 0)
         $validItems = collect($request->items ?? [])->filter(function ($item) {
-            return !empty($item['drug_name'])
+            return !empty($item['brand_name'])
                 && isset($item['quantity'], $item['price'])
                 && $item['quantity'] > 0
                 && $item['price'] > 0;

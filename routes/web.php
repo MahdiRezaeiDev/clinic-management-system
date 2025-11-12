@@ -3,6 +3,7 @@
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorVisitController;
+use App\Http\Controllers\DrugController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
@@ -64,10 +65,15 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // Pharmacy
     // ----------------------
-    // routes/web.php
     Route::get('/pharmacy/search-drugs', [PharmacyController::class, 'searchDrugs'])->name('pharmacy.search-drugs');
 
     Route::resource('pharmacy', PharmacyController::class);
+
+    // ----------------------
+    // Drugs
+    // ----------------------
+    Route::resource('drugs', DrugController::class);
+
 
     // ----------------------
     // Suppliers

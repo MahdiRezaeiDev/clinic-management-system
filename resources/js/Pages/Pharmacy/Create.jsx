@@ -114,7 +114,7 @@ export default function PharmacySaleInvoiceForm({ staff }) {
     const submitSale = (e) => {
         e.preventDefault();
         console.log('here');
-        
+
         console.log(data.items);
 
         post(route('pharmacy.store'), { onSuccess: () => reset() });
