@@ -136,7 +136,7 @@ export default function Prescription({ sale }) {
                         <div className="grid grid-cols-4 gap-2 text-[12px]">
                             <p>
                                 <span className="pl-2 font-semibold">نام:</span>
-                                {sale.patient ? sale.full_name : ''}
+                                {sale.patient ? sale.patient.full_name : ''}
                             </p>
                             <p>
                                 <span className="pl-2 font-semibold">سن:</span>
