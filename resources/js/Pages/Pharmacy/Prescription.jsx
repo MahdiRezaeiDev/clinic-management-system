@@ -1,8 +1,9 @@
+import ActionMenu from '@/Components/ActionMenu';
 import '@/css/factorPortrait.css';
 import logo from '@/img/logo.jpg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { MapPin, Phone } from 'lucide-react';
+import { Head, router } from '@inertiajs/react';
+import { Baby, MapPin, PanelTopBottomDashed, Phone, Store } from 'lucide-react';
 import moment from 'moment-jalaali';
 
 export default function Prescription({ sale }) {
@@ -20,6 +21,27 @@ export default function Prescription({ sale }) {
     if (sale.doctor) {
         lastName = sale.doctor.full_name?.trim().split(' ').pop();
     }
+
+    const items = [
+        {
+            key: 'store',
+            label: 'نسخه داخله',
+            icon: <Store className="h-5 w-5" />,
+            onClick: () => router(route('staff.show', sale.id)),
+        },
+        {
+            key: 'dental',
+            label: 'نسخه دندان‌پزشکی',
+            icon: <PanelTopBottomDashed className="h-5 w-5" />,
+            onClick: () => router(route('pharmacy.show', sale.id)),
+        },
+        {
+            key: 'baby',
+            label: 'نسخه قابله',
+            icon: <Baby className="h-5 w-5" />,
+            onClick: () => router(route('pharmacy.show', sale.id)),
+        },
+    ];
 
     return (
         <AuthenticatedLayout title="نسخه بیمار">
@@ -269,6 +291,7 @@ export default function Prescription({ sale }) {
                     </footer>
                 </div>
             </article>
+            <ActionMenu items={items} />
         </AuthenticatedLayout>
     );
 }
