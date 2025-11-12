@@ -13,6 +13,7 @@ import {
     MenuIcon,
     ParkingMeter,
     RadioReceiver,
+    Store,
     User,
     UserIcon,
 } from 'lucide-react';
@@ -142,6 +143,17 @@ export default function Sidebar() {
                                 <div className="flex items-end gap-2">
                                     <ParkingMeter className="h-5 w-5" />
                                     شرکت های همکار
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('drugs.index')}
+                                active={route().current('drugs.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <Store className="h-5 w-5" />
+                                    لیست داروها
                                 </div>
                             </NavLink>
                         </li>
