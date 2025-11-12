@@ -5,6 +5,8 @@ namespace App\Models {
     /**
      * App\Models\Drug
      *
+     * @property \Illuminate\Support\Carbon $updated_at
+     * @property \Illuminate\Support\Carbon $created_at
      * @property string|null $dosage_form_fa
      * @property string|null $composition_fa
      * @property string|null $brand_name_fa
@@ -25,6 +27,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereBrandNameFa($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCompositionFa($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereDosageFormFa($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug query()

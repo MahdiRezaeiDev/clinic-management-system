@@ -27,19 +27,19 @@ export default function Prescription({ sale }) {
             key: 'store',
             label: 'نسخه داخله',
             icon: <Store className="h-5 w-5" />,
-            onClick: () => router(route('staff.show', sale.id)),
+            onClick: () => router.visit(route('pharmacy.show', sale.id)),
         },
         {
             key: 'dental',
             label: 'نسخه دندان‌پزشکی',
             icon: <PanelTopBottomDashed className="h-5 w-5" />,
-            onClick: () => router(route('pharmacy.show', sale.id)),
+            onClick: () => router.visit(route('dental.show', sale.id)),
         },
         {
             key: 'baby',
             label: 'نسخه قابله',
             icon: <Baby className="h-5 w-5" />,
-            onClick: () => router(route('pharmacy.show', sale.id)),
+            onClick: () => router.visit(route('pharmacy.show', sale.id)),
         },
     ];
 
@@ -85,18 +85,20 @@ export default function Prescription({ sale }) {
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 text-xs text-white">
                             <div>
-                                <td className="pl-2 font-semibold">تاریخ:</td>
-                                <td>
+                                <span className="pl-2 font-semibold">
+                                    تاریخ:
+                                </span>
+                                <span>
                                     {moment(sale.created_at).format(
                                         'jYYYY/jMM/jDD',
                                     )}
-                                </td>
+                                </span>
                             </div>
                             <div>
-                                <td className="pl-2 font-semibold">
+                                <span className="pl-2 font-semibold">
                                     نمبر مسلسل:
-                                </td>
-                                <td>{sale.id}</td>
+                                </span>
+                                <span>{sale.id}</span>
                             </div>
                         </div>
                     </header>

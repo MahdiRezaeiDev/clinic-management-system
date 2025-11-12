@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     Route::get('/pharmacy/search-drugs', [PharmacyController::class, 'searchDrugs'])->name('pharmacy.search-drugs');
 
+    Route::get('pharmacy/{pharmacy}/dental', [PharmacyController::class, 'dental'])->name('dental.show');
     Route::resource('pharmacy', PharmacyController::class);
 
     // ----------------------

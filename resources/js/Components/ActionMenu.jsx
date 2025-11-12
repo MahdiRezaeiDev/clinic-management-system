@@ -1,14 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function ActionMenu({ items }) {
-    const [time, setTime] = useState(getTimeString());
     const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setInterval(() => setTime(getTimeString()), 30000);
-        return () => clearInterval(timer);
-    }, []);
 
     return (
         <div
@@ -35,7 +29,7 @@ export default function ActionMenu({ items }) {
                             transition={{ delay: index * 0.05 }}
                             className="relative flex items-center"
                         >
-                            <ActionButton item={item} time={time} />
+                            <ActionButton item={item} />
                         </motion.div>
                     ))}
             </AnimatePresence>
@@ -43,7 +37,7 @@ export default function ActionMenu({ items }) {
     );
 }
 
-function ActionButton({ item, time }) {
+function ActionButton({ item }) {
     const [showTip, setShowTip] = useState(false);
 
     return (
@@ -58,8 +52,6 @@ function ActionButton({ item, time }) {
             >
                 <div className="flex items-center gap-2 font-medium">
                     <span>{item.label}</span>
-                    <span className="text-[10px] text-gray-400">•</span>
-                    <span className="text-[11px] text-gray-300">{time}</span>
                 </div>
             </div>
 
@@ -74,11 +66,4 @@ function ActionButton({ item, time }) {
             </button>
         </div>
     );
-}
-
-function getTimeString() {
-    const d = new Date();
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mm = String(d.getMinutes()).padStart(2, '0');
-    return `${hh}:${mm}`;
 }

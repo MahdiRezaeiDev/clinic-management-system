@@ -155,6 +155,22 @@ class PharmacyController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function dental(PharmacySale $pharmacy)
+    {
+        $sale = PharmacySale::with('items')->with('doctor')->with('patient')->findOrFail($pharmacy->id);
+
+        if (count($sale->items) === 0) {
+            return redirect()->route('pharmacy.index')
+                ->with('error', 'فروش مدنظر شما دارای هیچ دارویی نمی‌باشد.');
+        }
+        return Inertia::render('Pharmacy/Dental', [
+            'sale' => $sale
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)

@@ -1,13 +1,38 @@
+import ActionMenu from '@/Components/ActionMenu';
 import '@/css/factor.css';
 import tooth from '@/img/tooth.svg';
 import toothBlack from '@/img/toothBlack.svg';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, router } from '@inertiajs/react';
+import { Baby, PanelTopBottomDashed, Store } from 'lucide-react';
 import moment from 'moment-jalaali';
+
 export default function Dental({ sale }) {
     moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
+    const items = [
+        {
+            key: 'store',
+            label: 'نسخه داخله',
+            icon: <Store className="h-5 w-5" />,
+            onClick: () => router.visit(route('pharmacy.show', sale.id)),
+        },
+        {
+            key: 'dental',
+            label: 'نسخه دندان‌پزشکی',
+            icon: <PanelTopBottomDashed className="h-5 w-5" />,
+            onClick: () => router.visit(route('dental.show', sale.id)),
+        },
+        {
+            key: 'baby',
+            label: 'نسخه قابله',
+            icon: <Baby className="h-5 w-5" />,
+            onClick: () => router.visit(route('pharmacy.show', sale.id)),
+        },
+    ];
 
     return (
         <AuthenticatedLayout title="نسخه دندان پزشک">
+            <Head title="نسخه دندان پزشک" />
             <div
                 className="print-wrapper A5_landscape flex h-[148mm] w-[210mm] overflow-hidden rounded-lg bg-white shadow-lg"
                 dir="rtl"
@@ -30,19 +55,6 @@ export default function Dental({ sale }) {
                 >
                     {/* Top-left small fields */}
                     <div className="absolute left-0 right-0 top-0 bg-teal-400 px-6 pt-4 text-right">
-                        <div className="text-gray-900">
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-semibold">
-                                    تاریخ :
-                                </span>
-                                <span className="inline-block text-xs">
-                                    {moment(sale.sale_date).format(
-                                        'jYYYY/jMM/jDD',
-                                    )}
-                                </span>
-                            </div>
-                        </div>
-
                         <div className="text-gray-900">
                             <table className="w-full text-xs">
                                 <tbody>
@@ -71,6 +83,16 @@ export default function Dental({ sale }) {
                                                 {sale.patient.gender == 'male'
                                                     ? 'مذکر'
                                                     : 'مونث'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="font-semibold">
+                                                تاریخ :
+                                            </span>
+                                            <span className="px-1">
+                                                {moment(sale.sale_date).format(
+                                                    'jYYYY/jMM/jDD',
+                                                )}
                                             </span>
                                         </td>
                                     </tr>
@@ -284,6 +306,7 @@ export default function Dental({ sale }) {
                     </div>
                 </div>
             </div>
+            <ActionMenu items={items} />
         </AuthenticatedLayout>
     );
 }
