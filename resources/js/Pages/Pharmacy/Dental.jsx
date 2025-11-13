@@ -33,8 +33,8 @@ export default function Dental({ sale }) {
     return (
         <AuthenticatedLayout title="نسخه دندان پزشک">
             <Head title="نسخه دندان پزشک" />
-            <div
-                className="print-wrapper A5_landscape flex h-[148mm] w-[210mm] overflow-hidden rounded-lg bg-white shadow-lg"
+            <article
+                className="print-wrapper A5_landscape flex overflow-hidden rounded-lg bg-white shadow-lg"
                 dir="rtl"
                 style={{
                     width: '210mm',
@@ -305,7 +305,7 @@ export default function Dental({ sale }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </article>
             <ActionMenu items={items} />
         </AuthenticatedLayout>
     );

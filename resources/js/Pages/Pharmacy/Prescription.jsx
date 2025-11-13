@@ -231,7 +231,7 @@ export default function Prescription({ sale }) {
 
                             {/* Vitals */}
                             <div className="w-36 overflow-hidden">
-                                <div className="bg-gray-100 px-4 py-2 text-left font-bold text-gray-700">
+                                <div className="bg-gray-100 px-4 py-2 text-left font-bold text-gray-800">
                                     Clinical Record
                                 </div>
                                 <table className="w-full text-xs">

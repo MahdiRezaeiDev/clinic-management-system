@@ -6,7 +6,7 @@ export default function ActionMenu({ items }) {
 
     return (
         <div
-            className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-3"
+            className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-3 print:hidden"
             dir="rtl"
         >
             {/* Toggle Button */}

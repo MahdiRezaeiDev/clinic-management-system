@@ -1,35 +1,28 @@
 @media print {
-    @page.A5_landscape {
+    @page {
         size: A5 landscape;
-        margin: 0;
-        /* Remove browser print margins */
+        margin: 0 !important;
     }
 
     html,
     body {
         margin: 0 !important;
         padding: 0 !important;
-        height: auto !important;
     }
 
-    /* Wrapper adjustments */
     .print-wrapper {
         width: 210mm !important;
         height: 148mm !important;
         margin: 0 !important;
         padding: 0 !important;
-        /* remove internal padding for print */
         box-shadow: none !important;
-        overflow: visible !important;
     }
 
-    /* Optional: remove padding inside children for print */
     .print-wrapper {
-        padding: 0 !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* Hide any elements not needed for print */
     .no-print {
         display: none !important;
     }
