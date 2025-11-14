@@ -9,7 +9,7 @@ import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { Toaster, toast } from 'sonner';
 
-export default function DrugIndex({ drugs }) {
+export default function DrugIndex({ drugs, search }) {
     const [data, setData] = useState({
         brand_name: '',
         brand_name_fa: '',
@@ -118,9 +118,31 @@ export default function DrugIndex({ drugs }) {
 
                 <div className="mb-6 flex items-center justify-between">
                     <h1 className="text-2xl font-bold">مدیریت داروها</h1>
-                    <PrimaryButton onClick={openAddModal}>
-                        افزودن دارو
-                    </PrimaryButton>
+
+                    <div className="flex gap-2">
+                        <input
+                            type="text"
+                            placeholder="جستجوی دارو..."
+                            className="rounded border border-gray-300 px-3 py-2 text-sm"
+                            onChange={(e) => {
+                                const value = e.target.value;
+
+                                router.get(
+                                    '/drugs',
+                                    { search: value },
+                                    {
+                                        preserveState: true,
+                                        replace: true,
+                                    },
+                                );
+                            }}
+                            defaultValue={search}
+                        />
+
+                        <PrimaryButton onClick={openAddModal}>
+                            افزودن دارو
+                        </PrimaryButton>
+                    </div>
                 </div>
 
                 {/* Drugs Table */}

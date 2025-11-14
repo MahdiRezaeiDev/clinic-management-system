@@ -8,14 +8,27 @@ use Inertia\Inertia;
 
 class DrugController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $drugs = Drug::orderBy('id')->paginate(100);
+        $search = $request->input('search');
 
-        return Inertia::render('Drug/Index', [
+        $query = Drug::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('brand_name', 'LIKE', "%{$search}%")
+                    ->orWhere('brand_name_fa', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $drugs = $query->paginate(100)->withQueryString();
+
+        return inertia('Drug/Index', [
             'drugs' => $drugs,
+            'search' => $search,
         ]);
     }
+
 
     public function store(Request $request)
     {
