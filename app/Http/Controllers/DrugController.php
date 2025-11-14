@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Drug;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class DrugController extends Controller
 {
