@@ -12,7 +12,7 @@ export default function Purchase({ suppliers }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         supplier_id: '',
         total_amount: '',
-        paid_amount: '',
+        paid_amount: 0,
         remaining_amount: '',
         purchase_date: new DateObject({
             calendar: persian,
