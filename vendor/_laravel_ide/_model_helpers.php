@@ -5,6 +5,8 @@ namespace App\Models {
     /**
      * App\Models\Drug
      *
+     * @property \Illuminate\Support\Carbon $updated_at
+     * @property \Illuminate\Support\Carbon $created_at
      * @property string|null $dosage_form_fa
      * @property string|null $composition_fa
      * @property string|null $brand_name_fa
@@ -25,6 +27,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereBrandNameFa($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCompositionFa($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereDosageFormFa($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug query()
@@ -1300,7 +1304,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $age
+     * @property string|null $age
      * @property mixed $gender
      * @property string|null $address
      * @property string|null $phone
@@ -1626,6 +1630,7 @@ namespace App\Models {
      * @property mixed $total_amount
      * @property mixed $discount
      * @property mixed $sale_type
+     * @property mixed $doctor_id
      * @property mixed $patient_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PharmacySaleItem> $items
@@ -1634,6 +1639,7 @@ namespace App\Models {
      * @property-read \App\Models\Staff $doctor
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale wherePatientId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDoctorId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereSaleType($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereDiscount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySale>|PharmacySale whereTotalAmount($value)
