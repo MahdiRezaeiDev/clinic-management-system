@@ -5,30 +5,6 @@ namespace App\Models {
     /**
      * App\Models\Drug
      *
-     * @property \Illuminate\Support\Carbon $updated_at
-     * @property \Illuminate\Support\Carbon $created_at
-     * @property string|null $dosage_form_fa
-     * @property string|null $composition_fa
-     * @property string|null $brand_name_fa
-     * @property string|null $reg_date
-     * @property string|null $manufacturer
-     * @property string|null $market_auth_holder
-     * @property string|null $dosage_form
-     * @property string|null $composition
-     * @property string|null $brand_name
-     * @property int $id
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereId($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereBrandName($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereComposition($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereDosageForm($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereMarketAuthHolder($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereManufacturer($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereRegDate($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereBrandNameFa($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCompositionFa($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereDosageFormFa($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereCreatedAt($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<Drug>|Drug query()
@@ -656,8 +632,8 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
-     * @property string $income_date
      * @property mixed $payment_method
+     * @property string|null $income_date
      * @property mixed $amount
      * @property mixed $user_id
      * @property mixed $category
@@ -666,8 +642,8 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCategory($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereAmount($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePaymentMethod($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereIncomeDate($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income wherePaymentMethod($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereDescription($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereUpdatedAt($value)
@@ -1954,9 +1930,9 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property float $subtotal
-     * @property float $unit_price
-     * @property float $quantity
+     * @property mixed $subtotal
+     * @property mixed $unit_price
+     * @property mixed $quantity
      * @property string $drug_name
      * @property mixed $pharmacy_sale_id
      * @property int $id
