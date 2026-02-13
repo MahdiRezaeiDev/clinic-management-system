@@ -346,7 +346,7 @@ export default function Dashboard({
                                 </div>
                             </div>
                         </div>
-                        <div className="h-80 p-4">
+                        <div className="h- p-4">
                             <FinanceChart data={monthlyStats} />
                         </div>
                     </div>
@@ -379,7 +379,7 @@ export default function Dashboard({
                                 تعداد ویزیت‌ها در ماه‌های اخیر
                             </p>
                         </div>
-                        <div className="h-80 p-4">
+                        <div className="">
                             <MonthlyVisitsChart data={visitMonthlyStats} />
                         </div>
                     </div>
