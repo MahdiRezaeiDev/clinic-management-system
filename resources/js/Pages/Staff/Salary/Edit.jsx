@@ -12,8 +12,8 @@ import {
     ChevronLeft,
     Clock,
     DollarSign,
+    File,
     FileText,
-    File as Pencile,
     Save,
     User,
 } from 'lucide-react';
@@ -188,7 +188,7 @@ export default function Edit({ staff, salary, overTimes }) {
                                                 </div>
                                             </div>
                                             <div className="rounded-lg bg-amber-100 px-4 py-2 text-sm font-medium text-amber-800">
-                                                <Pencile className="ml-1 inline h-4 w-4" />
+                                                <File className="ml-1 inline h-4 w-4" />
                                                 در حال ویرایش
                                             </div>
                                         </div>
@@ -405,7 +405,7 @@ export default function Edit({ staff, salary, overTimes }) {
                     <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg">
                         <div className="border-b border-gray-100 bg-gradient-to-l from-blue-50 to-white px-6 py-4">
                             <h3 className="flex items-center gap-2 font-semibold text-gray-800">
-                                <Pencile className="h-5 w-5 text-blue-600" />
+                                <File className="h-5 w-5 text-blue-600" />
                                 ویرایش حقوق
                             </h3>
                             <p className="mt-1 text-xs text-gray-500">
