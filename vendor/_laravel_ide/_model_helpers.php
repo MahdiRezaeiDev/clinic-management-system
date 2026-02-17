@@ -310,11 +310,11 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $user_id
+     * @property int $user_id
      * @property string $expense_date
      * @property string|null $description
      * @property mixed $payment_method
-     * @property mixed $amount
+     * @property int $amount
      * @property mixed $category
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Expense>|Expense whereId($value)
@@ -634,8 +634,8 @@ namespace App\Models {
      * @property string|null $description
      * @property mixed $payment_method
      * @property string|null $income_date
-     * @property mixed $amount
-     * @property mixed $user_id
+     * @property int $amount
+     * @property int $user_id
      * @property mixed $category
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<Income>|Income whereId($value)
@@ -954,13 +954,13 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
      * @property bool $status
-     * @property mixed $approved_by
-     * @property mixed $total
-     * @property mixed $rate
-     * @property mixed $hours
+     * @property int|null $approved_by
+     * @property int $total
+     * @property int $rate
+     * @property int $hours
      * @property string $date
-     * @property mixed $salary_id
-     * @property mixed $staff_id
+     * @property int|null $salary_id
+     * @property int $staff_id
      * @property int $id
      * @property-read \App\Models\Salary $salary
      * @method static \Illuminate\Database\Eloquent\Builder<Overtime>|Overtime whereId($value)
@@ -1600,14 +1600,14 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
-     * @property mixed $user_id
+     * @property int $user_id
      * @property string $sale_date
      * @property mixed $payment_method
-     * @property mixed $total_amount
-     * @property mixed $discount
+     * @property int $total_amount
+     * @property int $discount
      * @property mixed $sale_type
-     * @property mixed $doctor_id
-     * @property mixed $patient_id
+     * @property int|null $doctor_id
+     * @property int|null $patient_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PharmacySaleItem> $items
      * @property-read int|null $items_count
@@ -1930,11 +1930,11 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $subtotal
-     * @property mixed $unit_price
-     * @property mixed $quantity
+     * @property int $subtotal
+     * @property int $unit_price
+     * @property int $quantity
      * @property string $drug_name
-     * @property mixed $pharmacy_sale_id
+     * @property int $pharmacy_sale_id
      * @property int $id
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<PharmacySaleItem>|PharmacySaleItem wherePharmacySaleId($value)
@@ -2249,14 +2249,14 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $user_id
+     * @property int $user_id
      * @property mixed $status
      * @property string|null $description
      * @property string $purchase_date
-     * @property mixed $remaining_amount
-     * @property mixed $paid_amount
-     * @property mixed $total_amount
-     * @property mixed $supplier_id
+     * @property int $remaining_amount
+     * @property int $paid_amount
+     * @property int $total_amount
+     * @property int $supplier_id
      * @property int $id
      * @property-read mixed $total_paid
      * @property-read mixed $remaining
@@ -2581,11 +2581,11 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $subtotal
-     * @property mixed $unit_price
-     * @property mixed $quantity
+     * @property int $subtotal
+     * @property int $unit_price
+     * @property int $quantity
      * @property string $drug_name
-     * @property mixed $purchased_medicine_id
+     * @property int $purchased_medicine_id
      * @property int $id
      * @property-read mixed $total_price
      * @property-read \App\Models\PurchasedMedicine $purchase
@@ -2902,12 +2902,12 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $user_id
+     * @property int $user_id
      * @property string|null $description
      * @property mixed $payment_method
-     * @property mixed $amount
+     * @property int $amount
      * @property string $payment_date
-     * @property mixed $purchased_medicine_id
+     * @property int $purchased_medicine_id
      * @property int $id
      * @property-read \App\Models\PurchasedMedicine $purchase
      * @property-read \App\Models\User $user
@@ -3227,12 +3227,12 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $description
      * @property string|null $payment_date
-     * @property mixed $total_paid
-     * @property mixed $deductions
-     * @property mixed $overtime_amount
-     * @property mixed $base_salary
-     * @property mixed $salary_month
-     * @property mixed $staff_id
+     * @property int $total_paid
+     * @property int $deductions
+     * @property int $overtime_amount
+     * @property int $base_salary
+     * @property int $salary_month
+     * @property int $staff_id
      * @property int $id
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Overtime> $overtimes
      * @property-read int|null $overtimes_count
@@ -3552,7 +3552,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $base_salary
+     * @property int $base_salary
      * @property string|null $phone
      * @property mixed $role
      * @property string $full_name
@@ -4192,7 +4192,7 @@ namespace App\Models {
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property string|null $remember_token
      * @property string|null $profile
-     * @property mixed $salary
+     * @property int $salary
      * @property mixed $role
      * @property string $password
      * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -4517,12 +4517,12 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $user_id
+     * @property int $user_id
      * @property string|null $description
-     * @property mixed $fee
+     * @property int $fee
      * @property string $visit_date
-     * @property mixed $doctor_id
-     * @property mixed $patient_id
+     * @property int $doctor_id
+     * @property int $patient_id
      * @property int $id
      * @property-read \App\Models\Patient $patient
      * @property-read \App\Models\Staff $doctor

@@ -2,7 +2,9 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useForm } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
+import { Head, useForm } from '@inertiajs/react';
+
 import {
     AlertCircle,
     Ambulance,
