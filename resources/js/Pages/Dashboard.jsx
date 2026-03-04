@@ -305,50 +305,12 @@ export default function Dashboard({
                 <div className="mb-8 grid gap-6 lg:grid-cols-3">
                     {/* Pharmacy Card */}
                     <div className="col-span-1 overflow-hidden rounded-2xl bg-white shadow-lg">
-                        <div className="border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white p-4">
-                            <h3 className="text-sm font-semibold text-gray-800">
-                                فروش دارو
-                            </h3>
-                            <p className="text-xs text-gray-500">
-                                آخرین فروش‌های ثبت شده
-                            </p>
-                        </div>
-                        <div className="p-4">
-                            <Pharmacy />
-                        </div>
+                        <Pharmacy />
                     </div>
 
                     {/* Finance Chart */}
                     <div className="col-span-2 overflow-hidden rounded-2xl bg-white shadow-lg">
-                        <div className="border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white p-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h3 className="text-sm font-semibold text-gray-800">
-                                        گزارش مالی ماهانه
-                                    </h3>
-                                    <p className="text-xs text-gray-500">
-                                        درآمد، هزینه و سود در ماه‌های اخیر
-                                    </p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <span className="flex items-center gap-1 text-xs">
-                                        <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                                        درآمد
-                                    </span>
-                                    <span className="flex items-center gap-1 text-xs">
-                                        <span className="h-2 w-2 rounded-full bg-red-500"></span>
-                                        هزینه
-                                    </span>
-                                    <span className="flex items-center gap-1 text-xs">
-                                        <span className="h-2 w-2 rounded-full bg-yellow-500"></span>
-                                        سود
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="h- p-4">
-                            <FinanceChart data={monthlyStats} />
-                        </div>
+                        <FinanceChart data={monthlyStats} />
                     </div>
                 </div>
 
@@ -356,32 +318,12 @@ export default function Dashboard({
                 <div className="grid gap-6 lg:grid-cols-5">
                     {/* Visit Card */}
                     <div className="col-span-3 overflow-hidden rounded-2xl bg-white shadow-lg">
-                        <div className="border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white p-4">
-                            <h3 className="text-sm font-semibold text-gray-800">
-                                ویزیت‌های اخیر
-                            </h3>
-                            <p className="text-xs text-gray-500">
-                                لیست آخرین ویزیت‌های ثبت شده
-                            </p>
-                        </div>
-                        <div className="p-4">
-                            <Visit doctors={doctors} />
-                        </div>
+                        <Visit doctors={doctors} />
                     </div>
 
                     {/* Visit Chart */}
                     <div className="col-span-2 overflow-hidden rounded-2xl bg-white shadow-lg">
-                        <div className="border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white p-4">
-                            <h3 className="text-sm font-semibold text-gray-800">
-                                آمار ویزیت ماهانه
-                            </h3>
-                            <p className="text-xs text-gray-500">
-                                تعداد ویزیت‌ها در ماه‌های اخیر
-                            </p>
-                        </div>
-                        <div className="">
-                            <MonthlyVisitsChart data={visitMonthlyStats} />
-                        </div>
+                        <MonthlyVisitsChart data={visitMonthlyStats} />
                     </div>
                 </div>
 
