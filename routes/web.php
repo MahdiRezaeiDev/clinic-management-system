@@ -30,16 +30,6 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::get('/test', function () {
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $groups = $collection->chunk(2);
-
-    // [[1, 2], [3, 4], [5]]
-
-    dd($groups->toArray());
-});
-
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

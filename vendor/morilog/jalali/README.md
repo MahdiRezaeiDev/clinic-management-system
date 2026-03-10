@@ -63,7 +63,7 @@ $date = Jalalian::forge('now - 10 minutes')->ago() // 10 دقیقه پیش
 
 
 ```php
-public static function now(\DateTimeZone $timeZone = null): Jalalian
+public static function now(?\DateTimeZone $timeZone = null): Jalalian
 
 $jDate = Jalalian::now();
 ```
@@ -77,7 +77,7 @@ $jDate = Jalalian::fromCarbon(Carbon::now());
 
 ---
 ```php
-public static function fromFormat(string $format, string $timestamp, \DateTimeZone$timeZone = null): Jalalian 
+public static function fromFormat(string $format, string $timestamp, ?\DateTimeZone$timeZone = null): Jalalian 
 
 $jDate = Jalalian::fromFormat('Y-m-d H:i:s', '1397-01-18 12:00:40');
 ```
@@ -85,14 +85,14 @@ $jDate = Jalalian::fromFormat('Y-m-d H:i:s', '1397-01-18 12:00:40');
 
 ---
 ```php
-public static function forge($timestamp, \DateTimeZone $timeZone = null): Jalalian
+public static function forge($timestamp, ?\DateTimeZone $timeZone = null): Jalalian
 
 // Alias fo fromDatetime
 ```
 
 ---
 ```php
-public static function fromDateTime($dateTime, \DateTimeZone $timeZone = null): Jalalian
+public static function fromDateTime($dateTime, ?\DateTimeZone $timeZone = null): Jalalian
 
 $jDate = Jalalian::fromDateTime(Carbon::now())
 // OR 
@@ -413,7 +413,7 @@ $date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
 ```php
 public function getFirstDayOfMonth(): bool
 
-$date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
+$date = (new Jalalian(1397, 6, 24))->getFirstDayOfMonth()
 // output: 1397, 6, 1
 
 ```
@@ -421,7 +421,7 @@ $date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
 ```php
 public function getEndDayOfMonth(): bool
 
-$date = (new Jalalian(1397, 6, 24))->getEndDayOfYear()
+$date = (new Jalalian(1397, 6, 24))->getEndDayOfMonth()
 // output: 1397, 6, 30
 
 ```
