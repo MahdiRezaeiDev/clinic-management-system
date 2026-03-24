@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\PurchasedMedicineItem;
@@ -53,5 +54,12 @@ class PurchasedMedicine extends Model
     public function getRemainingAttribute()
     {
         return $this->total_amount - $this->total_paid;
+    }
+
+    public function casts(): array
+    {
+        return [
+            'purchase_date' => JalaliDateCast::class
+        ];
     }
 }

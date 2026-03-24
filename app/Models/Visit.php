@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Visit extends Model
@@ -25,5 +26,10 @@ class Visit extends Model
     public function doctor()
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function casts(): array
+    {
+        return ['visit_date' => JalaliDateCast::class];
     }
 }

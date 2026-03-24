@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,5 +29,12 @@ class PurchasedMedicinePayment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function casts(): array
+    {
+        return [
+            'payment_date' => JalaliDateCast::class
+        ];
     }
 }
