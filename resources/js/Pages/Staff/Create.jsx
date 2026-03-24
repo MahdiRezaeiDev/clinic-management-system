@@ -6,6 +6,7 @@ import { Head, useForm } from '@inertiajs/react';
 import {
     AlertCircle,
     Ambulance,
+    ArrowLeft,
     ArrowRight,
     Baby,
     Briefcase,
@@ -222,7 +223,7 @@ export default function Create() {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <User className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="text"
                                         value={data.full_name}
@@ -246,7 +247,7 @@ export default function Create() {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <Phone className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="text"
                                         value={data.phone}
@@ -271,7 +272,7 @@ export default function Create() {
                                     className="flex items-center gap-2 rounded-lg bg-teal-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-teal-700 hover:shadow-md"
                                 >
                                     مرحله بعد
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowLeft className="h-4 w-4" />
                                 </button>
                             </div>
                         </div>
@@ -347,7 +348,7 @@ export default function Create() {
                                     onClick={() => setFormStep(1)}
                                     className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 hover:shadow-md"
                                 >
-                                    <ArrowRight className="h-4 w-4 rotate-180" />
+                                    <ArrowRight className="h-4 w-4" />
                                     مرحله قبل
                                 </button>
                                 <button
@@ -356,7 +357,7 @@ export default function Create() {
                                     className="flex items-center gap-2 rounded-lg bg-teal-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-teal-700 hover:shadow-md"
                                 >
                                     مرحله بعد
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowLeft className="h-4 w-4" />
                                 </button>
                             </div>
                         </div>
@@ -441,7 +442,7 @@ export default function Create() {
                                     onClick={() => setFormStep(2)}
                                     className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 hover:shadow-md"
                                 >
-                                    <ArrowRight className="h-4 w-4 rotate-180" />
+                                    <ArrowLeft className="h-4 w-4 rotate-180" />
                                     مرحله قبل
                                 </button>
                             </div>
