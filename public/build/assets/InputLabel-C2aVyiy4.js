@@ -1,1 +1,0 @@
-import{j as o}from"./app-CVcunNBc.js";function l({value:t,className:e="",children:r,...s}){return o.jsx("label",{...s,className:"text-blueGray-600 mb-2 block text-xs font-bold uppercase "+e,children:t||r})}export{l as I};
