@@ -144,7 +144,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
         return (
             <BarChart
                 data={chartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
             >
                 {showGrid && (
                     <CartesianGrid
@@ -219,7 +219,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
 
     return (
         <div
-            className={`font-vazirmatn relative h-full w-full overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 ${
+            className={`font-vazirmatn h-full w-full overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 ${
                 isExpanded ? 'fixed inset-4 z-50' : ''
             }`}
             dir="rtl"
@@ -232,7 +232,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
             </div>
 
             {/* Header */}
-            <div className="border-b border-gray-100 bg-gradient-to-r from-blue-700 to-blue-600 p-5">
+            <div className="border-b border-gray-100 bg-gradient-to-r from-blue-700 to-blue-600 p-2">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-lg bg-white/10 p-2 backdrop-blur-sm">
@@ -286,7 +286,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-3 border-b border-gray-100 bg-gray-50/50 p-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 border-b border-gray-100 bg-gray-50/50 p-2 md:grid-cols-4">
                 <div className="rounded-xl bg-white p-3 shadow-sm">
                     <p className="text-xs text-gray-500">کل ویزیت‌ها</p>
                     <p className="text-lg font-bold text-gray-800">
@@ -314,7 +314,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
             </div>
 
             {/* Best/Worst Months */}
-            <div className="grid grid-cols-2 gap-3 border-b border-gray-100 bg-gray-50/50 px-4 pb-4">
+            <div className="grid grid-cols-2 gap-3 border-b border-gray-100 bg-gray-50/50 px-2 pb-4">
                 <div className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-50 to-white p-3">
                     <div className="rounded-full bg-green-100 p-2">
                         <TrendingUp className="h-4 w-4 text-green-600" />
@@ -344,7 +344,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
             </div>
 
             {/* Chart Area */}
-            <div className="w-full p-4">
+            <div className="w-full p-2">
                 <ResponsiveContainer
                     width="100%"
                     height={isExpanded ? 500 : 320}
@@ -354,7 +354,7 @@ export default function MonthlyVisitsBarChart({ data = [] }) {
             </div>
 
             {/* Footer Insights */}
-            <div className="border-t border-gray-100 bg-gray-50/50 px-4 py-3">
+            <div className="border-t border-gray-100 bg-gray-50/50 px-2 py-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">

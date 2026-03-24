@@ -74,7 +74,7 @@ export default function DrugSellCard() {
                         تاریخ فروش
                     </label>
                     <div className="relative">
-                        <Calendar className="absolute right-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <Calendar className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
                         <AfghanDatePicker
                             value={data.sale_date}
                             id="sale_date"
@@ -97,7 +97,7 @@ export default function DrugSellCard() {
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                             ؋
                         </span>
-                        <DollarSign className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                         <input
                             type="number"
                             id="total_amount"
@@ -122,7 +122,7 @@ export default function DrugSellCard() {
                         <span className="mr-1 text-gray-400">(اختیاری)</span>
                     </label>
                     <div className="relative">
-                        <FileText className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                        <FileText className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <textarea
                             value={data.description}
                             id="description"
@@ -141,24 +141,24 @@ export default function DrugSellCard() {
                 <div className="mb-6 grid grid-cols-3 gap-2">
                     <button
                         type="button"
-                        onClick={() => setData('total_amount', '1000')}
+                        onClick={() => setData('total_amount', '100')}
                         className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-600 transition-all hover:border-gray-300 hover:bg-gray-100"
                     >
-                        ۱,۰۰۰ ؋
+                        ۱۰۰ ؋
                     </button>
                     <button
                         type="button"
                         onClick={() => setData('total_amount', '5000')}
                         className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-600 transition-all hover:border-gray-300 hover:bg-gray-100"
                     >
-                        ۵,۰۰۰ ؋
+                        ۵۰۰ ؋
                     </button>
                     <button
                         type="button"
-                        onClick={() => setData('total_amount', '10000')}
+                        onClick={() => setData('total_amount', '1000')}
                         className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-600 transition-all hover:border-gray-300 hover:bg-gray-100"
                     >
-                        ۱۰,۰۰۰ ؋
+                        ۱,۰۰۰ ؋
                     </button>
                 </div>
 
