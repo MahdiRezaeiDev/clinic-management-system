@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,5 +34,12 @@ class PharmacySale extends Model
     public function doctor()
     {
         return $this->belongsTo(Staff::class, 'doctor_id');
+    }
+
+    public function casts(): array
+    {
+        return [
+            'sale_date' => JalaliDateCast::class
+        ];
     }
 }

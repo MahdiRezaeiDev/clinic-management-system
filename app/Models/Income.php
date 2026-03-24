@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,4 +20,11 @@ class Income extends Model
         "description",
         "income_date"
     ];
+
+    public function casts(): array
+    {
+        return [
+            'income_date' => JalaliDateCast::class
+        ];
+    }
 }

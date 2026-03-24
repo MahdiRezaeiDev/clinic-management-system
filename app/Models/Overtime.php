@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -22,5 +23,12 @@ class Overtime extends Model
     public function salary()
     {
         return $this->belongsTo(Salary::class);
+    }
+
+    public function casts(): array
+    {
+        return [
+            'date' => JalaliDateCast::class
+        ];
     }
 }
