@@ -295,13 +295,13 @@ export default function Index({ visits, doctors, filters }) {
                                     داکتر معالج
                                 </label>
                                 <div className="relative">
-                                    <Stethoscope className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <Stethoscope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 px-2 text-gray-400" />
                                     <select
                                         value={doctor}
                                         onChange={(e) =>
                                             setDoctor(e.target.value)
                                         }
-                                        className="w-full appearance-none rounded-lg border border-gray-200 px-4 py-2.5 pr-10 text-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                                        className="w-full appearance-none rounded-lg border border-gray-200 px-4 py-2 pr-10 text-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
                                     >
                                         <option value="">همه داکترها</option>
                                         {doctors.map((doctor) => (
@@ -349,14 +349,14 @@ export default function Index({ visits, doctors, filters }) {
                             <div className="flex items-end gap-2">
                                 <PrimaryButton
                                     type="submit"
-                                    className="flex-1 rounded-lg px-5 py-2.5"
+                                    className="mb-1 flex-1 rounded-lg px-5 py-2.5"
                                 >
                                     اعمال فیلترها
                                 </PrimaryButton>
                                 <DangerButton
                                     type="button"
                                     onClick={clearFilters}
-                                    className="rounded-lg px-5 py-2.5"
+                                    className="mb-1 rounded-lg px-5 py-2.5"
                                 >
                                     حذف
                                 </DangerButton>

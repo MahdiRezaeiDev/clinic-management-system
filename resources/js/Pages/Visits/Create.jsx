@@ -8,11 +8,10 @@ import { Head, useForm } from '@inertiajs/react';
 import {
     Activity,
     AlertCircle,
-    ArrowRight,
+    ArrowLeft,
     Baby,
     Calendar,
     CheckCircle,
-    Clock,
     DollarSign,
     File as Female,
     FileText,
@@ -63,10 +62,12 @@ export default function Create({ doctors }) {
     };
 
     // Calculate today's date in Persian
-    const today = new DateObject({
-        calendar: persian,
-        locale: persian_en,
-    }).format('dddd jDD jMMMM jYYYY');
+    const today = new Date().toLocaleDateString('fa-IR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
     return (
         <AuthenticatedLayout title="ثبت ویزیت جدید">
@@ -188,7 +189,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <User className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="text"
                                             value={data.patient_name}
@@ -215,7 +216,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Phone className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="text"
                                             value={data.patient_phone}
@@ -244,7 +245,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Baby className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <Baby className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="text"
                                             value={data.patient_age}
@@ -337,7 +338,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <MapPin className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="text"
                                             value={data.patient_address}
@@ -364,7 +365,7 @@ export default function Create({ doctors }) {
                                     className="flex items-center gap-2 rounded-lg bg-teal-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-teal-700 hover:shadow-md"
                                 >
                                     مرحله بعد
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowLeft className="h-4 w-4" />
                                 </button>
                             </div>
                         </div>
@@ -395,7 +396,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Stethoscope className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <Stethoscope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <select
                                             value={data.doctor_id}
                                             onChange={(e) =>
@@ -404,7 +405,7 @@ export default function Create({ doctors }) {
                                                     e.target.value,
                                                 )
                                             }
-                                            className="w-full appearance-none rounded-lg border border-gray-200 px-4 py-3 pr-10 text-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                                            className="w-full appearance-none rounded-lg border border-gray-200 px-7 py-3 pr-10 text-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
                                             required
                                         >
                                             <option value="" disabled>
@@ -432,7 +433,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Calendar className="absolute right-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <Calendar className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <AfghanDatePicker
                                             value={data.visit_date}
                                             onChange={(value) =>
@@ -459,7 +460,7 @@ export default function Create({ doctors }) {
                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                                             ؋
                                         </span>
-                                        <DollarSign className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="number"
                                             value={data.fee}
@@ -485,7 +486,7 @@ export default function Create({ doctors }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Clock className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        {/* <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" /> */}
                                         <input
                                             type="time"
                                             className="w-full rounded-lg border border-gray-200 px-4 py-3 pr-10 text-sm transition-colors focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
@@ -501,7 +502,7 @@ export default function Create({ doctors }) {
                                     onClick={() => setFormStep(1)}
                                     className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 hover:shadow-md"
                                 >
-                                    <ArrowRight className="h-4 w-4 rotate-180" />
+                                    <ArrowLeft className="h-4 w-4 rotate-180" />
                                     مرحله قبل
                                 </button>
                                 <button
@@ -510,7 +511,7 @@ export default function Create({ doctors }) {
                                     className="flex items-center gap-2 rounded-lg bg-teal-600 px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-teal-700 hover:shadow-md"
                                 >
                                     مرحله بعد
-                                    <ArrowRight className="h-4 w-4" />
+                                    <ArrowLeft className="h-4 w-4" />
                                 </button>
                             </div>
                         </div>
@@ -620,7 +621,7 @@ export default function Create({ doctors }) {
                                     onClick={() => setFormStep(2)}
                                     className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 hover:shadow-md"
                                 >
-                                    <ArrowRight className="h-4 w-4 rotate-180" />
+                                    <ArrowLeft className="h-4 w-4 rotate-180" />
                                     مرحله قبل
                                 </button>
                             </div>
