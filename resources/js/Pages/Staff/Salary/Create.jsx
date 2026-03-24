@@ -425,7 +425,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                                         ),
                                                 );
                                             }}
-                                            className="w-full rounded-lg border-gray-300 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-4 py-3 rounded-lg border-gray-300 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
                                             min={0}
                                             step="100"
                                         />

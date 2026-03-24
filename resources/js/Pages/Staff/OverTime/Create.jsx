@@ -149,7 +149,7 @@ export default function Create({ staff }) {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <Calendar className="absolute right-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <Calendar className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <AfghanDatePicker
                                         id="overtime_date"
                                         value={data.date}
@@ -177,7 +177,7 @@ export default function Create({ staff }) {
                                         </span>
                                     </label>
                                     <div className="relative">
-                                        <Clock className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="number"
                                             min="0.5"
@@ -209,7 +209,7 @@ export default function Create({ staff }) {
                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                                             ؋
                                         </span>
-                                        <DollarSign className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                        <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                         <input
                                             type="number"
                                             min="0"
@@ -237,7 +237,7 @@ export default function Create({ staff }) {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <Calculator className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <Calculator className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                                         ؋
                                     </span>
@@ -275,7 +275,7 @@ export default function Create({ staff }) {
                                     </span>
                                 </label>
                                 <div className="relative">
-                                    <FileText className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                                    <FileText className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                                     <textarea
                                         rows="4"
                                         value={data.description}
