@@ -157,7 +157,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 <span className="mr-1 text-red-500">*</span>
                             </label>
                             <div className="relative">
-                                <User className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="text"
                                     value={data.patient_name}
@@ -181,7 +181,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 </span>
                             </label>
                             <div className="relative">
-                                <Phone className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="tel"
                                     value={data.patient_phone}
@@ -205,7 +205,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 </span>
                             </label>
                             <div className="relative">
-                                <Baby className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <Baby className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="text"
                                     value={data.patient_age}
@@ -297,7 +297,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 </span>
                             </label>
                             <div className="relative">
-                                <MapPin className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="text"
                                     value={data.patient_address}
@@ -333,7 +333,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 <span className="mr-1 text-red-500">*</span>
                             </label>
                             <div className="relative">
-                                <Stethoscope className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <Stethoscope className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <select
                                     value={data.doctor_id}
                                     onChange={(e) =>
@@ -362,7 +362,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 <span className="mr-1 text-red-500">*</span>
                             </label>
                             <div className="relative">
-                                <Calendar className="absolute right-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <Calendar className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <AfghanDatePicker
                                     value={data.visit_date}
                                     onChange={(value) =>
@@ -387,7 +387,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                                     ؋
                                 </span>
-                                <DollarSign className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="number"
                                     value={data.fee}
@@ -413,7 +413,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 </span>
                             </label>
                             <div className="relative">
-                                <Clock className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                 <input
                                     type="time"
                                     className="w-full rounded-lg border border-gray-200 px-4 py-3 pr-10 text-sm transition-all focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
@@ -443,7 +443,7 @@ export default function RegisterVisitCard({ doctors }) {
                                 </span>
                             </label>
                             <div className="relative">
-                                <FileText className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
+                                <FileText className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                                 <textarea
                                     value={data.description}
                                     onChange={(e) =>

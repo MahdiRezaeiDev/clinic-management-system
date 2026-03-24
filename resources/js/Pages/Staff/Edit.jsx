@@ -226,7 +226,7 @@ export default function Edit({ staff }) {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <User className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="text"
                                         value={data.full_name}
@@ -247,7 +247,7 @@ export default function Edit({ staff }) {
                                     <span className="mr-1 text-red-500">*</span>
                                 </label>
                                 <div className="relative">
-                                    <Phone className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                    <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="text"
                                         value={data.phone}

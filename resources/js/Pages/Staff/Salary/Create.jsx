@@ -10,6 +10,7 @@ import {
     AlertCircle,
     Calendar,
     ChevronLeft,
+    ChevronRight,
     Clock,
     DollarSign,
     FileText,
@@ -121,7 +122,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                             href={route('staffs.salary.index', staff.id)}
                             className="mb-4 inline-flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-gray-900"
                         >
-                            <ChevronLeft className="h-4 w-4" />
+                            <ChevronRight className="h-4 w-4" />
                             بازگشت به لیست حقوق
                         </Link>
 
@@ -397,7 +398,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                         className="mb-2 text-sm font-medium text-gray-700"
                                     />
                                     <div className="relative">
-                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
                                             <DollarSign className="h-4 w-4 text-gray-400" />
                                         </div>
                                         <TextInput
@@ -424,7 +425,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                                         ),
                                                 );
                                             }}
-                                            className="w-full rounded-lg border-gray-300 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
+                                            className="w-full px-4 py-3 rounded-lg border-gray-300 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
                                             min={0}
                                             step="100"
                                         />
@@ -443,7 +444,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                         className="mb-2 text-sm font-medium text-gray-700"
                                     />
                                     <div className="relative">
-                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
                                             <Clock className="h-4 w-4 text-gray-400" />
                                         </div>
                                         <TextInput
@@ -468,7 +469,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                         className="mb-2 text-sm font-medium text-gray-700"
                                     />
                                     <div className="relative">
-                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
                                             <span className="text-gray-400">
                                                 -
                                             </span>
@@ -577,7 +578,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                         className="mb-2 text-sm font-medium text-gray-700"
                                     />
                                     <div className="relative">
-                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
                                             <DollarSign className="h-4 w-4 text-gray-400" />
                                         </div>
                                         <TextInput

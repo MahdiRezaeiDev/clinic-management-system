@@ -135,7 +135,7 @@ export default function Login({ status }) {
                                     className="text-xs font-medium text-gray-700 sm:text-sm"
                                 />
                                 <div className="relative">
-                                    <Mail className="absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400 sm:h-4 sm:w-4" />
+                                    <Mail className="absolute left-3 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400 sm:h-4 sm:w-4" />
                                     <TextInput
                                         id="email"
                                         type="email"

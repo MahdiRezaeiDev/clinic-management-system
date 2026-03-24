@@ -5,6 +5,7 @@ import MonthlyVisitsChart from '@/Components/Cards/VisitChart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, usePage } from '@inertiajs/react';
+import { useEcho } from '@laravel/echo-react';
 import {
     Activity,
     ArrowDown,
@@ -35,6 +36,9 @@ export default function Dashboard({
 }) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
+    useEcho(`orders.${orderId}`, 'OrderShipmentStatusUpdated', (e) => {
+        console.log(e.order);
+    });
 
     useEffect(() => {
         if (flash.success) {
