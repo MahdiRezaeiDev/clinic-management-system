@@ -76,8 +76,7 @@ export default function Index({
     const todayExpense = expenses.data
         .filter(
             (expense) =>
-                moment(expense.expense_date).format('jYYYY/jMM/jDD') ===
-                moment().format('jYYYY/jMM/jDD'),
+                expense.expense_date === moment().format('jYYYY/jMM/jDD'),
         )
         .reduce((sum, expense) => sum + Number(expense.amount), 0);
 
@@ -279,7 +278,12 @@ export default function Index({
                                 </div>
                             </div>
                             <p className="mt-2 text-xs text-gray-500">
-                                {moment().format('jDD jMMMM jYYYY')}
+                                {new Date().toLocaleDateString('fa-IR', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                })}
                             </p>
                         </div>
 

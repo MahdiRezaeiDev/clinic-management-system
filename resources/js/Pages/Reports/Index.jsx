@@ -5,6 +5,8 @@ import {
     Activity,
     Calendar,
     ChevronDown,
+    ChevronLeft,
+    ChevronRight,
     DollarSign,
     FileSpreadsheet,
     FileText,
@@ -39,7 +41,6 @@ export default function FinanceLineChart({
     const dropdownRef = useRef(null);
     const tableRef = useRef();
 
-    // تولید لیست سال‌ها (۵ سال گذشته تا سال جاری)
     const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
     const changeYear = (year) => {
@@ -61,12 +62,10 @@ export default function FinanceLineChart({
         'حوت',
     ];
 
-    // Animation on mount
     useEffect(() => {
         setAnimateChart(true);
     }, []);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -97,7 +96,6 @@ export default function FinanceLineChart({
         return filteredData[1] || {};
     }, [selectedMonth, filteredData, totals]);
 
-    // Calculate growth percentages
     const calculateGrowth = (current, previous) => {
         if (!previous || previous === 0) return 0;
         return (((current - previous) / previous) * 100).toFixed(1);
@@ -208,7 +206,6 @@ export default function FinanceLineChart({
         <AuthenticatedLayout title="گزارش مالی">
             <Head title="گزارش مالی" />
 
-            {/* Custom gradient background */}
             <div className="absolute inset-0 -z-10 h-full w-full bg-white">
                 <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
                 <div className="absolute left-0 top-0 h-96 w-96 animate-pulse rounded-full bg-teal-100 opacity-20 blur-3xl"></div>
@@ -230,64 +227,23 @@ export default function FinanceLineChart({
                         </p>
                     </div>
 
-                    {/* Custom Dropdown */}
-                    <div className="relative" ref={dropdownRef}>
-                        <button
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                            className="flex items-center gap-3 rounded-xl bg-white px-6 py-3 shadow-lg transition-all duration-300 hover:shadow-xl"
-                        >
-                            <Calendar className="h-5 w-5 text-teal-600" />
-                            <span className="font-medium text-gray-700">
-                                {selectedMonth}
-                            </span>
-                            <ChevronDown
-                                className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                            />
-                        </button>
-
-                        {isDropdownOpen && (
-                            <div className="animate-slideDown absolute left-0 mt-2 w-48 rounded-xl bg-white py-2 shadow-2xl ring-1 ring-black ring-opacity-5">
-                                <button
-                                    onClick={() => {
-                                        setSelectedMonth('کل سال');
-                                        setIsDropdownOpen(false);
-                                    }}
-                                    className={`block w-full px-4 py-2 text-right text-sm transition-colors hover:bg-teal-50 ${
-                                        selectedMonth === 'کل سال'
-                                            ? 'bg-teal-50 font-medium text-teal-700'
-                                            : 'text-gray-700'
-                                    }`}
-                                >
-                                    کل سال
-                                </button>
-
-                                <div className="my-1 border-t border-gray-100"></div>
-                                {afghanMonths.map((m, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => {
-                                            setSelectedMonth(m);
-                                            setIsDropdownOpen(false);
-                                        }}
-                                        className={`block w-full px-4 py-2 text-right text-sm transition-colors hover:bg-teal-50 ${
-                                            selectedMonth === m
-                                                ? 'bg-teal-50 font-medium text-teal-700'
-                                                : 'text-gray-700'
-                                        }`}
-                                    >
-                                        {m}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-
+                    {/* Controls: Year + Month — کنار هم */}
+                    <div className="flex items-center gap-3">
                         {/* Year Selector */}
-                        <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 shadow-lg">
-                            <span className="text-sm text-gray-500">سال:</span>
+                        <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-1 shadow-lg">
+                            <button
+                                onClick={() => changeYear(selectedYear + 1)}
+                                disabled={selectedYear >= currentYear}
+                                className="text-gray-400 transition-colors hover:text-teal-600 disabled:cursor-not-allowed disabled:opacity-30"
+                            >
+                                <ChevronRight className="h-4 w-4" />
+                            </button>
                             <select
                                 value={selectedYear}
-                                onChange={(e) => changeYear(e.target.value)}
-                                className="cursor-pointer bg-transparent font-medium text-gray-700 outline-none"
+                                onChange={(e) =>
+                                    changeYear(Number(e.target.value))
+                                }
+                                className="cursor-pointer border-none bg-transparent text-sm font-semibold text-gray-700 outline-none"
                             >
                                 {years.map((y) => (
                                     <option key={y} value={y}>
@@ -295,6 +251,66 @@ export default function FinanceLineChart({
                                     </option>
                                 ))}
                             </select>
+                            <button
+                                onClick={() => changeYear(selectedYear - 1)}
+                                disabled={selectedYear <= currentYear - 4}
+                                className="text-gray-400 transition-colors hover:text-teal-600 disabled:cursor-not-allowed disabled:opacity-30"
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                            </button>
+                        </div>
+
+                        {/* Month Dropdown */}
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() =>
+                                    setIsDropdownOpen(!isDropdownOpen)
+                                }
+                                className="flex items-center gap-3 rounded-xl bg-white px-5 py-3 shadow-lg transition-all duration-300 hover:shadow-xl"
+                            >
+                                <Calendar className="h-5 w-5 text-teal-600" />
+                                <span className="text-sm font-medium text-gray-700">
+                                    {selectedMonth}
+                                </span>
+                                <ChevronDown
+                                    className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                />
+                            </button>
+
+                            {isDropdownOpen && (
+                                <div className="animate-slideDown absolute left-0 z-50 mt-2 w-44 rounded-xl bg-white py-2 shadow-2xl ring-1 ring-black ring-opacity-5">
+                                    <button
+                                        onClick={() => {
+                                            setSelectedMonth('کل سال');
+                                            setIsDropdownOpen(false);
+                                        }}
+                                        className={`block w-full px-4 py-2 text-right text-sm transition-colors hover:bg-teal-50 ${
+                                            selectedMonth === 'کل سال'
+                                                ? 'bg-teal-50 font-medium text-teal-700'
+                                                : 'text-gray-700'
+                                        }`}
+                                    >
+                                        کل سال
+                                    </button>
+                                    <div className="my-1 border-t border-gray-100"></div>
+                                    {afghanMonths.map((m, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => {
+                                                setSelectedMonth(m);
+                                                setIsDropdownOpen(false);
+                                            }}
+                                            className={`block w-full px-4 py-2 text-right text-sm transition-colors hover:bg-teal-50 ${
+                                                selectedMonth === m
+                                                    ? 'bg-teal-50 font-medium text-teal-700'
+                                                    : 'text-gray-700'
+                                            }`}
+                                        >
+                                            {m}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -380,7 +396,7 @@ export default function FinanceLineChart({
                         color="bg-blue-500"
                     />
                     <StatCard
-                        title="تعداد ویزیت"
+                        title="درآمد ویزیت"
                         value={
                             selectedMonth === 'کل سال'
                                 ? totals.visitsIncome
@@ -416,10 +432,11 @@ export default function FinanceLineChart({
                                     نمودار تحلیل مالی
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-500">
-                                    روند درآمد، هزینه و سود در ماه‌های مختلف
+                                    روند درآمد، هزینه و سود در ماه‌های مختلف —
+                                    سال {selectedYear}
                                 </p>
                             </div>
-                            <div className="flex gap-4">
+                            <div className="flex gap-3">
                                 <button
                                     onClick={exportExcel}
                                     className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-green-700 hover:shadow-lg"
@@ -663,11 +680,7 @@ export default function FinanceLineChart({
                                         </td>
                                         <td className="px-4 py-3 text-sm font-medium">
                                             <span
-                                                className={`inline-flex items-center gap-1 rounded-full px-2 py-1 ${
-                                                    m.profit >= 0
-                                                        ? 'bg-green-100 text-green-700'
-                                                        : 'bg-red-100 text-red-700'
-                                                }`}
+                                                className={`inline-flex items-center gap-1 rounded-full px-2 py-1 ${m.profit >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                                             >
                                                 {m.profit >= 0 ? '+' : ''}
                                                 {m.profit.toLocaleString()}
@@ -701,11 +714,7 @@ export default function FinanceLineChart({
                                         </td>
                                         <td className="px-4 py-4 text-sm font-semibold">
                                             <span
-                                                className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 ${
-                                                    totals.profit >= 0
-                                                        ? 'bg-green-200 text-green-800'
-                                                        : 'bg-red-200 text-red-800'
-                                                }`}
+                                                className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 ${totals.profit >= 0 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}
                                             >
                                                 {totals.profit >= 0 ? '+' : ''}
                                                 {totals.profit.toLocaleString()}
