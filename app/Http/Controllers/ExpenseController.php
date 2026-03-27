@@ -50,6 +50,8 @@ class ExpenseController extends Controller
             'other' => 'سایر',
         ];
 
+        // dd($expenses);
+
         return Inertia::render('Expenses/Index', [
             'expenses' => $expenses,
             'categories' => $categories,
@@ -90,7 +92,7 @@ class ExpenseController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'expense_date' => jalaliToGregorian($request->expense_date),
+            'expense_date' => $request->expense_date,
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);

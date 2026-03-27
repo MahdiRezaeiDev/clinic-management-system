@@ -556,11 +556,9 @@ export default function Index({
                                                     <div className="flex items-center gap-1.5">
                                                         <Calendar className="h-3.5 w-3.5 text-gray-400" />
                                                         <span className="text-sm text-gray-600">
-                                                            {moment(
-                                                                expense.expense_date,
-                                                            ).format(
-                                                                'jYYYY/jMM/jDD',
-                                                            )}
+                                                            {
+                                                                expense.expense_date
+                                                            }
                                                         </span>
                                                     </div>
                                                 </td>

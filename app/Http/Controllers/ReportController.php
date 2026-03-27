@@ -9,13 +9,14 @@ use App\Models\PurchasedMedicine;
 use App\Models\PharmacySale;
 use App\Models\PurchasedMedicinePayment;
 use App\Models\Salary;
+use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 
 class ReportController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        $jalaliYear = Jalalian::now()->format('Y');
+        $jalaliYear = $request->input('year', Jalalian::now()->format('Y'));
         $jalaliMonthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
         $firstDayOfYear = Jalalian::fromFormat('Y-m-d', "$jalaliYear-01-01");
@@ -92,6 +93,8 @@ class ReportController extends Controller
         return inertia('Reports/Index', [
             'monthlyData' => $monthlyData,
             'totals' => $totals,
+            'selectedYear' => (int) $jalaliYear,
+            'currentYear' => (int) Jalalian::now()->format('Y'),
         ]);
     }
 }

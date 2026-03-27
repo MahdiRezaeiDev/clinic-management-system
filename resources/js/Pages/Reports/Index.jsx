@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import html2pdf from 'html2pdf.js';
 import {
     Activity,
@@ -27,12 +27,24 @@ import {
 } from 'recharts';
 import * as XLSX from 'xlsx';
 
-export default function FinanceLineChart({ monthlyData, totals }) {
+export default function FinanceLineChart({
+    monthlyData,
+    totals,
+    selectedYear,
+    currentYear,
+}) {
     const [selectedMonth, setSelectedMonth] = useState('کل سال');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [animateChart, setAnimateChart] = useState(false);
     const dropdownRef = useRef(null);
     const tableRef = useRef();
+
+    // تولید لیست سال‌ها (۵ سال گذشته تا سال جاری)
+    const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+
+    const changeYear = (year) => {
+        router.get(route('reports'), { year }, { preserveState: false });
+    };
 
     const afghanMonths = [
         'حمل',
@@ -248,6 +260,7 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                 >
                                     کل سال
                                 </button>
+
                                 <div className="my-1 border-t border-gray-100"></div>
                                 {afghanMonths.map((m, idx) => (
                                     <button
@@ -267,6 +280,22 @@ export default function FinanceLineChart({ monthlyData, totals }) {
                                 ))}
                             </div>
                         )}
+
+                        {/* Year Selector */}
+                        <div className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 shadow-lg">
+                            <span className="text-sm text-gray-500">سال:</span>
+                            <select
+                                value={selectedYear}
+                                onChange={(e) => changeYear(e.target.value)}
+                                className="cursor-pointer bg-transparent font-medium text-gray-700 outline-none"
+                            >
+                                {years.map((y) => (
+                                    <option key={y} value={y}>
+                                        {y}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 </div>
 

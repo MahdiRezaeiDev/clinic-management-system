@@ -16,22 +16,22 @@ class JalaliDateCast implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return $value ? Jalalian::fromCarbon(
-            Carbon::parse($value)
-        ) : null;
+        return $value
+            ? Jalalian::fromCarbon(Carbon::parse($value))->format('Y/m/d')
+            : null;
     }
 
     /**
-     * Prepare the given value for storage.
+     * Prepare the given value for storage.ظ
      *
      * @param  array<string, mixed>  $attributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if ($value instanceof Jalalian) {
-            return $value->toCarbon()->toDateString();
-        }
-
-        return $value;
+        return match (true) {
+            $value instanceof Jalalian => $value->toCarbon()->toDateString(),
+            is_string($value) && $value => Jalalian::fromFormat('Y/m/d', $value)->toCarbon()->toDateString(),
+            default => null,
+        };
     }
 }

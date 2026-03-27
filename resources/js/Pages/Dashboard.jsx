@@ -5,7 +5,6 @@ import MonthlyVisitsChart from '@/Components/Cards/VisitChart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
 import { Head, usePage } from '@inertiajs/react';
-import { useEcho } from '@laravel/echo-react';
 import {
     Activity,
     ArrowDown,
@@ -36,9 +35,6 @@ export default function Dashboard({
 }) {
     const { flash } = usePage().props;
     const [show, setShow] = useState(false);
-    useEcho(`orders.${orderId}`, 'OrderShipmentStatusUpdated', (e) => {
-        console.log(e.order);
-    });
 
     useEffect(() => {
         if (flash.success) {
@@ -306,7 +302,7 @@ export default function Dashboard({
                 </div>
 
                 {/* Charts Section */}
-                <div className="mb-8 grid gap-6 lg:grid-cols-3">
+                <div className="mb-8 grid md:grid-cols-1 lg:grid-cols-3 lg:gap-6">
                     {/* Pharmacy Card */}
                     <div className="col-span-1 overflow-hidden rounded-2xl bg-white shadow-lg">
                         <Pharmacy />
