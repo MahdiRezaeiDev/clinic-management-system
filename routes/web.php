@@ -17,6 +17,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +45,7 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // Users
     // ----------------------
-    Route::resource('user', UserController::class)->except('show');
+    Route::resource('user', UserController::class)->except('show')->middleware(HandlePrecognitiveRequests::class);
 
     // ----------------------
     // Staff

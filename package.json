@@ -46,6 +46,7 @@
         "html2pdf.js": "^0.14.0",
         "jspdf": "^4.2.1",
         "jspdf-autotable": "^5.0.2",
+        "laravel-precognition-react": "^2.0.0",
         "lucide-react": "^0.544.0",
         "moment-jalaali": "^0.10.4",
         "react-day-picker": "^9.11.0",
