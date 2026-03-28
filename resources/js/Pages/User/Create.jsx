@@ -4,8 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Transition } from '@headlessui/react';
-import { Head } from '@inertiajs/react';
-import { useForm } from 'laravel-precognition-react';
+import { Head, useForm } from '@inertiajs/react';
 
 export default function Create() {
     const {
@@ -110,9 +109,6 @@ export default function Create() {
                                                             e.target.value,
                                                         )
                                                     }
-                                                    onBlur={() =>
-                                                        data.validate('role')
-                                                    }
                                                 >
                                                     <option value="finance">
                                                         مالی
@@ -146,11 +142,6 @@ export default function Create() {
                                                         setData(
                                                             'password',
                                                             e.target.value,
-                                                        )
-                                                    }
-                                                    onBlur={() =>
-                                                        data.validate(
-                                                            'password',
                                                         )
                                                     }
                                                     required
