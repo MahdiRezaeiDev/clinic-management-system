@@ -75,7 +75,6 @@ return array(
     'Pest\\Laravel\\' => array($vendorDir . '/pestphp/pest-plugin-laravel/src'),
     'Pest\\Arch\\' => array($vendorDir . '/pestphp/pest-plugin-arch/src'),
     'Pest\\' => array($vendorDir . '/pestphp/pest/src'),
-    'ParagonIE\\Sodium\\' => array($vendorDir . '/paragonie/sodium_compat/namespaced'),
     'ParaTest\\' => array($vendorDir . '/brianium/paratest/src'),
     'PHPUnit\\Architecture\\' => array($vendorDir . '/ta-tikoma/phpunit-architecture-test/src'),
     'PHPStan\\PhpDocParser\\' => array($vendorDir . '/phpstan/phpdoc-parser/src'),
