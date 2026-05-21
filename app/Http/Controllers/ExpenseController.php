@@ -50,8 +50,6 @@ class ExpenseController extends Controller
             'other' => 'سایر',
         ];
 
-        // dd($expenses);
-
         return Inertia::render('Expenses/Index', [
             'expenses' => $expenses,
             'categories' => $categories,
@@ -87,6 +85,8 @@ class ExpenseController extends Controller
             'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
 
+        dd($request->validated());
+
 
         Expense::create([
             'category' => $request->category,
@@ -102,7 +102,6 @@ class ExpenseController extends Controller
 
     public function update(Request $request, Expense $expense)
     {
-        // Only allow the owner to update
         if ($expense->user_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
