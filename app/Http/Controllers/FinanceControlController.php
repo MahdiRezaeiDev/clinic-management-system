@@ -17,7 +17,7 @@ class FinanceControlController extends Controller
         if ($request->filled('payment_method')) $query->where('payment_method', $request->payment_method);
 
         $summaryQuery = clone $query;
-        $byMethod = (clone $query)->selectRaw('payment_method, direction, SUM(amount) total')
+        $byMethod = (clone $query)->reorder()->selectRaw('payment_method, direction, SUM(amount) total')
             ->groupBy('payment_method', 'direction')->get();
 
         $supplierDebts = PurchasedMedicine::with('supplier')->where('remaining_amount', '>', 0)

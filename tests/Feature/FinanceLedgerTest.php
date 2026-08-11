@@ -21,3 +21,15 @@ it('creates and updates a cash ledger entry for an income', function () {
     expect($transaction->fresh()->amount)->toBe(3000)
         ->and(FinancialAuditLog::where('auditable_type', Income::class)->count())->toBe(2);
 });
+
+it('renders grouped finance summaries without inherited transaction ordering', function () {
+    $user = User::factory()->create(['role' => 'admin']);
+    $this->actingAs($user);
+
+    Income::create([
+        'category' => 'other', 'amount' => 1500, 'payment_method' => 'cash',
+        'income_date' => '1405/01/02', 'description' => 'summary test', 'user_id' => $user->id,
+    ]);
+
+    $this->get(route('finance.control'))->assertOk();
+});
