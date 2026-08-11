@@ -44,6 +44,7 @@ class StaffSalaryController extends Controller
             'overtime_amount' => 'nullable|numeric|min:0',
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
+            'payment_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'nullable|array',
             'selectedOvertimes.*' => 'numeric|exists:overtimes,id',
@@ -56,10 +57,10 @@ class StaffSalaryController extends Controller
             'payment_date.date' => 'تاریخ پرداخت معتبر نیست.',
         ]);
 
-        $request->payment_date = jalaliToGregorian($request->payment_date);
+        $paymentDateGregorian = jalaliToGregorian($request->payment_date);
 
         // Extract year from payment_date (e.g. 2025-10-09 → 2025)
-        $year = date('Y', strtotime($request->payment_date));
+        $year = date('Y', strtotime($paymentDateGregorian));
 
         // 🔹 Prevent duplicate salary for same staff, month, and year
         $exists = $staff->salaries()
@@ -120,13 +121,13 @@ class StaffSalaryController extends Controller
             'base_salary' => 'required|numeric|min:0',
             'deductions' => 'nullable|numeric|min:0',
             'total_paid' => 'required|numeric|min:0',
-            'payment_date' => 'required|string',
+            'payment_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:255',
             'selectedOvertimes' => 'array',
         ]);
 
         // 📅 استخراج سال از تاریخ میلادی
-        $year = Carbon::parse($request->payment_date)->year;
+        $year = Carbon::parse(jalaliToGregorian($request->payment_date))->year;
 
         // 🛑 جلوگیری از ثبت تکراری برای همان کارمند، همان ماه، همان سال
         $exists = Salary::where('staff_id', $staff->id)
@@ -160,7 +161,7 @@ class StaffSalaryController extends Controller
             'deductions' => $request->deductions ?? 0,
             'total_paid' => $request->total_paid,
             'salary_month' => $request->salary_month,
-            'payment_date' => $request->payment_date_gregorian, // تاریخ میلادی
+            'payment_date' => $request->payment_date,
             'description' => $request->description,
         ]);
 

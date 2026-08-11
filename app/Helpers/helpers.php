@@ -6,9 +6,9 @@ use Carbon\Carbon;
 if (!function_exists('jalaliToGregorian')) {
     function jalaliToGregorian($jalaliDate)
     {
-        return Jalalian::fromFormat('Y/m/d', $jalaliDate)
+        return Jalalian::fromFormat('Y/m/d', str_replace('-', '/', $jalaliDate))
             ->toCarbon()
-            ->format('Y/m/d');
+            ->format('Y-m-d');
     }
 }
 

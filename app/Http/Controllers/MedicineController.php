@@ -8,6 +8,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MedicineController extends Controller
 {
@@ -55,11 +56,10 @@ class MedicineController extends Controller
             [
                 'supplier_id'      => 'required|exists:suppliers,id',
                 'total_amount'     => 'required|numeric|min:0',
-                'paid_amount'      => 'nullable|numeric|min:0',
+                'paid_amount'      => 'nullable|numeric|min:0|lte:total_amount',
                 'remaining_amount' => 'nullable|numeric|min:0',
-                'purchase_date'    => 'required|date',
+                'purchase_date'    => 'required|date_format:Y/m/d',
                 'description'      => 'nullable|string|max:1000',
-                'user_id'          => 'required|exists:users,id',
             ],
             [
                 'supplier_id.required'     => 'انتخاب شرکت همکار الزامی است.',
@@ -78,22 +78,24 @@ class MedicineController extends Controller
 
         // محاسبه خودکار مبلغ باقی‌مانده
         $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
-        $validated['status'] = $validated['remaining_amount'] == 0 ? 'paid' : 'unpaid';
-        $validated['purchase_date'] = jalaliToGregorian($validated['purchase_date']);
+        $validated['status'] = $validated['remaining_amount'] == 0
+            ? 'paid'
+            : (($validated['paid_amount'] ?? 0) > 0 ? 'partial' : 'unpaid');
+        $validated['user_id'] = Auth::id();
 
-        // ذخیره خرید
-        $purchase = PurchasedMedicine::create($validated);
+        DB::transaction(function () use ($validated) {
+            $purchase = PurchasedMedicine::create($validated);
 
-        // اگر مبلغی پرداخت شده، پرداخت جدید ایجاد شود
-        if (!empty($validated['paid_amount']) && $validated['paid_amount'] > 0) {
-            PurchasedMedicinePayment::create([
-                'purchased_medicine_id' => $purchase->id,
-                'payment_date'          => $validated['purchase_date'],
-                'amount'                => $validated['paid_amount'],
-                'description'           => 'پرداخت اولیه هنگام ثبت خرید',
-                'user_id'               => Auth::id(),
-            ]);
-        }
+            if (($validated['paid_amount'] ?? 0) > 0) {
+                PurchasedMedicinePayment::create([
+                    'purchased_medicine_id' => $purchase->id,
+                    'payment_date' => $validated['purchase_date'],
+                    'amount' => $validated['paid_amount'],
+                    'description' => 'پرداخت اولیه هنگام ثبت خرید',
+                    'user_id' => Auth::id(),
+                ]);
+            }
+        });
 
         return redirect()
             ->route('medicine.index')
@@ -142,11 +144,10 @@ class MedicineController extends Controller
         $validated = $request->validate([
             'supplier_id'       => 'required|exists:suppliers,id',
             'total_amount'      => 'required|numeric|min:0',
-            'paid_amount'       => 'nullable|numeric|min:0',
+            'paid_amount'       => 'nullable|numeric|min:0|lte:total_amount',
             'remaining_amount'  => 'nullable|numeric|min:0',
-            'purchase_date'     => 'required|date',
+            'purchase_date'     => 'required|date_format:Y/m/d',
             'description'       => 'nullable|string|max:1000',
-            'user_id'           => 'required|exists:users,id',
         ], [
             'supplier_id.required'      => 'انتخاب شرکت همکار الزامی است.',
             'supplier_id.exists'        => 'شرکت انتخاب‌شده معتبر نیست.',
@@ -163,8 +164,10 @@ class MedicineController extends Controller
 
         // Auto-calculate remaining to prevent tampering
         $validated['remaining_amount'] = $validated['total_amount'] - ($validated['paid_amount'] ?? 0);
-        $validated['status'] = $validated['remaining_amount'] == 0 ? "paid" : "unpaid";
-        $validated['purchase_date'] = jalaliToGregorian($validated['purchase_date']);
+        $validated['status'] = $validated['remaining_amount'] == 0
+            ? 'paid'
+            : (($validated['paid_amount'] ?? 0) > 0 ? 'partial' : 'unpaid');
+        $validated['user_id'] = Auth::id();
 
         // Find the specific purchase and update it
         $purchase = PurchasedMedicine::findOrFail($id);

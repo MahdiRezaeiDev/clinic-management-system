@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PurchasedMedicine;
 use App\Models\PurchasedMedicinePayment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaymentsController extends Controller
 {
@@ -32,7 +33,7 @@ class PaymentsController extends Controller
     {
         $validated = $request->validate(
             [
-                'payment_date' => 'required|date',
+                'payment_date' => 'required|date_format:Y/m/d',
                 'amount'       => 'required|numeric|min:1',
                 'description'  => 'nullable|string|max:1000',
             ],
@@ -63,23 +64,17 @@ class PaymentsController extends Controller
                 ->withInput();
         }
 
-        $validated['payment_date'] = jalaliToGregorian($validated['payment_date']);
+        DB::transaction(function () use ($validated, $medicine, $newTotal) {
+            $payment = new PurchasedMedicinePayment($validated);
+            $payment->user_id = Auth::id();
+            $payment->purchased_medicine_id = $medicine->id;
+            $payment->save();
 
-        // ثبت پرداخت
-        $payment = new PurchasedMedicinePayment($validated);
-        $payment->user_id = Auth::id();
-        $payment->purchased_medicine_id = $medicine->id;
-        $payment->save();
-
-        // به‌روزرسانی وضعیت پرداخت دارو
-        if ($newTotal >= $medicine->total_amount) {
-            $medicine->status = 'paid';
-        } else {
-            $medicine->status = 'unpaid';
-        }
-        $medicine->paid_amount = $newTotal;
-        $medicine->remaining_amount = $medicine->total_amount - $newTotal;
-        $medicine->save();
+            $medicine->paid_amount = $newTotal;
+            $medicine->remaining_amount = $medicine->total_amount - $newTotal;
+            $medicine->status = $newTotal >= $medicine->total_amount ? 'paid' : 'partial';
+            $medicine->save();
+        });
 
         return redirect()
             ->route('medicine.payments.index', $medicine->id)
@@ -91,9 +86,10 @@ class PaymentsController extends Controller
      */
     public function update(Request $request, PurchasedMedicine $medicine, PurchasedMedicinePayment $payment)
     {
+        abort_unless($payment->purchased_medicine_id === $medicine->id, 404);
         $validated = $request->validate(
             [
-                'payment_date' => 'required|date',
+                'payment_date' => 'required|date_format:Y/m/d',
                 'amount'       => 'required|numeric|min:1',
                 'description'  => 'nullable|string|max:1000',
             ],
@@ -124,22 +120,13 @@ class PaymentsController extends Controller
                 ->withInput();
         }
 
-        $validated['payment_date'] = jalaliToGregorian($validated['payment_date']);
-
-
-        // به‌روزرسانی پرداخت
-        $payment->update($validated);
-
-        // به‌روزرسانی وضعیت پرداخت دارو
-        if ($newTotal >= $medicine->total_amount) {
-            $medicine->status = 'paid';
-        } else {
-            $medicine->status = 'unpaid';
-        }
-
-        $medicine->paid_amount = $newTotal;
-        $medicine->remaining_amount = $medicine->total_amount - $newTotal;
-        $medicine->save();
+        DB::transaction(function () use ($validated, $payment, $medicine, $newTotal) {
+            $payment->update($validated);
+            $medicine->paid_amount = $newTotal;
+            $medicine->remaining_amount = $medicine->total_amount - $newTotal;
+            $medicine->status = $newTotal >= $medicine->total_amount ? 'paid' : 'partial';
+            $medicine->save();
+        });
 
         return redirect()
             ->route('medicine.payments.index', $medicine->id)
@@ -169,6 +156,8 @@ class PaymentsController extends Controller
         // Update status
         if ($totalPaidExcluding >= $medicine->total_amount) {
             $medicine->status = 'paid';
+        } elseif ($totalPaidExcluding > 0) {
+            $medicine->status = 'partial';
         } else {
             $medicine->status = 'unpaid';
         }
