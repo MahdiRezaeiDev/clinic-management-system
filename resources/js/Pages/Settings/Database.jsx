@@ -47,7 +47,7 @@ export default function BackupPage({ backupHealth }) {
         <AuthenticatedLayout title="پشتیبان‌گیری از پایگاه داده">
             <Head title="پشتیبان‌گیری از پایگاه داده" />
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 px-4 py-8 md:px-8">
+            <div className="min-h-screen px-4 py-8 md:px-8">
                 <div className="mx-auto max-w-4xl">
                     {/* Header */}
                     <div className="mb-6">
@@ -62,10 +62,24 @@ export default function BackupPage({ backupHealth }) {
                     </div>
 
                     {/* Main Card */}
-                    <div className={`mb-6 rounded-xl border p-4 ${backupHealth?.healthy ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'}`}>
-                        <p className="font-semibold">وضعیت پشتیبان‌گیری: {backupHealth?.healthy ? 'سالم' : 'نیازمند بررسی'}</p>
-                        <p className="mt-1 text-sm">آخرین اجرا: {backupHealth?.lastRun?.finished_at || 'هنوز اجرا نشده'} — اجرای بعدی: {backupHealth?.nextScheduledRun}</p>
-                        {backupHealth?.lastRun?.message && <p className="mt-1 text-xs text-gray-600">{backupHealth.lastRun.message}</p>}
+                    <div
+                        className={`mb-6 rounded-xl border p-4 ${backupHealth?.healthy ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'}`}
+                    >
+                        <p className="font-semibold">
+                            وضعیت پشتیبان‌گیری:{' '}
+                            {backupHealth?.healthy ? 'سالم' : 'نیازمند بررسی'}
+                        </p>
+                        <p className="mt-1 text-sm">
+                            آخرین اجرا:{' '}
+                            {backupHealth?.lastRun?.finished_at ||
+                                'هنوز اجرا نشده'}{' '}
+                            — اجرای بعدی: {backupHealth?.nextScheduledRun}
+                        </p>
+                        {backupHealth?.lastRun?.message && (
+                            <p className="mt-1 text-xs text-gray-600">
+                                {backupHealth.lastRun.message}
+                            </p>
+                        )}
                     </div>
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
                         {/* Header with gradient */}

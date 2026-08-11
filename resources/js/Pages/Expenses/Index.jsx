@@ -194,7 +194,7 @@ export default function Index({
         <AuthenticatedLayout title="مدیریت هزینه‌ها">
             <Head title="هزینه‌ها" />
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 px-4 py-6 md:px-8">
+            <div className="min-h-screen px-4 py-6 md:px-8">
                 <div className="mx-auto max-w-7xl">
                     {/* Header */}
                     <div className="mb-6 flex items-center justify-between">

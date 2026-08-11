@@ -1,3 +1,4 @@
+import { ClinicHeader, ClinicPanel, fieldClass } from '@/Components/ClinicUI';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
@@ -122,152 +123,158 @@ export default function DrugIndex({ drugs, search }) {
     return (
         <AuthenticatedLayout title="لیست داروها">
             <Head title="لیست داروها" />
-            <div className="p-6 text-right font-sans" dir="rtl">
+            <div
+                className="mx-auto max-w-7xl space-y-6 px-4 py-8 text-right font-sans sm:px-6 lg:px-8"
+                dir="rtl"
+            >
                 <Toaster position="top-left" richColors />
 
-                <div className="mb-6 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <span className="rounded-xl bg-teal-100 p-3 text-teal-700">
-                            <Pill className="h-6 w-6" />
-                        </span>
-                        <div>
-                            <h1 className="text-2xl font-bold">
-                                مدیریت داروها
-                            </h1>
-                            <p className="mt-1 text-sm text-gray-500">
-                                ثبت و مدیریت فهرست داروهای قابل استفاده در
-                                نسخه‌ها
-                            </p>
+                <ClinicHeader
+                    title="مدیریت داروها"
+                    subtitle="ثبت و مدیریت فهرست داروهای قابل استفاده در نسخه‌ها"
+                    icon={Pill}
+                    action={
+                        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                            <div className="relative">
+                                <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <input
+                                    type="text"
+                                    placeholder="جستجوی دارو..."
+                                    className={`${fieldClass} pr-10`}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+
+                                        router.get(
+                                            '/drugs',
+                                            { search: value },
+                                            {
+                                                preserveState: true,
+                                                replace: true,
+                                            },
+                                        );
+                                    }}
+                                    defaultValue={search}
+                                />
+                            </div>
+
+                            <PrimaryButton
+                                onClick={openAddModal}
+                                className="gap-2"
+                            >
+                                <Plus className="h-4 w-4" /> افزودن دارو
+                            </PrimaryButton>
                         </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                        <div className="relative">
-                            <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="جستجوی دارو..."
-                                className="h-11 rounded-xl border border-gray-200 bg-white py-2 pl-3 pr-10 text-sm shadow-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-200"
-                                onChange={(e) => {
-                                    const value = e.target.value;
-
-                                    router.get(
-                                        '/drugs',
-                                        { search: value },
-                                        {
-                                            preserveState: true,
-                                            replace: true,
-                                        },
-                                    );
-                                }}
-                                defaultValue={search}
-                            />
-                        </div>
-
-                        <PrimaryButton onClick={openAddModal} className="gap-2">
-                            <Plus className="h-4 w-4" /> افزودن دارو
-                        </PrimaryButton>
-                    </div>
-                </div>
+                    }
+                />
 
                 {/* Drugs Table */}
-                <div className="overflow-x-auto">
-                    <table className="min-w-full overflow-hidden rounded-lg bg-white text-sm shadow">
-                        <thead className="bg-teal-700 text-white">
-                            <tr>
-                                <th className="px-4 py-2">#</th>
-                                <th className="px-4 py-2">نام (EN)</th>
-                                <th className="px-4 py-2">نام (FA)</th>
-                                <th className="px-4 py-2">شکل دارویی (EN)</th>
-                                <th className="px-4 py-2">شکل دارویی (FA)</th>
-                                <th className="px-4 py-2">موجودی</th>
-                                <th className="px-4 py-2">انقضا</th>
-                                <th className="px-4 py-2">عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {drugs.data.length === 0 ? (
+                <ClinicPanel
+                    title={`فهرست داروها (${drugs.total})`}
+                    icon={Pill}
+                    bodyClassName="p-0"
+                >
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white text-sm">
+                            <thead className="bg-gradient-to-l from-teal-700 to-teal-600 text-white">
                                 <tr>
-                                    <td colSpan="8" className="px-6 py-16">
-                                        <div className="mx-auto flex max-w-md flex-col items-center text-center">
-                                            <span className="mb-4 rounded-full bg-teal-50 p-5 text-teal-600">
-                                                <PackageSearch className="h-10 w-10" />
-                                            </span>
-                                            <h3 className="text-lg font-bold text-gray-800">
-                                                {search
-                                                    ? 'دارویی با این مشخصات پیدا نشد'
-                                                    : 'هنوز دارویی ثبت نشده است'}
-                                            </h3>
-                                            <p className="mt-2 text-sm leading-6 text-gray-500">
-                                                {search
-                                                    ? 'عبارت جستجو را تغییر دهید یا جستجو را پاک کنید.'
-                                                    : 'برای استفاده در نسخه‌ها و مدیریت موجودی، اولین دارو را ثبت کنید.'}
-                                            </p>
-                                            {!search && (
-                                                <button
-                                                    type="button"
-                                                    onClick={openAddModal}
-                                                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg"
-                                                >
-                                                    <Plus className="h-4 w-4" />
-                                                    ثبت اولین دارو
-                                                </button>
-                                            )}
-                                        </div>
-                                    </td>
+                                    <th className="px-4 py-2">#</th>
+                                    <th className="px-4 py-2">نام (EN)</th>
+                                    <th className="px-4 py-2">نام (FA)</th>
+                                    <th className="px-4 py-2">
+                                        شکل دارویی (EN)
+                                    </th>
+                                    <th className="px-4 py-2">
+                                        شکل دارویی (FA)
+                                    </th>
+                                    <th className="px-4 py-2">موجودی</th>
+                                    <th className="px-4 py-2">انقضا</th>
+                                    <th className="px-4 py-2">عملیات</th>
                                 </tr>
-                            ) : (
-                                drugs.data.map((drug, idx) => (
-                                    <tr
-                                        key={drug.id}
-                                        className="border-b even:bg-teal-50 hover:bg-gray-50"
-                                    >
-                                        <td className="px-4 py-2">
-                                            {idx +
-                                                1 +
-                                                (drugs.current_page - 1) *
-                                                    drugs.per_page}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {drug.brand_name}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {drug.brand_name_fa}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {drug.dosage_form}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {drug.dosage_form_fa}
-                                        </td>
-                                        <td
-                                            className={`px-4 py-2 ${Number(drug.stock_quantity) <= Number(drug.reorder_level) ? 'font-bold text-red-600' : ''}`}
-                                        >
-                                            {drug.stock_quantity}
-                                        </td>
-                                        <td className="px-4 py-2">
-                                            {drug.expiry_date || '-'}
-                                        </td>
-                                        <td className="flex gap-2 px-4 py-2">
-                                            <Edit
-                                                className="h-5 w-5 text-teal-700"
-                                                onClick={() =>
-                                                    openEditModal(drug)
-                                                }
-                                            />
-                                            <Trash
-                                                className="h-5 w-5 text-red-700"
-                                                onClick={() =>
-                                                    openDeleteModal(drug)
-                                                }
-                                            />
+                            </thead>
+                            <tbody>
+                                {drugs.data.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="8" className="px-6 py-16">
+                                            <div className="mx-auto flex max-w-md flex-col items-center text-center">
+                                                <span className="mb-4 rounded-full bg-teal-50 p-5 text-teal-600">
+                                                    <PackageSearch className="h-10 w-10" />
+                                                </span>
+                                                <h3 className="text-lg font-bold text-gray-800">
+                                                    {search
+                                                        ? 'دارویی با این مشخصات پیدا نشد'
+                                                        : 'هنوز دارویی ثبت نشده است'}
+                                                </h3>
+                                                <p className="mt-2 text-sm leading-6 text-gray-500">
+                                                    {search
+                                                        ? 'عبارت جستجو را تغییر دهید یا جستجو را پاک کنید.'
+                                                        : 'برای استفاده در نسخه‌ها و مدیریت موجودی، اولین دارو را ثبت کنید.'}
+                                                </p>
+                                                {!search && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={openAddModal}
+                                                        className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg"
+                                                    >
+                                                        <Plus className="h-4 w-4" />
+                                                        ثبت اولین دارو
+                                                    </button>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                                ) : (
+                                    drugs.data.map((drug, idx) => (
+                                        <tr
+                                            key={drug.id}
+                                            className="border-b even:bg-teal-50 hover:bg-gray-50"
+                                        >
+                                            <td className="px-4 py-2">
+                                                {idx +
+                                                    1 +
+                                                    (drugs.current_page - 1) *
+                                                        drugs.per_page}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {drug.brand_name}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {drug.brand_name_fa}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {drug.dosage_form}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {drug.dosage_form_fa}
+                                            </td>
+                                            <td
+                                                className={`px-4 py-2 ${Number(drug.stock_quantity) <= Number(drug.reorder_level) ? 'font-bold text-red-600' : ''}`}
+                                            >
+                                                {drug.stock_quantity}
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                {drug.expiry_date || '-'}
+                                            </td>
+                                            <td className="flex gap-2 px-4 py-2">
+                                                <Edit
+                                                    className="h-5 w-5 text-teal-700"
+                                                    onClick={() =>
+                                                        openEditModal(drug)
+                                                    }
+                                                />
+                                                <Trash
+                                                    className="h-5 w-5 text-red-700"
+                                                    onClick={() =>
+                                                        openDeleteModal(drug)
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </ClinicPanel>
 
                 {/* Pagination */}
                 {drugs.links.length > 0 && (
@@ -348,7 +355,7 @@ export default function DrugIndex({ drugs, search }) {
                                     </label>
                                     <input
                                         type={type}
-                                        className="rounded border border-gray-300 px-3 py-2 text-sm"
+                                        className={fieldClass}
                                         value={data[field]}
                                         onChange={(e) =>
                                             setData({
