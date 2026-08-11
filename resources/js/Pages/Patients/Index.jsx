@@ -33,6 +33,7 @@ export default function Index({ patients, search }) {
             <ClinicPage className="space-y-6">
                 <ClinicHeader
                     title="پرونده‌های مریضان"
+                    icon={Users}
                     subtitle="مدیریت پرونده الکترونیکی و سوابق درمانی"
                     action={
                         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">

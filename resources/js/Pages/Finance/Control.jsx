@@ -8,7 +8,13 @@ import {
 } from '@/Components/ClinicUI';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowDownToLine, ArrowUpFromLine, Scale } from 'lucide-react';
+import {
+    ArrowDownToLine,
+    ArrowUpFromLine,
+    Filter,
+    Scale,
+    WalletCards,
+} from 'lucide-react';
 import { useState } from 'react';
 
 const money = (value) => `${Number(value || 0).toLocaleString()} ؋`;
@@ -58,9 +64,10 @@ export default function Control({
             <ClinicPage className="space-y-6">
                 <ClinicHeader
                     title="کنترل مالی و صندوق"
+                    icon={WalletCards}
                     description="دفتر واحد تراکنش‌ها، بدهی‌ها، هشدارها و تاریخچه تغییرات"
                 />
-                <ClinicPanel title="فیلتر گزارش مالی">
+                <ClinicPanel title="فیلتر گزارش مالی" icon={Filter}>
                     <form
                         onSubmit={apply}
                         className="grid items-end gap-5 md:grid-cols-2 xl:grid-cols-4"

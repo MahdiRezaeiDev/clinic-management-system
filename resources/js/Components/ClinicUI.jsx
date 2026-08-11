@@ -15,19 +15,32 @@ export function ClinicPage({ children, className = '' }) {
         </>
     );
 }
-export function ClinicHeader({ title, subtitle, description, action }) {
+export function ClinicHeader({
+    title,
+    subtitle,
+    description,
+    action,
+    icon: Icon,
+}) {
     const supportingText = subtitle || description;
     return (
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <h1 className="text-2xl font-bold text-gray-800 md:text-3xl">
-                    {title}
-                </h1>
-                {supportingText && (
-                    <p className="mt-1 text-sm text-gray-500">
-                        {supportingText}
-                    </p>
+            <div className="flex items-center gap-4">
+                {Icon && (
+                    <span className="rounded-2xl bg-gradient-to-br from-teal-100 to-teal-50 p-3 text-teal-700 shadow-sm">
+                        <Icon className="h-7 w-7" />
+                    </span>
                 )}
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-800 md:text-3xl">
+                        {title}
+                    </h1>
+                    {supportingText && (
+                        <p className="mt-1 text-sm text-gray-500">
+                            {supportingText}
+                        </p>
+                    )}
+                </div>
             </div>
             {action}
         </div>

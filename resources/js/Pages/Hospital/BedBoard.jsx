@@ -1,13 +1,24 @@
 import {
+    ClinicHeader,
     ClinicPage,
     ClinicPanel,
     ClinicStat,
     fieldClass,
     primaryButton,
 } from '@/Components/ClinicUI';
+import Modal from '@/Components/Modal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Activity, BedDouble, Sparkles, Wrench } from 'lucide-react';
+import {
+    Activity,
+    ArrowRightLeft,
+    BedDouble,
+    DoorOpen,
+    Plus,
+    Sparkles,
+    Wrench,
+} from 'lucide-react';
+import { useState } from 'react';
 const colors = {
     available: 'border-green-300 bg-green-50',
     occupied: 'border-red-300 bg-red-50',
@@ -16,28 +27,35 @@ const colors = {
 };
 export default function BedBoard({ wards, admissions, stats }) {
     const ward = useForm({ name: '', type: '' });
+    const [dialog, setDialog] = useState(null);
     const admissionFor = (bed) => admissions.find((a) => a.bed_id === bed.id);
     const change = (bed, status) =>
         router.patch(route('hospital.beds.status', bed.id), { status });
-    const transfer = (a) => {
-        const bed_id = prompt('شناسه تخت مقصد را وارد کنید');
-        const reason = bed_id && prompt('دلیل انتقال');
-        if (bed_id && reason)
-            router.post(route('hospital.admissions.transfer', a.id), {
-                bed_id,
-                reason,
-            });
-    };
+    const transfer = (a) =>
+        setDialog({
+            key: `transfer-${a.id}`,
+            title: 'انتقال بیمار به تخت دیگر',
+            icon: ArrowRightLeft,
+            fields: [
+                { name: 'bed_id', label: 'شناسه تخت مقصد', type: 'number' },
+                { name: 'reason', label: 'دلیل انتقال' },
+            ],
+            submit: (values) =>
+                router.post(
+                    route('hospital.admissions.transfer', a.id),
+                    values,
+                    { onSuccess: () => setDialog(null) },
+                ),
+        });
     return (
         <AuthenticatedLayout title="مدیریت بستری و تخت‌ها">
             <Head title="مدیریت بستری و تخت‌ها" />
             <ClinicPage className="space-y-6">
-                <div>
-                    <h1 className="text-2xl font-bold">نقشه بخش‌ها و تخت‌ها</h1>
-                    <p className="text-sm text-gray-500">
-                        مدیریت لحظه‌ای اشغال، انتقال، نظافت و تعمیر
-                    </p>
-                </div>
+                <ClinicHeader
+                    title="نقشه بخش‌ها و تخت‌ها"
+                    subtitle="مدیریت لحظه‌ای اشغال، انتقال، نظافت و تعمیر"
+                    icon={BedDouble}
+                />
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                     <Stat t="کل تخت" v={stats.total} />
                     <Stat t="اشغال" v={stats.occupied} />
@@ -49,7 +67,7 @@ export default function BedBoard({ wards, admissions, stats }) {
                         v={`${stats.average_stay_days} روز`}
                     />
                 </div>
-                <ClinicPanel title="افزودن بخش جدید">
+                <ClinicPanel title="افزودن بخش جدید" icon={DoorOpen}>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -101,17 +119,34 @@ export default function BedBoard({ wards, admissions, stats }) {
                                 </span>
                             </div>
                             <button
-                                onClick={() => {
-                                    const number = prompt('شماره اتاق');
-                                    if (number)
-                                        router.post(
-                                            route('hospital.rooms.store', w.id),
-                                            { number, type: 'standard' },
-                                        );
-                                }}
+                                onClick={() =>
+                                    setDialog({
+                                        key: `room-${w.id}`,
+                                        title: `افزودن اتاق به ${w.name}`,
+                                        icon: DoorOpen,
+                                        fields: [
+                                            {
+                                                name: 'number',
+                                                label: 'شماره اتاق',
+                                            },
+                                        ],
+                                        submit: (values) =>
+                                            router.post(
+                                                route(
+                                                    'hospital.rooms.store',
+                                                    w.id,
+                                                ),
+                                                { ...values, type: 'standard' },
+                                                {
+                                                    onSuccess: () =>
+                                                        setDialog(null),
+                                                },
+                                            ),
+                                    })
+                                }
                                 className="rounded border px-3 py-1 text-sm"
                             >
-                                + اتاق
+                                <Plus className="ml-1 inline h-4 w-4" /> اتاق
                             </button>
                         </div>
                         <div className="grid gap-4 lg:grid-cols-2">
@@ -123,24 +158,42 @@ export default function BedBoard({ wards, admissions, stats }) {
                                     <div className="mb-3 flex justify-between">
                                         <b>اتاق {r.number}</b>
                                         <button
-                                            onClick={() => {
-                                                const number =
-                                                    prompt('شماره تخت');
-                                                const daily_rate =
-                                                    number &&
-                                                    prompt('قیمت روزانه');
-                                                if (number && daily_rate)
-                                                    router.post(
-                                                        route(
-                                                            'hospital.beds.store',
-                                                            r.id,
+                                            onClick={() =>
+                                                setDialog({
+                                                    key: `bed-${r.id}`,
+                                                    title: `افزودن تخت به اتاق ${r.number}`,
+                                                    icon: BedDouble,
+                                                    fields: [
+                                                        {
+                                                            name: 'number',
+                                                            label: 'شماره تخت',
+                                                        },
+                                                        {
+                                                            name: 'daily_rate',
+                                                            label: 'قیمت روزانه',
+                                                            type: 'number',
+                                                        },
+                                                    ],
+                                                    submit: (values) =>
+                                                        router.post(
+                                                            route(
+                                                                'hospital.beds.store',
+                                                                r.id,
+                                                            ),
+                                                            values,
+                                                            {
+                                                                onSuccess: () =>
+                                                                    setDialog(
+                                                                        null,
+                                                                    ),
+                                                            },
                                                         ),
-                                                        { number, daily_rate },
-                                                    );
-                                            }}
+                                                })
+                                            }
                                             className="text-sm text-blue-600"
                                         >
-                                            + تخت
+                                            <Plus className="ml-1 inline h-4 w-4" />{' '}
+                                            تخت
                                         </button>
                                     </div>
                                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -257,8 +310,72 @@ export default function BedBoard({ wards, admissions, stats }) {
                         </div>
                     </section>
                 ))}
+                <ActionDialog
+                    key={dialog?.key}
+                    dialog={dialog}
+                    close={() => setDialog(null)}
+                />
             </ClinicPage>
         </AuthenticatedLayout>
+    );
+}
+function ActionDialog({ dialog, close }) {
+    const [values, setValues] = useState(() =>
+        Object.fromEntries(
+            (dialog?.fields || []).map((field) => [field.name, '']),
+        ),
+    );
+    const Icon = dialog?.icon;
+    return (
+        <Modal show={Boolean(dialog)} onClose={close} maxWidth="md">
+            <form
+                className="p-6"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    dialog.submit(values);
+                }}
+            >
+                <div className="mb-6 flex items-center gap-3">
+                    <span className="rounded-xl bg-teal-100 p-3 text-teal-700">
+                        {Icon && <Icon className="h-6 w-6" />}
+                    </span>
+                    <h2 className="text-lg font-bold text-gray-800">
+                        {dialog?.title}
+                    </h2>
+                </div>
+                <div className="space-y-4">
+                    {dialog?.fields.map((field) => (
+                        <label className="block" key={field.name}>
+                            <span className="mb-2 block text-sm font-medium text-gray-600">
+                                {field.label}
+                            </span>
+                            <input
+                                required
+                                type={field.type || 'text'}
+                                className={fieldClass}
+                                value={values[field.name] || ''}
+                                onChange={(event) =>
+                                    setValues({
+                                        ...values,
+                                        [field.name]: event.target.value,
+                                    })
+                                }
+                            />
+                        </label>
+                    ))}
+                </div>
+                <div className="mt-6 flex justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={close}
+                        className="rounded-xl border border-gray-200 px-5 py-2.5 text-sm text-gray-700"
+                    >
+                        انصراف
+                    </button>
+                    <button className={primaryButton}>تأیید و ثبت</button>
+                </div>
+            </form>
+        </Modal>
     );
 }
 function Stat({ t, v }) {

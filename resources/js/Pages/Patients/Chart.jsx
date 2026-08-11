@@ -4,9 +4,10 @@ import {
     fieldClass,
     primaryButton,
 } from '@/Components/ClinicUI';
+import Modal from '@/Components/Modal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const today = () =>
     new Intl.DateTimeFormat('en-u-ca-persian', {
@@ -445,6 +446,7 @@ function Rx({ patient, doctors, drugs }) {
     );
 }
 function Admission({ patient, doctors, beds }) {
+    const [discharge, setDischarge] = useState(null);
     const f = useForm({ doctor_id: '', bed_id: '', reason: '' });
     return (
         <div className="grid gap-5 lg:grid-cols-2">
@@ -520,19 +522,7 @@ function Admission({ patient, doctors, beds }) {
                                     به‌روزرسانی صورتحساب
                                 </button>
                                 <button
-                                    onClick={() => {
-                                        const discharge_summary = prompt(
-                                            'خلاصه ترخیص را وارد کنید',
-                                        );
-                                        if (discharge_summary)
-                                            router.patch(
-                                                route(
-                                                    'admissions.discharge',
-                                                    a.id,
-                                                ),
-                                                { discharge_summary },
-                                            );
-                                    }}
+                                    onClick={() => setDischarge(a)}
                                     className="rounded bg-red-100 px-2 py-1 text-xs"
                                 >
                                     ترخیص
@@ -542,10 +532,26 @@ function Admission({ patient, doctors, beds }) {
                     </div>
                 ))}
             </Box>
+            <TextActionModal
+                show={Boolean(discharge)}
+                title="ترخیص بیمار"
+                label="خلاصه ترخیص"
+                submitLabel="تأیید ترخیص"
+                danger
+                onClose={() => setDischarge(null)}
+                onSubmit={(discharge_summary) =>
+                    router.patch(
+                        route('admissions.discharge', discharge.id),
+                        { discharge_summary },
+                        { onSuccess: () => setDischarge(null) },
+                    )
+                }
+            />
         </div>
     );
 }
 function Billing({ patient }) {
+    const [voidPayment, setVoidPayment] = useState(null);
     const f = useForm({
         invoice_date: today(),
         discount: 0,
@@ -658,18 +664,7 @@ function Billing({ patient }) {
                                 </span>
                                 <button
                                     className="text-red-600 print:hidden"
-                                    onClick={() => {
-                                        const reason =
-                                            prompt('دلیل ابطال پرداخت');
-                                        if (reason)
-                                            router.delete(
-                                                route(
-                                                    'hospital.invoice-payments.void',
-                                                    p.id,
-                                                ),
-                                                { data: { reason } },
-                                            );
-                                    }}
+                                    onClick={() => setVoidPayment(p)}
                                 >
                                     ابطال
                                 </button>
@@ -678,6 +673,23 @@ function Billing({ patient }) {
                     </div>
                 ))}
             </Box>
+            <TextActionModal
+                show={Boolean(voidPayment)}
+                title="ابطال پرداخت"
+                label="دلیل ابطال"
+                submitLabel="ابطال پرداخت"
+                danger
+                onClose={() => setVoidPayment(null)}
+                onSubmit={(reason) =>
+                    router.delete(
+                        route('hospital.invoice-payments.void', voidPayment.id),
+                        {
+                            data: { reason },
+                            onSuccess: () => setVoidPayment(null),
+                        },
+                    )
+                }
+            />
         </div>
     );
 }
@@ -718,5 +730,65 @@ function Payment({ invoice }) {
                 ثبت پرداخت
             </button>
         </form>
+    );
+}
+function TextActionModal({
+    show,
+    title,
+    label,
+    submitLabel,
+    onClose,
+    onSubmit,
+    danger = false,
+}) {
+    const [value, setValue] = useState('');
+    useEffect(() => {
+        if (!show) setValue('');
+    }, [show]);
+    return (
+        <Modal show={show} onClose={onClose} maxWidth="md">
+            <form
+                className="p-6"
+                onSubmit={(event) => {
+                    event.preventDefault();
+                    if (value.trim()) onSubmit(value.trim());
+                }}
+            >
+                <h2 className="text-lg font-bold text-gray-800">{title}</h2>
+                <p className="mt-1 text-sm text-gray-500">
+                    این عملیات ثبت و در تاریخچه سیستم نگهداری می‌شود.
+                </p>
+                <label className="mt-5 block">
+                    <span className="mb-2 block text-sm font-medium text-gray-600">
+                        {label}
+                    </span>
+                    <textarea
+                        autoFocus
+                        required
+                        className={`${fieldClass} h-28 py-3`}
+                        value={value}
+                        onChange={(event) => setValue(event.target.value)}
+                    />
+                </label>
+                <div className="mt-6 flex justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="rounded-xl border border-gray-200 px-5 py-2.5 text-sm text-gray-700"
+                    >
+                        انصراف
+                    </button>
+                    <button
+                        className={
+                            danger
+                                ? 'rounded-xl bg-red-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg hover:bg-red-700'
+                                : primaryButton
+                        }
+                    >
+                        {submitLabel}
+                    </button>
+                </div>
+            </form>
+        </Modal>
     );
 }
