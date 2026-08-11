@@ -1,4 +1,5 @@
 import Dropdown from '@/Components/Dropdown';
+import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import {
@@ -19,44 +20,44 @@ import {
     MenuIcon,
     ParkingMeter,
     RadioReceiver,
+    Settings,
     Store,
     User,
     UserIcon,
+    UsersRound,
     WalletCards,
 } from 'lucide-react';
-import { useRef } from 'react';
-import NavLink from './NavLink';
+import { useRef, useState } from 'react';
 
 export default function Sidebar() {
-    const { auth } = usePage().props;
-    const user = auth.user;
-
+    const user = usePage().props.auth.user;
     const sidebarRef = useRef();
 
     const toggleSidebar = () => {
-        const el = sidebarRef.current;
-        if (!el) return;
-        el.classList.toggle('hidden');
-        el.classList.toggle('bg-white');
-        el.classList.toggle('py-3');
-        el.classList.toggle('px-6');
+        const element = sidebarRef.current;
+        if (!element) return;
+        element.classList.toggle('hidden');
+        element.classList.toggle('bg-white');
+        element.classList.toggle('px-3');
+        element.classList.toggle('py-3');
     };
+
+    const can = (...roles) => roles.includes(user.role);
 
     return (
         <nav className="relative z-30 flex flex-wrap items-center justify-between border-l border-gray-100 bg-white p-4 shadow-2xl shadow-gray-300/40 md:fixed md:inset-y-0 md:right-0 md:h-screen md:w-72 md:flex-col md:flex-nowrap md:overflow-hidden print:hidden">
-            <div className="mx-auto flex w-full flex-wrap items-center justify-between px-0 md:h-full md:min-h-0 md:flex-1 md:flex-col md:flex-nowrap md:items-stretch">
-                {/* Mobile toggle button */}
+            <div className="mx-auto flex w-full flex-wrap items-center justify-between md:h-full md:min-h-0 md:flex-1 md:flex-col md:flex-nowrap md:items-stretch">
                 <button
-                    className="cursor-pointer rounded border border-transparent bg-transparent px-3 py-1 text-xl leading-none text-black opacity-50 md:hidden"
+                    className="rounded-xl border border-gray-200 p-2 text-gray-600 md:hidden"
                     type="button"
                     onClick={toggleSidebar}
+                    aria-label="نمایش منو"
                 >
                     <MenuIcon className="h-6 w-6" />
                 </button>
 
-                {/* Company name */}
                 <a
-                    className="flex items-center gap-3 rounded-2xl bg-gradient-to-l from-teal-700 to-teal-600 px-4 py-3 text-white shadow-lg md:mb-3 md:flex"
+                    className="flex items-center gap-3 rounded-2xl bg-gradient-to-l from-teal-700 to-teal-600 px-4 py-3 text-white shadow-lg md:mb-3"
                     href={route('dashboard')}
                 >
                     <span className="rounded-xl bg-white/15 p-2">
@@ -70,38 +71,25 @@ export default function Sidebar() {
                     </span>
                 </a>
 
-                {/* Mobile user dropdown */}
-                <div className="flex list-none flex-wrap items-center md:hidden">
+                <div className="flex list-none items-center md:hidden">
                     <Dropdown>
                         <Dropdown.Trigger>
-                            <span className="inline-flex rounded-md">
-                                <button
-                                    type="button"
-                                    className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none"
-                                >
-                                    <User className="h-5 w-5" />
-                                    <ChevronDown className="ml-1 h-4 w-4" />
-                                </button>
-                            </span>
+                            <button className="inline-flex items-center gap-1 rounded-xl p-2 text-gray-500">
+                                <User className="h-5 w-5" />
+                                <ChevronDown className="h-4 w-4" />
+                            </button>
                         </Dropdown.Trigger>
                         <Dropdown.Content>
-                            <div className="bg-blueGray-700 flex w-full items-center justify-between whitespace-nowrap p-4 font-normal text-white">
-                                <p className="text-xs">حساب کاربری:</p>
-                                <p className="text-xs">{user.name}</p>
+                            <div className="bg-teal-700 p-4 text-xs text-white">
+                                {user.name}
                             </div>
-                            <ResponsiveNavLink
-                                active={route().current('profile.edit')}
-                                href={route('profile.edit')}
-                                className="text-blueGray-700 block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal"
-                            >
+                            <ResponsiveNavLink href={route('profile.edit')}>
                                 پروفایل کاربری
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
-                                active={route().current('logout')}
                                 href={route('logout')}
                                 method="post"
                                 as="button"
-                                className="w-full px-4 py-2 text-left text-sm font-normal outline-none focus:outline-none"
                             >
                                 خروج
                             </ResponsiveNavLink>
@@ -109,274 +97,296 @@ export default function Sidebar() {
                     </Dropdown>
                 </div>
 
-                {/* Sidebar links */}
                 <aside
-                    className="absolute left-0 right-0 top-16 z-40 hidden max-h-[calc(100vh-5rem)] flex-1 flex-col items-stretch overflow-y-auto overflow-x-hidden overscroll-contain rounded-b-2xl bg-white pb-5 shadow-xl md:relative md:inset-auto md:mt-1 md:flex md:max-h-none md:min-h-0 md:w-full md:opacity-100 md:shadow-none print:hidden"
-                    id="sidebar"
                     ref={sidebarRef}
+                    className="absolute left-0 right-0 top-16 z-40 hidden max-h-[calc(100vh-5rem)] flex-1 flex-col overflow-y-auto overflow-x-hidden overscroll-contain rounded-b-2xl bg-white pb-5 shadow-xl md:relative md:inset-auto md:mt-1 md:flex md:max-h-none md:min-h-0 md:w-full md:shadow-none"
                 >
-                    <ul className="flex list-none flex-col pb-8 pt-2 md:min-w-full md:flex-col">
-                        {/* Dashboard */}
-                        <li>
-                            <NavLink
-                                href={route('dashboard')}
-                                active={route().current('dashboard')}
-                            >
-                                <div className="flex items-end gap-2">
-                                    <LayoutDashboard className="h-5 w-5" />
-                                    <span>داشبورد</span>
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                href={route('staffs.index')}
-                                active={route().current('staffs.*')}
-                            >
-                                <div className="flex items-end gap-2">
-                                    <UserIcon className="h-5 w-5" />
-                                    مدیریت پرسنل
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                    <div className="space-y-1 pb-8 pt-2">
+                        <MenuItem
+                            href={route('dashboard')}
+                            active={route().current('dashboard')}
+                            icon={LayoutDashboard}
+                        >
+                            داشبورد
+                        </MenuItem>
+
+                        <MenuGroup
+                            title="پذیرش و درمان"
+                            icon={HeartPulse}
+                            active={
+                                route().current('visits.*') ||
+                                route().current('patients.*') ||
+                                route().current('hospital.triage.*') ||
+                                route().current('hospital.appointments.*') ||
+                                route().current('hospital.bed-board') ||
+                                route().current('hospital.lab.*')
+                            }
+                        >
+                            <MenuItem
                                 href={route('visits.index')}
                                 active={route().current('visits.*')}
+                                icon={Calendar}
                             >
-                                <div className="flex items-end gap-2">
-                                    <Calendar className="h-5 w-5" />
-                                    ویزیت‌ها
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                ویزیت‌ها
+                            </MenuItem>
+                            <MenuItem
                                 href={route('patients.index')}
                                 active={route().current('patients.*')}
+                                icon={User}
                             >
-                                <div className="flex items-end gap-2">
-                                    <User className="h-5 w-5" />
-                                    پرونده مریضان
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                پرونده مریضان
+                            </MenuItem>
+                            <MenuItem
                                 href={route('hospital.triage.index')}
                                 active={route().current('hospital.triage.*')}
+                                icon={HeartPulse}
                             >
-                                <div className="flex items-end gap-2">
-                                    <HeartPulse className="h-5 w-5" />
-                                    تریاژ و صف انتظار
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                تریاژ و صف انتظار
+                            </MenuItem>
+                            <MenuItem
                                 href={route('hospital.appointments.index')}
                                 active={route().current(
                                     'hospital.appointments.*',
                                 )}
+                                icon={Calendar}
                             >
-                                <div className="flex items-end gap-2">
-                                    <Calendar className="h-5 w-5" />
-                                    تقویم نوبت‌ها
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                تقویم نوبت‌ها
+                            </MenuItem>
+                            <MenuItem
                                 href={route('hospital.bed-board')}
                                 active={route().current('hospital.bed-board')}
+                                icon={ParkingMeter}
                             >
-                                <div className="flex items-end gap-2">
-                                    <ParkingMeter className="h-5 w-5" />
-                                    بستری و تخت‌ها
-                                </div>
-                            </NavLink>
-                        </li>
-                        {['admin', 'manager', 'doctor', 'laboratory'].includes(
-                            user.role,
-                        ) && (
-                            <li>
-                                <NavLink
+                                بستری و تخت‌ها
+                            </MenuItem>
+                            {can(
+                                'admin',
+                                'manager',
+                                'doctor',
+                                'laboratory',
+                            ) && (
+                                <MenuItem
                                     href={route('hospital.lab.index')}
                                     active={route().current('hospital.lab.*')}
+                                    icon={FlaskConical}
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <FlaskConical className="h-5 w-5" />
-                                        مرکز لابراتوار
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
-                        {['admin', 'manager', 'pharmacy', 'inventory'].includes(
-                            user.role,
-                        ) && (
-                            <li>
-                                <NavLink
+                                    مرکز لابراتوار
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
+
+                        <MenuGroup
+                            title="دارو و انبار"
+                            icon={Boxes}
+                            active={
+                                route().current('hospital.inventory.*') ||
+                                route().current('hospital.catalog.*') ||
+                                route().current('suppliers.*') ||
+                                route().current('drugs.*') ||
+                                route().current('medicine.*') ||
+                                route().current('pharmacy.*')
+                            }
+                        >
+                            {can(
+                                'admin',
+                                'manager',
+                                'pharmacy',
+                                'inventory',
+                            ) && (
+                                <MenuItem
                                     href={route('hospital.inventory.index')}
                                     active={route().current(
                                         'hospital.inventory.*',
                                     )}
+                                    icon={Boxes}
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <Boxes className="h-5 w-5" />
-                                        انبار محموله‌ای
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
-                        {['admin', 'manager', 'accountant'].includes(
-                            user.role,
-                        ) && (
-                            <li>
-                                <NavLink
+                                    انبار محموله‌ای
+                                </MenuItem>
+                            )}
+                            {can('admin', 'manager', 'accountant') && (
+                                <MenuItem
                                     href={route('hospital.catalog.index')}
                                     active={route().current(
                                         'hospital.catalog.*',
                                     )}
+                                    icon={BadgeDollarSign}
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <BadgeDollarSign className="h-5 w-5" />
-                                        بیمه و تعرفه
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
-                        <li>
-                            <NavLink
+                                    بیمه و تعرفه
+                                </MenuItem>
+                            )}
+                            <MenuItem
                                 href={route('suppliers.index')}
-                                active={route().current('suppliers.index')}
+                                active={route().current('suppliers.*')}
+                                icon={UsersRound}
                             >
-                                <div className="flex items-end gap-2">
-                                    <ParkingMeter className="h-5 w-5" />
-                                    شرکت های همکار
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                شرکت‌های همکار
+                            </MenuItem>
+                            <MenuItem
                                 href={route('drugs.index')}
                                 active={route().current('drugs.*')}
+                                icon={Store}
                             >
-                                <div className="flex items-end gap-2">
-                                    <Store className="h-5 w-5" />
-                                    لیست داروها
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                لیست داروها
+                            </MenuItem>
+                            <MenuItem
                                 href={route('medicine.index')}
                                 active={route().current('medicine.*')}
+                                icon={CardSim}
                             >
-                                <div className="flex items-end gap-2">
-                                    <CardSim className="h-5 w-5" />
-                                    خرید دارو
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                خرید دارو
+                            </MenuItem>
+                            <MenuItem
                                 href={route('pharmacy.index')}
                                 active={route().current('pharmacy.*')}
+                                icon={Coins}
                             >
-                                <div className="flex items-end gap-2">
-                                    <Coins className="h-5 w-5" />
-                                    فروش دارو
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                فروش دارو
+                            </MenuItem>
+                        </MenuGroup>
+
+                        <MenuGroup
+                            title="منابع انسانی"
+                            icon={UserIcon}
+                            active={route().current('staffs.*')}
+                        >
+                            <MenuItem
+                                href={route('staffs.index')}
+                                active={route().current('staffs.*')}
+                                icon={UserIcon}
+                            >
+                                مدیریت پرسنل
+                            </MenuItem>
+                        </MenuGroup>
+
+                        <MenuGroup
+                            title="مالی و گزارش‌ها"
+                            icon={WalletCards}
+                            active={
+                                route().current('incomes.*') ||
+                                route().current('expenses.*') ||
+                                route().current('reports*') ||
+                                route().current('finance.*')
+                            }
+                        >
+                            <MenuItem
                                 href={route('incomes.index')}
                                 active={route().current('incomes.*')}
+                                icon={RadioReceiver}
                             >
-                                <div className="flex items-end gap-2">
-                                    <RadioReceiver className="h-5 w-5" />
-                                    مدیریت عواید
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                مدیریت عواید
+                            </MenuItem>
+                            <MenuItem
                                 href={route('expenses.index')}
                                 active={route().current('expenses.*')}
+                                icon={IdCard}
                             >
-                                <div className="flex items-end gap-2">
-                                    <IdCard className="h-5 w-5" />
-                                    مدیریت هزینه ها
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
+                                مدیریت هزینه‌ها
+                            </MenuItem>
+                            <MenuItem
                                 href={route('reports')}
-                                active={route().current('reports.*')}
+                                active={route().current('reports*')}
+                                icon={ChartAreaIcon}
                             >
-                                <div className="flex items-end gap-2">
-                                    <ChartAreaIcon className="h-5 w-5" />
-                                    گزارشات مدیریتی
-                                </div>
-                            </NavLink>
-                        </li>
-                        {['admin', 'manager', 'accountant', 'cashier'].includes(
-                            user.role,
-                        ) && (
-                            <li>
-                                <NavLink
+                                گزارشات مدیریتی
+                            </MenuItem>
+                            {can(
+                                'admin',
+                                'manager',
+                                'accountant',
+                                'cashier',
+                            ) && (
+                                <MenuItem
                                     href={route('finance.control')}
                                     active={route().current('finance.control')}
+                                    icon={Coins}
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <Coins className="h-5 w-5" />
-                                        کنترل مالی و صندوق
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
-                        {['admin', 'manager', 'cashier'].includes(
-                            user.role,
-                        ) && (
-                            <li>
-                                <NavLink
+                                    کنترل مالی و صندوق
+                                </MenuItem>
+                            )}
+                            {can('admin', 'manager', 'cashier') && (
+                                <MenuItem
                                     href={route('finance.shifts.index')}
                                     active={route().current('finance.shifts.*')}
+                                    icon={WalletCards}
                                 >
-                                    <div className="flex items-end gap-2">
-                                        <WalletCards className="h-5 w-5" />
-                                        شیفت صندوق
-                                    </div>
-                                </NavLink>
-                            </li>
-                        )}
-                        <li>
-                            <NavLink
+                                    شیفت صندوق
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
+
+                        <MenuGroup
+                            title="سیستم"
+                            icon={Settings}
+                            active={
+                                route().current('notifications.*') ||
+                                route().current('settings.*')
+                            }
+                        >
+                            <MenuItem
                                 href={route('notifications.index')}
                                 active={route().current('notifications.*')}
+                                icon={Bell}
                             >
-                                <div className="flex items-end gap-2">
-                                    <Bell className="h-5 w-5" />
-                                    اعلان‌ها
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                href={route('settings.database')}
-                                active={route().current('settings.database')}
-                            >
-                                <div className="flex items-end gap-2">
-                                    <FileWarning className="h-5 w-5" />
-                                    پشتیبان‌گیری از پایگاه داده
-                                </div>
-                            </NavLink>
-                        </li>
-                    </ul>
+                                اعلان‌ها
+                            </MenuItem>
+                            {can('admin', 'manager') && (
+                                <MenuItem
+                                    href={route('settings.database')}
+                                    active={route().current(
+                                        'settings.database',
+                                    )}
+                                    icon={FileWarning}
+                                >
+                                    پشتیبان‌گیری پایگاه داده
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
+                    </div>
                 </aside>
             </div>
         </nav>
+    );
+}
+
+function MenuGroup({ title, icon: Icon, active, children }) {
+    const [open, setOpen] = useState(active);
+
+    return (
+        <section className="px-2">
+            <button
+                type="button"
+                onClick={() => setOpen((value) => !value)}
+                aria-expanded={open}
+                className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold transition ${active ? 'bg-teal-50 text-teal-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'}`}
+            >
+                <span className="flex items-center gap-2.5">
+                    <Icon className="h-5 w-5" />
+                    {title}
+                </span>
+                <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+                />
+            </button>
+            <div
+                className={`grid transition-all duration-200 ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+            >
+                <div className="overflow-hidden">
+                    <div className="mr-4 mt-1 border-r border-teal-100 pr-1">
+                        {children}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function MenuItem({ href, active, icon: Icon, children }) {
+    return (
+        <NavLink href={href} active={active} className="!mx-1">
+            <span className="flex items-center gap-2.5">
+                <Icon className="h-4.5 w-4.5 shrink-0" />
+                {children}
+            </span>
+        </NavLink>
     );
 }

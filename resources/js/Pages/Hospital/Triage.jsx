@@ -11,6 +11,7 @@ import { Head, Link, router, useForm } from '@inertiajs/react';
 import {
     Activity,
     CheckCircle2,
+    ChevronDown,
     Clock3,
     HeartPulse,
     Play,
@@ -102,39 +103,50 @@ export default function Triage({ entries, patients, stats }) {
                         className="grid items-end gap-5 md:grid-cols-2 xl:grid-cols-4"
                     >
                         <Field label="بیمار" error={form.errors.patient_id}>
-                            <select
-                                required
-                                className={fieldClass}
-                                value={form.data.patient_id}
-                                onChange={(e) =>
-                                    form.setData('patient_id', e.target.value)
-                                }
-                            >
-                                <option value="">انتخاب بیمار</option>
-                                {patients.map((p) => (
-                                    <option key={p.id} value={p.id}>
-                                        {p.full_name} —{' '}
-                                        {p.medical_record_number}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <UserRoundPlus className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <select
+                                    required
+                                    className={`${fieldClass} appearance-none px-11`}
+                                    value={form.data.patient_id}
+                                    onChange={(e) =>
+                                        form.setData(
+                                            'patient_id',
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="">انتخاب بیمار</option>
+                                    {patients.map((p) => (
+                                        <option key={p.id} value={p.id}>
+                                            {p.full_name} —{' '}
+                                            {p.medical_record_number}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            </div>
                         </Field>
                         <Field label="درجه فوریت">
-                            <select
-                                className={fieldClass}
-                                value={form.data.priority}
-                                onChange={(e) =>
-                                    form.setData('priority', e.target.value)
-                                }
-                            >
-                                {Object.entries(priority).map(
-                                    ([key, value]) => (
-                                        <option key={key} value={key}>
-                                            {value[0]}
-                                        </option>
-                                    ),
-                                )}
-                            </select>
+                            <div className="relative">
+                                <Siren className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                                <select
+                                    className={`${fieldClass} appearance-none px-11`}
+                                    value={form.data.priority}
+                                    onChange={(e) =>
+                                        form.setData('priority', e.target.value)
+                                    }
+                                >
+                                    {Object.entries(priority).map(
+                                        ([key, value]) => (
+                                            <option key={key} value={key}>
+                                                {value[0]}
+                                            </option>
+                                        ),
+                                    )}
+                                </select>
+                                <ChevronDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            </div>
                         </Field>
                         <Input
                             form={form}
