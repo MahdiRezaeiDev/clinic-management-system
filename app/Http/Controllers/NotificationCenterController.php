@@ -1,0 +1,3 @@
+<?php
+namespace App\Http\Controllers;use App\Models\SystemNotification;use Illuminate\Http\Request;use Illuminate\Support\Facades\Auth;use Inertia\Inertia;
+class NotificationCenterController extends Controller{public function index(){return Inertia::render('Notifications/Index',['notifications'=>SystemNotification::where(fn($q)=>$q->whereNull('user_id')->orWhere('user_id',Auth::id()))->latest()->paginate(50)]);}public function read(SystemNotification $notification){$notification->update(['read_at'=>now()]);return back();}public function readAll(){SystemNotification::where(fn($q)=>$q->whereNull('user_id')->orWhere('user_id',Auth::id()))->whereNull('read_at')->update(['read_at'=>now()]);return back();}}

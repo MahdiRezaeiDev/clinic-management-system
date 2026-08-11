@@ -25,6 +25,9 @@ use App\Http\Controllers\AppointmentBoardController;
 use App\Http\Controllers\PatientDocumentController;
 use App\Http\Controllers\HospitalCatalogController;
 use App\Http\Controllers\CashShiftController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LabDashboardController;
+use App\Http\Controllers\NotificationCenterController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +79,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('appointments/{appointment}/status', [HospitalWorkflowController::class,'appointmentStatus'])->name('appointments.status');
     Route::get('hospital/appointments', AppointmentBoardController::class)->name('hospital.appointments.index');
     Route::get('hospital/catalog',[HospitalCatalogController::class,'index'])->middleware('role:admin,manager,accountant')->name('hospital.catalog.index');
+    Route::get('hospital/lab',LabDashboardController::class)->middleware('role:admin,manager,doctor,laboratory')->name('hospital.lab.index');
+    Route::get('hospital/inventory',[InventoryController::class,'index'])->middleware('role:admin,manager,pharmacy,inventory')->name('hospital.inventory.index');
+    Route::post('hospital/inventory/batches',[InventoryController::class,'batch'])->middleware('role:admin,manager,pharmacy,inventory')->name('hospital.inventory.batches.store');
+    Route::post('hospital/inventory/movements',[InventoryController::class,'movement'])->middleware('role:admin,manager,pharmacy,inventory')->name('hospital.inventory.movements.store');
     Route::post('hospital/insurers',[HospitalCatalogController::class,'insurer'])->middleware('role:admin,manager')->name('hospital.insurers.store');
     Route::post('hospital/tariffs',[HospitalCatalogController::class,'tariff'])->middleware('role:admin,manager')->name('hospital.tariffs.store');
     Route::post('patients/{patient}/clinical-notes', [HospitalWorkflowController::class,'note'])->name('patients.notes.store');
@@ -146,6 +153,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/finance/control', FinanceControlController::class)->middleware('role:admin,manager,accountant,cashier')->name('finance.control');
     Route::get('/finance/shifts',[CashShiftController::class,'index'])->middleware('role:admin,manager,cashier')->name('finance.shifts.index');
     Route::post('/finance/shifts/open',[CashShiftController::class,'open'])->middleware('role:admin,manager,cashier')->name('finance.shifts.open');
+    Route::get('/notifications',[NotificationCenterController::class,'index'])->name('notifications.index');
+    Route::patch('/notifications/read-all',[NotificationCenterController::class,'readAll'])->name('notifications.read-all');
+    Route::patch('/notifications/{notification}/read',[NotificationCenterController::class,'read'])->name('notifications.read');
     Route::patch('/finance/shifts/{shift}/close',[CashShiftController::class,'close'])->middleware('role:admin,manager,cashier')->name('finance.shifts.close');
 
     // ----------------------
