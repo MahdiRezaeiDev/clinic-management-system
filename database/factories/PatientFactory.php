@@ -12,7 +12,7 @@ class PatientFactory extends Factory
             'full_name' => $this->faker->name,
             'phone' => $this->faker->phoneNumber,
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'birth_date' => $this->faker->date(),
+            'age' => $this->faker->numberBetween(1, 90),
         ];
     }
 }

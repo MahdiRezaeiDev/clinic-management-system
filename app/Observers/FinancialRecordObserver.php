@@ -1,7 +1,7 @@
 <?php
 namespace App\Observers;
 
-use App\Models\{CashTransaction, Expense, FinancialAuditLog, Income, PharmacySale, PurchasedMedicinePayment, Salary, Visit};
+use App\Models\{CashTransaction, Expense, FinancialAuditLog, Income, PatientInvoicePayment, PharmacySale, PurchasedMedicinePayment, Salary, Visit};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +29,7 @@ class FinancialRecordObserver
             $model instanceof PharmacySale => ['credit', 'paid_amount', 'sale_date', $model->payment_method],
             $model instanceof Expense => ['debit', 'amount', 'expense_date', $model->payment_method],
             $model instanceof PurchasedMedicinePayment => ['debit', 'amount', 'payment_date', $model->payment_method ?? 'cash'],
+            $model instanceof PatientInvoicePayment => ['credit', 'amount', 'payment_date', $model->payment_method],
             $model instanceof Salary => ['debit', 'total_paid', 'payment_date', 'cash'],
             default => null,
         };

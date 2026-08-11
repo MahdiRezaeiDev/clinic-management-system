@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Events\UserRegistered;
 use App\Listeners\SendUserRegisteredNotification;
-use App\Models\{Expense, Income, PharmacySale, PurchasedMedicinePayment, Salary, Visit};
+use App\Models\{Expense, Income, PatientInvoicePayment, PharmacySale, PurchasedMedicinePayment, Salary, Visit};
 use App\Observers\FinancialRecordObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
         Event::listen(UserRegistered::class, [SendUserRegisteredNotification::class, 'handle']);
-        foreach ([Visit::class, Income::class, PharmacySale::class, Expense::class, PurchasedMedicinePayment::class, Salary::class] as $model) {
+        foreach ([Visit::class, Income::class, PharmacySale::class, Expense::class, PurchasedMedicinePayment::class, PatientInvoicePayment::class, Salary::class] as $model) {
             $model::observe(FinancialRecordObserver::class);
         }
     }

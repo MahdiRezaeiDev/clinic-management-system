@@ -18,6 +18,7 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FinanceControlController;
+use App\Http\Controllers\HospitalWorkflowController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,16 @@ Route::middleware('auth')->group(function () {
     // Patients
     // ----------------------
     Route::resource('patients', PatientController::class);
+    Route::post('patients/{patient}/appointments', [HospitalWorkflowController::class,'appointment'])->name('patients.appointments.store');
+    Route::patch('appointments/{appointment}/status', [HospitalWorkflowController::class,'appointmentStatus'])->name('appointments.status');
+    Route::post('patients/{patient}/clinical-notes', [HospitalWorkflowController::class,'note'])->name('patients.notes.store');
+    Route::post('patients/{patient}/lab-orders', [HospitalWorkflowController::class,'labOrder'])->name('patients.lab-orders.store');
+    Route::patch('lab-order-items/{item}/result', [HospitalWorkflowController::class,'labResult'])->name('lab-results.update');
+    Route::post('patients/{patient}/prescriptions', [HospitalWorkflowController::class,'prescription'])->name('patients.prescriptions.store');
+    Route::post('patients/{patient}/admissions', [HospitalWorkflowController::class,'admit'])->name('patients.admissions.store');
+    Route::patch('admissions/{admission}/discharge', [HospitalWorkflowController::class,'discharge'])->name('admissions.discharge');
+    Route::post('patients/{patient}/invoices', [HospitalWorkflowController::class,'invoice'])->name('patients.invoices.store');
+    Route::post('patient-invoices/{invoice}/payments', [HospitalWorkflowController::class,'invoicePayment'])->name('patient-invoices.payments.store');
 
     // ----------------------
     // Pharmacy
