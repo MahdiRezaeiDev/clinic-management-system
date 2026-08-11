@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             'name' => 'bail|required|string|max:255',
             'email' => 'bail|required|email|unique:users',
             'password' => 'bail|required|string|min:8|confirmed',
-            'role' => 'bail|required|string|in:admin,manager,accountant,cashier,pharmacy,doctor,regular',
+            'role' => 'bail|required|string|in:admin,manager,accountant,cashier,pharmacy,doctor,nurse,receptionist,laboratory,inventory,regular',
             'salary' => 'bail|nullable|numeric|min:0',
             'profile' => 'bail|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];

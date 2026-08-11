@@ -159,9 +159,14 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink href={route('hospital.appointments.index')} active={route().current('hospital.appointments.*')}>
+                                <div className="flex items-end gap-2"><Calendar className="h-5 w-5" />تقویم نوبت‌ها</div>
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink
                                 href={route('hospital.bed-board')}
-                                active={route().current('hospital.*')}
+                                active={route().current('hospital.bed-board')}
                             >
                                 <div className="flex items-end gap-2">
                                     <ParkingMeter className="h-5 w-5" />

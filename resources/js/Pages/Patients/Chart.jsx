@@ -6,7 +6,8 @@ import {
 } from '@/Components/ClinicUI';
 import Modal from '@/Components/Modal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Download, FileText, Trash2, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const today = () =>
@@ -27,6 +28,7 @@ export default function Chart({ patient, doctors, labTests, drugs, beds }) {
         ['rx', 'نسخه'],
         ['admission', 'بستری'],
         ['billing', 'صورتحساب'],
+        ['documents', 'اسناد'],
     ];
     return (
         <AuthenticatedLayout title={`پرونده ${patient.full_name}`}>
@@ -76,6 +78,7 @@ export default function Chart({ patient, doctors, labTests, drugs, beds }) {
                     />
                 )}{' '}
                 {tab === 'billing' && <Billing patient={patient} />}
+                {tab === 'documents' && <Documents patient={patient} />}
             </ClinicPage>
         </AuthenticatedLayout>
     );
@@ -731,6 +734,10 @@ function Payment({ invoice }) {
             </button>
         </form>
     );
+}
+function Documents({ patient }) {
+    const form = useForm({ title: '', category: 'other', file: null });
+    return <div className="grid gap-5 lg:grid-cols-2"><Box title="بارگذاری سند"><form className="space-y-4" onSubmit={e=>{e.preventDefault();form.post(route('patients.documents.store',patient.id),{forceFormData:true,onSuccess:()=>form.reset()})}}><In value={form.data.title} onChange={e=>form.setData('title',e.target.value)} placeholder="عنوان سند"/><Sel value={form.data.category} onChange={e=>form.setData('category',e.target.value)}><option value="lab">نتیجه آزمایش</option><option value="prescription">نسخه</option><option value="imaging">تصویربرداری</option><option value="identity">مدرک هویتی</option><option value="discharge">ترخیص</option><option value="other">سایر</option></Sel><label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-teal-200 bg-teal-50/50 p-6 text-sm text-teal-700 hover:bg-teal-50"><Upload className="h-5 w-5"/>{form.data.file?.name||'انتخاب فایل PDF یا تصویر'}<input type="file" accept=".pdf,.jpg,.jpeg,.png,.webp" className="hidden" onChange={e=>form.setData('file',e.target.files[0])}/></label><button disabled={form.processing} className={primaryButton}><Upload className="h-4 w-4"/>ذخیره سند</button></form></Box><Box title={`اسناد بیمار (${patient.documents?.length||0})`}>{patient.documents?.length?<div className="divide-y">{patient.documents.map(d=><div key={d.id} className="flex items-center justify-between py-4"><div className="flex items-center gap-3"><span className="rounded-lg bg-teal-50 p-2 text-teal-700"><FileText className="h-5 w-5"/></span><div><b className="text-gray-800">{d.title}</b><p className="text-xs text-gray-400">{d.category} · {(d.size/1024).toFixed(1)} KB</p></div></div><div className="flex gap-2"><a href={`/storage/${d.path}`} target="_blank" className="rounded-lg bg-blue-50 p-2 text-blue-700"><Download className="h-4 w-4"/></a><button onClick={()=>router.delete(route('patients.documents.destroy',d.id))} className="rounded-lg bg-red-50 p-2 text-red-600"><Trash2 className="h-4 w-4"/></button></div></div>)}</div>:<div className="py-12 text-center text-gray-500"><FileText className="mx-auto mb-3 h-10 w-10 text-gray-300"/>سندی ثبت نشده است.</div>}</Box></div>;
 }
 function TextActionModal({
     show,

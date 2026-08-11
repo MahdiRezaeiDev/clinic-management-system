@@ -21,6 +21,10 @@ use App\Http\Controllers\FinanceControlController;
 use App\Http\Controllers\HospitalWorkflowController;
 use App\Http\Controllers\HospitalOperationsController;
 use App\Http\Controllers\TriageController;
+use App\Http\Controllers\AppointmentBoardController;
+use App\Http\Controllers\PatientDocumentController;
+use App\Http\Controllers\HospitalCatalogController;
+use App\Http\Controllers\CashShiftController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -67,7 +71,13 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     Route::resource('patients', PatientController::class);
     Route::post('patients/{patient}/appointments', [HospitalWorkflowController::class,'appointment'])->name('patients.appointments.store');
+    Route::post('patients/{patient}/documents',[PatientDocumentController::class,'store'])->name('patients.documents.store');
+    Route::delete('patient-documents/{document}',[PatientDocumentController::class,'destroy'])->name('patients.documents.destroy');
     Route::patch('appointments/{appointment}/status', [HospitalWorkflowController::class,'appointmentStatus'])->name('appointments.status');
+    Route::get('hospital/appointments', AppointmentBoardController::class)->name('hospital.appointments.index');
+    Route::get('hospital/catalog',[HospitalCatalogController::class,'index'])->middleware('role:admin,manager,accountant')->name('hospital.catalog.index');
+    Route::post('hospital/insurers',[HospitalCatalogController::class,'insurer'])->middleware('role:admin,manager')->name('hospital.insurers.store');
+    Route::post('hospital/tariffs',[HospitalCatalogController::class,'tariff'])->middleware('role:admin,manager')->name('hospital.tariffs.store');
     Route::post('patients/{patient}/clinical-notes', [HospitalWorkflowController::class,'note'])->name('patients.notes.store');
     Route::post('patients/{patient}/lab-orders', [HospitalWorkflowController::class,'labOrder'])->name('patients.lab-orders.store');
     Route::patch('lab-order-items/{item}/result', [HospitalWorkflowController::class,'labResult'])->name('lab-results.update');
@@ -134,6 +144,9 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     Route::get('/reports', ReportController::class)->middleware('role:admin,manager,accountant,cashier')->name('reports');
     Route::get('/finance/control', FinanceControlController::class)->middleware('role:admin,manager,accountant,cashier')->name('finance.control');
+    Route::get('/finance/shifts',[CashShiftController::class,'index'])->middleware('role:admin,manager,cashier')->name('finance.shifts.index');
+    Route::post('/finance/shifts/open',[CashShiftController::class,'open'])->middleware('role:admin,manager,cashier')->name('finance.shifts.open');
+    Route::patch('/finance/shifts/{shift}/close',[CashShiftController::class,'close'])->middleware('role:admin,manager,cashier')->name('finance.shifts.close');
 
     // ----------------------
     // Settings: Database Backup

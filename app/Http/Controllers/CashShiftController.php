@@ -1,0 +1,7 @@
+<?php
+namespace App\Http\Controllers;use App\Models\CashShift;use Illuminate\Http\Request;use Illuminate\Support\Facades\Auth;use Inertia\Inertia;
+class CashShiftController extends Controller{
+ public function index(){return Inertia::render('Finance/Shifts',['activeShift'=>CashShift::with('transactions')->where('user_id',Auth::id())->whereNull('closed_at')->first(),'shifts'=>CashShift::with('user:id,name')->latest('opened_at')->limit(100)->get()]);}
+ public function open(Request $r){$d=$r->validate(['opening_amount'=>'required|integer|min:0','notes'=>'nullable|string|max:1000']);if(CashShift::where('user_id',Auth::id())->whereNull('closed_at')->exists())return back()->withErrors(['opening_amount'=>'یک شیفت باز دارید.']);CashShift::create($d+['user_id'=>Auth::id(),'opened_at'=>now()]);return back();}
+ public function close(Request $r,CashShift $shift){abort_unless($shift->user_id===Auth::id()||in_array(Auth::user()->role,['admin','manager']),403);$d=$r->validate(['counted_amount'=>'required|integer|min:0','notes'=>'nullable|string|max:1000']);$credit=$shift->transactions()->whereNull('voided_at')->where('direction','credit')->sum('amount');$debit=$shift->transactions()->whereNull('voided_at')->where('direction','debit')->sum('amount');$expected=$shift->opening_amount+$credit-$debit;$shift->update(['expected_amount'=>$expected,'counted_amount'=>$d['counted_amount'],'discrepancy'=>$d['counted_amount']-$expected,'notes'=>$d['notes']??$shift->notes,'closed_at'=>now()]);return back();}
+}

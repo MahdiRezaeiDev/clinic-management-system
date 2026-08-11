@@ -25,4 +25,6 @@ class Patient extends Model
     public function admissions(){return $this->hasMany(Admission::class);}
     public function invoices(){return $this->hasMany(PatientInvoice::class);}
     public function triageEntries(){return $this->hasMany(TriageEntry::class);}
+    public function documents(){return $this->hasMany(PatientDocument::class);}
+    public function insurances(){return $this->hasMany(PatientInsurance::class);}
 }

@@ -43,6 +43,7 @@ class FinancialRecordObserver
                 'payment_method' => $method ?: 'cash',
                 'transaction_date' => $model->getRawOriginal($dateField) ?: now()->toDateString(),
                 'description' => class_basename($model), 'user_id' => $model->user_id ?? Auth::id(),
+                'cash_shift_id' => \App\Models\CashShift::where('user_id',$model->user_id ?? Auth::id())->whereNull('closed_at')->value('id'),
                 'voided_at' => $model->voided_at ?? null, 'voided_by' => $model->voided_by ?? null,
                 'void_reason' => $model->void_reason ?? null,
             ]

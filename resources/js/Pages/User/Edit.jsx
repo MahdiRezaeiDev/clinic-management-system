@@ -117,6 +117,7 @@ export default function Edit({ user }) {
                                                     <option value="cashier">صندوق‌دار</option>
                                                     <option value="pharmacy">دواخانه</option>
                                                     <option value="doctor">داکتر</option>
+                                                    <option value="nurse">نرس</option><option value="receptionist">پذیرش</option><option value="laboratory">لابراتوار</option><option value="inventory">مسئول انبار</option>
                                                     <option value="regular">کاربر عادی</option>
                                                     <option value="admin">مدیر سیستم</option>
                                                 </select>
