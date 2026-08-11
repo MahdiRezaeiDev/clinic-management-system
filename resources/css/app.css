@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+    .invoice-print { break-inside: avoid; }
+    .invoice-print button, .print\:hidden { display: none !important; }
+}
+
 @font-face {
     font-family: "Vazir";
     src: url("../../resources/fonts/ad3cd4cbda94aee8578c1b622b9002f9dfe345c05870eb375a02da853d08f072.woff2") format("woff2");

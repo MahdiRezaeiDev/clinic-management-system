@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\FinanceControlController;
 use App\Http\Controllers\HospitalWorkflowController;
+use App\Http\Controllers\HospitalOperationsController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +75,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('admissions/{admission}/discharge', [HospitalWorkflowController::class,'discharge'])->name('admissions.discharge');
     Route::post('patients/{patient}/invoices', [HospitalWorkflowController::class,'invoice'])->name('patients.invoices.store');
     Route::post('patient-invoices/{invoice}/payments', [HospitalWorkflowController::class,'invoicePayment'])->name('patient-invoices.payments.store');
+    Route::get('hospital/bed-board',[HospitalOperationsController::class,'index'])->name('hospital.bed-board');
+    Route::post('hospital/wards',[HospitalOperationsController::class,'ward'])->name('hospital.wards.store');
+    Route::post('hospital/wards/{ward}/rooms',[HospitalOperationsController::class,'room'])->name('hospital.rooms.store');
+    Route::post('hospital/rooms/{room}/beds',[HospitalOperationsController::class,'bed'])->name('hospital.beds.store');
+    Route::patch('hospital/beds/{bed}/status',[HospitalOperationsController::class,'bedStatus'])->name('hospital.beds.status');
+    Route::post('hospital/admissions/{admission}/transfer',[HospitalOperationsController::class,'transfer'])->name('hospital.admissions.transfer');
+    Route::post('hospital/admissions/{admission}/sync-invoice',[HospitalOperationsController::class,'syncInvoice'])->name('hospital.admissions.sync-invoice');
+    Route::delete('hospital/invoice-payments/{payment}',[HospitalOperationsController::class,'voidPayment'])->name('hospital.invoice-payments.void');
 
     // ----------------------
     // Pharmacy

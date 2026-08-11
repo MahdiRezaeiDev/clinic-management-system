@@ -41,7 +41,7 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        $patient->load(['appointments'=>fn($q)=>$q->with('doctor')->latest('scheduled_at'),'visits'=>fn($q)=>$q->with('doctor')->latest('visit_date'),'clinicalNotes'=>fn($q)=>$q->with('doctor')->latest(),'labOrders'=>fn($q)=>$q->with(['doctor','items.test'])->latest(),'prescriptions'=>fn($q)=>$q->with(['doctor','items'])->latest(),'admissions'=>fn($q)=>$q->with(['doctor','bed.room'])->latest(),'invoices'=>fn($q)=>$q->with(['items','payments'])->latest()]);
+        $patient->load(['appointments'=>fn($q)=>$q->with('doctor')->latest('scheduled_at'),'visits'=>fn($q)=>$q->with('doctor')->latest('visit_date'),'clinicalNotes'=>fn($q)=>$q->with('doctor')->latest(),'labOrders'=>fn($q)=>$q->with(['doctor','items.test'])->latest(),'prescriptions'=>fn($q)=>$q->with(['doctor','items'])->latest(),'admissions'=>fn($q)=>$q->with(['doctor','bed.room.ward','transfers.fromBed.room','transfers.toBed.room'])->latest(),'invoices'=>fn($q)=>$q->with(['items','payments'])->latest()]);
         return Inertia::render('Patients/Chart',['patient'=>$patient,'doctors'=>\App\Models\Staff::whereIn('role',['doctor','dentist','emergency'])->get(),'labTests'=>\App\Models\LabTest::where('active',true)->get(),'drugs'=>\App\Models\Drug::orderBy('brand_name')->limit(500)->get(),'beds'=>\App\Models\Bed::with('room.ward')->where('status','available')->get()]);
     }
 
