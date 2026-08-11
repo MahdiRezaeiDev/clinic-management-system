@@ -121,9 +121,7 @@ export default function Index({
                 category: expense.category,
                 amount: expense.amount,
                 payment_method: expense.payment_method,
-                expense_date: moment(expense.expense_date).format(
-                    'jYYYY/jMM/jDD',
-                ),
+                expense_date: expense.expense_date,
                 description: expense.description || '',
             });
         } else {

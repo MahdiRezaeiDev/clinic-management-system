@@ -94,7 +94,7 @@ class DoctorVisitController extends Controller
             'patient_id' => $patient->id, // 👈 REQUIRED
             'doctor_id' => $request->doctor_id,
             'user_id' => Auth::id(),
-            'visit_date' => jalaliToGregorian($request->visit_date),
+            'visit_date' => $request->visit_date,
             'fee' => $request->fee,
             'description' => $request->description,
         ]);
@@ -186,7 +186,7 @@ class DoctorVisitController extends Controller
         // Update visit info
         $visit->update([
             'doctor_id' => $request->doctor_id,
-            'visit_date' => jalaliToGregorian($request->visit_date),
+            'visit_date' => $request->visit_date,
             'fee' => $request->fee,
             'description' => $request->description,
         ]);

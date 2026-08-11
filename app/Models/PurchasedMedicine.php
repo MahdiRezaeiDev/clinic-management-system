@@ -41,7 +41,7 @@ class PurchasedMedicine extends Model
     // One purchase has many payments
     public function payments()
     {
-        return $this->hasMany(PurchasedMedicinePayment::class, 'purchased_medicine_id');
+        return $this->hasMany(PurchasedMedicinePayment::class, 'purchased_medicine_id')->whereNull('voided_at');
     }
 
     // Total paid for this purchase

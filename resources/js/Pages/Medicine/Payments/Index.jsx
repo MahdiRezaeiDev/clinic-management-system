@@ -103,7 +103,7 @@ export default function PurchasePayments({
         setData({
             id: payment.id,
             amount: payment.amount,
-            payment_date: moment(payment.payment_date).format('jYYYY/jMM/jDD'),
+            payment_date: payment.payment_date,
             description: payment.description || '',
         });
         setConfirmingPayment(true);
@@ -309,9 +309,7 @@ export default function PurchasePayments({
                                         تاریخ خرید:
                                     </span>
                                     <span className="font-medium text-gray-800">
-                                        {moment(medicine.purchase_date).format(
-                                            'jYYYY/jMM/jDD',
-                                        )}
+                                        {medicine.purchase_date}
                                     </span>
                                 </div>
                                 <div className="flex items-start gap-2 text-sm">
@@ -446,11 +444,7 @@ export default function PurchasePayments({
                                                     <div className="flex items-center gap-1.5">
                                                         <Calendar className="h-3.5 w-3.5 text-gray-400" />
                                                         <span className="text-sm text-gray-600">
-                                                            {moment(
-                                                                payment.payment_date,
-                                                            ).format(
-                                                                'jYYYY/jMM/jDD',
-                                                            )}
+                                                            {payment.payment_date}
                                                         </span>
                                                     </div>
                                                 </td>

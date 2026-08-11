@@ -20,14 +20,14 @@ class DashboardController extends Controller
         $usersCount = User::count();
 
         // ---------- آمار امروز ----------
-        $todayVisitCount = Visit::whereDate('created_at', Carbon::today())->count();
-        $visitsTotalIncome = Visit::whereDate('created_at', Carbon::today())->sum('fee');
-        $incomesTotal = Income::whereDate('created_at', Carbon::today())->sum('amount');
-        $todaySell = PharmacySale::whereDate('created_at', Carbon::today())->sum('total_amount');
+        $todayVisitCount = Visit::whereDate('visit_date', Carbon::today())->count();
+        $visitsTotalIncome = Visit::whereDate('visit_date', Carbon::today())->sum('fee');
+        $incomesTotal = Income::whereDate('income_date', Carbon::today())->sum('amount');
+        $todaySell = PharmacySale::whereDate('sale_date', Carbon::today())->sum('paid_amount');
         $totalIncome = $visitsTotalIncome + $incomesTotal + $todaySell;
 
-        $todayExpenses = Expense::whereDate('created_at', Carbon::today())->sum('amount');
-        $totalPurchase = PurchasedMedicine::whereDate('created_at', Carbon::today())->sum('paid_amount');
+        $todayExpenses = Expense::whereDate('expense_date', Carbon::today())->sum('amount');
+        $totalPurchase = \App\Models\PurchasedMedicinePayment::whereNull('voided_at')->whereDate('payment_date', Carbon::today())->sum('amount');
         $totalExpense = $todayExpenses + $totalPurchase;
 
         // ---------- طول ماه‌های سال جاری جلالی ----------
@@ -55,10 +55,10 @@ class DashboardController extends Controller
             // محاسبه آمار مالی
             $income = Visit::whereBetween('visit_date', [$startGregorian, $endGregorian])->sum('fee')
                 + Income::whereBetween('income_date', [$startGregorian, $endGregorian])->sum('amount')
-                + PharmacySale::whereBetween('sale_date', [$startGregorian, $endGregorian])->sum('total_amount');
+                + PharmacySale::whereBetween('sale_date', [$startGregorian, $endGregorian])->sum('paid_amount');
 
             $expense = Expense::whereBetween('expense_date', [$startGregorian, $endGregorian])->sum('amount')
-                + PurchasedMedicine::whereBetween('purchase_date', [$startGregorian, $endGregorian])->sum('paid_amount')
+                + \App\Models\PurchasedMedicinePayment::whereNull('voided_at')->whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('amount')
                 + Salary::whereBetween('payment_date', [$startGregorian, $endGregorian])->sum('total_paid');
 
             $monthlyStats[] = [

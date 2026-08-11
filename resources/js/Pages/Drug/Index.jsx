@@ -17,6 +17,9 @@ export default function DrugIndex({ drugs, search }) {
         composition_fa: '',
         dosage_form: '',
         dosage_form_fa: '',
+        stock_quantity: 0,
+        reorder_level: 10,
+        expiry_date: '',
     });
     const [processing, setProcessing] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
@@ -34,6 +37,9 @@ export default function DrugIndex({ drugs, search }) {
             composition_fa: '',
             dosage_form: '',
             dosage_form_fa: '',
+            stock_quantity: 0,
+            reorder_level: 10,
+            expiry_date: '',
         });
         setShowAddModal(true);
     };
@@ -46,6 +52,9 @@ export default function DrugIndex({ drugs, search }) {
             composition_fa: drug.composition_fa,
             dosage_form: drug.dosage_form,
             dosage_form_fa: drug.dosage_form_fa,
+            stock_quantity: drug.stock_quantity ?? 0,
+            reorder_level: drug.reorder_level ?? 10,
+            expiry_date: drug.expiry_date ?? '',
         });
         setEditDrug(drug);
         setShowEditModal(true);
@@ -155,6 +164,8 @@ export default function DrugIndex({ drugs, search }) {
                                 <th className="px-4 py-2">نام (FA)</th>
                                 <th className="px-4 py-2">شکل دارویی (EN)</th>
                                 <th className="px-4 py-2">شکل دارویی (FA)</th>
+                                <th className="px-4 py-2">موجودی</th>
+                                <th className="px-4 py-2">انقضا</th>
                                 <th className="px-4 py-2">عملیات</th>
                             </tr>
                         </thead>
@@ -182,6 +193,8 @@ export default function DrugIndex({ drugs, search }) {
                                     <td className="px-4 py-2">
                                         {drug.dosage_form_fa}
                                     </td>
+                                    <td className={`px-4 py-2 ${Number(drug.stock_quantity) <= Number(drug.reorder_level) ? 'font-bold text-red-600' : ''}`}>{drug.stock_quantity}</td>
+                                    <td className="px-4 py-2">{drug.expiry_date || '-'}</td>
                                     <td className="flex gap-2 px-4 py-2">
                                         <Edit
                                             className="h-5 w-5 text-teal-700"
@@ -258,13 +271,16 @@ export default function DrugIndex({ drugs, search }) {
                                     label: 'شکل دارویی (FA)',
                                     field: 'dosage_form_fa',
                                 },
-                            ].map(({ label, field }) => (
+                                { label: 'موجودی', field: 'stock_quantity', type: 'number' },
+                                { label: 'حد سفارش مجدد', field: 'reorder_level', type: 'number' },
+                                { label: 'تاریخ انقضا (جلالی)', field: 'expiry_date' },
+                            ].map(({ label, field, type = 'text' }) => (
                                 <div key={field} className="flex flex-col">
                                     <label className="mb-1 text-sm">
                                         {label}
                                     </label>
                                     <input
-                                        type="text"
+                                        type={type}
                                         className="rounded border border-gray-300 px-3 py-2 text-sm"
                                         value={data[field]}
                                         onChange={(e) =>

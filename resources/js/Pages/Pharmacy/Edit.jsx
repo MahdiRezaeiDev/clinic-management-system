@@ -32,7 +32,7 @@ export default function PharmacySaleUpdate({ sale }) {
         sale_type: sale.sale_type || 'with_prescription',
         sale_date:
             new DateObject({
-                date: moment(sale.sale_date).format('jYYYY/jMM/jDD'),
+                date: sale.sale_date,
                 calendar: persian,
                 locale: persian_en,
             }).format('YYYY/MM/DD') ||
@@ -128,7 +128,7 @@ export default function PharmacySaleUpdate({ sale }) {
             JSON.stringify(originalItems) !== JSON.stringify(currentItems) ||
             data.discount != sale.discount ||
             data.description != sale.description ||
-            data.sale_date != moment(sale.sale_date).format('jYYYY/jMM/jDD');
+            data.sale_date != sale.sale_date;
 
         setHasChanges(changes);
     }, [data]);
@@ -237,7 +237,7 @@ export default function PharmacySaleUpdate({ sale }) {
                         <div>
                             <span className="text-gray-500">تاریخ فروش:</span>
                             <span className="mr-1 font-medium text-gray-800">
-                                {moment(sale.sale_date).format('jYYYY/jMM/jDD')}
+                                {sale.sale_date}
                             </span>
                         </div>
                         <div>

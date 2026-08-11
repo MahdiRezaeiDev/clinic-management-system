@@ -54,7 +54,9 @@ class PharmacyController extends Controller
 
             // اطلاعات فروش داروخانه
             'total_amount' => 'required|numeric|min:1',
-            'sale_date' => 'required|date|before_or_equal:today',
+            'paid_amount' => 'nullable|numeric|min:0|lte:total_amount',
+            'payment_method' => 'nullable|in:cash,card',
+            'sale_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:1000',
             'discount' => 'nullable|numeric|min:0|lte:total_amount',
         ], [
@@ -115,8 +117,13 @@ class PharmacyController extends Controller
         $pharmacy->doctor_id  = $request->doctor; // 👈 Link to Doctor
         $pharmacy->sale_type = $saleType;
         $pharmacy->total_amount = $request->total_amount;
+        $pharmacy->paid_amount = $request->input('paid_amount', $request->total_amount);
+        $pharmacy->remaining_amount = max(0, $pharmacy->total_amount - $pharmacy->paid_amount);
+        $pharmacy->payment_status = $pharmacy->remaining_amount === 0 ? 'paid' : ($pharmacy->paid_amount > 0 ? 'partial' : 'unpaid');
+        $pharmacy->payment_method = $request->input('payment_method', 'cash');
+        $pharmacy->receipt_number = 'SALE-' . now()->format('YmdHis') . '-' . strtoupper(bin2hex(random_bytes(3)));
         $pharmacy->discount = $request->discount ?? 0;
-        $pharmacy->sale_date = jalaliToGregorian($request->sale_date);
+        $pharmacy->sale_date = $request->sale_date;
         $pharmacy->user_id = Auth::id();
         $pharmacy->description = $request->description;
         $pharmacy->save();
@@ -190,7 +197,7 @@ class PharmacyController extends Controller
         // 1. Validate main fields
         $request->validate([
             'total_amount' => 'required|numeric|min:1',
-            'sale_date' => 'required|date',
+            'sale_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:1000',
             'discount' => 'nullable|numeric|min:0',
         ], [
@@ -221,7 +228,7 @@ class PharmacyController extends Controller
             'sale_type' => $saleType,
             'total_amount' => floatval($request->total_amount),
             'discount' => floatval($request->discount ?? 0),
-            'sale_date' => jalaliToGregorian($request->sale_date),
+            'sale_date' => $request->sale_date,
             'description' => $request->description,
         ]);
 

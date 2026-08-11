@@ -41,6 +41,9 @@ class DrugController extends Controller
             'brand_name_fa' => 'nullable|string',
             'composition_fa' => 'nullable|string',
             'dosage_form_fa' => 'nullable|string',
+            'stock_quantity' => 'required|integer|min:0',
+            'reorder_level' => 'required|integer|min:0',
+            'expiry_date' => 'nullable|date_format:Y/m/d',
         ]);
 
         Drug::create($validated);
@@ -60,6 +63,9 @@ class DrugController extends Controller
             'brand_name_fa' => 'nullable|string',
             'composition_fa' => 'nullable|string',
             'dosage_form_fa' => 'nullable|string',
+            'stock_quantity' => 'required|integer|min:0',
+            'reorder_level' => 'required|integer|min:0',
+            'expiry_date' => 'nullable|date_format:Y/m/d',
         ]);
 
         $drug->update($validated);

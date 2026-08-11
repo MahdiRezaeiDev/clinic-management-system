@@ -212,6 +212,11 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
+                        {['admin', 'manager', 'accountant', 'cashier'].includes(user.role) && <li>
+                            <NavLink href={route('finance.control')} active={route().current('finance.control')}>
+                                <div className="flex items-end gap-2"><Coins className="h-5 w-5" />کنترل مالی و صندوق</div>
+                            </NavLink>
+                        </li>}
                         <li>
                             <NavLink
                                 href={route('settings.database')}

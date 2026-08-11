@@ -405,7 +405,7 @@ export default function Profile({
                         </h2>
                         <p className="mt-1 text-sm text-teal-100">
                             {selectedRecord &&
-                                `برای خرید مورخ ${moment(selectedRecord.purchase_date).format('jYYYY/jMM/jDD')}`}
+                                `برای خرید مورخ ${selectedRecord.purchase_date}`}
                         </p>
                     </div>
 

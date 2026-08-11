@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\JalaliDateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,5 +20,10 @@ class Drug extends Model
         'brand_name_fa',
         'composition_fa',
         'dosage_form_fa',
+        'stock_quantity',
+        'reorder_level',
+        'expiry_date',
     ];
+
+    protected $casts = ['expiry_date' => JalaliDateCast::class];
 }

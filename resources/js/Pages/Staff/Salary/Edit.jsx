@@ -55,13 +55,7 @@ export default function Edit({ staff, salary, overTimes }) {
         deductions: salary.deductions || 0,
         total_paid: salary.total_paid,
         salary_month: salary.salary_month || '',
-        payment_date: salary.payment_date
-            ? new DateObject({
-                  date: moment(salary.payment_date).format('jYYYY/jMM/jDD'),
-                  calendar: persian,
-                  locale: persian_en,
-              }).format('YYYY/MM/DD')
-            : new DateObject({
+        payment_date: salary.payment_date || new DateObject({
                   calendar: persian,
                   locale: persian_en,
               }).format('YYYY/MM/DD'),

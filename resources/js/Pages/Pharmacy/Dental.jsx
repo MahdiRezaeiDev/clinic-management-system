@@ -90,9 +90,7 @@ export default function Dental({ sale }) {
                                                 تاریخ :
                                             </span>
                                             <span className="px-1">
-                                                {moment(sale.sale_date).format(
-                                                    'jYYYY/jMM/jDD',
-                                                )}
+                                                {sale.sale_date}
                                             </span>
                                         </td>
                                     </tr>

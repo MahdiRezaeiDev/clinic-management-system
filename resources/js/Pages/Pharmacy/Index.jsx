@@ -489,9 +489,7 @@ export default function PharmacySalesIndex({ sales }) {
                                         تاریخ فروش:
                                     </span>
                                     <span className="font-medium text-gray-800">
-                                        {moment(selectedSale.sale_date).format(
-                                            'jYYYY/jMM/jDD',
-                                        )}
+                                        {selectedSale.sale_date}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">

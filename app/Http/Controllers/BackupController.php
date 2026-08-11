@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BackupRun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -16,6 +18,7 @@ class BackupController extends Controller
      */
     public function run()
     {
+        $run = BackupRun::create(['status' => 'running', 'started_at' => now(), 'user_id' => Auth::id()]);
         try {
             // Get database connection info
             $connection = config('database.default');
@@ -78,13 +81,18 @@ class BackupController extends Controller
 
             file_put_contents($filePath, $sqlContent);
 
+            $run->update(['status' => 'success', 'filename' => $filename, 'size' => filesize($filePath), 'tables_count' => count($tables), 'finished_at' => now(), 'message' => 'Backup completed']);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'پشتیبان‌گیری با موفقیت انجام شد.',
                 'file' => $filename,
-                'path' => $filePath
+                'path' => $filePath,
+                'size' => filesize($filePath),
+                'tables' => count($tables),
             ]);
         } catch (\Exception $e) {
+            $run->update(['status' => 'failed', 'finished_at' => now(), 'message' => $e->getMessage()]);
             return response()->json([
                 'status' => 'error',
                 'message' => 'Backup failed: ' . $e->getMessage()

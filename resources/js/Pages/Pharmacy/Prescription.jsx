@@ -98,7 +98,7 @@ export default function Prescription({ sale }) {
                                 <span className="pl-2 font-semibold">
                                     نمبر مسلسل:
                                 </span>
-                                <span>{sale.id}</span>
+                                <span>{sale.receipt_number || sale.id}</span>
                             </div>
                         </div>
                     </header>

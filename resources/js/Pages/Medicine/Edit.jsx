@@ -27,7 +27,7 @@ import persian_en from 'react-date-object/locales/persian_en';
 export default function EditPurchase({ suppliers, purchase }) {
     // Convert Gregorian to Persian date
     const persianDate = new DateObject({
-        date: moment(purchase.purchase_date).format('jYYYY/jMM/jDD'),
+        date: purchase.purchase_date,
         calendar: persian,
         locale: persian_en,
     }).format('YYYY/MM/DD');
@@ -194,9 +194,7 @@ export default function EditPurchase({ suppliers, purchase }) {
                         <div>
                             <span className="text-gray-500">تاریخ خرید:</span>
                             <span className="mr-1 font-medium text-gray-800">
-                                {moment(purchase.purchase_date).format(
-                                    'jYYYY/jMM/jDD',
-                                )}
+                                {purchase.purchase_date}
                             </span>
                         </div>
                         <div>

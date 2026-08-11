@@ -38,7 +38,7 @@ export default function Edit({ visit, doctors }) {
         patient_age: visit.patient?.age || '',
         doctor_id: visit.doctor_id || '',
         visit_date:
-            moment(visit.visit_date).format('jYYYY/jMM/jDD') ||
+            visit.visit_date ||
             new DateObject({ calendar: persian, locale: persian_en }).format(
                 'YYYY/MM/DD',
             ),
@@ -59,7 +59,7 @@ export default function Edit({ visit, doctors }) {
             data.patient_age != visit.patient?.age ||
             data.doctor_id != visit.doctor_id ||
             data.visit_date !=
-                moment(visit.visit_date).format('jYYYY/jMM/jDD') ||
+                visit.visit_date ||
             data.fee != visit.fee ||
             data.description != visit.description;
 
@@ -189,9 +189,7 @@ export default function Edit({ visit, doctors }) {
                         <div>
                             <span className="text-gray-500">تاریخ:</span>
                             <span className="mr-1 font-medium text-gray-800">
-                                {moment(visit.visit_date).format(
-                                    'jYYYY/jMM/jDD',
-                                )}
+                                {visit.visit_date}
                             </span>
                         </div>
                         <div>

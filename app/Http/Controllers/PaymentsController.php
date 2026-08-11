@@ -66,6 +66,7 @@ class PaymentsController extends Controller
 
         DB::transaction(function () use ($validated, $medicine, $newTotal) {
             $payment = new PurchasedMedicinePayment($validated);
+            $payment->receipt_number = 'PAY-' . now()->format('YmdHis') . '-' . strtoupper(bin2hex(random_bytes(3)));
             $payment->user_id = Auth::id();
             $payment->purchased_medicine_id = $medicine->id;
             $payment->save();
@@ -146,8 +147,12 @@ class PaymentsController extends Controller
         // Subtract the payment amount from totals
         $totalPaidExcluding = $medicine->payments()->where('id', '!=', $payment->id)->sum('amount');
 
-        // Delete the payment
-        $payment->delete();
+        // Financial records are voided rather than physically deleted.
+        $payment->update([
+            'voided_at' => now(),
+            'voided_by' => Auth::id(),
+            'void_reason' => request('reason', 'ابطال توسط کاربر'),
+        ]);
 
         // Update the medicine totals
         $medicine->paid_amount = $totalPaidExcluding;

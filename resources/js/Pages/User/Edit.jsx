@@ -112,12 +112,13 @@ export default function Edit({ user }) {
                                                         )
                                                     }
                                                 >
-                                                    <option value="finance">
-                                                        مالی
-                                                    </option>
-                                                    <option value="admin">
-                                                        مدیر
-                                                    </option>
+                                                    <option value="manager">مدیر</option>
+                                                    <option value="accountant">حسابدار</option>
+                                                    <option value="cashier">صندوق‌دار</option>
+                                                    <option value="pharmacy">دواخانه</option>
+                                                    <option value="doctor">داکتر</option>
+                                                    <option value="regular">کاربر عادی</option>
+                                                    <option value="admin">مدیر سیستم</option>
                                                 </select>
                                                 <InputError
                                                     message={errors.role}

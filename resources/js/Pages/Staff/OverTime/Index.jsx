@@ -553,9 +553,7 @@ export default function Index({ staff, overtimes }) {
                                         تاریخ:
                                     </span>
                                     <span className="font-medium text-gray-800">
-                                        {moment(selectedOvertime.date).format(
-                                            'jYYYY/jMM/jDD',
-                                        )}
+                                        {selectedOvertime.date}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">

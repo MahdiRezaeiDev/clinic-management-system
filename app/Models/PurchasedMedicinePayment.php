@@ -18,7 +18,11 @@ class PurchasedMedicinePayment extends Model
         "amount",
         "payment_method",
         "description",
-        "user_id"
+        "user_id",
+        "receipt_number",
+        "voided_at",
+        "voided_by",
+        "void_reason"
     ];
 
     public function purchase()
@@ -34,7 +38,8 @@ class PurchasedMedicinePayment extends Model
     public function casts(): array
     {
         return [
-            'payment_date' => JalaliDateCast::class
+            'payment_date' => JalaliDateCast::class,
+            'voided_at' => 'datetime',
         ];
     }
 }

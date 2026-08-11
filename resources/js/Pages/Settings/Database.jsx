@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-export default function BackupPage() {
+export default function BackupPage({ backupHealth }) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [backupInfo, setBackupInfo] = useState(null);
@@ -62,6 +62,11 @@ export default function BackupPage() {
                     </div>
 
                     {/* Main Card */}
+                    <div className={`mb-6 rounded-xl border p-4 ${backupHealth?.healthy ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'}`}>
+                        <p className="font-semibold">وضعیت پشتیبان‌گیری: {backupHealth?.healthy ? 'سالم' : 'نیازمند بررسی'}</p>
+                        <p className="mt-1 text-sm">آخرین اجرا: {backupHealth?.lastRun?.finished_at || 'هنوز اجرا نشده'} — اجرای بعدی: {backupHealth?.nextScheduledRun}</p>
+                        {backupHealth?.lastRun?.message && <p className="mt-1 text-xs text-gray-600">{backupHealth.lastRun.message}</p>}
+                    </div>
                     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
                         {/* Header with gradient */}
                         <div className="border-b border-gray-200 bg-gradient-to-l from-teal-50 to-white px-6 py-5">

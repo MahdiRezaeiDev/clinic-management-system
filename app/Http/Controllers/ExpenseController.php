@@ -72,7 +72,7 @@ class ExpenseController extends Controller
             'category' => 'required|in:building,kitchen,repair,furniture,other,ads',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
-            'expense_date' => 'required|date',
+            'expense_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:500',
         ], [
             'category.required' => 'لطفاً دسته‌بندی هزینه را انتخاب کنید.',
@@ -111,7 +111,7 @@ class ExpenseController extends Controller
             'category' => 'required|in:building,kitchen,repair,furniture,other,ads',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
-            'expense_date' => 'required|date',
+            'expense_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:500',
         ], [
             'category.required' => 'لطفاً دسته‌بندی هزینه را انتخاب کنید.',
@@ -130,7 +130,7 @@ class ExpenseController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'expense_date' => jalaliToGregorian($request->expense_date),
+            'expense_date' => $request->expense_date,
             'description' => $request->description,
         ]);
 

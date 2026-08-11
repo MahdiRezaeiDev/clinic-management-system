@@ -56,7 +56,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,finance,regular',
+            'role' => 'required|in:admin,manager,accountant,cashier,pharmacy,doctor,regular',
             'password' => 'nullable|string|min:8|confirmed',
         ], [
             'name.required' => 'وارد کردن نام الزامی است.',
@@ -71,7 +71,9 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
-        $user->password = $request->password && Hash::make($request->password);
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
         $user->save();
         return redirect()->back();
     }

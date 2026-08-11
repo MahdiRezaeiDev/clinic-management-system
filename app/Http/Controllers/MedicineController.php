@@ -89,6 +89,7 @@ class MedicineController extends Controller
             if (($validated['paid_amount'] ?? 0) > 0) {
                 PurchasedMedicinePayment::create([
                     'purchased_medicine_id' => $purchase->id,
+                    'receipt_number' => 'PAY-' . now()->format('YmdHis') . '-' . strtoupper(bin2hex(random_bytes(3))),
                     'payment_date' => $validated['purchase_date'],
                     'amount' => $validated['paid_amount'],
                     'description' => 'پرداخت اولیه هنگام ثبت خرید',

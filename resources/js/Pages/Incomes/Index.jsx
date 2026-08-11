@@ -74,7 +74,7 @@ export default function Index({
     const todayIncome = incomes.data
         .filter(
             (income) =>
-                moment(income.income_date).format('jYYYY/jMM/jDD') ===
+                income.income_date ===
                 moment().format('jYYYY/jMM/jDD'),
         )
         .reduce((sum, income) => sum + Number(income.amount), 0);
@@ -120,7 +120,7 @@ export default function Index({
                 category: income.category,
                 amount: income.amount,
                 payment_method: income.payment_method,
-                income_date: moment(income.income_date).format('jYYYY/jMM/jDD'),
+                income_date: income.income_date,
                 description: income.description || '',
             });
         } else {

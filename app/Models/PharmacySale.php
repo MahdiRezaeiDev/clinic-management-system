@@ -17,6 +17,10 @@ class PharmacySale extends Model
         "pharmacist_id",
         "user_id",
         "total_amount",
+        "paid_amount",
+        "remaining_amount",
+        "payment_status",
+        "receipt_number",
         "payment_method",
         "description"
     ];

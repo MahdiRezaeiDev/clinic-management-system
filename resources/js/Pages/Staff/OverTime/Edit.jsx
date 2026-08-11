@@ -29,7 +29,7 @@ export default function Edit({ staff, overtime }) {
     const { data, setData, put, processing, errors } = useForm({
         date: overtime.date
             ? new DateObject({
-                  date: moment(overtime.date).format('jYYYY/jMM/jDD'),
+                  date: overtime.date,
                   calendar: persian,
                   locale: persian_en,
               }).format('YYYY/MM/DD')
@@ -59,7 +59,7 @@ export default function Edit({ staff, overtime }) {
             data.rate != overtime.rate ||
             data.total != overtime.total ||
             data.description != overtime.description ||
-            data.date != moment(overtime.date).format('jYYYY/jMM/jDD');
+            data.date != overtime.date;
 
         setHasChanges(hasChanges);
     }, [data.hours, data.rate, data.description, data.date]);
@@ -150,7 +150,7 @@ export default function Edit({ staff, overtime }) {
                         <div>
                             <span className="text-gray-500">تاریخ:</span>
                             <span className="mr-1 font-medium text-gray-800">
-                                {moment(overtime.date).format('jYYYY/jMM/jDD')}
+                                {overtime.date}
                             </span>
                         </div>
                         <div>
@@ -356,17 +356,13 @@ export default function Edit({ staff, overtime }) {
                                     </div>
                                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                                         {data.date !=
-                                            moment(overtime.date).format(
-                                                'jYYYY/jMM/jDD',
-                                            ) && (
+                                            overtime.date && (
                                             <div className="flex items-center gap-1">
                                                 <span className="text-gray-500">
                                                     تاریخ:
                                                 </span>
                                                 <span className="text-gray-400 line-through">
-                                                    {moment(
-                                                        overtime.date,
-                                                    ).format('jYYYY/jMM/jDD')}
+                                                    {overtime.date}
                                                 </span>
                                                 <ArrowRight className="h-3 w-3 text-amber-500" />
                                                 <span className="font-medium text-amber-700">

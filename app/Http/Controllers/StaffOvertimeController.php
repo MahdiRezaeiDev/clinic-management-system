@@ -44,7 +44,7 @@ class StaffOvertimeController extends Controller
     public function store(Request $request, Staff $staff)
     {
         $request->validate([
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y/m/d',
             'hours' => 'required|numeric|min:0',
             'rate' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
@@ -70,7 +70,7 @@ class StaffOvertimeController extends Controller
         ]);
 
         $staff->overtimes()->create([
-            'date' => jalaliToGregorian($request->date),
+            'date' => $request->date,
             'hours' => $request->hours,
             'rate' => $request->rate,
             'total' => $request->total,
@@ -102,7 +102,7 @@ class StaffOvertimeController extends Controller
     {
         // اعتبارسنجی داده‌ها
         $validated = $request->validate([
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y/m/d',
             'hours' => 'required|numeric|min:0',
             'rate' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0',
@@ -118,8 +118,6 @@ class StaffOvertimeController extends Controller
             'total.numeric' => 'مجموع باید عددی باشد.',
             'description.max' => 'توضیحات نباید بیش از ۲۵۵ حرف باشد.',
         ]);
-
-        $validated['date'] = jalaliToGregorian($validated['date']);
 
         // بروزرسانی رکورد
         $overtime->update($validated);

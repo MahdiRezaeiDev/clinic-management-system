@@ -17,6 +17,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\FinanceControlController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,7 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // Users
     // ----------------------
-    Route::resource('user', UserController::class)->except('show')->middleware(HandlePrecognitiveRequests::class);
+    Route::resource('user', UserController::class)->except('show')->middleware(['role:admin,manager', HandlePrecognitiveRequests::class]);
 
     // ----------------------
     // Staff
@@ -107,15 +108,23 @@ Route::middleware('auth')->group(function () {
     // ----------------------
     // doctor visits
     // ----------------------
-    Route::get('/reports', ReportController::class)->name('reports');
+    Route::get('/reports', ReportController::class)->middleware('role:admin,manager,accountant,cashier')->name('reports');
+    Route::get('/finance/control', FinanceControlController::class)->middleware('role:admin,manager,accountant,cashier')->name('finance.control');
 
     // ----------------------
     // Settings: Database Backup
     // ----------------------
     Route::get('/settings/database', function () {
-        return Inertia\Inertia::render('Settings/Database');
-    })->name('settings.database');
+        $lastRun = \App\Models\BackupRun::latest('started_at')->first();
+        return Inertia\Inertia::render('Settings/Database', [
+            'backupHealth' => [
+                'lastRun' => $lastRun,
+                'healthy' => $lastRun?->status === 'success' && $lastRun->finished_at?->greaterThan(now()->subDay()),
+                'nextScheduledRun' => now()->addDay()->startOfDay()->addHours(2)->toDateTimeString(),
+            ],
+        ]);
+    })->middleware('role:admin,manager')->name('settings.database');
 
-    Route::post('/backup/run', [BackupController::class, 'run'])->name('backup.run');
+    Route::post('/backup/run', [BackupController::class, 'run'])->middleware('role:admin,manager')->name('backup.run');
 });
 require __DIR__ . '/auth.php';

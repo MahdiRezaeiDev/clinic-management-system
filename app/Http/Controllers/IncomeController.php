@@ -67,7 +67,7 @@ class IncomeController extends Controller
             'category' => 'required|in:lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
-            'income_date' => 'required|date',
+            'income_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:500',
         ], [
             'category.required' => 'لطفاً نوع درآمد را انتخاب کنید.',
@@ -87,7 +87,7 @@ class IncomeController extends Controller
             'category' => $request->category,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
-            'income_date' => jalaliToGregorian($request->income_date),
+            'income_date' => $request->income_date,
             'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
@@ -101,7 +101,7 @@ class IncomeController extends Controller
             'category' => 'required|in:lab,dental,emergency,gynecology,inpatient,other',
             'amount' => 'required|numeric|min:1',
             'payment_method' => 'required|in:cash,bank,check,other',
-            'income_date' => 'required|date',
+            'income_date' => 'required|date_format:Y/m/d',
             'description' => 'nullable|string|max:500',
         ], [
             'category.required' => 'لطفاً نوع درآمد را انتخاب کنید.',
@@ -115,9 +115,6 @@ class IncomeController extends Controller
             'income_date.date' => 'تاریخ وارد شده معتبر نیست.',
             'description.max' => 'توضیحات نباید بیش از ۵۰۰ کاراکتر باشد.',
         ]);
-
-        $incomeDateGregorian = jalaliToGregorian($request->income_date);
-        $request->merge(['income_date' => $incomeDateGregorian]);
 
         $income->update($request->only('category', 'amount', 'payment_method', 'income_date', 'description'));
 
