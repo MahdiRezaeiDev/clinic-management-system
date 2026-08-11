@@ -43,8 +43,8 @@ export default function Sidebar() {
     };
 
     return (
-        <nav className="relative z-30 flex flex-wrap items-center justify-between border-l border-gray-100 bg-white p-4 shadow-2xl shadow-gray-300/40 md:fixed md:bottom-0 md:right-0 md:top-0 md:block md:w-72 md:flex-row md:flex-nowrap md:overflow-hidden print:hidden">
-            <div className="mx-auto flex w-full flex-wrap items-center justify-between px-0 md:min-h-full md:flex-col md:flex-nowrap md:items-stretch">
+        <nav className="relative z-30 flex flex-wrap items-center justify-between border-l border-gray-100 bg-white p-4 shadow-2xl shadow-gray-300/40 md:fixed md:inset-y-0 md:right-0 md:h-screen md:w-72 md:flex-col md:flex-nowrap md:overflow-hidden print:hidden">
+            <div className="mx-auto flex w-full flex-wrap items-center justify-between px-0 md:h-full md:min-h-0 md:flex-1 md:flex-col md:flex-nowrap md:items-stretch">
                 {/* Mobile toggle button */}
                 <button
                     className="cursor-pointer rounded border border-transparent bg-transparent px-3 py-1 text-xl leading-none text-black opacity-50 md:hidden"
@@ -59,12 +59,27 @@ export default function Sidebar() {
                     className="flex items-center gap-3 rounded-2xl bg-gradient-to-l from-teal-700 to-teal-600 px-4 py-3 text-white shadow-lg md:mb-3 md:flex"
                     href={route('dashboard')}
                 >
-                    <span className="rounded-xl bg-white/15 p-2"><Hospital className="h-6 w-6" /></span><span><b className="block text-sm">سیستم مدیریت بیمارستان</b><small className="text-[11px] font-normal text-teal-100">کلینیک مادر و طفل</small></span>
+                    <span className="rounded-xl bg-white/15 p-2">
+                        <Hospital className="h-6 w-6" />
+                    </span>
+                    <span>
+                        <b className="block text-sm">سیستم مدیریت بیمارستان</b>
+                        <small className="text-[11px] font-normal text-teal-100">
+                            کلینیک مادر و طفل
+                        </small>
+                    </span>
                 </a>
 
                 <div className="mx-2 hidden items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/80 p-3 md:flex">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-100 font-bold text-teal-700">{user.name?.charAt(0)}</span>
-                    <div className="min-w-0"><p className="truncate text-sm font-bold text-gray-700">{user.name}</p><p className="text-xs text-gray-400">{user.role}</p></div>
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-100 font-bold text-teal-700">
+                        {user.name?.charAt(0)}
+                    </span>
+                    <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-gray-700">
+                            {user.name}
+                        </p>
+                        <p className="text-xs text-gray-400">{user.role}</p>
+                    </div>
                 </div>
 
                 {/* Mobile user dropdown */}
@@ -108,11 +123,11 @@ export default function Sidebar() {
 
                 {/* Sidebar links */}
                 <aside
-                    className="absolute left-0 right-0 top-16 z-40 hidden max-h-[calc(100vh-5rem)] flex-1 flex-col items-stretch overflow-y-auto overflow-x-hidden rounded-b-2xl bg-white pb-5 shadow-xl md:relative md:top-auto md:mt-1 md:flex md:max-h-[calc(100vh-7rem)] md:opacity-100 md:shadow-none print:hidden"
+                    className="absolute left-0 right-0 top-16 z-40 hidden max-h-[calc(100vh-5rem)] flex-1 flex-col items-stretch overflow-y-auto overflow-x-hidden overscroll-contain rounded-b-2xl bg-white pb-5 shadow-xl md:relative md:inset-auto md:mt-1 md:flex md:max-h-none md:min-h-0 md:w-full md:opacity-100 md:shadow-none print:hidden"
                     id="sidebar"
                     ref={sidebarRef}
                 >
-                    <ul className="flex list-none flex-col py-2 md:min-w-full md:flex-col">
+                    <ul className="flex list-none flex-col pb-8 pt-2 md:min-w-full md:flex-col">
                         {/* Dashboard */}
                         <li>
                             <NavLink

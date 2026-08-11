@@ -46,7 +46,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     };
 
     return (
-        <section className={`${className} mx-auto max-w-2xl`}>
+        <section className={className}>
             {/* Header Section with Icon */}
             <div className="mb-8">
                 <div className="mb-4 flex items-center gap-3">
