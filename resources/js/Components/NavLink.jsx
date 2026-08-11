@@ -10,10 +10,10 @@ export default function NavLink({
         <Link
             {...props}
             className={
-                'block px-2 py-3 text-sm font-bold uppercase hover:bg-teal-700 ' +
+                'group mx-2 my-1 block rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ' +
                 (active
-                    ? ' bg-teal-700 text-white'
-                    : 'text-blueGray-800 hover:text-white') +
+                    ? ' bg-gradient-to-l from-teal-600 to-teal-500 text-white shadow-lg shadow-teal-200/60'
+                    : 'text-gray-600 hover:bg-teal-50 hover:text-teal-700') +
                 className
             }
         >

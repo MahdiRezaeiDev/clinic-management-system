@@ -5,7 +5,7 @@ import { User } from 'lucide-react';
 export default function Nav({ title }) {
     const user = usePage().props.auth.user;
     return (
-        <nav className="absolute right-0 top-0 z-10 hidden w-full items-center bg-teal-700 p-4 md:flex md:flex-row md:flex-nowrap md:justify-end print:hidden">
+        <nav className="absolute right-0 top-0 z-20 hidden w-full items-center border-b border-teal-500/30 bg-gradient-to-l from-teal-700 to-teal-600 p-4 shadow-lg md:flex md:flex-row md:flex-nowrap md:justify-end print:hidden">
             <div className="mx-autp flex w-full flex-wrap items-center justify-between px-4 md:flex-nowrap md:px-10">
                 <p className="text-sm font-semibold uppercase text-white md:inline-block">
                     {title}
@@ -17,7 +17,7 @@ export default function Nav({ title }) {
                             <span className="inline-flex rounded-md">
                                 <button
                                     type="button"
-                                    className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-medium leading-4 text-white backdrop-blur transition hover:bg-white/20 focus:outline-none"
                                 >
                                     <User className="h-5 w-5" />
 

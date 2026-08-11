@@ -277,7 +277,7 @@ export default function DrugIndex({ drugs, search }) {
                 </ClinicPanel>
 
                 {/* Pagination */}
-                {drugs.links.length > 0 && (
+                {drugs.last_page > 1 && (
                     <div className="mt-4 flex justify-center gap-2">
                         {drugs.links.map((link, idx) => {
                             const isActive = link.active;
