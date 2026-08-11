@@ -9,7 +9,6 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import {
     AlertCircle,
     Calendar,
-    ChevronLeft,
     ChevronRight,
     Clock,
     DollarSign,
@@ -114,7 +113,12 @@ export default function Create({ staff, unpaidOvertimes }) {
         <AuthenticatedLayout title={`افزودن حقوق ${staff.full_name}`}>
             <Head title={`افزودن حقوق برای ${staff.full_name}`} />
 
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30 px-4 py-8 md:px-8">
+            <div className="absolute inset-0 -z-10 h-full w-full bg-white">
+                <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
+                <div className="absolute left-0 top-0 h-96 w-96 animate-pulse rounded-full bg-teal-100 opacity-20 blur-3xl" />
+                <div className="absolute bottom-0 right-0 h-96 w-96 animate-pulse rounded-full bg-blue-100 opacity-20 blur-3xl" />
+            </div>
+            <div className="min-h-screen px-4 py-8 md:px-8">
                 <div className="mx-auto max-w-4xl">
                     {/* Header */}
                     <div className="mb-6">
@@ -425,7 +429,7 @@ export default function Create({ staff, unpaidOvertimes }) {
                                                         ),
                                                 );
                                             }}
-                                            className="w-full px-4 py-3 rounded-lg border-gray-300 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
+                                            className="w-full rounded-lg border-gray-300 px-4 py-3 pr-10 text-sm transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500"
                                             min={0}
                                             step="100"
                                         />

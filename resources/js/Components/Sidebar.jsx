@@ -8,6 +8,7 @@ import {
     ChevronDown,
     Coins,
     FileWarning,
+    HeartPulse,
     IdCard,
     LayoutDashboard,
     MenuIcon,
@@ -135,8 +136,39 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-                        <li><NavLink href={route('patients.index')} active={route().current('patients.*')}><div className="flex items-end gap-2"><User className="h-5 w-5" />پرونده مریضان</div></NavLink></li>
-                        <li><NavLink href={route('hospital.bed-board')} active={route().current('hospital.*')}><div className="flex items-end gap-2"><ParkingMeter className="h-5 w-5" />بستری و تخت‌ها</div></NavLink></li>
+                        <li>
+                            <NavLink
+                                href={route('patients.index')}
+                                active={route().current('patients.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <User className="h-5 w-5" />
+                                    پرونده مریضان
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('hospital.triage.index')}
+                                active={route().current('hospital.triage.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <HeartPulse className="h-5 w-5" />
+                                    تریاژ و صف انتظار
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                href={route('hospital.bed-board')}
+                                active={route().current('hospital.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <ParkingMeter className="h-5 w-5" />
+                                    بستری و تخت‌ها
+                                </div>
+                            </NavLink>
+                        </li>
                         <li>
                             <NavLink
                                 href={route('suppliers.index')}
@@ -214,11 +246,21 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
-                        {['admin', 'manager', 'accountant', 'cashier'].includes(user.role) && <li>
-                            <NavLink href={route('finance.control')} active={route().current('finance.control')}>
-                                <div className="flex items-end gap-2"><Coins className="h-5 w-5" />کنترل مالی و صندوق</div>
-                            </NavLink>
-                        </li>}
+                        {['admin', 'manager', 'accountant', 'cashier'].includes(
+                            user.role,
+                        ) && (
+                            <li>
+                                <NavLink
+                                    href={route('finance.control')}
+                                    active={route().current('finance.control')}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <Coins className="h-5 w-5" />
+                                        کنترل مالی و صندوق
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
                         <li>
                             <NavLink
                                 href={route('settings.database')}
