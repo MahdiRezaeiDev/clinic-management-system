@@ -3,55 +3,66 @@
 @tailwind utilities;
 
 @media print {
-    .invoice-print { break-inside: avoid; }
-    .invoice-print button, .print\:hidden { display: none !important; }
+    .invoice-print {
+        break-inside: avoid;
+    }
+    .invoice-print button,
+    .print\:hidden {
+        display: none !important;
+    }
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/ad3cd4cbda94aee8578c1b622b9002f9dfe345c05870eb375a02da853d08f072.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/ad3cd4cbda94aee8578c1b622b9002f9dfe345c05870eb375a02da853d08f072.woff2')
+        format('woff2');
     font-weight: 100;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "IranNastaliq";
-    src: url("../../resources/fonts/IranNastaliq.ttf") format("truetype");
+    font-family: 'IranNastaliq';
+    src: url('../../resources/fonts/IranNastaliq.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/046a76746039189feb148c360dfb82d07a1e3464d31a2078363587af6f5a1cfb.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/046a76746039189feb148c360dfb82d07a1e3464d31a2078363587af6f5a1cfb.woff2')
+        format('woff2');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/d783603a0dd07db6896ecd8a3460e2256a48dca62373a0478706a05490c1a2d8.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/d783603a0dd07db6896ecd8a3460e2256a48dca62373a0478706a05490c1a2d8.woff2')
+        format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/fc6648da06acebfe96ad5a8f077f569c5c4dd75b77122951723ddfbfeb191728.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/fc6648da06acebfe96ad5a8f077f569c5c4dd75b77122951723ddfbfeb191728.woff2')
+        format('woff2');
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/3b2277e82a583c9f91de41aa9e198a14d7ef7f4ccd04828abdd623acd116a88b.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/3b2277e82a583c9f91de41aa9e198a14d7ef7f4ccd04828abdd623acd116a88b.woff2')
+        format('woff2');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Vazir";
-    src: url("../../resources/fonts/71671477a4b62305fbd3ed4976a31c3c08520cf914656ece6b79543524a49132.woff2") format("woff2");
+    font-family: 'Vazir';
+    src: url('../../resources/fonts/71671477a4b62305fbd3ed4976a31c3c08520cf914656ece6b79543524a49132.woff2')
+        format('woff2');
     font-weight: 900;
     font-style: normal;
 }
@@ -161,7 +172,6 @@ Use a more readable tab size (opinionated).
     /* Optional: force RTL layout if needed */
 }
 
-
 html {
     line-height: 1.15;
     /* 1 */
@@ -190,8 +200,7 @@ body {
     font-family:
         system-ui,
         -apple-system,
-        /* Firefox supports this but not yet `system-ui` */
-        'Segoe UI',
+        /* Firefox supports this but not yet `system-ui` */ 'Segoe UI',
         Roboto,
         Helvetica,
         Arial,
@@ -250,11 +259,7 @@ kbd,
 samp,
 pre {
     font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Consolas,
-        'Liberation Mono',
-        Menlo,
+        ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
         monospace;
     /* 1 */
     font-size: 1em;
@@ -485,7 +490,21 @@ ul {
  */
 
 html {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family:
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        Arial,
+        'Noto Sans',
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
     /* 1 */
     line-height: 1.5;
     /* 2 */
@@ -585,7 +604,7 @@ textarea::placeholder {
 }
 
 button,
-[role="button"] {
+[role='button'] {
     cursor: pointer;
 }
 
@@ -642,7 +661,9 @@ pre,
 code,
 kbd,
 samp {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        'Liberation Mono', 'Courier New', monospace;
 }
 
 /**
@@ -677,7 +698,6 @@ video {
     max-width: 100%;
     height: auto;
 }
-
 
 [type='text'],
 [type='email'],
@@ -726,16 +746,17 @@ textarea:focus,
 select:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    --tw-ring-inset: var(--tw-empty,
-            /*!*/
-            /*!*/
-        );
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
     --tw-ring-offset-width: 0px;
     --tw-ring-offset-color: #fff;
     --tw-ring-color: #2563eb;
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow:
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
     border-color: #2563eb;
 }
 
@@ -777,7 +798,6 @@ select {
     print-color-adjust: unset;
 }
 
-
 [type='checkbox'],
 [type='radio'] {
     -webkit-appearance: none;
@@ -810,23 +830,22 @@ select {
     border-radius: 100%;
 }
 
-
 [type='checkbox']:focus,
 [type='radio']:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    --tw-ring-inset: var(--tw-empty,
-            /*!*/
-            /*!*/
-        );
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
     --tw-ring-offset-width: 2px;
     --tw-ring-offset-color: #fff;
     --tw-ring-color: #2563eb;
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow:
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
 }
-
 
 [type='checkbox']:checked,
 [type='radio']:checked {
@@ -845,7 +864,6 @@ select {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
 }
 
-
 [type='checkbox']:checked:hover,
 [type='checkbox']:checked:focus,
 [type='radio']:checked:hover,
@@ -862,7 +880,6 @@ select {
     background-position: center;
     background-repeat: no-repeat;
 }
-
 
 [type='checkbox']:indeterminate:hover,
 [type='checkbox']:indeterminate:focus {
@@ -1282,13 +1299,13 @@ select {
     }
 }
 
-.space-x-4> :not([hidden])~ :not([hidden]) {
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0;
     margin-right: calc(1rem * var(--tw-space-x-reverse));
     margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
-.divide-y> :not([hidden])~ :not([hidden]) {
+.divide-y > :not([hidden]) ~ :not([hidden]) {
     --tw-divide-y-reverse: 0;
     border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
     border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
@@ -2202,7 +2219,7 @@ select {
 }
 
 .opacity-80 {
-    opacity: .8;
+    opacity: 0.8;
 }
 
 .outline-none {
@@ -2598,62 +2615,82 @@ select {
     right: 260px;
 }
 
-
-
 * {
     --tw-shadow: 0 0 #0000;
 }
 
 .shadow-sm {
     --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow {
-    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-md {
-    --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-lg {
-    --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-xl {
-    --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-2xl {
     --tw-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-none {
     --tw-shadow: 0 0 #0000;
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .hover\:shadow-md:hover {
-    --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .hover\:shadow-lg:hover {
-    --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    --tw-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow:
+        var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 * {
-    --tw-ring-inset: var(--tw-empty,
-            /*!*/
-            /*!*/
-        );
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
     --tw-ring-offset-width: 0px;
     --tw-ring-offset-color: #fff;
     --tw-ring-color: rgba(59, 130, 246, 0.5);
@@ -2662,21 +2699,33 @@ select {
 }
 
 .focus\:ring-0:focus {
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow:
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
 }
 
 .focus\:ring-1:focus {
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow:
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
 }
 
 .focus\:ring:focus {
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+        var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+        calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow:
+        var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+        var(--tw-shadow, 0 0 #0000);
 }
 
 .focus\:ring-offset-0:focus {
@@ -2985,7 +3034,10 @@ select {
     --tw-skew-y: 0;
     --tw-scale-x: 1;
     --tw-scale-y: 1;
-    transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    transform: translateX(var(--tw-translate-x))
+        translateY(var(--tw-translate-y)) rotate(var(--tw-rotate))
+        skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+        scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .transition-all {
@@ -3015,7 +3067,6 @@ select {
 }
 
 @-webkit-keyframes ping {
-
     75%,
     100% {
         transform: scale(2);
@@ -3024,7 +3075,6 @@ select {
 }
 
 @keyframes ping {
-
     75%,
     100% {
         transform: scale(2);
@@ -3034,18 +3084,17 @@ select {
 
 @-webkit-keyframes pulse {
     50% {
-        opacity: .5;
+        opacity: 0.5;
     }
 }
 
 @keyframes pulse {
     50% {
-        opacity: .5;
+        opacity: 0.5;
     }
 }
 
 @-webkit-keyframes bounce {
-
     0%,
     100% {
         transform: translateY(-25%);
@@ -3061,7 +3110,6 @@ select {
 }
 
 @keyframes bounce {
-
     0%,
     100% {
         transform: translateY(-25%);
@@ -3239,7 +3287,9 @@ select {
 
     .md\:shadow-none {
         --tw-shadow: 0 0 #0000;
-        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        box-shadow:
+            var(--tw-ring-offset-shadow, 0 0 #0000),
+            var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     }
 
     .md\:text-left {
@@ -3384,7 +3434,9 @@ select {
 
     .lg\:shadow-none {
         --tw-shadow: 0 0 #0000;
-        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        box-shadow:
+            var(--tw-ring-offset-shadow, 0 0 #0000),
+            var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     }
 
     .lg\:text-left {
@@ -3457,9 +3509,8 @@ select {
     }
 }
 
-@media (min-width: 1536px) {}
-
-
+@media (min-width: 1536px) {
+}
 
 @layer base {
     :root {
@@ -3518,8 +3569,6 @@ select {
     }
 }
 
-
-
 @layer base {
     * {
         @apply border-border;
@@ -3527,5 +3576,37 @@ select {
 
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+/*
+ * Keep absolutely-positioned field icons outside the editable text area.
+ * Older forms use both RTL (right icon) and LTR (left icon) patterns, so the
+ * spacing is derived from the icon position instead of the page direction.
+ */
+@layer components {
+    .relative > .absolute.right-0 ~ :is(input, select, textarea),
+    .relative > .absolute.right-2 ~ :is(input, select, textarea),
+    .relative > .absolute.right-3 ~ :is(input, select, textarea),
+    .relative > .absolute.right-4 ~ :is(input, select, textarea) {
+        padding-right: 2.75rem !important;
+    }
+
+    .relative > .absolute.left-0 ~ :is(input, select, textarea),
+    .relative > .absolute.left-2 ~ :is(input, select, textarea),
+    .relative > .absolute.left-3 ~ :is(input, select, textarea),
+    .relative > .absolute.left-4 ~ :is(input, select, textarea) {
+        padding-left: 2.75rem !important;
+    }
+
+    .relative > .absolute.right-0 ~ textarea,
+    .relative > .absolute.right-2 ~ textarea,
+    .relative > .absolute.right-3 ~ textarea,
+    .relative > .absolute.right-4 ~ textarea,
+    .relative > .absolute.left-0 ~ textarea,
+    .relative > .absolute.left-2 ~ textarea,
+    .relative > .absolute.left-3 ~ textarea,
+    .relative > .absolute.left-4 ~ textarea {
+        padding-top: 0.75rem;
     }
 }

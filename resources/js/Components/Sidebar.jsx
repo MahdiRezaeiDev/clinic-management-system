@@ -70,18 +70,6 @@ export default function Sidebar() {
                     </span>
                 </a>
 
-                <div className="mx-2 hidden items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/80 p-3 md:flex">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-100 font-bold text-teal-700">
-                        {user.name?.charAt(0)}
-                    </span>
-                    <div className="min-w-0">
-                        <p className="truncate text-sm font-bold text-gray-700">
-                            {user.name}
-                        </p>
-                        <p className="text-xs text-gray-400">{user.role}</p>
-                    </div>
-                </div>
-
                 {/* Mobile user dropdown */}
                 <div className="flex list-none flex-wrap items-center md:hidden">
                     <Dropdown>
