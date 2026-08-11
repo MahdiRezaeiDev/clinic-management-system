@@ -367,15 +367,13 @@ function MenuGroup({ title, icon: Icon, active, children }) {
                     className={`h-4 w-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
                 />
             </button>
-            <div
-                className={`grid transition-all duration-200 ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
-            >
-                <div className="overflow-hidden">
+            {open && (
+                <div className="duration-200 animate-in fade-in slide-in-from-top-1">
                     <div className="mr-4 mt-1 border-r border-teal-100 pr-1">
                         {children}
                     </div>
                 </div>
-            </div>
+            )}
         </section>
     );
 }
