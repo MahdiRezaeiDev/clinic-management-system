@@ -68,33 +68,6 @@ export default function Login({ status }) {
             >
                 {/* Responsive container */}
                 <div className="w-full max-w-[90%] sm:max-w-md md:max-w-lg">
-                    {/* Logo and Brand - Responsive sizing */}
-                    <div className="mb-4 text-center sm:mb-6 md:mb-8">
-                        <div className="flex justify-center">
-                            <div className="rounded-xl bg-gradient-to-r from-teal-600 to-teal-500 p-0.5 shadow-lg sm:rounded-2xl sm:p-1 md:shadow-xl">
-                                <div className="rounded-lg bg-white p-2 sm:rounded-xl sm:p-3">
-                                    {/* Responsive logo size */}
-                                    <Hospital className="h-8 w-8 text-teal-600 sm:h-10 sm:w-10 md:h-12 md:w-12" />
-                                </div>
-                            </div>
-                        </div>
-                        <h2 className="mt-3 text-xl font-bold text-gray-800 sm:mt-4 sm:text-2xl md:mt-6 md:text-3xl">
-                            کلینیک مادر و کودک
-                        </h2>
-                        <p className="mt-1 text-xs text-gray-500 sm:text-sm">
-                            سیستم مدیریت یکپارچه کلینیک
-                        </p>
-
-                        {/* Device indicator - visual feedback */}
-                        <div className="mt-2 flex items-center justify-center gap-2 text-xs text-gray-400 sm:hidden">
-                            <Smartphone className="h-3 w-3" />
-                            <span>نسخه موبایل</span>
-                        </div>
-                        <div className="mt-2 hidden items-center justify-center gap-2 text-xs text-gray-400 sm:flex">
-                            <Laptop className="h-3 w-3" />
-                            <span>نسخه دسکتاپ</span>
-                        </div>
-                    </div>
 
                     {/* Status Message - Responsive padding */}
                     {status && (
@@ -277,25 +250,6 @@ export default function Login({ status }) {
                                     </span>
                                 )}
                             </PrimaryButton>
-
-                            {/* Demo Credentials - Responsive design */}
-                            <div className="mt-4 rounded-lg border border-teal-100 bg-teal-50/50 p-3 sm:mt-6 sm:rounded-xl sm:p-4">
-                                <p className="mb-2 text-[10px] font-medium text-teal-700 sm:text-xs">
-                                    اطلاعات آزمایشی
-                                </p>
-                                <div className="space-y-1 text-[10px] text-gray-600 sm:text-xs">
-                                    <div className="flex items-center gap-2">
-                                        <Mail className="h-2.5 w-2.5 text-gray-400 sm:h-3 sm:w-3" />
-                                        <span className="truncate">
-                                            admin@clinic.com
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Lock className="h-2.5 w-2.5 text-gray-400 sm:h-3 sm:w-3" />
-                                        <span>password</span>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
 
