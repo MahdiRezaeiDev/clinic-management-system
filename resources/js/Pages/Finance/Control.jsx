@@ -4,6 +4,8 @@ import {
     ClinicPanel,
     ClinicStat,
     fieldClass,
+    formatJalaliDate,
+    formatJalaliDateTime,
     primaryButton,
 } from '@/Components/ClinicUI';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -18,6 +20,12 @@ import {
 import { useState } from 'react';
 
 const money = (value) => `${Number(value || 0).toLocaleString()} ؋`;
+const paymentMethod = (value) =>
+    ({ cash: 'نقدی', card: 'کارت', bank: 'بانک', check: 'چک', other: 'سایر' })[
+        value
+    ] ||
+    value ||
+    '-';
 const Card = ({ title, value, tone = 'text-gray-900' }) => (
     <ClinicStat
         title={title}
@@ -141,7 +149,7 @@ export default function Control({
                     <Table
                         headers={['روش', 'نوع', 'مجموع']}
                         rows={summary.byMethod.map((x) => [
-                            x.payment_method,
+                            paymentMethod(x.payment_method),
                             x.direction === 'credit' ? 'دریافت' : 'پرداخت',
                             money(x.total),
                         ])}
@@ -152,9 +160,9 @@ export default function Control({
                         headers={['شماره مرجع', 'تاریخ', 'نوع', 'روش', 'مبلغ']}
                         rows={transactions.data.map((t) => [
                             t.reference_number,
-                            t.transaction_date,
+                            formatJalaliDate(t.transaction_date),
                             t.direction === 'credit' ? 'دریافت' : 'پرداخت',
-                            t.payment_method,
+                            paymentMethod(t.payment_method),
                             money(t.amount),
                         ])}
                     />
@@ -165,7 +173,7 @@ export default function Control({
                             headers={['شرکت', 'تاریخ', 'کل', 'مانده']}
                             rows={supplierDebts.map((x) => [
                                 x.name,
-                                x.date,
+                                formatJalaliDate(x.date),
                                 money(x.total),
                                 money(x.remaining),
                             ])}
@@ -176,7 +184,7 @@ export default function Control({
                             headers={['مریض', 'تاریخ', 'کل', 'مانده']}
                             rows={patientDebts.map((x) => [
                                 x.name,
-                                x.date,
+                                formatJalaliDate(x.date),
                                 money(x.total),
                                 money(x.remaining),
                             ])}
@@ -190,7 +198,7 @@ export default function Control({
                             x.brand_name,
                             x.stock_quantity,
                             x.reorder_level,
-                            x.expiry_date || '-',
+                            formatJalaliDate(x.expiry_date),
                         ])}
                     />
                 </Section>
@@ -201,7 +209,7 @@ export default function Control({
                             x.auditable_type.split('\\').pop(),
                             x.event,
                             x.auditable_id,
-                            x.created_at,
+                            formatJalaliDateTime(x.created_at),
                         ])}
                     />
                 </Section>
