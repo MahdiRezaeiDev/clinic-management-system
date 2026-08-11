@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::post('hospital/inventory/movements',[InventoryController::class,'movement'])->middleware('role:admin,manager,pharmacy,inventory')->name('hospital.inventory.movements.store');
     Route::post('hospital/insurers',[HospitalCatalogController::class,'insurer'])->middleware('role:admin,manager')->name('hospital.insurers.store');
     Route::post('hospital/tariffs',[HospitalCatalogController::class,'tariff'])->middleware('role:admin,manager')->name('hospital.tariffs.store');
+    Route::post('patients/{patient}/insurance',[HospitalCatalogController::class,'patientInsurance'])->name('patients.insurance.store');
     Route::post('patients/{patient}/clinical-notes', [HospitalWorkflowController::class,'note'])->name('patients.notes.store');
     Route::post('patients/{patient}/lab-orders', [HospitalWorkflowController::class,'labOrder'])->name('patients.lab-orders.store');
     Route::patch('lab-order-items/{item}/result', [HospitalWorkflowController::class,'labResult'])->name('lab-results.update');

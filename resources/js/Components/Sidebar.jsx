@@ -2,12 +2,16 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import {
+    BadgeDollarSign,
+    Bell,
+    Boxes,
     Calendar,
     CardSim,
     ChartAreaIcon,
     ChevronDown,
     Coins,
     FileWarning,
+    FlaskConical,
     HeartPulse,
     IdCard,
     LayoutDashboard,
@@ -17,6 +21,7 @@ import {
     Store,
     User,
     UserIcon,
+    WalletCards,
 } from 'lucide-react';
 import { useRef } from 'react';
 import NavLink from './NavLink';
@@ -159,8 +164,16 @@ export default function Sidebar() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink href={route('hospital.appointments.index')} active={route().current('hospital.appointments.*')}>
-                                <div className="flex items-end gap-2"><Calendar className="h-5 w-5" />تقویم نوبت‌ها</div>
+                            <NavLink
+                                href={route('hospital.appointments.index')}
+                                active={route().current(
+                                    'hospital.appointments.*',
+                                )}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <Calendar className="h-5 w-5" />
+                                    تقویم نوبت‌ها
+                                </div>
                             </NavLink>
                         </li>
                         <li>
@@ -174,6 +187,55 @@ export default function Sidebar() {
                                 </div>
                             </NavLink>
                         </li>
+                        {['admin', 'manager', 'doctor', 'laboratory'].includes(
+                            user.role,
+                        ) && (
+                            <li>
+                                <NavLink
+                                    href={route('hospital.lab.index')}
+                                    active={route().current('hospital.lab.*')}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <FlaskConical className="h-5 w-5" />
+                                        مرکز لابراتوار
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {['admin', 'manager', 'pharmacy', 'inventory'].includes(
+                            user.role,
+                        ) && (
+                            <li>
+                                <NavLink
+                                    href={route('hospital.inventory.index')}
+                                    active={route().current(
+                                        'hospital.inventory.*',
+                                    )}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <Boxes className="h-5 w-5" />
+                                        انبار محموله‌ای
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        {['admin', 'manager', 'accountant'].includes(
+                            user.role,
+                        ) && (
+                            <li>
+                                <NavLink
+                                    href={route('hospital.catalog.index')}
+                                    active={route().current(
+                                        'hospital.catalog.*',
+                                    )}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <BadgeDollarSign className="h-5 w-5" />
+                                        بیمه و تعرفه
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
                         <li>
                             <NavLink
                                 href={route('suppliers.index')}
@@ -266,6 +328,32 @@ export default function Sidebar() {
                                 </NavLink>
                             </li>
                         )}
+                        {['admin', 'manager', 'cashier'].includes(
+                            user.role,
+                        ) && (
+                            <li>
+                                <NavLink
+                                    href={route('finance.shifts.index')}
+                                    active={route().current('finance.shifts.*')}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <WalletCards className="h-5 w-5" />
+                                        شیفت صندوق
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )}
+                        <li>
+                            <NavLink
+                                href={route('notifications.index')}
+                                active={route().current('notifications.*')}
+                            >
+                                <div className="flex items-end gap-2">
+                                    <Bell className="h-5 w-5" />
+                                    اعلان‌ها
+                                </div>
+                            </NavLink>
+                        </li>
                         <li>
                             <NavLink
                                 href={route('settings.database')}

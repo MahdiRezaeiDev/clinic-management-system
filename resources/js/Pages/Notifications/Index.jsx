@@ -1,2 +1,83 @@
-import{ClinicHeader,ClinicPage,ClinicPanel,primaryButton}from'@/Components/ClinicUI';import AuthenticatedLayout from'@/Layouts/AuthenticatedLayout';import{Head,Link,router}from'@inertiajs/react';import{Bell,CheckCheck,FlaskConical}from'lucide-react';
-export default function Index({notifications}){return <AuthenticatedLayout title="اعلان‌ها"><Head title="اعلان‌ها"/><ClinicPage><ClinicHeader title="مرکز اعلان‌ها" subtitle="هشدارهای طبی، مالی و عملیاتی سیستم" icon={Bell} action={<button className={primaryButton} onClick={()=>router.patch(route('notifications.read-all'))}><CheckCheck className="h-4 w-4"/>خواندن همه</button>}/><ClinicPanel title={`اعلان‌ها (${notifications.total})`} icon={Bell} bodyClassName="p-0">{notifications.data.length?<div className="divide-y">{notifications.data.map(n=><div key={n.id} className={`flex items-start gap-4 p-5 ${n.read_at?'bg-white':'bg-teal-50/60'}`}><span className="rounded-xl bg-red-50 p-3 text-red-600"><FlaskConical className="h-5 w-5"/></span><div className="flex-1"><h3 className="font-bold text-gray-800">{n.title}</h3><p className="mt-1 text-sm text-gray-600">{n.message}</p>{n.url&&<Link href={n.url} onClick={()=>router.patch(route('notifications.read',n.id))} className="mt-2 inline-block text-sm font-medium text-teal-700">مشاهده جزئیات</Link>}</div></div>)}</div>:<div className="py-16 text-center text-gray-500"><Bell className="mx-auto mb-3 h-12 w-12 text-gray-300"/>اعلانی وجود ندارد.</div>}</ClinicPanel></ClinicPage></AuthenticatedLayout>}
+import {
+    ClinicHeader,
+    ClinicPage,
+    ClinicPanel,
+    primaryButton,
+} from '@/Components/ClinicUI';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link, router } from '@inertiajs/react';
+import { Bell, CheckCheck, FlaskConical } from 'lucide-react';
+export default function Index({ notifications }) {
+    return (
+        <AuthenticatedLayout title="اعلان‌ها">
+            <Head title="اعلان‌ها" />
+            <ClinicPage>
+                <ClinicHeader
+                    title="مرکز اعلان‌ها"
+                    subtitle="هشدارهای طبی، مالی و عملیاتی سیستم"
+                    icon={Bell}
+                    action={
+                        <button
+                            className={primaryButton}
+                            onClick={() =>
+                                router.patch(route('notifications.read-all'))
+                            }
+                        >
+                            <CheckCheck className="h-4 w-4" />
+                            خواندن همه
+                        </button>
+                    }
+                />
+                <ClinicPanel
+                    title={`اعلان‌ها (${notifications.total})`}
+                    icon={Bell}
+                    bodyClassName="p-0"
+                >
+                    {notifications.data.length ? (
+                        <div className="divide-y">
+                            {notifications.data.map((n) => (
+                                <div
+                                    key={n.id}
+                                    className={`flex items-start gap-4 p-5 ${n.read_at ? 'bg-white' : 'bg-teal-50/60'}`}
+                                >
+                                    <span className="rounded-xl bg-red-50 p-3 text-red-600">
+                                        <FlaskConical className="h-5 w-5" />
+                                    </span>
+                                    <div className="flex-1">
+                                        <h3 className="font-bold text-gray-800">
+                                            {n.title}
+                                        </h3>
+                                        <p className="mt-1 text-sm text-gray-600">
+                                            {n.message}
+                                        </p>
+                                        {n.url && (
+                                            <Link
+                                                href={n.url}
+                                                onClick={() =>
+                                                    router.patch(
+                                                        route(
+                                                            'notifications.read',
+                                                            n.id,
+                                                        ),
+                                                    )
+                                                }
+                                                className="mt-2 inline-block text-sm font-medium text-teal-700"
+                                            >
+                                                مشاهده جزئیات
+                                            </Link>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="py-16 text-center text-gray-500">
+                            <Bell className="mx-auto mb-3 h-12 w-12 text-gray-300" />
+                            اعلانی وجود ندارد.
+                        </div>
+                    )}
+                </ClinicPanel>
+            </ClinicPage>
+        </AuthenticatedLayout>
+    );
+}
